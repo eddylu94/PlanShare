@@ -12,8 +12,7 @@ const mongoClient = require("mongodb").MongoClient;
 // Import requests
 // const {
 // } = require('./requests/get-requests.js');
-// const {
-// } = require('./requests/post-requests');
+const { signUp } = require("./requests/post-requests");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -32,6 +31,9 @@ app.set("port", port);
 // GET requests
 
 // POST requests
+app.post("/signup", (postReq, postRes) =>
+  signUp(mongoClient, postReq, postRes)
+);
 
 app.listen(app.get("port"), () => {
   console.log(`Server is running on Port ${port}...`);

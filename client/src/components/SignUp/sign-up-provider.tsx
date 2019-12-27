@@ -5,7 +5,6 @@ import { FORM_INPUT_TYPE } from "./sign-up-utils";
 const SignUpProvider = () => {
   const [firstName, setFirstName] = useState("");
   const [email1, setEmail1] = useState("");
-  const [email2, setEmail2] = useState("");
   const [pass1, setPass1] = useState("");
   const [pass2, setPass2] = useState("");
   const [termsOfUseAcknowledged, setTermsOfUseAcknowledged] = useState(false);
@@ -21,9 +20,6 @@ const SignUpProvider = () => {
         break;
       case FORM_INPUT_TYPE.EMAIL1:
         setEmail1(value);
-        break;
-      case FORM_INPUT_TYPE.EMAIL2:
-        setEmail2(value);
         break;
       case FORM_INPUT_TYPE.PASS1:
         setPass1(value);
@@ -44,7 +40,6 @@ const SignUpProvider = () => {
       handleInputChange={handleInputChange}
       firstName={firstName}
       email1={email1}
-      email2={email2}
       pass1={pass1}
       pass2={pass2}
       termsOfUseAcknowledged={termsOfUseAcknowledged}

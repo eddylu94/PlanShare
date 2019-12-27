@@ -1,0 +1,15 @@
+// Run mongo
+mongo
+
+// Create mentalhealthdb database
+use project3632db
+
+// CREATE COLLECTION
+db.createCollection("Users");
+
+// CREATE USERS
+db.Users.insertOne({
+	email: 'eddy',
+	pass: 'eddy',
+	firstName: 'eddy'
+});

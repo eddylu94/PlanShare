@@ -6,7 +6,6 @@ interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
   firstName: string;
   email1: string;
-  email2: string;
   pass1: string;
   pass2: string;
   termsOfUseAcknowledged: boolean;
@@ -17,7 +16,6 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     handleInputChange,
     firstName,
     email1,
-    email2,
     pass1,
     pass2,
     termsOfUseAcknowledged
@@ -37,13 +35,6 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
         type="email"
         placeholder="Personal email address"
         value={email1}
-        onChange={handleInputChange}
-      />
-      <input
-        name={FORM_INPUT_TYPE.EMAIL2}
-        type="email"
-        placeholder="Confirm email address"
-        value={email2}
         onChange={handleInputChange}
       />
       <input
