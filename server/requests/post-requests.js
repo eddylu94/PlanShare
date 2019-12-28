@@ -65,8 +65,6 @@ const signUp = (mongoClient, postReq, postRes) => {
               throw insertErr;
             }
 
-            console.log(insertRes);
-
             console.log("User created:", email);
             db.close();
             postRes.json({

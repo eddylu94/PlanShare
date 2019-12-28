@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
+import { basePostRequest } from "./../../base-requests";
 
 const SignUpProvider = () => {
   const [firstName, setFirstName] = useState("");
@@ -35,9 +36,34 @@ const SignUpProvider = () => {
     }
   };
 
+  const handleSubmitResponseHandler = (res: any) => {
+    console.log(res);
+  };
+
+  const handleSubmitErrorHandler = (err: any) => {
+    console.log(err);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const postRequestData = {
+      firstName,
+      email: email1,
+      pass: pass1
+    };
+    basePostRequest(
+      "signup",
+      postRequestData,
+      handleSubmitResponseHandler,
+      handleSubmitErrorHandler
+    );
+
+    event.preventDefault();
+  };
+
   return (
     <SignUpCanvas
       handleInputChange={handleInputChange}
+      handleSubmit={handleSubmit}
       firstName={firstName}
       email1={email1}
       pass1={pass1}

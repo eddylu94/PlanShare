@@ -4,6 +4,7 @@ import { FORM_INPUT_TYPE } from "./sign-up-utils";
 
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   firstName: string;
   email1: string;
   pass1: string;
@@ -14,6 +15,7 @@ interface ISignUpCanvasProps {
 const SignUpCanvas = (props: ISignUpCanvasProps) => {
   const {
     handleInputChange,
+    handleSubmit,
     firstName,
     email1,
     pass1,
@@ -22,7 +24,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   } = props;
 
   return (
-    <form className="form-container">
+    <form className="form-container" onSubmit={handleSubmit}>
       <input
         name={FORM_INPUT_TYPE.FIRST_NAME}
         type="text"
