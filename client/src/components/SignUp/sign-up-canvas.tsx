@@ -6,10 +6,23 @@ interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   firstName: string;
-  email1: string;
+  isFirstNameValid: boolean;
+  email: string;
+  isEmailValid: boolean;
   pass1: string;
+  isPass1Valid: boolean;
   pass2: string;
+  isPass2Valid: boolean;
   termsOfUseAcknowledged: boolean;
+  isFormDisabled: boolean;
+}
+
+interface ITextInputWithValidationProps {
+  name: string;
+  type: string;
+  placeholder: string;
+  value: string;
+  isValid: boolean;
 }
 
 const SignUpCanvas = (props: ISignUpCanvasProps) => {
@@ -17,42 +30,70 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     handleInputChange,
     handleSubmit,
     firstName,
-    email1,
+    isFirstNameValid,
+    email,
+    isEmailValid,
     pass1,
+    isPass1Valid,
     pass2,
-    termsOfUseAcknowledged
+    isPass2Valid,
+    termsOfUseAcknowledged,
+    isFormDisabled
   } = props;
+
+  const renderTextInputWithValidation = (
+    name: string,
+    type: string,
+    placeholder: string,
+    value: string,
+    isValid: boolean
+  ) => (
+    <div
+      key={"form-input-with-validation-" + name}
+      className="form-text-input-with-validation"
+    >
+      <input
+        key={"form-input-" + name}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={handleInputChange}
+      />
+      {isValid ? "valid" : "not"}
+    </div>
+  );
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
-      <input
-        name={FORM_INPUT_TYPE.FIRST_NAME}
-        type="text"
-        placeholder="First name"
-        value={firstName}
-        onChange={handleInputChange}
-      />
-      <input
-        name={FORM_INPUT_TYPE.EMAIL1}
-        type="email"
-        placeholder="Personal email address"
-        value={email1}
-        onChange={handleInputChange}
-      />
-      <input
-        name={FORM_INPUT_TYPE.PASS1}
-        type="password"
-        placeholder="Password"
-        value={pass1}
-        onChange={handleInputChange}
-      />
-      <input
-        name={FORM_INPUT_TYPE.PASS2}
-        type="password"
-        placeholder="Confirm password"
-        value={pass2}
-        onChange={handleInputChange}
-      />
+      {renderTextInputWithValidation(
+        FORM_INPUT_TYPE.FIRST_NAME,
+        "text",
+        "First name",
+        firstName,
+        isFirstNameValid
+      )}
+      {renderTextInputWithValidation(
+        FORM_INPUT_TYPE.EMAIL1,
+        "email1",
+        "Personal email address",
+        email,
+        isEmailValid
+      )}
+      {renderTextInputWithValidation(
+        FORM_INPUT_TYPE.PASS1,
+        "password",
+        "Password",
+        pass1,
+        isPass1Valid
+      )}
+      {renderTextInputWithValidation(
+        FORM_INPUT_TYPE.PASS2,
+        "password",
+        "Confirm password",
+        pass2,
+        isPass2Valid
+      )}
       <label>
         By signing up, you agree to the Terms of Use
         <input
@@ -62,7 +103,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           onChange={handleInputChange}
         />
       </label>
-      <input type="submit" value="Submit" />
+      <input type="submit" value="Submit" disabled={isFormDisabled} />
     </form>
   );
 };
