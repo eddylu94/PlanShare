@@ -51,7 +51,7 @@ const SignUpProvider = () => {
 
   const validateFirstName = (firstName: string) => {
     const re = /^[a-zA-Z ]+$/;
-    return re.test(firstName);
+    return re.test(firstName) && !!firstName.trim();
   };
 
   const validateEmail = (email: string) => {

@@ -25,6 +25,14 @@ interface ITextInputWithValidationProps {
   isValid: boolean;
 }
 
+const ValidIcon = () => (
+  <span className="validity-icon valid-icon">&#10004;</span>
+);
+
+const InvalidIcon = () => (
+  <span className="validity-icon invalid-icon">&#10006;</span>
+);
+
 const SignUpCanvas = (props: ISignUpCanvasProps) => {
   const {
     handleInputChange,
@@ -54,18 +62,20 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     >
       <input
         key={"form-input-" + name}
+        className={"form-text-input"}
         name={name}
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={handleInputChange}
       />
-      {isValid ? "valid" : "not"}
+      {isValid ? <ValidIcon /> : <InvalidIcon />}
     </div>
   );
 
   return (
     <form className="form-container" onSubmit={handleSubmit}>
+      <h2 className="form-header">Sign Up</h2>
       {renderTextInputWithValidation(
         FORM_INPUT_TYPE.FIRST_NAME,
         "text",
@@ -83,7 +93,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
       {renderTextInputWithValidation(
         FORM_INPUT_TYPE.PASS1,
         "password",
-        "Password",
+        "Password (8+ char. with letters and numbers)",
         pass1,
         isPass1Valid
       )}
@@ -94,7 +104,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
         pass2,
         isPass2Valid
       )}
-      <label>
+      <label className="form-terms-container">
         By signing up, you agree to the Terms of Use
         <input
           name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
@@ -102,8 +112,14 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           checked={termsOfUseAcknowledged}
           onChange={handleInputChange}
         />
+        <span className="form-terms-checkmark"></span>
       </label>
-      <input type="submit" value="Submit" disabled={isFormDisabled} />
+      <input
+        className="form-submit-button"
+        type="submit"
+        value="Submit"
+        disabled={isFormDisabled}
+      />
     </form>
   );
 };
