@@ -1,14 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
 import SignUp from "./components/SignUp/sign-up-provider";
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <Router>
-        <div>
+        <div className="app-container">
+          <nav className="navbar">
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+            </ul>
+          </nav>
           <Switch>
             <Route exact path="/">
               <Home />

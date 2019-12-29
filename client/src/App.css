@@ -1,11 +1,69 @@
+html,
+body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.app,
+.app-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+.navbar li a:hover {
+  background-color: #111;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.sign-up-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: flex-end;
+}
+
 .form-container {
   display: flex;
   flex-direction: column;
+  width: 45%;
   max-width: 800px;
   box-shadow: 5px 5px 10px #cccccc;
   padding: 24px;
   border-radius: 10px;
-  margin: 20px;
+  margin: 20px 50px 20px 20px;
 }
 
 .form-header {
@@ -73,7 +131,7 @@
 
 /* When the checkbox is checked, add a blue background */
 .form-terms-container input:checked ~ .form-terms-checkmark {
-  background-color: #673ab7;
+  background-color: #555555;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -107,7 +165,7 @@
   line-height: 36px;
   height: 36px;
   border-radius: 8px;
-  background-color: #673ab7;
+  background-color: #555555;
   color: #ffffff;
   cursor: pointer;
 }
@@ -132,8 +190,8 @@ input[disabled] {
 }
 
 .valid-icon {
-  background-color: #673ab7;
-  border: 3px solid #673ab7;
+  background-color: #555555;
+  border: 3px solid #555555;
   color: #ffffff;
 }
 

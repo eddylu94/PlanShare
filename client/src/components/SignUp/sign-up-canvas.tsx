@@ -84,67 +84,73 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   };
 
   return (
-    <form className="form-container" onSubmit={handleSubmit}>
-      {isTermsOfUseDialogDisplayed ? (
-        <TermsOfUse
-          setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
-          setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
-        />
-      ) : null}
-      <h2 className="form-header">Sign Up</h2>
-      {renderTextInputWithValidation(
-        FORM_INPUT_TYPE.FIRST_NAME,
-        "text",
-        "First name",
-        firstName,
-        isFirstNameValid
-      )}
-      {renderTextInputWithValidation(
-        FORM_INPUT_TYPE.EMAIL1,
-        "email1",
-        "Personal email address",
-        email,
-        isEmailValid
-      )}
-      {renderTextInputWithValidation(
-        FORM_INPUT_TYPE.PASS1,
-        "password",
-        "Password (8+ char. with letters and numbers)",
-        pass1,
-        isPass1Valid
-      )}
-      {renderTextInputWithValidation(
-        FORM_INPUT_TYPE.PASS2,
-        "password",
-        "Confirm password",
-        pass2,
-        isPass2Valid
-      )}
-      <label className="form-terms-container">
-        <input
-          name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
-          type="checkbox"
-          checked={termsOfUseAcknowledged}
-          onChange={handleInputChange}
-          tabIndex={-1}
-        />
-        <span
-          className="form-terms-checkmark"
-          tabIndex={0}
-          onKeyPress={handleKeyPressCheckbox}
-        ></span>
-        By signing up, you agree to the{" "}
-        <a href="#" onClick={handleClickTermsOfUse}>
-          Terms of Use
-        </a>
-      </label>
-      <input
-        className="form-submit-button"
-        type="submit"
-        value="Submit"
-        disabled={isFormDisabled}
-      />
-    </form>
+    <div className="page-container">
+      <div className="sign-up-container">
+        <form className="form-container" onSubmit={handleSubmit}>
+          {isTermsOfUseDialogDisplayed ? (
+            <TermsOfUse
+              setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
+              setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
+            />
+          ) : null}
+          <h2 className="form-header">Sign Up</h2>
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.FIRST_NAME,
+            "text",
+            "First name",
+            firstName,
+            isFirstNameValid
+          )}
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.EMAIL1,
+            "email1",
+            "Personal email address",
+            email,
+            isEmailValid
+          )}
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.PASS1,
+            "password",
+            "Password (8+ char. with letters and numbers)",
+            pass1,
+            isPass1Valid
+          )}
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.PASS2,
+            "password",
+            "Confirm password",
+            pass2,
+            isPass2Valid
+          )}
+          <label className="form-terms-container">
+            <input
+              name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
+              type="checkbox"
+              checked={termsOfUseAcknowledged}
+              onChange={handleInputChange}
+              tabIndex={-1}
+            />
+            <span
+              className="form-terms-checkmark"
+              role="checkbox"
+              aria-checked={termsOfUseAcknowledged}
+              tabIndex={0}
+              onKeyPress={handleKeyPressCheckbox}
+            ></span>
+            By signing up, you agree to the{" "}
+            <a href="#" onClick={handleClickTermsOfUse}>
+              Terms of Use
+            </a>
+          </label>
+          <input
+            className="form-submit-button"
+            type="submit"
+            value="Submit"
+            disabled={isFormDisabled}
+          />
+        </form>
+      </div>
+    </div>
   );
 };
 
