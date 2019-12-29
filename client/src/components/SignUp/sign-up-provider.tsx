@@ -18,6 +18,11 @@ const SignUpProvider = () => {
 
   const [termsOfUseAcknowledged, setTermsOfUseAcknowledged] = useState(false);
 
+  const [
+    isTermsOfUseDialogDisplayed,
+    setIsTermsOfUseDialogDisplayed
+  ] = useState(false);
+
   const handleInputChange = (event: React.ChangeEvent<any>) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
@@ -116,7 +121,10 @@ const SignUpProvider = () => {
       pass2={pass2}
       isPass2Valid={isPass2Valid}
       termsOfUseAcknowledged={termsOfUseAcknowledged}
+      setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
       isFormDisabled={isFormDisabled}
+      isTermsOfUseDialogDisplayed={isTermsOfUseDialogDisplayed}
+      setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
     />
   );
 };

@@ -1,6 +1,8 @@
 import React from "react";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
+import TermsOfUse from "./../TermsOfUse/terms-of-use";
+import { KEYBOARD_CHAR_CODE } from "./../../utils";
 
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
@@ -14,15 +16,10 @@ interface ISignUpCanvasProps {
   pass2: string;
   isPass2Valid: boolean;
   termsOfUseAcknowledged: boolean;
+  setTermsOfUseAcknowledged: (value: boolean) => void;
   isFormDisabled: boolean;
-}
-
-interface ITextInputWithValidationProps {
-  name: string;
-  type: string;
-  placeholder: string;
-  value: string;
-  isValid: boolean;
+  isTermsOfUseDialogDisplayed: boolean;
+  setIsTermsOfUseDialogDisplayed: (value: boolean) => void;
 }
 
 const ValidIcon = () => (
@@ -46,7 +43,10 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     pass2,
     isPass2Valid,
     termsOfUseAcknowledged,
-    isFormDisabled
+    setTermsOfUseAcknowledged,
+    isFormDisabled,
+    isTermsOfUseDialogDisplayed,
+    setIsTermsOfUseDialogDisplayed
   } = props;
 
   const renderTextInputWithValidation = (
@@ -73,8 +73,24 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     </div>
   );
 
+  const handleClickTermsOfUse = () => {
+    setIsTermsOfUseDialogDisplayed(true);
+  };
+
+  const handleKeyPressCheckbox = (e: React.KeyboardEvent<HTMLSpanElement>) => {
+    if (e.charCode === KEYBOARD_CHAR_CODE.SPACE) {
+      setTermsOfUseAcknowledged(!termsOfUseAcknowledged);
+    }
+  };
+
   return (
     <form className="form-container" onSubmit={handleSubmit}>
+      {isTermsOfUseDialogDisplayed ? (
+        <TermsOfUse
+          setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
+          setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
+        />
+      ) : null}
       <h2 className="form-header">Sign Up</h2>
       {renderTextInputWithValidation(
         FORM_INPUT_TYPE.FIRST_NAME,
@@ -105,14 +121,22 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
         isPass2Valid
       )}
       <label className="form-terms-container">
-        By signing up, you agree to the Terms of Use
         <input
           name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
           type="checkbox"
           checked={termsOfUseAcknowledged}
           onChange={handleInputChange}
+          tabIndex={-1}
         />
-        <span className="form-terms-checkmark"></span>
+        <span
+          className="form-terms-checkmark"
+          tabIndex={0}
+          onKeyPress={handleKeyPressCheckbox}
+        ></span>
+        By signing up, you agree to the{" "}
+        <a href="#" onClick={handleClickTermsOfUse}>
+          Terms of Use
+        </a>
       </label>
       <input
         className="form-submit-button"
