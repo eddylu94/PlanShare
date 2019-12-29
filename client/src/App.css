@@ -20,7 +20,7 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #333333;
 }
 
 .navbar li {
@@ -45,6 +45,7 @@ body {
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
+  background-color: #e8e8e8;
 }
 
 .sign-up-container {
@@ -64,6 +65,7 @@ body {
   padding: 24px;
   border-radius: 10px;
   margin: 20px 50px 20px 20px;
+  background-color: #ffffff;
 }
 
 .form-header {
@@ -83,8 +85,8 @@ body {
   display: flex;
   flex-grow: 1;
   font-size: 18px;
-  line-height: 36px;
-  height: 36px;
+  line-height: 50px;
+  height: 50px;
   border: none;
   border-bottom: 1px solid #cccccc;
   padding: 10px;
@@ -162,8 +164,8 @@ body {
 .form-submit-button {
   border: none;
   font-size: 18px;
-  line-height: 36px;
-  height: 36px;
+  line-height: 50px;
+  height: 50px;
   border-radius: 8px;
   background-color: #555555;
   color: #ffffff;
@@ -271,12 +273,48 @@ input[disabled] {
 .terms-of-use-button {
   border: none;
   font-size: 18px;
-  line-height: 36px;
-  height: 36px;
+  line-height: 50px;
+  height: 50px;
   border-radius: 8px;
   cursor: pointer;
   margin-left: 20px;
   padding: 0 20px;
   background-color: #cccccc;
   width: 120px;
+}
+
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 1000px;
+  height: 50px;
+  position: relative;
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0px 0px 5px #cccccc;
+}
+
+.search-text-input {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  height: 50px;
+  line-height: 50px;
+  background-color: transparent;
+  border: none;
+  box-sizing: border-box;
+  padding: 0 30px 0 10px;
+  font-size: 18px;
+}
+
+.search-submit-button {
+  position: absolute;
+  height: 50px;
+  line-height: 50px;
+  right: 0;
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
 }

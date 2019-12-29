@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "./App.css";
 
 import SignUp from "./components/SignUp/sign-up-provider";
+import Search from "./components/Search/search-provider";
 
 function App() {
   return (
@@ -18,24 +19,19 @@ function App() {
           </nav>
           <Switch>
             <Route exact path="/">
-              <Home />
+              <Search />
             </Route>
             <Route path="/signup">
               <SignUp />
+            </Route>
+            <Route path="/search">
+              <Search />
             </Route>
           </Switch>
         </div>
       </Router>
     </div>
   );
-
-  function Home() {
-    return (
-      <div>
-        <h2>Home</h2>
-      </div>
-    );
-  }
 }
 
 export default App;
