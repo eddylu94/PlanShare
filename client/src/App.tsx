@@ -4,6 +4,7 @@ import "./App.css";
 
 import SignUp from "./components/SignUp/sign-up-provider";
 import Search from "./components/Search/search-provider";
+import CreateListing from "./components/CreateListing/create-listing-provider";
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
             <ul>
               <li>
                 <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/create">Create new listing</Link>
               </li>
             </ul>
           </nav>
@@ -26,6 +30,9 @@ function App() {
             </Route>
             <Route path="/search">
               <Search />
+            </Route>
+            <Route path="/create">
+              <CreateListing />
             </Route>
           </Switch>
         </div>

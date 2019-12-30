@@ -318,3 +318,10 @@ input[disabled] {
   border: none;
   font-size: 18px;
 }
+
+.create-listing-form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-width: 800px;
+}
