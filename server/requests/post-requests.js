@@ -1,5 +1,5 @@
 const { EMAIL_SERVICE_EMAIL, transporter } = require("./../email-service.js");
-const { generateConfirmationCode } = require("./../utils.js");
+const { generateConfirmationCode, generateAuthKey } = require("./../utils.js");
 const {
   MONGO_URL,
   DATABASE_NAME,
@@ -53,6 +53,12 @@ const signUp = (mongoClient, postReq, postRes) => {
           return;
         }
 
+        const auth = generateAuthKey();
+        Object.assign(obj, {
+          auth,
+          validated: false
+        });
+
         // Insert user into database
         dbo
           .collection(DATABASE_COLLECTION.USERS_COLLECTION)
@@ -72,15 +78,19 @@ const signUp = (mongoClient, postReq, postRes) => {
             postRes.json({
               statusCode: STATUS_CODE.SUCCESS,
               body: {
-                userId: insertRes.insertedId
+                userId: insertRes.insertedId,
+                auth
               }
             });
+
+            const mailSubject = "Welcome to Project 3632";
+            const mailMessage = `Thank you for registering for Project 3632!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${generateConfirmationCode()}</span>`;
 
             const mailOptions = {
               from: EMAIL_SERVICE_EMAIL,
               to: email,
-              subject: "Welcome to Project 3632",
-              html: `Thank you for registering for Project 3632!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${generateConfirmationCode()}</span>`
+              subject: mailSubject,
+              html: mailMessage
             };
 
             transporter.sendMail(mailOptions, function(sendErr, info) {
