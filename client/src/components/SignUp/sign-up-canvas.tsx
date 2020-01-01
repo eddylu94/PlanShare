@@ -2,7 +2,7 @@ import React from "react";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import TermsOfUse from "./../TermsOfUse/terms-of-use";
-import { KEYBOARD_CHAR_CODE } from "./../../utils";
+import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
 
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
@@ -102,8 +102,8 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             isFirstNameValid
           )}
           {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.EMAIL1,
-            "email1",
+            FORM_INPUT_TYPE.EMAIL,
+            "email",
             "Personal email address",
             email,
             isEmailValid

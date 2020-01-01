@@ -1,16 +1,16 @@
 // Database collections
-DATABASE_COLLECTION = {
+const DATABASE_COLLECTION = {
   USERS_COLLECTION: "Users"
 };
 
 // Status codes
-STATUS_CODE = {
+const STATUS_CODE = {
   SUCCESS: 1,
   FAILURE: -1
 };
 
 // Status messages
-STATUS_MESSAGE = {
+const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists"
 };

@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import { basePostRequest } from "./../../base-requests";
+import { IResponse } from "./../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { IUserContext, UserDataContext } from "../../user-context-provider";
 
-const SignUpProvider = () => {
+const SignUpProviderWithContext = (props: { userData: IUserContext }) => {
+  const _userData = props.userData;
+
   const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setIsFirstNameValid] = useState(false);
 
@@ -33,7 +38,7 @@ const SignUpProvider = () => {
         setFirstName(value);
         setIsFirstNameValid(validateFirstName(value));
         break;
-      case FORM_INPUT_TYPE.EMAIL1:
+      case FORM_INPUT_TYPE.EMAIL:
         setEmail(value);
         setIsEmailValid(validateEmail(value));
         break;
@@ -82,8 +87,38 @@ const SignUpProvider = () => {
     termsOfUseAcknowledged
   );
 
-  const handleSubmitResponseHandler = (res: any) => {
-    console.log(res);
+  const handleSubmitResponseHandler = (res: IResponse) => {
+    if (res) {
+      if (res.statusCode === STATUS_CODE.SUCCESS) {
+        console.log("Log in success for:", email);
+
+        const newUserData = res.body;
+
+        // Update user data for User Context
+        _userData.updateUser(newUserData);
+
+        // Update user data for local storage
+        localStorage.setItem("userId", newUserData.userId);
+        localStorage.setItem("auth", newUserData.auth);
+      } else if (res.statusCode === STATUS_CODE.FAILURE) {
+        let errorMessage;
+        switch (res.statusMessage) {
+          case STATUS_MESSAGE.EMAIL_ALREADY_EXISTS:
+            errorMessage = "Email address already exists";
+            console.log(errorMessage);
+            alert(errorMessage);
+            break;
+          case STATUS_MESSAGE.UNKNOWN_ERROR:
+          default:
+            errorMessage = "An unknown error has occured";
+            console.log(errorMessage);
+            alert(errorMessage);
+            break;
+        }
+      }
+    } else {
+      console.log("Error receiving response");
+    }
   };
 
   const handleSubmitErrorHandler = (err: any) => {
@@ -128,5 +163,11 @@ const SignUpProvider = () => {
     />
   );
 };
+
+const SignUpProvider = () => (
+  <UserDataContext.Consumer>
+    {userData => <SignUpProviderWithContext userData={userData} />}
+  </UserDataContext.Consumer>
+);
 
 export default SignUpProvider;
