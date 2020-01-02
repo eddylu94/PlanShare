@@ -31,7 +31,14 @@ const generateAuthKey = () => {
   return btoa(generateHexString());
 };
 
+const generateAuthToken = () => {
+  return {
+    date: new Date().getTime(),
+    key: generateAuthKey()
+  };
+};
+
 module.exports = {
   generateConfirmationCode,
-  generateAuthKey
+  generateAuthToken
 };

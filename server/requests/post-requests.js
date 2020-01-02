@@ -1,5 +1,8 @@
 const { EMAIL_SERVICE_EMAIL, transporter } = require("./../email-service.js");
-const { generateConfirmationCode, generateAuthKey } = require("./../utils.js");
+const {
+  generateConfirmationCode,
+  generateAuthToken
+} = require("./../utils.js");
 const {
   MONGO_URL,
   DATABASE_NAME,
@@ -53,9 +56,9 @@ const signUp = (mongoClient, postReq, postRes) => {
           return;
         }
 
-        const auth = generateAuthKey();
+        const authToken = generateAuthToken();
         Object.assign(obj, {
-          auth,
+          authTokens: [authToken],
           validated: false
         });
 
@@ -79,7 +82,7 @@ const signUp = (mongoClient, postReq, postRes) => {
               statusCode: STATUS_CODE.SUCCESS,
               body: {
                 userId: insertRes.insertedId,
-                auth
+                auth: authToken.key
               }
             });
 
@@ -106,6 +109,85 @@ const signUp = (mongoClient, postReq, postRes) => {
   });
 };
 
+const login = (mongoClient, postReq, postRes) => {
+  console.log("Logging in...");
+
+  const obj = postReq.body;
+
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
+    if (connectErr) {
+      console.log("Connection error");
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.FAILURE,
+        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+      });
+      throw connectErr;
+    }
+
+    const dbo = db.db(DATABASE_NAME);
+
+    // Verify if user exists
+    const { email, pass } = obj;
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .find({ email })
+      .toArray((findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+          throw findErr;
+        }
+
+        if (findRes.length === 0) {
+          console.log("Email address does not exist:", email);
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.EMAIL_DOES_NOT_EXIST
+          });
+          return;
+        }
+
+        const user = findRes[0];
+
+        if (user.pass !== pass) {
+          console.log("Incorrect password:", email);
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.INCORRECT_PASS
+          });
+          return;
+        }
+
+        const userId = user._id;
+
+        const authToken = generateAuthToken();
+
+        dbo
+          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+          .updateOne({ _id: user._id }, { $push: { authTokens: authToken } })
+          .then(() => {
+            console.log("User logged in:", email);
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.SUCCESS,
+              body: {
+                userId: userId.toString(),
+                auth: authToken.key
+              }
+            });
+          });
+      });
+  });
+};
+
 module.exports = {
-  signUp
+  signUp,
+  login
 };
