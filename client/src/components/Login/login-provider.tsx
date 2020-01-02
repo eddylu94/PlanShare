@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import { History } from "history";
+
 import LoginCanvas from "./login-canvas";
 import { FORM_INPUT_TYPE } from "./login-utils";
 import { basePostRequest } from "./../../base-requests";
@@ -6,8 +9,13 @@ import { IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
-const LoginProviderWithContext = (props: { userData: IUserContext }) => {
+const LoginProviderWithContext = (props: {
+  userData: IUserContext;
+  history: History;
+}) => {
   const _userData = props.userData;
+
+  const { history } = props;
 
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -53,11 +61,13 @@ const LoginProviderWithContext = (props: { userData: IUserContext }) => {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
+
+        history.push("/");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
-          case STATUS_MESSAGE.EMAIL_ALREADY_EXISTS:
-            errorMessage = "Email address already exists";
+          case STATUS_MESSAGE.INCORRECT_CRED:
+            errorMessage = "Incorrect email and/or password";
             console.log(errorMessage);
             alert(errorMessage);
             break;
@@ -106,10 +116,12 @@ const LoginProviderWithContext = (props: { userData: IUserContext }) => {
   );
 };
 
-const LoginProvider = () => (
+const LoginProvider = (props: { history: History }) => (
   <UserDataContext.Consumer>
-    {userData => <LoginProviderWithContext userData={userData} />}
+    {userData => (
+      <LoginProviderWithContext userData={userData} history={props.history} />
+    )}
   </UserDataContext.Consumer>
 );
 
-export default LoginProvider;
+export default withRouter(LoginProvider);

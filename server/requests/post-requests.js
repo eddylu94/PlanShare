@@ -34,8 +34,7 @@ const signUp = (mongoClient, postReq, postRes) => {
     const email = obj.email;
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .find({ email })
-      .toArray((findErr, findRes) => {
+      .findOne({ email }, (findErr, findRes) => {
         if (findErr) {
           console.log("Error finding record");
           db.close();
@@ -46,7 +45,7 @@ const signUp = (mongoClient, postReq, postRes) => {
           throw findErr;
         }
 
-        if (findRes.length != 0) {
+        if (!!findRes) {
           console.log("Email address already exists:", email);
           db.close();
           postRes.json({
@@ -131,8 +130,7 @@ const login = (mongoClient, postReq, postRes) => {
     const { email, pass } = obj;
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .find({ email })
-      .toArray((findErr, findRes) => {
+      .findOne({ email }, (findErr, findRes) => {
         if (findErr) {
           console.log("Error finding record");
           db.close();
@@ -143,35 +141,33 @@ const login = (mongoClient, postReq, postRes) => {
           throw findErr;
         }
 
-        if (findRes.length === 0) {
+        if (!findRes) {
           console.log("Email address does not exist:", email);
           db.close();
           postRes.json({
             statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.EMAIL_DOES_NOT_EXIST
+            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
           });
           return;
         }
 
-        const user = findRes[0];
-
-        if (user.pass !== pass) {
+        if (findRes.pass !== pass) {
           console.log("Incorrect password:", email);
           db.close();
           postRes.json({
             statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_PASS
+            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
           });
           return;
         }
 
-        const userId = user._id;
+        const userId = findRes._id;
 
         const authToken = generateAuthToken();
 
         dbo
           .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .updateOne({ _id: user._id }, { $push: { authTokens: authToken } })
+          .updateOne({ _id: findRes._id }, { $push: { authTokens: authToken } })
           .then(() => {
             console.log("User logged in:", email);
             db.close();

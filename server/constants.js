@@ -13,8 +13,7 @@ const STATUS_CODE = {
 const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
-  EMAIL_DOES_NOT_EXIST: "email_does_not_exist",
-  INCORRECT_PASS: "incorrect_pass"
+  INCORRECT_CRED: "incorrect_cred"
 };
 
 // MongoDB constants
