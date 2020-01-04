@@ -45,7 +45,11 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
   return (
     <div className="page-container">
       <div className="login-container">
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form
+          className="form-container"
+          onSubmit={handleSubmit}
+          style={{ width: "45%" }}
+        >
           <h2 className="form-header">Login</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,

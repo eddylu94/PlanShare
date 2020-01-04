@@ -86,7 +86,11 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   return (
     <div className="page-container">
       <div className="sign-up-container">
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form
+          className="form-container"
+          onSubmit={handleSubmit}
+          style={{ width: "45%" }}
+        >
           {isTermsOfUseDialogDisplayed ? (
             <TermsOfUse
               setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}

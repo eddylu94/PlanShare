@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
+import Validate from "./components/Validate/validate";
 import Search from "./components/Search/search-provider";
 import CreateListing from "./components/CreateListing/create-listing-provider";
 import Login from "./components/Login/login-provider";
@@ -34,6 +35,9 @@ const App = () => (
             </Route>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/validate">
+              <Validate />
             </Route>
           </Switch>
         </div>

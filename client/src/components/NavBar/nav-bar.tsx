@@ -13,7 +13,6 @@ const NavBarWithContext = (props: {
   const logoutHandler = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    debugger;
     userData.updateUser({
       userId: "",
       auth: ""

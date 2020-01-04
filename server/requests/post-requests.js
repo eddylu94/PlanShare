@@ -57,8 +57,10 @@ const signUp = (mongoClient, postReq, postRes) => {
 
         const authToken = generateAuthToken();
         Object.assign(obj, {
+          joinedDate: new Date().getTime(),
           authTokens: [authToken],
-          validated: false
+          validated: false,
+          emails: [email]
         });
 
         // Insert user into database

@@ -48,8 +48,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   };
 
   return (
-    <div className="page-container">
-      <form className="form-container">
+    <div className="page-container" style={{ alignItems: "center" }}>
+      <form className="form-container" style={{ width: "45%" }}>
         <h2 className="form-header">Create Listing</h2>
 
         <h3 className="form-subheader">Subscription Information</h3>

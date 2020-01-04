@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import { History } from "history";
+
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import { basePostRequest } from "./../../base-requests";
@@ -6,8 +9,13 @@ import { IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
-const SignUpProviderWithContext = (props: { userData: IUserContext }) => {
+const SignUpProviderWithContext = (props: {
+  userData: IUserContext;
+  history: History;
+}) => {
   const _userData = props.userData;
+
+  const { history } = props;
 
   const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setIsFirstNameValid] = useState(false);
@@ -100,6 +108,8 @@ const SignUpProviderWithContext = (props: { userData: IUserContext }) => {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
+
+        history.push("/");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
@@ -164,10 +174,12 @@ const SignUpProviderWithContext = (props: { userData: IUserContext }) => {
   );
 };
 
-const SignUpProvider = () => (
+const SignUpProvider = (props: { history: History }) => (
   <UserDataContext.Consumer>
-    {userData => <SignUpProviderWithContext userData={userData} />}
+    {userData => (
+      <SignUpProviderWithContext userData={userData} history={props.history} />
+    )}
   </UserDataContext.Consumer>
 );
 
-export default SignUpProvider;
+export default withRouter(SignUpProvider);

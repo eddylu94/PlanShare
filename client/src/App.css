@@ -15,6 +15,11 @@ body {
   height: 100%;
 }
 
+.navbar {
+  box-shadow: 0 5px 5px #666666;
+  z-index: 1;
+}
+
 .navbar ul {
   list-style-type: none;
   margin: 0;
@@ -67,7 +72,6 @@ body {
 .form-container {
   display: flex;
   flex-direction: column;
-  width: 45%;
   max-width: 800px;
   box-shadow: 5px 5px 10px #cccccc;
   padding: 24px;
@@ -252,6 +256,26 @@ input[disabled] {
   background-color: #ffffff;
   border: 3px solid #cccccc;
   color: #cccccc;
+}
+
+.validate-text-input {
+  width: 50px;
+  display: flex;
+  font-size: 18px;
+  line-height: 50px;
+  height: 50px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.validate-text-input-row {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
 }
 
 .terms-of-use-overlay {
