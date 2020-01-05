@@ -1,8 +1,18 @@
 import React from "react";
 
+import { getDomain } from "./../../utils/utils";
+
+interface IGroup {
+  email: string;
+  name: string;
+}
+
 interface ICreateListingCanvasProps {
   subscriptionTypes: { [key: string]: string };
   subscriptionGroup: { [key: string]: string };
+  subscriptionGroupSelection: string;
+  groups: IGroup[];
+
   handleChangeSubscriptionType: (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => void;
@@ -15,6 +25,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
     subscriptionTypes,
     subscriptionGroup,
+    subscriptionGroupSelection,
+    groups,
     handleChangeSubscriptionType,
     handleChangeSubscriptionGroup
   } = props;
@@ -41,6 +53,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
       <select
         className="form-text-input"
         onChange={handleChangeSubscriptionGroup}
+        value={subscriptionGroupSelection}
       >
         {options}
       </select>
@@ -76,13 +89,6 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             placeholder="https://tv.youtube.com/"
           />
         </div>
-
-        <div className="form-field">
-          <label className="form-label">Image URL (optional):</label>
-          <input className="form-text-input" type="text" />
-        </div>
-
-        <h3 className="form-subheader">Listing Details</h3>
 
         <div className="form-field">
           <label className="form-label">Listing title:</label>
@@ -142,7 +148,13 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             Which group you are posting to (Choose only one):
           </label>
           <select className="form-text-input">
-            <option>McGill University</option>
+            {groups.map((group, i) => {
+              return (
+                <option key={"group-" + i}>{`${group.name} (${getDomain(
+                  group.email
+                )})`}</option>
+              );
+            })}
           </select>
         </div>
       </form>

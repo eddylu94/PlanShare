@@ -38,7 +38,37 @@ const generateAuthToken = () => {
   };
 };
 
+const getDomain = emailAddress => {
+  const atSign = emailAddress.indexOf("@");
+  return emailAddress.substring(atSign + 1);
+};
+
+const obtainUniversityName = emailDomain => {
+  const universities = require("./world_universities_and_domains.json");
+
+  const university = universities.find(university => {
+    const domains = university.domains;
+    for (let i = 0; i < domains.length; i++) {
+      const domainLength = domains[i].length;
+      const emailLength = emailDomain.length;
+
+      if (
+        emailLength >= domainLength &&
+        emailDomain.substring(emailLength - domainLength) === domains[i]
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  const name = university && university.name;
+  return name ? name : "";
+};
+
 module.exports = {
   generateConfirmationCode,
-  generateAuthToken
+  generateAuthToken,
+  getDomain,
+  obtainUniversityName
 };

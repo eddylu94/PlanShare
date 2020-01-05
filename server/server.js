@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const mongoClient = require("mongodb").MongoClient;
 
 // Import requests
-const { getValidationEmail } = require("./requests/get-requests.js");
+const { getValidationEmail, getGroups } = require("./requests/get-requests.js");
 const { signUp, login, verifyEmail } = require("./requests/post-requests");
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,6 +27,9 @@ app.set("port", port);
 // GET requests
 app.get("/getvalidationemail", (postReq, postRes) =>
   getValidationEmail(mongoClient, postReq, postRes)
+);
+app.get("/getGroups", (postReq, postRes) =>
+  getGroups(mongoClient, postReq, postRes)
 );
 
 // POST requests

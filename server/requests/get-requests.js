@@ -1,3 +1,4 @@
+const { getDomain, obtainUniversityName } = require("./../utils.js");
 const {
   MONGO_URL,
   DATABASE_NAME,
@@ -14,14 +15,11 @@ const getValidationEmail = (mongoClient, postReq, postRes) => {
 
     const headerAuthorization = postReq.headers.authorization;
     const authKey = headerAuthorization.replace("Bearer ", "");
-    console.log(authKey);
 
     const dbo = db.db(DATABASE_NAME);
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
-        console.log(findRes);
-
         if (findErr) {
           console.log("Error finding record");
           db.close();
@@ -66,6 +64,72 @@ const getValidationEmail = (mongoClient, postReq, postRes) => {
   });
 };
 
+const getGroups = (mongoClient, postReq, postRes) => {
+  console.log("Retrieving groups...");
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
+    if (connerErr) throw connerErr;
+
+    const headerAuthorization = postReq.headers.authorization;
+    const authKey = headerAuthorization.replace("Bearer ", "");
+
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+          throw findErr;
+        }
+
+        if (!findRes) {
+          console.log("Unable to find account for validation");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          });
+          return;
+        }
+
+        const { email, emails } = findRes;
+
+        if (findRes.emails.indexOf(email) < 0) {
+          console.log("User is not validated");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.USER_NOT_VALIDATED
+          });
+          return;
+        }
+
+        const groups = emails
+          .map(currentEmail => getDomain(currentEmail))
+          .map((currentEmailDomain, i) => {
+            return {
+              email: emails[i],
+              name: obtainUniversityName(currentEmailDomain)
+            };
+          });
+
+        console.log("Groups retrieved:", groups);
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          body: {
+            groups
+          }
+        });
+      });
+  });
+};
+
 module.exports = {
-  getValidationEmail
+  getValidationEmail,
+  getGroups
 };
