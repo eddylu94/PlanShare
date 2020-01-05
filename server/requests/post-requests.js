@@ -55,12 +55,19 @@ const signUp = (mongoClient, postReq, postRes) => {
           return;
         }
 
+        const confirmationCode = generateConfirmationCode();
+
         const authToken = generateAuthToken();
         Object.assign(obj, {
           joinedDate: new Date().getTime(),
           authTokens: [authToken],
-          validated: false,
-          emails: [email]
+          emails: [],
+          pendingEmails: [
+            {
+              email,
+              confirmationCode
+            }
+          ]
         });
 
         // Insert user into database
@@ -88,7 +95,7 @@ const signUp = (mongoClient, postReq, postRes) => {
             });
 
             const mailSubject = "Welcome to Project 3632";
-            const mailMessage = `Thank you for registering for Project 3632!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${generateConfirmationCode()}</span>`;
+            const mailMessage = `Thank you for registering for Project 3632!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
 
             const mailOptions = {
               from: EMAIL_SERVICE_EMAIL,
@@ -185,7 +192,110 @@ const login = (mongoClient, postReq, postRes) => {
   });
 };
 
+const verifyEmail = (mongoClient, postReq, postRes) => {
+  console.log("Verifying email...");
+
+  const obj = postReq.body;
+
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
+    if (connectErr) {
+      console.log("Connection error");
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.FAILURE,
+        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+      });
+      throw connectErr;
+    }
+
+    const headerAuthorization = postReq.headers.authorization;
+    const authKey = headerAuthorization.replace("Bearer ", "");
+
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+          throw findErr;
+        }
+
+        if (!findRes) {
+          console.log("Unable to find account for validation");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          });
+          return;
+        }
+
+        const { email, pendingEmails } = findRes;
+
+        if (findRes.emails.indexOf(email) >= 0) {
+          console.log("Email already validated");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
+          });
+          return;
+        }
+
+        const pendingEmail = pendingEmails.find(
+          pendingEmail => pendingEmail.email === email
+        );
+        const confirmationCode = pendingEmail.confirmationCode;
+
+        if (!confirmationCode) {
+          console.log("Unable to find pending account for validation");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          });
+          return;
+        }
+
+        if (pendingEmail.confirmationCode !== obj.validationCode) {
+          console.log("Incorrect validation code");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
+          });
+          return;
+        }
+
+        dbo
+          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+          .updateOne({ _id: findRes._id }, { $push: { emails: email } })
+          .then(() => {
+            dbo
+              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+              .updateOne(
+                { _id: findRes._id },
+                { $pull: { pendingEmails: { email: email } } }
+              )
+              .then(() => {
+                console.log("Email validated:", email);
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.SUCCESS
+                });
+              });
+          });
+      });
+  });
+};
+
 module.exports = {
   signUp,
-  login
+  login,
+  verifyEmail
 };

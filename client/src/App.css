@@ -275,7 +275,12 @@ input[disabled] {
 .validate-text-input-row {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin-top: 10px;
+}
+
+.terms-label {
+  text-decoration: underline;
 }
 
 .terms-of-use-overlay {

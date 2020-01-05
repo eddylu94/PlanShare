@@ -13,7 +13,10 @@ const STATUS_CODE = {
 const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
-  INCORRECT_CRED: "incorrect_cred"
+  INCORRECT_CRED: "incorrect_cred",
+  CANNOT_FIND_ACCOUNT_FOR_VALIDATION: "cannot_find_account_for_validation",
+  EMAIL_ALREADY_VALIDATED: "email_already_validated",
+  INCORRECT_VALIDATION_CODE: "incorrect_validation_code"
 };
 
 // MongoDB constants

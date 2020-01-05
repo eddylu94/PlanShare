@@ -8,7 +8,8 @@ export const baseGetRequest = (
   path: string,
   params: GetRequestParams[],
   responseHandler: (data: any) => void,
-  errorHandler: (error: any) => void
+  errorHandler: (error: any) => void,
+  authKey?: string | null | undefined
 ) => {
   let url = `${BASE_URL}/${path}?`;
   for (let i = 0; i < params.length; i++) {
@@ -23,6 +24,7 @@ export const baseGetRequest = (
   fetch(url, {
     method: "GET",
     headers: {
+      Authorization: `Bearer ${authKey}`,
       Accept: "application/json",
       "Content-Type": "application/json"
     }
@@ -36,11 +38,13 @@ export const basePostRequest = (
   path: string,
   data: any,
   responseHandler: (data: any) => void,
-  errorHandler: (error: any) => void
+  errorHandler: (error: any) => void,
+  authKey?: string | null | undefined
 ) => {
   fetch(`${BASE_URL}/${path}`, {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${authKey}`,
       Accept: "application/json",
       "Content-Type": "application/json"
     },

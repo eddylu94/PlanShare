@@ -5,7 +5,7 @@ import SearchCanvas from "./search-canvas";
 interface ISearchProviderProps {}
 
 const SearchProvider = (props: ISearchProviderProps) => {
-  const {} = props;
+  // const {} = props;
 
   return <SearchCanvas />;
 };

@@ -51,7 +51,7 @@ const LoginProviderWithContext = (props: {
   const handleSubmitResponseHandler = (res: IResponse) => {
     if (res) {
       if (res.statusCode === STATUS_CODE.SUCCESS) {
-        console.log("Log in success for:", email);
+        // console.log("Log in success for:", email);
 
         const newUserData = res.body;
 

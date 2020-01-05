@@ -109,7 +109,7 @@ const SignUpProviderWithContext = (props: {
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
 
-        history.push("/");
+        history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {

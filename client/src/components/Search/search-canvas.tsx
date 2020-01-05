@@ -3,7 +3,7 @@ import React from "react";
 interface ISearchCanvasProps {}
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
-  const {} = props;
+  // const {} = props;
 
   return (
     <div className="page-container">

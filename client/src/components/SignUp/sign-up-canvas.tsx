@@ -142,9 +142,9 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               onKeyPress={handleKeyPressCheckbox}
             ></span>
             By signing up, you agree to the{" "}
-            <a href="#" onClick={handleClickTermsOfUse}>
+            <span className="terms-label" onClick={handleClickTermsOfUse}>
               Terms of Use
-            </a>
+            </span>
           </label>
           <input
             className="form-submit-button"

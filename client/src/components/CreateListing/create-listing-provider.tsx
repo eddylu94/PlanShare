@@ -9,7 +9,7 @@ import {
 
 const CreateListingProvider = () => {
   const [subscriptionGroup, setSubscriptionGroup] = useState(LIVE_TV_STREAMING);
-  const [subscription, setSubscription] = useState(LIVE_TV_STREAMING.YOUTUBE);
+  // const [subscription, setSubscription] = useState(LIVE_TV_STREAMING.YOUTUBE);
 
   const handleChangeSubscriptionType = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -21,8 +21,8 @@ const CreateListingProvider = () => {
   const handleChangeSubscriptionGroup = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const newSubscription = event.target.value;
-    setSubscription(newSubscription);
+    // const newSubscription = event.target.value;
+    // setSubscription(newSubscription);
   };
 
   return (
