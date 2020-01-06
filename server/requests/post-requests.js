@@ -1,5 +1,6 @@
 const { EMAIL_SERVICE_EMAIL, transporter } = require("./../email-service.js");
 const {
+  authenticate,
   generateConfirmationCode,
   generateAuthToken
 } = require("./../utils.js");
@@ -197,101 +198,71 @@ const verifyEmail = (mongoClient, postReq, postRes) => {
 
   const obj = postReq.body;
 
-  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
-    if (connectErr) {
-      console.log("Connection error");
-      db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.FAILURE,
-        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-      });
-      throw connectErr;
-    }
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
 
-    const headerAuthorization = postReq.headers.authorization;
-    const authKey = headerAuthorization.replace("Bearer ", "");
+      const { email, pendingEmails } = findRes;
 
-    const dbo = db.db(DATABASE_NAME);
-    dbo
-      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
-        if (findErr) {
-          console.log("Error finding record");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
-          throw findErr;
-        }
+      if (findRes.emails.indexOf(email) >= 0) {
+        console.log("Email already validated");
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
+        });
+        return;
+      }
 
-        if (!findRes) {
-          console.log("Unable to find account for validation");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          });
-          return;
-        }
+      const pendingEmail = pendingEmails.find(
+        pendingEmail => pendingEmail.email === email
+      );
+      const confirmationCode = pendingEmail.confirmationCode;
 
-        const { email, pendingEmails } = findRes;
+      if (!confirmationCode) {
+        console.log("Unable to find pending account for validation");
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.FAILURE,
+          statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+        });
+        return;
+      }
 
-        if (findRes.emails.indexOf(email) >= 0) {
-          console.log("Email already validated");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
-          });
-          return;
-        }
+      if (pendingEmail.confirmationCode !== obj.validationCode) {
+        console.log("Incorrect validation code");
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.FAILURE,
+          statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
+        });
+        return;
+      }
 
-        const pendingEmail = pendingEmails.find(
-          pendingEmail => pendingEmail.email === email
-        );
-        const confirmationCode = pendingEmail.confirmationCode;
+      const dbo = db.db(DATABASE_NAME);
 
-        if (!confirmationCode) {
-          console.log("Unable to find pending account for validation");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          });
-          return;
-        }
-
-        if (pendingEmail.confirmationCode !== obj.validationCode) {
-          console.log("Incorrect validation code");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
-          });
-          return;
-        }
-
-        dbo
-          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .updateOne({ _id: findRes._id }, { $push: { emails: email } })
-          .then(() => {
-            dbo
-              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-              .updateOne(
-                { _id: findRes._id },
-                { $pull: { pendingEmails: { email: email } } }
-              )
-              .then(() => {
-                console.log("Email validated:", email);
-                db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.SUCCESS
-                });
+      dbo
+        .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+        .updateOne({ _id: findRes._id }, { $push: { emails: email } })
+        .then(() => {
+          dbo
+            .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+            .updateOne(
+              { _id: findRes._id },
+              { $pull: { pendingEmails: { email: email } } }
+            )
+            .then(() => {
+              console.log("Email validated:", email);
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.SUCCESS
               });
-          });
-      });
-  });
+            });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 
 module.exports = {

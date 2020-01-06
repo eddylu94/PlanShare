@@ -1,3 +1,50 @@
+const {
+  MONGO_URL,
+  DATABASE_NAME,
+  DATABASE_COLLECTION,
+  STATUS_CODE,
+  STATUS_MESSAGE,
+  MONGO_PREREQUISITIES
+} = require("./constants.js");
+
+const authenticate = (mongoClient, postReq, postRes) => {
+  return new Promise((resolve, reject) => {
+    mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
+      if (connerErr) throw connerErr;
+
+      const headerAuthorization = postReq.headers.authorization;
+      const authKey = headerAuthorization.replace("Bearer ", "");
+
+      const dbo = db.db(DATABASE_NAME);
+      dbo
+        .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+        .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+          if (findErr) {
+            console.log("Error finding record");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+            });
+            throw findErr;
+          }
+
+          if (!findRes) {
+            console.log("Unable to find account for validation");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+            });
+            return;
+          }
+
+          resolve([db, findRes]);
+        });
+    });
+  });
+};
+
 const generateConfirmationCode = () => {
   const CONFIRMATION_CODE_LENGTH = 5;
 
@@ -67,6 +114,7 @@ const obtainUniversityName = emailDomain => {
 };
 
 module.exports = {
+  authenticate,
   generateConfirmationCode,
   generateAuthToken,
   getDomain,
