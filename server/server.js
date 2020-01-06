@@ -7,7 +7,12 @@ const bodyParser = require("body-parser");
 const mongoClient = require("mongodb").MongoClient;
 
 // Import requests
-const { getValidationEmail, getGroups } = require("./requests/get-requests.js");
+const {
+  getValidationEmail,
+  getGroups,
+  getSubscriptionTypes,
+  getSubscriptionGroup
+} = require("./requests/get-requests.js");
 const { signUp, login, verifyEmail } = require("./requests/post-requests");
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,6 +35,12 @@ app.get("/getvalidationemail", (postReq, postRes) =>
 );
 app.get("/getGroups", (postReq, postRes) =>
   getGroups(mongoClient, postReq, postRes)
+);
+app.get("/getSubscriptionTypes", (postReq, postRes) =>
+  getSubscriptionTypes(mongoClient, postReq, postRes)
+);
+app.get("/getSubscriptionGroup", (postReq, postRes) =>
+  getSubscriptionGroup(mongoClient, postReq, postRes)
 );
 
 // POST requests

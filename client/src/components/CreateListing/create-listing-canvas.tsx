@@ -147,7 +147,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <label className="form-label">
             Which group you are posting to (Choose only one):
           </label>
-          <select className="form-text-input">
+          <select className="form-text-input" style={{ width: 500 }}>
             {groups.map((group, i) => {
               return (
                 <option key={"group-" + i}>{`${group.name} (${getDomain(

@@ -1,11 +1,11 @@
-export const LIVE_TV_STREAMING: { [key: string]: string } = {
+const LIVE_TV_STREAMING = {
   YOUTUBE: "YouTube TV",
   SLING: "Sling TV",
   HULU: "Hulu with Live TV",
   ATT: "AT&T TV Now"
 };
 
-export const MOBILE_SERVICE: { [key: string]: string } = {
+const MOBILE_SERVICE = {
   VERIZON: "Verizon Wireless",
   SPRINT: "Sprint Wireless",
   TMOBILE: "T-Mobile",
@@ -15,7 +15,7 @@ export const MOBILE_SERVICE: { [key: string]: string } = {
   CRICKET: "Cricket"
 };
 
-export const MUSIC_SERVICE: { [key: string]: string } = {
+const MUSIC_SERVICE = {
   SPOTIFY: "Spotify",
   APPLE_MUSIC: "Apple Music",
   TIDAL: "Tidal",
@@ -23,13 +23,13 @@ export const MUSIC_SERVICE: { [key: string]: string } = {
   YOUTUBE: "YouTube Music"
 };
 
-export const SUBSCRIPTION_TYPE: { [key: string]: string } = {
+const SUBSCRIPTION_TYPE = {
   LIVE_TV_STREAMING: "Live TV Streaming",
   MOBILE_SERVICE: "Mobile Service",
   MUSIC_SERVICE: "Music Service"
 };
 
-export const getSubscriptionGroup = (type: string) => {
+const retrieveSubscriptionGroup = type => {
   switch (type) {
     case SUBSCRIPTION_TYPE.LIVE_TV_STREAMING:
       return LIVE_TV_STREAMING;
@@ -40,4 +40,9 @@ export const getSubscriptionGroup = (type: string) => {
     default:
       return LIVE_TV_STREAMING;
   }
+};
+
+module.exports = {
+  SUBSCRIPTION_TYPE,
+  retrieveSubscriptionGroup
 };

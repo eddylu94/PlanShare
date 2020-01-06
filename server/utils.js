@@ -39,6 +39,16 @@ const authenticate = (mongoClient, postReq, postRes) => {
             return;
           }
 
+          if (findRes.emails.indexOf(findRes.email) < 0) {
+            console.log("User is not validated");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.USER_NOT_VALIDATED
+            });
+            return;
+          }
+
           resolve([db, findRes]);
         });
     });

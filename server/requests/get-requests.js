@@ -3,6 +3,10 @@ const {
   getDomain,
   obtainUniversityName
 } = require("./../utils.js");
+const {
+  SUBSCRIPTION_TYPE,
+  retrieveSubscriptionGroup
+} = require("./../subscriptions.js");
 const { STATUS_CODE, STATUS_MESSAGE } = require("./../constants.js");
 
 const getValidationEmail = (mongoClient, postReq, postRes) => {
@@ -43,17 +47,7 @@ const getGroups = (mongoClient, postReq, postRes) => {
     .then(res => {
       const [db, findRes] = res;
 
-      const { email, emails } = findRes;
-
-      if (findRes.emails.indexOf(email) < 0) {
-        console.log("User is not validated");
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.FAILURE,
-          statusMessage: STATUS_MESSAGE.USER_NOT_VALIDATED
-        });
-        return;
-      }
+      const emails = findRes.emails;
 
       const groups = emails
         .map(currentEmail => getDomain(currentEmail))
@@ -78,7 +72,62 @@ const getGroups = (mongoClient, postReq, postRes) => {
     });
 };
 
+const getSubscriptionTypes = (mongoClient, postReq, postRes) => {
+  console.log("Retrieving subscription types...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const subscriptionTypes = SUBSCRIPTION_TYPE;
+
+      const defaultSubscriptionType =
+        subscriptionTypes[Object.keys(subscriptionTypes)[0]];
+
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.SUCCESS,
+        body: {
+          subscriptionTypes,
+          defaultSubscriptionType
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+const getSubscriptionGroup = (mongoClient, postReq, postRes) => {
+  console.log("Retrieving subscription group...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const query = postReq.query;
+
+      const subscriptionType = query.subscriptionType;
+      const subscriptionGroup = retrieveSubscriptionGroup(subscriptionType);
+
+      const defaultSubscriptionGroup =
+        subscriptionGroup[Object.keys(subscriptionGroup)[0]];
+
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.SUCCESS,
+        body: {
+          subscriptionGroup,
+          defaultSubscriptionGroup
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   getValidationEmail,
-  getGroups
+  getGroups,
+  getSubscriptionTypes,
+  getSubscriptionGroup
 };
