@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import CreateListingCanvas from "./create-listing-canvas";
-
+import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE } from "./../../utils/constants";
@@ -28,8 +28,18 @@ const CreateListingProviderWithContext = (props: {
   const [subscriptionGroupSelection, setSubscriptionGroupSelection] = useState(
     ""
   );
+  const [subscriptionUrl, setSubscriptionUrl] = useState("");
+
+  const [listingTitle, setListingTitle] = useState("");
+  const [listingDescription, setListingDescription] = useState("");
+
+  const [numberOfPeople, setNumberOfPeople] = useState(0);
+  const [price, setPrice] = useState(0);
+
+  const [isFormDisabled, setIsFormDisabled] = useState(true);
 
   const [groups, setGroups] = useState([]);
+  const [groupSelection, setGroupSelection] = useState("");
 
   const handleChangeSubscriptionType = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -46,9 +56,44 @@ const CreateListingProviderWithContext = (props: {
     setSubscriptionGroupSelection(newSubscription);
   };
 
+  const handleInputChange = (event: React.ChangeEvent<any>) => {
+    console.log("ASfasfsa");
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    switch (name) {
+      case FORM_INPUT_TYPE.SUBSCRIPTION_TYPE:
+        setSubscriptionTypeSelection(value);
+        break;
+      case FORM_INPUT_TYPE.SUBSCRIPTION_GROUP:
+        setSubscriptionGroupSelection(value);
+        break;
+      case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
+        setSubscriptionUrl(value);
+        break;
+      case FORM_INPUT_TYPE.LISTING_TITLE:
+        setListingTitle(value);
+        break;
+      case FORM_INPUT_TYPE.LISTING_DESCRIPTION:
+        setListingDescription(value);
+        break;
+      case FORM_INPUT_TYPE.NUMBER_OF_PEOPLE:
+        setNumberOfPeople(value);
+        break;
+      case FORM_INPUT_TYPE.PRICE:
+        setPrice(value);
+        break;
+      default:
+        break;
+    }
+  };
+
   const retrieveGroupsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
-      setGroups(data.body.groups);
+      const body = data.body;
+      setGroups(body.groups);
+      setGroupSelection(body.defaultGroup);
     }
   };
 
@@ -119,6 +164,40 @@ const CreateListingProviderWithContext = (props: {
     );
   };
 
+  const handleSubmitResponseHandler = (data: any) => {
+    console.log(data);
+  };
+
+  const handleSubmitErrorHandler = (err: any) => {
+    console.log(err);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const params = {
+      subscriptionTypeSelection,
+      subscriptionGroupSelection,
+      subscriptionUrl,
+      listingTitle,
+      listingDescription,
+      numberOfPeople,
+      price,
+      groupSelection
+    };
+    console.log(params);
+    if (!isFormDisabled) {
+      // const postRequestData = {
+      // };
+      // basePostRequest(
+      //   "signup",
+      //   postRequestData,
+      //   handleSubmitResponseHandler,
+      //   handleSubmitErrorHandler
+      // );
+    }
+
+    event.preventDefault();
+  };
+
   useEffect(() => {
     retrieveGroups();
     retrieveSubscriptionTypes();
@@ -130,14 +209,37 @@ const CreateListingProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [subscriptionTypeSelection]);
 
+  useEffect(() => {
+    const newIsFormDisabled = !(
+      subscriptionUrl &&
+      listingTitle &&
+      listingDescription &&
+      numberOfPeople &&
+      price
+    );
+    setIsFormDisabled(newIsFormDisabled);
+  }, [
+    subscriptionUrl,
+    listingTitle,
+    listingDescription,
+    numberOfPeople,
+    price
+  ]);
+
   return (
     <CreateListingCanvas
+      handleInputChange={handleInputChange}
       subscriptionTypes={subscriptionTypes}
       subscriptionGroup={subscriptionGroup}
       subscriptionGroupSelection={subscriptionGroupSelection}
       groups={groups}
-      handleChangeSubscriptionType={handleChangeSubscriptionType}
-      handleChangeSubscriptionGroup={handleChangeSubscriptionGroup}
+      subscriptionUrl={subscriptionUrl}
+      listingTitle={listingTitle}
+      listingDescription={listingDescription}
+      numberOfPeople={numberOfPeople}
+      price={price}
+      isFormDisabled={isFormDisabled}
+      handleSubmit={handleSubmit}
     />
   );
 };

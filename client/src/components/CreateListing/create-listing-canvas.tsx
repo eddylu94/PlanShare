@@ -1,6 +1,7 @@
 import React from "react";
 
 import { getDomain } from "./../../utils/utils";
+import { FORM_INPUT_TYPE } from "./create-listing-utils";
 
 interface IGroup {
   email: string;
@@ -13,12 +14,18 @@ interface ICreateListingCanvasProps {
   subscriptionGroupSelection: string;
   groups: IGroup[];
 
-  handleChangeSubscriptionType: (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => void;
-  handleChangeSubscriptionGroup: (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => void;
+  handleInputChange: (event: React.ChangeEvent<any>) => void;
+
+  subscriptionUrl: string;
+
+  listingTitle: string;
+  listingDescription: string;
+  numberOfPeople: number;
+  price: number;
+
+  isFormDisabled: boolean;
+
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
@@ -27,8 +34,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     subscriptionGroup,
     subscriptionGroupSelection,
     groups,
-    handleChangeSubscriptionType,
-    handleChangeSubscriptionGroup
+    handleInputChange,
+    subscriptionUrl,
+    listingTitle,
+    listingDescription,
+    numberOfPeople,
+    price,
+    isFormDisabled,
+    handleSubmit
   } = props;
 
   const renderSubscriptionTypeDropdown = () => {
@@ -38,7 +51,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     return (
       <select
         className="form-text-input"
-        onChange={handleChangeSubscriptionType}
+        name={FORM_INPUT_TYPE.SUBSCRIPTION_TYPE}
+        onChange={handleInputChange}
       >
         {options}
       </select>
@@ -52,7 +66,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     return (
       <select
         className="form-text-input"
-        onChange={handleChangeSubscriptionGroup}
+        name={FORM_INPUT_TYPE.SUBSCRIPTION_GROUP}
+        onChange={handleInputChange}
         value={subscriptionGroupSelection}
       >
         {options}
@@ -62,7 +77,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
-      <form className="form-container" style={{ width: "45%" }}>
+      <form
+        className="form-container"
+        onSubmit={handleSubmit}
+        style={{ width: "45%" }}
+      >
         <h2 className="form-header">Create Listing</h2>
 
         <h3 className="form-subheader">Subscription Information</h3>
@@ -85,8 +104,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </label>
           <input
             className="form-text-input"
+            name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
             type="text"
             placeholder="https://tv.youtube.com/"
+            value={subscriptionUrl}
+            onChange={handleInputChange}
           />
         </div>
 
@@ -94,8 +116,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <label className="form-label">Listing title:</label>
           <input
             className="form-text-input"
+            name={FORM_INPUT_TYPE.LISTING_TITLE}
             type="text"
             placeholder="Looking for people to start YouTube TV subscription"
+            value={listingTitle}
+            onChange={handleInputChange}
           />
         </div>
 
@@ -103,8 +128,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <label className="form-label">Listing description:</label>
           <textarea
             className="form-text-area"
+            name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
             rows={5}
             placeholder="Currently have two people, need three more!"
+            value={listingDescription}
+            onChange={handleInputChange}
           />
         </div>
 
@@ -116,11 +144,13 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             <div className="form-number-input-with-label">
               <input
                 className="form-text-input form-number-input"
+                name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
                 type="number"
-                name="quantity"
                 min="1"
                 max="10"
                 placeholder="2"
+                value={numberOfPeople}
+                onChange={handleInputChange}
               />
               <span style={{ marginLeft: 10 }}>people</span>
             </div>
@@ -132,11 +162,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <div className="form-number-input-with-label">
             <input
               className="form-text-input form-number-input"
+              name={FORM_INPUT_TYPE.PRICE}
               type="number"
               min="0.01"
               step="0.01"
               max="2500"
               placeholder="10.00"
+              value={price}
+              onChange={handleInputChange}
               style={{ width: 100 }}
             />
             <span style={{ marginLeft: 10 }}>$</span>
@@ -157,6 +190,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             })}
           </select>
         </div>
+
+        <input
+          className="form-submit-button"
+          type="submit"
+          value="Submit"
+          style={{ marginTop: 20 }}
+          disabled={isFormDisabled}
+        />
       </form>
     </div>
   );

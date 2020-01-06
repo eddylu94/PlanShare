@@ -58,12 +58,15 @@ const getGroups = (mongoClient, postReq, postRes) => {
           };
         });
 
+      const defaultGroup = groups[0];
+
       console.log("Groups retrieved:", groups);
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          groups
+          groups,
+          defaultGroup
         }
       });
     })
