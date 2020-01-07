@@ -265,8 +265,52 @@ const verifyEmail = (mongoClient, postReq, postRes) => {
     });
 };
 
+const createSubscription = (mongoClient, postReq, postRes) => {
+  console.log("Creating subscription...");
+
+  const obj = postReq.body;
+
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { subscriptionData } = obj;
+
+      const dbo = db.db(DATABASE_NAME);
+
+      dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .insertOne(subscriptionData, (insertErr, insertRes) => {
+          if (insertErr) {
+            console.log("Error inserting record");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+            });
+            throw insertErr;
+          }
+
+          const subscriptionId = insertRes.insertedId;
+
+          console.log("Subscription created:", subscriptionId);
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {
+              subscriptionId
+            }
+          });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 module.exports = {
   signUp,
   login,
-  verifyEmail
+  verifyEmail,
+  createSubscription
 };

@@ -13,7 +13,12 @@ const {
   getSubscriptionTypes,
   getSubscriptionGroup
 } = require("./requests/get-requests.js");
-const { signUp, login, verifyEmail } = require("./requests/post-requests");
+const {
+  signUp,
+  login,
+  verifyEmail,
+  createSubscription
+} = require("./requests/post-requests");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -50,6 +55,9 @@ app.post("/signup", (postReq, postRes) =>
 app.post("/login", (postReq, postRes) => login(mongoClient, postReq, postRes));
 app.post("/verifyemail", (postReq, postRes) =>
   verifyEmail(mongoClient, postReq, postRes)
+);
+app.post("/createsubscription", (postReq, postRes) =>
+  createSubscription(mongoClient, postReq, postRes)
 );
 
 app.listen(app.get("port"), () => {

@@ -1,6 +1,7 @@
 // Database collections
 const DATABASE_COLLECTION = {
-  USERS_COLLECTION: "Users"
+  USERS_COLLECTION: "Users",
+  SUBSCRIPTIONS_COLLECTION: "Subscriptions"
 };
 
 // Status codes

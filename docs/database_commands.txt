@@ -6,10 +6,11 @@ use project3632db
 
 // CREATE COLLECTION
 db.createCollection("Users");
+db.createCollection("Subscriptions");
 
 // CREATE USERS
 db.Users.insertOne({
+	firstName: 'eddy',
 	email: 'eddy',
-	pass: 'eddy',
-	firstName: 'eddy'
+	pass: 'eddy'
 });

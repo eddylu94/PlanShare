@@ -5,7 +5,7 @@ import { History } from "history";
 import CreateListingCanvas from "./create-listing-canvas";
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { baseGetRequest } from "./../../base-requests";
+import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE } from "./../../utils/constants";
 
 const CreateListingProviderWithContext = (props: {
@@ -41,23 +41,7 @@ const CreateListingProviderWithContext = (props: {
   const [groups, setGroups] = useState([]);
   const [groupSelection, setGroupSelection] = useState("");
 
-  const handleChangeSubscriptionType = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selection = event.target.value;
-    setSubscriptionTypeSelection(selection);
-    retrieveSubscriptionGroup(selection);
-  };
-
-  const handleChangeSubscriptionGroup = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const newSubscription = event.target.value;
-    setSubscriptionGroupSelection(newSubscription);
-  };
-
   const handleInputChange = (event: React.ChangeEvent<any>) => {
-    console.log("ASfasfsa");
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -173,26 +157,27 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    const params = {
-      subscriptionTypeSelection,
-      subscriptionGroupSelection,
-      subscriptionUrl,
-      listingTitle,
-      listingDescription,
-      numberOfPeople,
-      price,
-      groupSelection
+    const postRequestData = {
+      subscriptionData: {
+        subscriptionTypeSelection,
+        subscriptionGroupSelection,
+        subscriptionUrl,
+        listingTitle,
+        listingDescription,
+        numberOfPeople,
+        price,
+        groupSelection
+      }
     };
-    console.log(params);
+
     if (!isFormDisabled) {
-      // const postRequestData = {
-      // };
-      // basePostRequest(
-      //   "signup",
-      //   postRequestData,
-      //   handleSubmitResponseHandler,
-      //   handleSubmitErrorHandler
-      // );
+      basePostRequest(
+        "createsubscription",
+        postRequestData,
+        handleSubmitResponseHandler,
+        handleSubmitErrorHandler,
+        _userData.user?.auth
+      );
     }
 
     event.preventDefault();
