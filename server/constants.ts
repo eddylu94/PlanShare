@@ -1,17 +1,17 @@
 // Database collections
-const DATABASE_COLLECTION = {
+export const DATABASE_COLLECTION = {
   USERS_COLLECTION: "Users",
   SUBSCRIPTIONS_COLLECTION: "Subscriptions"
 };
 
 // Status codes
-const STATUS_CODE = {
+export const STATUS_CODE = {
   SUCCESS: 1,
   FAILURE: -1
 };
 
 // Status messages
-const STATUS_MESSAGE = {
+export const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
   INCORRECT_CRED: "incorrect_cred",
@@ -22,19 +22,10 @@ const STATUS_MESSAGE = {
 };
 
 // MongoDB constants
-const MONGO_URL = "mongodb://localhost:27017/";
-const DATABASE_NAME = "project3632db";
+export const MONGO_URL = "mongodb://localhost:27017/";
+export const DATABASE_NAME = "project3632db";
 
-const MONGO_PREREQUISITIES = {
+export const MONGO_PREREQUISITIES = {
   useNewUrlParser: true,
   useUnifiedTopology: true
-};
-
-module.exports = {
-  MONGO_URL,
-  DATABASE_NAME,
-  DATABASE_COLLECTION,
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  MONGO_PREREQUISITIES
 };

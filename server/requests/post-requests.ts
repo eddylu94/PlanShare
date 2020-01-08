@@ -1,19 +1,26 @@
-const { EMAIL_SERVICE_EMAIL, transporter } = require("./../email-service.js");
-const {
+import mongodb from "mongodb";
+
+import { EMAIL_SERVICE_EMAIL, transporter } from "./../email-service";
+import {
+  IPendingEmail,
   authenticate,
   generateConfirmationCode,
   generateAuthToken
-} = require("./../utils.js");
-const {
+} from "./../utils";
+import {
   MONGO_URL,
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES
-} = require("./../constants.js");
+} from "./../constants";
 
-const signUp = (mongoClient, postReq, postRes) => {
+export const signUp = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
   console.log("Signing up...");
 
   const obj = postReq.body;
@@ -118,7 +125,11 @@ const signUp = (mongoClient, postReq, postRes) => {
   });
 };
 
-const login = (mongoClient, postReq, postRes) => {
+export const login = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
   console.log("Logging in...");
 
   const obj = postReq.body;
@@ -193,79 +204,112 @@ const login = (mongoClient, postReq, postRes) => {
   });
 };
 
-const verifyEmail = (mongoClient, postReq, postRes) => {
+export const verifyEmail = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
   console.log("Verifying email...");
 
   const obj = postReq.body;
 
-  authenticate(mongoClient, postReq, postRes)
-    .then(res => {
-      const [db, findRes] = res;
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
+    if (connerErr) throw connerErr;
 
-      const { email, pendingEmails } = findRes;
+    const headerAuthorization = postReq.headers.authorization;
+    const authKey = headerAuthorization.replace("Bearer ", "");
 
-      if (findRes.emails.indexOf(email) >= 0) {
-        console.log("Email already validated");
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
-        });
-        return;
-      }
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+          throw findErr;
+        }
 
-      const pendingEmail = pendingEmails.find(
-        pendingEmail => pendingEmail.email === email
-      );
-      const confirmationCode = pendingEmail.confirmationCode;
+        if (!findRes) {
+          console.log("Unable to find account for validation");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          });
+          return;
+        }
 
-      if (!confirmationCode) {
-        console.log("Unable to find pending account for validation");
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.FAILURE,
-          statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-        });
-        return;
-      }
+        const email: string = findRes.email;
+        const pendingEmails: IPendingEmail[] = findRes.pendingEmails;
 
-      if (pendingEmail.confirmationCode !== obj.validationCode) {
-        console.log("Incorrect validation code");
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.FAILURE,
-          statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
-        });
-        return;
-      }
+        if (findRes.emails.indexOf(email) >= 0) {
+          console.log("Email already validated");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
+          });
+          return;
+        }
 
-      const dbo = db.db(DATABASE_NAME);
+        const pendingEmail = pendingEmails.find(
+          pendingEmail => pendingEmail.email === email
+        );
+        const confirmationCode = pendingEmail?.confirmationCode;
 
-      dbo
-        .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-        .updateOne({ _id: findRes._id }, { $push: { emails: email } })
-        .then(() => {
-          dbo
-            .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-            .updateOne(
-              { _id: findRes._id },
-              { $pull: { pendingEmails: { email: email } } }
-            )
-            .then(() => {
-              console.log("Email validated:", email);
-              db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.SUCCESS
+        if (!confirmationCode) {
+          console.log("Unable to find pending account for validation");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          });
+          return;
+        }
+
+        if (confirmationCode !== obj.validationCode) {
+          console.log("Incorrect validation code");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
+          });
+          return;
+        }
+
+        const dbo = db.db(DATABASE_NAME);
+
+        dbo
+          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+          .updateOne({ _id: findRes._id }, { $push: { emails: email } })
+          .then(() => {
+            dbo
+              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+              .updateOne(
+                { _id: findRes._id },
+                { $pull: { pendingEmails: { email: email } } }
+              )
+              .then(() => {
+                console.log("Email validated:", email);
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.SUCCESS
+                });
               });
-            });
-        });
-    })
-    .catch(err => {
-      console.log(err);
-    });
+          });
+      });
+  });
 };
 
-const createSubscription = (mongoClient, postReq, postRes) => {
+export const createSubscription = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
   console.log("Creating subscription...");
 
   const obj = postReq.body;
@@ -306,11 +350,4 @@ const createSubscription = (mongoClient, postReq, postRes) => {
     .catch(err => {
       console.log(err);
     });
-};
-
-module.exports = {
-  signUp,
-  login,
-  verifyEmail,
-  createSubscription
 };

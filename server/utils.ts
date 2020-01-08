@@ -1,13 +1,49 @@
-const {
+import mongodb from "mongodb";
+
+import {
   MONGO_URL,
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES
-} = require("./constants.js");
+} from "./constants";
 
-const authenticate = (mongoClient, postReq, postRes) => {
+interface IAuthToken {
+  date: number;
+  key: string;
+}
+
+export interface IPendingEmail {
+  email: string;
+  confirmationCode: string;
+}
+
+interface IFindResult {
+  _id: mongodb.ObjectID;
+  firstName: string;
+  email: string;
+  pass: string;
+  joinedDate: number;
+  authTokens: IAuthToken[];
+  emails: string[];
+  pendingEmails: IPendingEmail[];
+}
+
+interface IUniversity {
+  web_pages: string[];
+  name: string;
+  alpha_two_code: string;
+  "state-province": string;
+  domains: string[];
+  country: string;
+}
+
+export const authenticate = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+): Promise<[mongodb.MongoClient, IFindResult]> => {
   return new Promise((resolve, reject) => {
     mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
       if (connerErr) throw connerErr;
@@ -55,7 +91,7 @@ const authenticate = (mongoClient, postReq, postRes) => {
   });
 };
 
-const generateConfirmationCode = () => {
+export const generateConfirmationCode = () => {
   const CONFIRMATION_CODE_LENGTH = 5;
 
   let result = "";
@@ -68,7 +104,7 @@ const generateConfirmationCode = () => {
   return result;
 };
 
-const btoa = str => {
+const btoa = (str: string) => {
   return Buffer.from(str).toString("base64");
 };
 
@@ -88,22 +124,22 @@ const generateAuthKey = () => {
   return btoa(generateHexString());
 };
 
-const generateAuthToken = () => {
+export const generateAuthToken = () => {
   return {
     date: new Date().getTime(),
     key: generateAuthKey()
   };
 };
 
-const getDomain = emailAddress => {
+export const getDomain = (emailAddress: string) => {
   const atSign = emailAddress.indexOf("@");
   return emailAddress.substring(atSign + 1);
 };
 
-const obtainUniversityName = emailDomain => {
+export const obtainUniversityName = (emailDomain: string) => {
   const universities = require("./world_universities_and_domains.json");
 
-  const university = universities.find(university => {
+  const university = universities.find((university: IUniversity) => {
     const domains = university.domains;
     for (let i = 0; i < domains.length; i++) {
       const domainLength = domains[i].length;
@@ -121,12 +157,4 @@ const obtainUniversityName = emailDomain => {
 
   const name = university && university.name;
   return name ? name : "";
-};
-
-module.exports = {
-  authenticate,
-  generateConfirmationCode,
-  generateAuthToken,
-  getDomain,
-  obtainUniversityName
 };

@@ -1,11 +1,18 @@
-const LIVE_TV_STREAMING = {
+interface ISubscriptionGroup {
+  [key: string]: string;
+}
+interface ISubscriptionType {
+  [key: string]: string;
+}
+
+const LIVE_TV_STREAMING: ISubscriptionGroup = {
   YOUTUBE: "YouTube TV",
   SLING: "Sling TV",
   HULU: "Hulu with Live TV",
   ATT: "AT&T TV Now"
 };
 
-const MOBILE_SERVICE = {
+const MOBILE_SERVICE: ISubscriptionGroup = {
   VERIZON: "Verizon Wireless",
   SPRINT: "Sprint Wireless",
   TMOBILE: "T-Mobile",
@@ -15,7 +22,7 @@ const MOBILE_SERVICE = {
   CRICKET: "Cricket"
 };
 
-const MUSIC_SERVICE = {
+const MUSIC_SERVICE: ISubscriptionGroup = {
   SPOTIFY: "Spotify",
   APPLE_MUSIC: "Apple Music",
   TIDAL: "Tidal",
@@ -23,13 +30,13 @@ const MUSIC_SERVICE = {
   YOUTUBE: "YouTube Music"
 };
 
-const SUBSCRIPTION_TYPE = {
+export const SUBSCRIPTION_TYPE: ISubscriptionType = {
   LIVE_TV_STREAMING: "Live TV Streaming",
   MOBILE_SERVICE: "Mobile Service",
   MUSIC_SERVICE: "Music Service"
 };
 
-const retrieveSubscriptionGroup = type => {
+export const retrieveSubscriptionGroup = (type: string) => {
   switch (type) {
     case SUBSCRIPTION_TYPE.LIVE_TV_STREAMING:
       return LIVE_TV_STREAMING;
@@ -40,9 +47,4 @@ const retrieveSubscriptionGroup = type => {
     default:
       return LIVE_TV_STREAMING;
   }
-};
-
-module.exports = {
-  SUBSCRIPTION_TYPE,
-  retrieveSubscriptionGroup
 };
