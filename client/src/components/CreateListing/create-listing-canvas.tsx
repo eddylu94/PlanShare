@@ -1,10 +1,9 @@
 import React from "react";
 
-import { getDomain } from "./../../utils/utils";
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 
 interface IGroup {
-  email: string;
+  domain: string;
   name: string;
 }
 
@@ -183,9 +182,9 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <select className="form-text-input" style={{ width: 500 }}>
             {groups.map((group, i) => {
               return (
-                <option key={"group-" + i}>{`${group.name} (${getDomain(
-                  group.email
-                )})`}</option>
+                <option
+                  key={"group-" + i}
+                >{`${group.name} (${group.domain})`}</option>
               );
             })}
           </select>

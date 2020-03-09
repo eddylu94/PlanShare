@@ -12,7 +12,8 @@ import {
   getValidationEmail,
   getGroups,
   getSubscriptionTypes,
-  getSubscriptionGroup
+  getSubscriptionGroup,
+  getSubscriptions
 } from "./requests/get-requests";
 import {
   signUp,
@@ -47,6 +48,9 @@ app.get("/getSubscriptionTypes", (postReq, postRes) =>
 );
 app.get("/getSubscriptionGroup", (postReq, postRes) =>
   getSubscriptionGroup(mongoClient, postReq, postRes)
+);
+app.get("/getSubscriptions", (postReq, postRes) =>
+  getSubscriptions(mongoClient, postReq, postRes)
 );
 
 // POST requests

@@ -7,7 +7,6 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
 
   return (
     <div className="page-container">
-      Search
       <div className="search-bar">
         <input
           type="text"

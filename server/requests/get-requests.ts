@@ -89,9 +89,9 @@ export const getGroups = (
 
       const groups = emails
         .map(currentEmail => getDomain(currentEmail))
-        .map((currentEmailDomain, i) => {
+        .map(currentEmailDomain => {
           return {
-            email: emails[i],
+            domain: currentEmailDomain,
             name: obtainUniversityName(currentEmailDomain)
           };
         });
@@ -167,6 +167,76 @@ export const getSubscriptionGroup = (
           subscriptionGroup,
           defaultSubscriptionGroup
         }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const getSubscriptions = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving subscriptions...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const emails = findRes.emails;
+
+      console.log(emails);
+
+      const dbo = db.db(DATABASE_NAME);
+
+      const promises = emails
+        .map(email => getDomain(email))
+        .map(domain => {
+          console.log(domain);
+          return dbo
+            .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+            .find({ "groupSelection.domain": domain })
+            .toArray()
+            .then(findRes => {
+              if (!findRes) {
+                console.log("Unable to find subscriptions");
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                });
+                return;
+              }
+
+              return findRes;
+            })
+            .catch(findErr => {
+              if (findErr) {
+                console.log("Error finding record");
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                });
+              }
+            });
+        });
+
+      Promise.all(promises).then(results => {
+        const subscriptions = results.reduce(
+          (acc, curr) => acc.concat(curr),
+          [] as any
+        );
+        console.log(subscriptions);
+
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          body: {
+            subscriptions
+          }
+        });
       });
     })
     .catch(err => {
