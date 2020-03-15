@@ -25,11 +25,13 @@ const CreateListingProviderWithContext = (props: {
     subscriptionCategorySelection,
     setSubscriptionCategorySelection
   ] = useState("");
-  const [subscriptionBrands, setSubscriptionBrands] = useState([]);
+  const [subscriptionBrands, setSubscriptionBrands] = useState([] as any);
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     ""
   );
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+
+  const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
   const [listingTitle, setListingTitle] = useState("");
   const [listingDescription, setListingDescription] = useState("");
@@ -119,7 +121,7 @@ const CreateListingProviderWithContext = (props: {
       const subscriptionBrands = body.subscriptionBrands;
       setSubscriptionBrands(subscriptionBrands);
 
-      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrands;
+      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrand?.name;
       setSubscriptionBrandSelection(newDefaultSubscriptionBrand);
     }
   };
@@ -194,6 +196,16 @@ const CreateListingProviderWithContext = (props: {
   }, [subscriptionCategorySelection]);
 
   useEffect(() => {
+    if (subscriptionBrandSelection) {
+      const brand = subscriptionBrands.find(
+        (brand: any) => brand.name === subscriptionBrandSelection
+      );
+      setSubscriptionBrandLogo(brand?.logo);
+    }
+    // eslint-disable-next-line
+  }, [subscriptionBrandSelection]);
+
+  useEffect(() => {
     const newIsFormDisabled = !(
       subscriptionUrl &&
       listingTitle &&
@@ -215,6 +227,7 @@ const CreateListingProviderWithContext = (props: {
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}
       subscriptionBrands={subscriptionBrands}
+      subscriptionBrandLogo={subscriptionBrandLogo}
       organizations={organizations}
       subscriptionUrl={subscriptionUrl}
       listingTitle={listingTitle}

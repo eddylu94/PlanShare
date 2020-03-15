@@ -16,6 +16,7 @@ interface ISubscriptionBrand {
 interface ICreateListingCanvasProps {
   subscriptionCategories: string[];
   subscriptionBrands: ISubscriptionBrand[];
+  subscriptionBrandLogo: string;
   organizations: IOrganization[];
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
@@ -36,6 +37,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
     subscriptionCategories,
     subscriptionBrands,
+    subscriptionBrandLogo,
     organizations,
     handleInputChange,
     subscriptionUrl,
@@ -106,10 +108,16 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             {renderSubscriptionCategoryDropdown()}
           </div>
 
-          <div className="form-field" style={{ marginLeft: 80 }}>
+          <div className="form-field" style={{ marginLeft: 50 }}>
             <label className="form-label">Subscription:</label>
             {renderSubscriptionBrandDropdown()}
           </div>
+
+          <img
+            alt="Subscription logo"
+            className="subscription-logo"
+            src={subscriptionBrandLogo}
+          />
         </div>
 
         <div className="form-field">

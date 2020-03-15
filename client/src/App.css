@@ -93,6 +93,7 @@ body {
 .form-row {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .form-field {
@@ -404,4 +405,10 @@ input[disabled] {
   flex-direction: column;
   width: 50%;
   max-width: 800px;
+}
+
+.subscription-logo {
+  max-height: 50px;
+  max-width: 300px;
+  margin-left: 50px;
 }
