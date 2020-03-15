@@ -2,8 +2,8 @@ import mongodb from "mongodb";
 
 import { authenticate, getDomain, obtainUniversityName } from "./../utils";
 import {
-  SUBSCRIPTION_TYPE,
-  retrieveSubscriptionGroup
+  subscriptionCategoriesList,
+  retrieveSubscriptionBrands
 } from "./../subscriptions";
 import {
   MONGO_URL,
@@ -75,19 +75,19 @@ export const getValidationEmail = (
   });
 };
 
-export const getGroups = (
+export const getOrganizations = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
   postRes: any
 ) => {
-  console.log("Retrieving groups...");
+  console.log("Retrieving organizations...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
       const [db, findRes] = res;
 
       const emails = findRes.emails;
 
-      const groups = emails
+      const organizations = emails
         .map(currentEmail => getDomain(currentEmail))
         .map(currentEmailDomain => {
           return {
@@ -96,15 +96,15 @@ export const getGroups = (
           };
         });
 
-      const defaultGroup = groups[0];
+      const defaultOrganization = organizations[0];
 
-      console.log("Groups retrieved:", groups);
+      console.log("Organization retrieved:", organizations);
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          groups,
-          defaultGroup
+          organizations,
+          defaultOrganization
         }
       });
     })
@@ -113,27 +113,24 @@ export const getGroups = (
     });
 };
 
-export const getSubscriptionTypes = (
+export const getSubscriptionCategories = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
   postRes: any
 ) => {
-  console.log("Retrieving subscription types...");
+  console.log("Retrieving subscription categories...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
       const [db, findRes] = res;
 
-      const subscriptionTypes = SUBSCRIPTION_TYPE;
-
-      const defaultSubscriptionType =
-        subscriptionTypes[Object.keys(subscriptionTypes)[0]];
+      const defaultSubscriptionCategory = subscriptionCategoriesList[0];
 
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          subscriptionTypes,
-          defaultSubscriptionType
+          subscriptionCategories: subscriptionCategoriesList,
+          defaultSubscriptionCategory
         }
       });
     })
@@ -142,30 +139,31 @@ export const getSubscriptionTypes = (
     });
 };
 
-export const getSubscriptionGroup = (
+export const getSubscriptionBrands = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
   postRes: any
 ) => {
-  console.log("Retrieving subscription group...");
+  console.log("Retrieving subscription brand...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
       const [db, findRes] = res;
 
       const query = postReq.query;
 
-      const subscriptionType = query.subscriptionType;
-      const subscriptionGroup = retrieveSubscriptionGroup(subscriptionType);
+      const subscriptionCategory = query.subscriptionCategory;
+      const subscriptionBrands = retrieveSubscriptionBrands(
+        subscriptionCategory
+      );
 
-      const defaultSubscriptionGroup =
-        subscriptionGroup[Object.keys(subscriptionGroup)[0]];
+      const defaultSubscriptionBrand = subscriptionBrands[0];
 
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          subscriptionGroup,
-          defaultSubscriptionGroup
+          subscriptionBrands,
+          defaultSubscriptionBrand
         }
       });
     })
@@ -196,7 +194,7 @@ export const getSubscriptions = (
           console.log(domain);
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find({ "groupSelection.domain": domain })
+            .find({ "organizationSelection.domain": domain })
             .toArray()
             .then(findRes => {
               if (!findRes) {

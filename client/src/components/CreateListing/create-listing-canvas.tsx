@@ -2,16 +2,21 @@ import React from "react";
 
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 
-interface IGroup {
+interface IOrganization {
   domain: string;
   name: string;
 }
 
+interface ISubscriptionBrand {
+  type: string;
+  name: string;
+  logo: string;
+}
+
 interface ICreateListingCanvasProps {
-  subscriptionTypes: { [key: string]: string };
-  subscriptionGroup: { [key: string]: string };
-  subscriptionGroupSelection: string;
-  groups: IGroup[];
+  subscriptionCategories: string[];
+  subscriptionBrands: ISubscriptionBrand[];
+  organizations: IOrganization[];
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
@@ -29,10 +34,9 @@ interface ICreateListingCanvasProps {
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
-    subscriptionTypes,
-    subscriptionGroup,
-    subscriptionGroupSelection,
-    groups,
+    subscriptionCategories,
+    subscriptionBrands,
+    organizations,
     handleInputChange,
     subscriptionUrl,
     listingTitle,
@@ -43,9 +47,15 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     handleSubmit
   } = props;
 
-  const renderSubscriptionTypeDropdown = () => {
-    const options = Object.keys(subscriptionTypes).map((key, i) => (
-      <option key={"subscription-type-" + i}>{subscriptionTypes[key]}</option>
+  const renderSubscriptionCategoryDropdown = () => {
+    if (
+      !(subscriptionCategories && Object.keys(subscriptionCategories).length)
+    ) {
+      return null;
+    }
+
+    const options = subscriptionCategories.map((category, i) => (
+      <option key={"subscription-type-" + i}>{category}</option>
     ));
     return (
       <select
@@ -58,16 +68,21 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     );
   };
 
-  const renderSubscriptionGroupDropdown = () => {
-    const options = Object.keys(subscriptionGroup).map((key, i) => (
-      <option key={"subscription-group-" + i}>{subscriptionGroup[key]}</option>
+  const renderSubscriptionBrandDropdown = () => {
+    if (!(subscriptionBrands && subscriptionBrands.length)) {
+      return null;
+    }
+
+    const options = subscriptionBrands.map((subscriptionBrand, i) => (
+      <option key={"subscription-organization-" + i}>
+        {subscriptionBrand.name}
+      </option>
     ));
     return (
       <select
         className="form-text-input"
-        name={FORM_INPUT_TYPE.SUBSCRIPTION_GROUP}
+        name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
         onChange={handleInputChange}
-        value={subscriptionGroupSelection}
       >
         {options}
       </select>
@@ -88,12 +103,12 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">Subscription type:</label>
-            {renderSubscriptionTypeDropdown()}
+            {renderSubscriptionCategoryDropdown()}
           </div>
 
           <div className="form-field" style={{ marginLeft: 80 }}>
             <label className="form-label">Subscription:</label>
-            {renderSubscriptionGroupDropdown()}
+            {renderSubscriptionBrandDropdown()}
           </div>
         </div>
 
@@ -177,14 +192,15 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         <div className="form-field">
           <label className="form-label">
-            Which group you are posting to (Choose only one):
+            Which organization you are posting to (Choose only one):
           </label>
           <select className="form-text-input" style={{ width: 500 }}>
-            {groups.map((group, i) => {
+            {organizations.map((organization, i) => {
               return (
                 <option
-                  key={"group-" + i}
-                >{`${group.name} (${group.domain})`}</option>
+                  value={organization.domain}
+                  key={"organization-" + i}
+                >{`${organization.name} (${organization.domain})`}</option>
               );
             })}
           </select>

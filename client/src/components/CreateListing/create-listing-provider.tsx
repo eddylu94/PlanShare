@@ -20,12 +20,13 @@ const CreateListingProviderWithContext = (props: {
     history.push("/signup");
   }
 
-  const [subscriptionTypes, setSubscriptionTypes] = useState({ default: "" });
-  const [subscriptionTypeSelection, setSubscriptionTypeSelection] = useState(
-    ""
-  );
-  const [subscriptionGroup, setSubscriptionGroup] = useState({ default: "" });
-  const [subscriptionGroupSelection, setSubscriptionGroupSelection] = useState(
+  const [subscriptionCategories, setSubscriptionCategories] = useState([]);
+  const [
+    subscriptionCategorySelection,
+    setSubscriptionCategorySelection
+  ] = useState("");
+  const [subscriptionBrands, setSubscriptionBrands] = useState([]);
+  const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     ""
   );
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
@@ -38,8 +39,8 @@ const CreateListingProviderWithContext = (props: {
 
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
-  const [groups, setGroups] = useState([]);
-  const [groupSelection, setGroupSelection] = useState("");
+  const [organizations, setOrganizations] = useState([]);
+  const [organizationSelection, setOrganizationSelection] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<any>) => {
     const target = event.target;
@@ -48,10 +49,10 @@ const CreateListingProviderWithContext = (props: {
 
     switch (name) {
       case FORM_INPUT_TYPE.SUBSCRIPTION_TYPE:
-        setSubscriptionTypeSelection(value);
+        setSubscriptionCategorySelection(value);
         break;
-      case FORM_INPUT_TYPE.SUBSCRIPTION_GROUP:
-        setSubscriptionGroupSelection(value);
+      case FORM_INPUT_TYPE.SUBSCRIPTION_BRAND:
+        setSubscriptionBrandSelection(value);
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
         setSubscriptionUrl(value);
@@ -73,77 +74,76 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const retrieveGroupsResponseHandler = (data: any) => {
+  const retrieveOrganizationsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
-      setGroups(body.groups);
-      setGroupSelection(body.defaultGroup);
+      setOrganizations(body.organizations);
+      setOrganizationSelection(body.defaultOrganization);
     }
   };
 
-  const retrieveGroupsErrorHandler = (error: any) => {
+  const retrieveOrganizationsErrorHandler = (error: any) => {
     console.log(error);
   };
 
-  const retrieveSubscriptionTypes = () => {
+  const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const body = data.body;
+
+      const newSubscriptionCategories = body.subscriptionCategories;
+      setSubscriptionCategories(newSubscriptionCategories);
+
+      const newDefaultSubscriptionCategory = body.defaultSubscriptionCategory;
+      setSubscriptionCategorySelection(newDefaultSubscriptionCategory);
+    }
+  };
+
+  const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const retrieveSubscriptionCategories = () => {
     baseGetRequest(
-      "getSubscriptionTypes",
+      "getSubscriptionCategories",
       [],
-      retrieveSubscriptionTypesResponseHandler,
-      retrieveSubscriptionTypesErrorHandler,
+      retrieveSubscriptionCategoriesResponseHandler,
+      retrieveSubscriptionCategoriesErrorHandler,
       _userData.user?.auth
     );
   };
 
-  const retrieveSubscriptionTypesResponseHandler = (data: any) => {
+  const retrieveSubscriptionBrandsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
-      const newSubscriptionTypes = body.subscriptionTypes;
-      setSubscriptionTypes(newSubscriptionTypes);
+      const subscriptionBrands = body.subscriptionBrands;
+      setSubscriptionBrands(subscriptionBrands);
 
-      const newDefaultSubscriptionType = body.defaultSubscriptionType;
-      setSubscriptionTypeSelection(newDefaultSubscriptionType);
+      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrands;
+      setSubscriptionBrandSelection(newDefaultSubscriptionBrand);
     }
   };
 
-  const retrieveSubscriptionTypesErrorHandler = (error: any) => {
+  const retrieveSubscriptionBrandsErrorHandler = (error: any) => {
     console.log(error);
   };
 
-  const retrieveSubscriptionGroup = (selection: string) => {
-    console.log(selection);
+  const retrieveSubscriptionBrands = (selection: string) => {
     baseGetRequest(
-      "getSubscriptionGroup",
-      [{ subscriptionType: selection }],
-      retrieveSubscriptionGroupResponseHandler,
-      retrieveSubscriptionGroupErrorHandler,
+      "getSubscriptionBrands",
+      [{ subscriptionCategory: selection }],
+      retrieveSubscriptionBrandsResponseHandler,
+      retrieveSubscriptionBrandsErrorHandler,
       _userData.user?.auth
     );
   };
 
-  const retrieveSubscriptionGroupResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-
-      const newSubscriptionGroup = body.subscriptionGroup;
-      setSubscriptionGroup(newSubscriptionGroup);
-
-      const newDefaultSubscriptionGroup = body.defaultSubscriptionGroup;
-      setSubscriptionGroupSelection(newDefaultSubscriptionGroup);
-    }
-  };
-
-  const retrieveSubscriptionGroupErrorHandler = (error: any) => {
-    console.log(error);
-  };
-
-  const retrieveGroups = () => {
+  const retrieveOrganizations = () => {
     baseGetRequest(
-      "getGroups",
+      "getOrganizations",
       [],
-      retrieveGroupsResponseHandler,
-      retrieveGroupsErrorHandler,
+      retrieveOrganizationsResponseHandler,
+      retrieveOrganizationsErrorHandler,
       _userData.user?.auth
     );
   };
@@ -159,14 +159,13 @@ const CreateListingProviderWithContext = (props: {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const postRequestData = {
       subscriptionData: {
-        subscriptionTypeSelection,
-        subscriptionGroupSelection,
+        subscriptionBrand: subscriptionBrandSelection,
         subscriptionUrl,
         listingTitle,
         listingDescription,
         numberOfPeople,
         price,
-        groupSelection
+        organizationSelection
       }
     };
 
@@ -184,15 +183,15 @@ const CreateListingProviderWithContext = (props: {
   };
 
   useEffect(() => {
-    retrieveGroups();
-    retrieveSubscriptionTypes();
+    retrieveOrganizations();
+    retrieveSubscriptionCategories();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    retrieveSubscriptionGroup(subscriptionTypeSelection);
+    retrieveSubscriptionBrands(subscriptionCategorySelection);
     // eslint-disable-next-line
-  }, [subscriptionTypeSelection]);
+  }, [subscriptionCategorySelection]);
 
   useEffect(() => {
     const newIsFormDisabled = !(
@@ -214,10 +213,9 @@ const CreateListingProviderWithContext = (props: {
   return (
     <CreateListingCanvas
       handleInputChange={handleInputChange}
-      subscriptionTypes={subscriptionTypes}
-      subscriptionGroup={subscriptionGroup}
-      subscriptionGroupSelection={subscriptionGroupSelection}
-      groups={groups}
+      subscriptionCategories={subscriptionCategories}
+      subscriptionBrands={subscriptionBrands}
+      organizations={organizations}
       subscriptionUrl={subscriptionUrl}
       listingTitle={listingTitle}
       listingDescription={listingDescription}

@@ -10,9 +10,9 @@ const mongoClient = mongodb.MongoClient;
 // Import requests
 import {
   getValidationEmail,
-  getGroups,
-  getSubscriptionTypes,
-  getSubscriptionGroup,
+  getOrganizations,
+  getSubscriptionCategories,
+  getSubscriptionBrands,
   getSubscriptions
 } from "./requests/get-requests";
 import {
@@ -40,14 +40,14 @@ app.set("port", port);
 app.get("/getvalidationemail", (postReq, postRes) =>
   getValidationEmail(mongoClient, postReq, postRes)
 );
-app.get("/getGroups", (postReq, postRes) =>
-  getGroups(mongoClient, postReq, postRes)
+app.get("/getOrganizations", (postReq, postRes) =>
+  getOrganizations(mongoClient, postReq, postRes)
 );
-app.get("/getSubscriptionTypes", (postReq, postRes) =>
-  getSubscriptionTypes(mongoClient, postReq, postRes)
+app.get("/getSubscriptionCategories", (postReq, postRes) =>
+  getSubscriptionCategories(mongoClient, postReq, postRes)
 );
-app.get("/getSubscriptionGroup", (postReq, postRes) =>
-  getSubscriptionGroup(mongoClient, postReq, postRes)
+app.get("/getSubscriptionBrands", (postReq, postRes) =>
+  getSubscriptionBrands(mongoClient, postReq, postRes)
 );
 app.get("/getSubscriptions", (postReq, postRes) =>
   getSubscriptions(mongoClient, postReq, postRes)
