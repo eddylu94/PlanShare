@@ -7,6 +7,7 @@ import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE } from "./../../utils/constants";
+import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;
@@ -20,20 +21,23 @@ const CreateListingProviderWithContext = (props: {
     history.push("/signup");
   }
 
-  const [subscriptionCategories, setSubscriptionCategories] = useState([]);
+  const [subscriptionCategories, setSubscriptionCategories] = useState(
+    [] as ISubscriptionCategory[]
+  );
   const [
     subscriptionCategorySelection,
     setSubscriptionCategorySelection
-  ] = useState("");
-  const [subscriptionBrands, setSubscriptionBrands] = useState([] as any);
+  ] = useState({} as ISubscriptionCategory);
+  const [subscriptionBrands, setSubscriptionBrands] = useState(
+    [] as ISubscriptionBrand[]
+  );
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
-    ""
+    {} as ISubscriptionBrand
   );
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
 
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
-  const [listingTitle, setListingTitle] = useState("");
   const [listingDescription, setListingDescription] = useState("");
 
   const [numberOfPeople, setNumberOfPeople] = useState(0);
@@ -42,7 +46,7 @@ const CreateListingProviderWithContext = (props: {
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
   const [organizations, setOrganizations] = useState([]);
-  const [organizationSelection, setOrganizationSelection] = useState("");
+  const [organizationSelection, setOrganizationSelection] = useState({} as any);
 
   const handleInputChange = (event: React.ChangeEvent<any>) => {
     const target = event.target;
@@ -51,16 +55,23 @@ const CreateListingProviderWithContext = (props: {
 
     switch (name) {
       case FORM_INPUT_TYPE.SUBSCRIPTION_TYPE:
-        setSubscriptionCategorySelection(value);
+        const category = subscriptionCategories.find(
+          category => value === category.subscriptionCategoryId
+        );
+        if (category) {
+          setSubscriptionCategorySelection(category);
+        }
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_BRAND:
-        setSubscriptionBrandSelection(value);
+        const brand = subscriptionBrands.find(
+          brand => value === brand.subscriptionBrandId
+        ) as ISubscriptionBrand;
+        if (brand) {
+          setSubscriptionBrandSelection(brand);
+        }
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
         setSubscriptionUrl(value);
-        break;
-      case FORM_INPUT_TYPE.LISTING_TITLE:
-        setListingTitle(value);
         break;
       case FORM_INPUT_TYPE.LISTING_DESCRIPTION:
         setListingDescription(value);
@@ -92,11 +103,11 @@ const CreateListingProviderWithContext = (props: {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
-      const newSubscriptionCategories = body.subscriptionCategories;
-      setSubscriptionCategories(newSubscriptionCategories);
-
       const newDefaultSubscriptionCategory = body.defaultSubscriptionCategory;
       setSubscriptionCategorySelection(newDefaultSubscriptionCategory);
+
+      const newSubscriptionCategories = body.subscriptionCategories;
+      setSubscriptionCategories(newSubscriptionCategories);
     }
   };
 
@@ -121,7 +132,7 @@ const CreateListingProviderWithContext = (props: {
       const subscriptionBrands = body.subscriptionBrands;
       setSubscriptionBrands(subscriptionBrands);
 
-      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrand?.name;
+      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrand;
       setSubscriptionBrandSelection(newDefaultSubscriptionBrand);
     }
   };
@@ -163,11 +174,10 @@ const CreateListingProviderWithContext = (props: {
       subscriptionData: {
         subscriptionBrand: subscriptionBrandSelection,
         subscriptionUrl,
-        listingTitle,
         listingDescription,
         numberOfPeople,
         price,
-        organizationSelection
+        organizationDomain: organizationSelection.domain
       }
     };
 
@@ -191,15 +201,19 @@ const CreateListingProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
-    retrieveSubscriptionBrands(subscriptionCategorySelection);
+    retrieveSubscriptionBrands(
+      subscriptionCategorySelection.subscriptionCategoryId
+    );
     // eslint-disable-next-line
   }, [subscriptionCategorySelection]);
 
   useEffect(() => {
-    if (subscriptionBrandSelection) {
+    if (Object.keys(subscriptionBrandSelection).length) {
       const brand = subscriptionBrands.find(
-        (brand: any) => brand.name === subscriptionBrandSelection
-      );
+        (brand: any) =>
+          brand.subscriptionBrandId ===
+          subscriptionBrandSelection.subscriptionBrandId
+      ) as ISubscriptionBrand;
       setSubscriptionBrandLogo(brand?.logo);
     }
     // eslint-disable-next-line
@@ -208,29 +222,23 @@ const CreateListingProviderWithContext = (props: {
   useEffect(() => {
     const newIsFormDisabled = !(
       subscriptionUrl &&
-      listingTitle &&
       listingDescription &&
       numberOfPeople &&
       price
     );
     setIsFormDisabled(newIsFormDisabled);
-  }, [
-    subscriptionUrl,
-    listingTitle,
-    listingDescription,
-    numberOfPeople,
-    price
-  ]);
+  }, [subscriptionUrl, listingDescription, numberOfPeople, price]);
 
   return (
     <CreateListingCanvas
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}
+      subscriptionCategorySelection={subscriptionCategorySelection}
       subscriptionBrands={subscriptionBrands}
       subscriptionBrandLogo={subscriptionBrandLogo}
+      subscriptionBrandSelection={subscriptionBrandSelection}
       organizations={organizations}
       subscriptionUrl={subscriptionUrl}
-      listingTitle={listingTitle}
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
       price={price}

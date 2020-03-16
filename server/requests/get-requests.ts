@@ -2,7 +2,7 @@ import mongodb from "mongodb";
 
 import { authenticate, getDomain, obtainUniversityName } from "./../utils";
 import {
-  subscriptionCategoriesList,
+  subscriptionCategories,
   retrieveSubscriptionBrands
 } from "./../subscriptions";
 import {
@@ -123,13 +123,13 @@ export const getSubscriptionCategories = (
     .then(res => {
       const [db, findRes] = res;
 
-      const defaultSubscriptionCategory = subscriptionCategoriesList[0];
+      const defaultSubscriptionCategory = subscriptionCategories[0];
 
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          subscriptionCategories: subscriptionCategoriesList,
+          subscriptionCategories: subscriptionCategories,
           defaultSubscriptionCategory
         }
       });
@@ -194,7 +194,7 @@ export const getSubscriptions = (
           console.log(domain);
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find({ "organizationSelection.domain": domain })
+            .find({ organizationDomain: domain })
             .toArray()
             .then(findRes => {
               if (!findRes) {

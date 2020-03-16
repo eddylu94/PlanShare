@@ -1,29 +1,25 @@
 import React from "react";
 
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
+import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 interface IOrganization {
   domain: string;
   name: string;
 }
 
-interface ISubscriptionBrand {
-  type: string;
-  name: string;
-  logo: string;
-}
-
 interface ICreateListingCanvasProps {
-  subscriptionCategories: string[];
+  subscriptionCategories: ISubscriptionCategory[];
+  subscriptionCategorySelection: ISubscriptionCategory;
   subscriptionBrands: ISubscriptionBrand[];
   subscriptionBrandLogo: string;
+  subscriptionBrandSelection: ISubscriptionBrand;
   organizations: IOrganization[];
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
   subscriptionUrl: string;
 
-  listingTitle: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;
@@ -36,12 +32,13 @@ interface ICreateListingCanvasProps {
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
     subscriptionCategories,
+    subscriptionCategorySelection,
     subscriptionBrands,
     subscriptionBrandLogo,
+    subscriptionBrandSelection,
     organizations,
     handleInputChange,
     subscriptionUrl,
-    listingTitle,
     listingDescription,
     numberOfPeople,
     price,
@@ -57,13 +54,19 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     }
 
     const options = subscriptionCategories.map((category, i) => (
-      <option key={"subscription-type-" + i}>{category}</option>
+      <option
+        key={"subscription-type-" + i}
+        value={category.subscriptionCategoryId}
+      >
+        {category.name}
+      </option>
     ));
     return (
       <select
         className="form-text-input"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_TYPE}
         onChange={handleInputChange}
+        value={subscriptionCategorySelection.subscriptionCategoryId}
       >
         {options}
       </select>
@@ -76,7 +79,10 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     }
 
     const options = subscriptionBrands.map((subscriptionBrand, i) => (
-      <option key={"subscription-organization-" + i}>
+      <option
+        key={"subscription-brand-" + i}
+        value={subscriptionBrand.subscriptionBrandId}
+      >
         {subscriptionBrand.name}
       </option>
     ));
@@ -85,6 +91,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         className="form-text-input"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
         onChange={handleInputChange}
+        value={subscriptionBrandSelection.subscriptionBrandId}
       >
         {options}
       </select>
@@ -121,6 +128,18 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         </div>
 
         <div className="form-field">
+          <label className="form-label">Listing description:</label>
+          <textarea
+            className="form-text-area"
+            name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
+            rows={5}
+            placeholder="Currently have two people, need three more!"
+            value={listingDescription}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="form-field">
           <label className="form-label">
             URL for subscription information (optional):
           </label>
@@ -130,30 +149,6 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             type="text"
             placeholder="https://tv.youtube.com/"
             value={subscriptionUrl}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Listing title:</label>
-          <input
-            className="form-text-input"
-            name={FORM_INPUT_TYPE.LISTING_TITLE}
-            type="text"
-            placeholder="Looking for people to start YouTube TV subscription"
-            value={listingTitle}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Listing description:</label>
-          <textarea
-            className="form-text-area"
-            name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
-            rows={5}
-            placeholder="Currently have two people, need three more!"
-            value={listingDescription}
             onChange={handleInputChange}
           />
         </div>

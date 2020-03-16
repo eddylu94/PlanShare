@@ -4,6 +4,18 @@ export interface IResponse {
   body: any;
 }
 
+export interface ISubscriptionCategory {
+  subscriptionCategoryId: string;
+  name: string;
+}
+
+export interface ISubscriptionBrand {
+  subscriptionBrandId: string;
+  type: string;
+  name: string;
+  logo: string;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

@@ -412,3 +412,11 @@ input[disabled] {
   max-width: 300px;
   margin-left: 50px;
 }
+
+.subscription-card {
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #cccccc;
+  width: 500px;
+}

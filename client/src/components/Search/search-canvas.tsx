@@ -16,7 +16,6 @@ export interface ISubscriptionData {
   subscriptionTypeSelection: string;
   subscriptionBrand: ISubscription;
   subscriptionUrl: string;
-  listingTitle: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;
@@ -31,9 +30,9 @@ interface ISearchCanvasProps {
 const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
   const { subscription } = props;
 
-  const { subscriptionBrand } = subscription;
+  const { subscriptionBrand, listingDescription } = subscription;
 
-  return <div>{subscriptionBrand}</div>;
+  return <div className="subscription-card">{subscriptionBrand.name}</div>;
 };
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
