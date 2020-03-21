@@ -239,3 +239,39 @@ export const getSubscriptions = (
       console.log(err);
     });
 };
+
+export const getProfile = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving profile...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { firstName, emails, joinedDate } = findRes;
+
+      const organizations = emails
+        .map(currentEmail => getDomain(currentEmail))
+        .map(currentEmailDomain =>
+          retrieveOrganizationByDomain(currentEmailDomain)
+        );
+
+      const profileData = {
+        firstName,
+        organizations,
+        joinedDate
+      };
+
+      console.log("Profile retrieved:", profileData);
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.SUCCESS,
+        body: profileData
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

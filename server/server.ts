@@ -13,7 +13,8 @@ import {
   getOrganizations,
   getSubscriptionCategories,
   getSubscriptionBrands,
-  getSubscriptions
+  getSubscriptions,
+  getProfile
 } from "./requests/get-requests";
 import {
   signUp,
@@ -36,34 +37,25 @@ app.use((req, res, next) => {
 const port = process.env.PORT || 36322;
 app.set("port", port);
 
+const requestBuilder = (path: string, request: any) => {
+  return app.get(path, (postReq, postRes) =>
+    request(mongoClient, postReq, postRes)
+  );
+};
+
 // GET requests
-app.get("/getvalidationemail", (postReq, postRes) =>
-  getValidationEmail(mongoClient, postReq, postRes)
-);
-app.get("/getOrganizations", (postReq, postRes) =>
-  getOrganizations(mongoClient, postReq, postRes)
-);
-app.get("/getSubscriptionCategories", (postReq, postRes) =>
-  getSubscriptionCategories(mongoClient, postReq, postRes)
-);
-app.get("/getSubscriptionBrands", (postReq, postRes) =>
-  getSubscriptionBrands(mongoClient, postReq, postRes)
-);
-app.get("/getSubscriptions", (postReq, postRes) =>
-  getSubscriptions(mongoClient, postReq, postRes)
-);
+requestBuilder("/getvalidationemail", getValidationEmail);
+requestBuilder("/getorganizations", getOrganizations);
+requestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
+requestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
+requestBuilder("/getsubscriptions", getSubscriptions);
+requestBuilder("/getprofile", getProfile);
 
 // POST requests
-app.post("/signup", (postReq, postRes) =>
-  signUp(mongoClient, postReq, postRes)
-);
-app.post("/login", (postReq, postRes) => login(mongoClient, postReq, postRes));
-app.post("/verifyemail", (postReq, postRes) =>
-  verifyEmail(mongoClient, postReq, postRes)
-);
-app.post("/createsubscription", (postReq, postRes) =>
-  createSubscription(mongoClient, postReq, postRes)
-);
+requestBuilder("/signup", signUp);
+requestBuilder("/login", login);
+requestBuilder("/verifyemail", verifyEmail);
+requestBuilder("/createsubscription", createSubscription);
 
 app.listen(app.get("port"), () => {
   console.log(`Server is running on Port ${port}...`);
