@@ -8,6 +8,7 @@ import Validate from "./components/Validate/validate";
 import Search from "./components/Search/search-provider";
 import CreateListing from "./components/CreateListing/create-listing-provider";
 import Login from "./components/Login/login-provider";
+import Profile from "./components/Profile/profile-provider";
 import { UserContextProvider } from "./user-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
@@ -38,6 +39,9 @@ const App = () => (
             </Route>
             <Route path="/validate">
               <Validate />
+            </Route>
+            <Route path="/profile">
+              <Profile />
             </Route>
           </Switch>
         </div>

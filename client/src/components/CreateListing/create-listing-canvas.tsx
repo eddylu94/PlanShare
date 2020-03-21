@@ -1,13 +1,11 @@
 import React from "react";
 
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
-import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
-
-interface IOrganization {
-  domains: string[];
-  name: string;
-  logo: string;
-}
+import {
+  ISubscriptionCategory,
+  ISubscriptionBrand,
+  IOrganization
+} from "./../../utils/utils";
 
 interface ICreateListingCanvasProps {
   subscriptionCategories: ISubscriptionCategory[];
@@ -208,7 +206,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                   <option
                     value={organization.domains[0]}
                     key={"organization-" + i}
-                  >{`${organization.name} (${organization.domains[0]})`}</option>
+                  >{`${organization.name} (@${organization.domains[0]})`}</option>
                 );
               })}
             </select>

@@ -16,6 +16,17 @@ export interface ISubscriptionBrand {
   logo: string;
 }
 
+export interface IOrganization {
+  domains: string[];
+  name: string;
+  logo: string;
+}
+
+export interface IProfileOrganizationData {
+  email: string;
+  organization: IOrganization;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

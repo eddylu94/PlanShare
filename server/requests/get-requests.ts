@@ -252,11 +252,15 @@ export const getProfile = (
 
       const { firstName, emails, joinedDate } = findRes;
 
-      const organizations = emails
-        .map(currentEmail => getDomain(currentEmail))
-        .map(currentEmailDomain =>
-          retrieveOrganizationByDomain(currentEmailDomain)
-        );
+      const organizations = emails.map(currentEmail => {
+        const domain = getDomain(currentEmail);
+        const organization = retrieveOrganizationByDomain(domain);
+
+        return {
+          email: currentEmail,
+          organization
+        };
+      });
 
       const profileData = {
         firstName,
@@ -268,7 +272,7 @@ export const getProfile = (
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
-        body: profileData
+        body: { profileData }
       });
     })
     .catch(err => {

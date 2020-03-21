@@ -117,7 +117,7 @@ const CreateListingProviderWithContext = (props: {
 
   const retrieveSubscriptionCategories = () => {
     baseGetRequest(
-      "getSubscriptionCategories",
+      "getsubscriptioncategories",
       [],
       retrieveSubscriptionCategoriesResponseHandler,
       retrieveSubscriptionCategoriesErrorHandler,
@@ -143,7 +143,7 @@ const CreateListingProviderWithContext = (props: {
 
   const retrieveSubscriptionBrands = (selection: string) => {
     baseGetRequest(
-      "getSubscriptionBrands",
+      "getsubscriptionbrands",
       [{ subscriptionCategory: selection }],
       retrieveSubscriptionBrandsResponseHandler,
       retrieveSubscriptionBrandsErrorHandler,
@@ -153,7 +153,7 @@ const CreateListingProviderWithContext = (props: {
 
   const retrieveOrganizations = () => {
     baseGetRequest(
-      "getOrganizations",
+      "getorganizations",
       [],
       retrieveOrganizationsResponseHandler,
       retrieveOrganizationsErrorHandler,
