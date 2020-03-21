@@ -35,12 +35,9 @@ const tvSubscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId
 ];
 
-export const subscriptionCategories = tvSubscriptionCategoriesIds.map(id => {
-  return {
-    subscriptionCategoryId: id,
-    ...SUBSCRIPTION_CATEGORY[id]
-  };
-});
+export const subscriptionCategories = tvSubscriptionCategoriesIds.map(
+  id => SUBSCRIPTION_CATEGORY[id]
+);
 
 export const SUBSCRIPTION: ISubscription = {
   YOUTUBE_TV: {

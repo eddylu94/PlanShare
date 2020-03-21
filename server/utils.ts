@@ -135,26 +135,3 @@ export const getDomain = (emailAddress: string) => {
   const atSign = emailAddress.indexOf("@");
   return emailAddress.substring(atSign + 1);
 };
-
-export const obtainUniversityName = (emailDomain: string) => {
-  const universities = require("./world_universities_and_domains.json");
-
-  const university = universities.find((university: IUniversity) => {
-    const domains = university.domains;
-    for (let i = 0; i < domains.length; i++) {
-      const domainLength = domains[i].length;
-      const emailLength = emailDomain.length;
-
-      if (
-        emailLength >= domainLength &&
-        emailDomain.substring(emailLength - domainLength) === domains[i]
-      ) {
-        return true;
-      }
-    }
-    return false;
-  });
-
-  const name = university && university.name;
-  return name ? name : "";
-};

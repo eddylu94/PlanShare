@@ -4,8 +4,9 @@ import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 interface IOrganization {
-  domain: string;
+  domains: string[];
   name: string;
+  logo: string;
 }
 
 interface ICreateListingCanvasProps {
@@ -15,6 +16,7 @@ interface ICreateListingCanvasProps {
   subscriptionBrandLogo: string;
   subscriptionBrandSelection: ISubscriptionBrand;
   organizations: IOrganization[];
+  organizationSelection: IOrganization;
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
@@ -37,6 +39,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     subscriptionBrandLogo,
     subscriptionBrandSelection,
     organizations,
+    organizationSelection,
     handleInputChange,
     subscriptionUrl,
     listingDescription,
@@ -193,20 +196,28 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
         </div>
 
-        <div className="form-field">
-          <label className="form-label">
-            Which organization you are posting to (Choose only one):
-          </label>
-          <select className="form-text-input" style={{ width: 500 }}>
-            {organizations.map((organization, i) => {
-              return (
-                <option
-                  value={organization.domain}
-                  key={"organization-" + i}
-                >{`${organization.name} (${organization.domain})`}</option>
-              );
-            })}
-          </select>
+        <div className="create-listing-organization-field">
+          <div className="form-field">
+            <label className="form-label">
+              Which organization you are posting to (Choose only one):
+            </label>
+
+            <select className="form-text-input" style={{ maxWidth: 500 }}>
+              {organizations.map((organization, i) => {
+                return (
+                  <option
+                    value={organization.domains[0]}
+                    key={"organization-" + i}
+                  >{`${organization.name} (${organization.domains[0]})`}</option>
+                );
+              })}
+            </select>
+          </div>
+          <img
+            alt="Organization logo"
+            className="create-listing-organization-logo"
+            src={organizationSelection.logo}
+          />
         </div>
 
         <input

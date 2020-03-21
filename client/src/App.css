@@ -74,10 +74,11 @@ body {
   display: flex;
   flex-direction: column;
   max-width: 800px;
-  box-shadow: 5px 5px 10px #cccccc;
+  box-shadow: 0px 0px 10px #d8d8d8;
   padding: 24px;
   border-radius: 10px;
   background-color: #ffffff;
+  box-sizing: border-box;
 }
 
 .form-header {
@@ -119,8 +120,8 @@ body {
   font-size: 18px;
   line-height: 50px;
   height: 50px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -131,8 +132,8 @@ body {
   flex-grow: 1;
   font-size: 18px;
   height: 150px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
+  border: 1px solid #d8d8d8;
+  border-radius: 3px;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -374,7 +375,7 @@ input[disabled] {
   background-color: #ffffff;
   border-radius: 25px;
   margin-bottom: 20px;
-  box-shadow: 0px 0px 5px #d8d8d8;
+  box-shadow: 0px 0px 10px #d8d8d8;
 }
 
 .search-text-input {
@@ -417,10 +418,23 @@ input[disabled] {
 }
 
 .create-listing-subscription-logo {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  margin-left: 50px;
+  margin-left: 45px;
+}
+
+.create-listing-organization-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.create-listing-organization-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-left: 45px;
 }
 
 .subscription-card {

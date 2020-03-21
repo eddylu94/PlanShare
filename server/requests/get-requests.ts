@@ -1,10 +1,11 @@
 import mongodb from "mongodb";
 
-import { authenticate, getDomain, obtainUniversityName } from "./../utils";
+import { authenticate, getDomain } from "./../utils";
 import {
   subscriptionCategories,
   retrieveSubscriptionBrands
 } from "./../subscriptions";
+import { retrieveOrganizationByDomain } from "./../organizations";
 import {
   MONGO_URL,
   DATABASE_NAME,
@@ -89,16 +90,13 @@ export const getOrganizations = (
 
       const organizations = emails
         .map(currentEmail => getDomain(currentEmail))
-        .map(currentEmailDomain => {
-          return {
-            domain: currentEmailDomain,
-            name: obtainUniversityName(currentEmailDomain)
-          };
-        });
+        .map(currentEmailDomain =>
+          retrieveOrganizationByDomain(currentEmailDomain)
+        );
 
       const defaultOrganization = organizations[0];
 
-      console.log("Organization retrieved:", organizations);
+      console.log("Organization retrieved:", organizations[0]);
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,

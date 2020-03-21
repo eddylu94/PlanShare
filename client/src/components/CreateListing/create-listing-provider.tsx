@@ -238,6 +238,7 @@ const CreateListingProviderWithContext = (props: {
       subscriptionBrandLogo={subscriptionBrandLogo}
       subscriptionBrandSelection={subscriptionBrandSelection}
       organizations={organizations}
+      organizationSelection={organizationSelection}
       subscriptionUrl={subscriptionUrl}
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
