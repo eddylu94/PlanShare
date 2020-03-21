@@ -69,7 +69,9 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           className="search-text-input"
           placeholder="Search for a subscription"
         />
-        <button className="search-submit-button">Submit</button>
+        <button className="search-submit-button">
+          <img alt="Search" className="search-icon" src="/search_icon.png" />
+        </button>
       </div>
       {subscriptionCards}
     </div>
