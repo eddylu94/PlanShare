@@ -408,14 +408,16 @@ input[disabled] {
 }
 
 .create-listing-subscription-logo {
-  max-height: 50px;
-  max-width: 300px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   margin-left: 50px;
 }
 
 .subscription-card {
   display: flex;
   flex-direction: row;
+  align-items: center;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
@@ -424,14 +426,10 @@ input[disabled] {
   margin-top: 20px;
 }
 
-.subscription-card-subscription-container {
-  height: 50px;
-  width: 200px;
-}
-
 .subscription-card-subscription-logo {
-  max-height: 50px;
-  max-width: 200px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 
 .subscription-card-info {

@@ -34,13 +34,11 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
 
   return (
     <div className="subscription-card">
-      <div className="subscription-card-subscription-container">
-        <img
-          alt="Subscription logo"
-          className="subscription-card-subscription-logo"
-          src={subscriptionBrand.logo}
-        />
-      </div>
+      <img
+        alt="Subscription logo"
+        className="subscription-card-subscription-logo"
+        src={subscriptionBrand.logo}
+      />
       <div className="subscription-card-info">
         <div className="subscription-card-info-name">
           {subscriptionBrand.name}

@@ -47,106 +47,105 @@ export const SUBSCRIPTION: ISubscription = {
     subscriptionBrandId: "YOUTUBE_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.name,
     name: "YouTube TV",
-    logo:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/YouTube_TV_logo.svg/1280px-YouTube_TV_logo.svg.png"
+    logo: "https://miro.medium.com/fit/c/256/256/0*nxGz8OFtprDXvGjI.jpg"
   },
   SLING_TV: {
     subscriptionBrandId: "SLING_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.name,
     name: "Sling TV",
-    logo: "https://news.sling.com/download/2019SlingLogo.png"
+    logo:
+      "https://is1-ssl.mzstatic.com/image/thumb/Purple114/v4/aa/5c/41/aa5c41e2-e131-abfa-c3f6-9649b426a561/source/256x256bb.jpg"
   },
   HULU_TV: {
     subscriptionBrandId: "HULU_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.name,
     name: "Hulu with Live TV",
     logo:
-      "https://assetshuluimcom-a.akamaihd.net/h3o/facebook_share_thumb_default_hulu.jpg"
+      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/bk8cux6dapq8qjzylfaj"
   },
   ATT_TV: {
     subscriptionBrandId: "ATT_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.name,
     name: "AT&T TV Now",
-    logo: "https://www.att.com/idpassets/sales/uf/tv/att-tv-logo-420.jpg"
+    logo:
+      "https://is2-ssl.mzstatic.com/image/thumb/Purple114/v4/46/72/b6/4672b669-9258-bd66-ec13-c4e665f59feb/source/256x256bb.jpg"
   },
   VERIZON_MOBILE: {
     subscriptionBrandId: "VERIZON_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "Verizon Wireless",
     logo:
-      "data:image/png;base64,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"
+      "https://rm-core-production.s3.amazonaws.com/logos/1538/large_Verizon_Wireless.png"
   },
   SPRINT_MOBILE: {
     subscriptionBrandId: "SPRINT_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "Sprint Wireless",
-    logo: "https://www.sprint.com/en/shop/cell-phones.thumb.319.319.png"
+    logo:
+      "data:image/png;base64,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"
   },
   TMOBILE_MOBILE: {
     subscriptionBrandId: "TMOBILE_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "T-Mobile",
     logo:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/T-Mobile_logo.svg/1280px-T-Mobile_logo.svg.png"
+      "https://rm-core-production.s3.amazonaws.com/logos/646/large_T-Mobile-Recruit-Military-Logo.png"
   },
   ATT_MOBILE: {
     subscriptionBrandId: "ATT_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "AT&T Wireless",
-    logo: "https://about.att.com/ecms/dam/snrlogos/AT&T%20Logo.png"
+    logo:
+      "https://d3g9pb5nvr3u7.cloudfront.net/sites/59fa3c07920c1046f1d06561/-1589708846/256.jpg"
   },
   METRO_MOBILE: {
     subscriptionBrandId: "METRO_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "Metro",
     logo:
-      "https://upload.wikimedia.org/wikipedia/commons/6/67/MetroByT-Mobile.png"
-  },
-  US_MOBILE_MOBILE: {
-    subscriptionBrandId: "US_MOBILE_MOBILE",
-    type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
-    name: "US Mobile",
-    logo: "https://www.usmobile.com/blog/wp-content/uploads/2016/03/US-Logo.jpg"
+      "https://res-1.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/qxxtkroxlp3nyzwheet4"
   },
   CRICKET_MOBILE: {
     subscriptionBrandId: "CRICKET_MOBILE",
     type: SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.name,
     name: "Cricket",
-    logo: "https://www.cricketwireless.com/uiassets/cricketwirelesslogo.jpg"
+    logo:
+      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1412840385/sl0tggfrhompma1be1hf.jpg"
   },
   SPOTIFY_MUSIC: {
     subscriptionBrandId: "SPOTIFY_MUSIC",
     type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.name,
     name: "Spotify",
-    logo: "https://developer.spotify.com/assets/branding-guidelines/logo@2x.png"
+    logo:
+      "https://developer.spotify.com/assets/branding-guidelines/icon4@2x.png"
   },
   APPLE_MUSIC: {
     subscriptionBrandId: "APPLE_MUSIC",
     type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.name,
     name: "Apple Music",
     logo:
-      "https://is2-ssl.mzstatic.com/image/thumb/Purple123/v4/e9/83/82/e9838282-357a-f013-bc68-26a17d729348/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-10.png/246x0w.png"
+      "https://bloximages.newyork1.vip.townnews.com/insideradio.com/content/tncms/assets/v3/editorial/f/3b/f3b684de-1211-11e6-aa53-0fba9174a6a6/572a1dc58b594.image.jpg"
   },
   TIDAL_MUSIC: {
     subscriptionBrandId: "TIDAL_MUSIC",
     type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.name,
     name: "Tidal",
     logo:
-      "https://read.tidal.com/wp-content/themes/eddiemachado-bones-d1b3b54/library/images/tidal_mag.jpg"
+      "https://i.pinimg.com/originals/03/87/94/0387941ddfa7f9631478b712f4423aff.png"
   },
   AMAZON_MUSIC: {
     subscriptionBrandId: "AMAZON_MUSIC",
     type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.name,
     name: "Amazon Music",
     logo:
-      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA4VBMVEX///9MwO8okc0hiMc7qt8bgMEUd7sumdMZfb8Webwdg8M/r+Mnj8wqlM9BsuVFt+kPcLY0odkyntc4ptwNbbQiisjb6vVHuurc8PoAg8ao0Oqny+aq1/AAd7z1+v0Ah8lin88AZrGs3PNYl8qixOAAaLPv+PxkpNO/4PN5zPEAYK7H3e6y0+uQz+/M6Pd9tdxQsOF8xOlRkcd+qdHF2euXv99ixvGG0fN0s9y65PjI6vlirNm52u9rvuhDmM5JseOQy+t/veO1zOM6gb3j7PWVt9h4pc9Pi8JyvOSbvNuKtNmrM72tAAAOJklEQVR4nO2ch1bqShRAkRZKKCEQQEJASkRBBBXFgqKiV/3/D3pTk0kyKbaHumYv13tIuNzse6aemUksJhAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUDgwTzaqe8cXG77Nr6Pxg6ifm5s+06+ix3Kwbbv5Ju4rFPD+h8N4oVt2Nj2vXwPB3/e8OjPl9Jp6a+3NFYxrZvbvpNv46heqtfr53+0FiLMq97lX/YTCASCX4gxHhzvA95aG+9FbbJYXl9fLxc3XzuCavSO5oAjffShXsFoXF0Crhqcu9poEPvXxW272czlEolOp9mUJ46vuVl2OjVZjsfjclzuXGueL5vuIm74d6Hv6hDvyGS0SibzNvWjqfNGRz2En/vVxU7dYuei5/zTg3Ib0se/TW6zTSCHqMGf5q0VR+241kF2gAL4KcRrx66/ypQlRHzMu5GZAlGVpOt9PY/9ikXwg8kX54zOVbEEqNdLvGKDMhxO6vUL5gPdTAqQa8PXrVw2l6OCWLGW6OBIaftNED0QOkaxIEvOv1MrSFIFIO3yDCsqRnG827hTaewYRfDSDnWvhMNT4gTxyK2HHXtuw1R7ExvL2VQu51WsAQvjuJmQEU7FuPNutbiEFPmGCs9wpDLlk1EsFe3Ek79hwxM/7yyEGGZax23s51HsLGNnCeLnjeLCYyi9J4ZTRrDojKIdBl/DSx8/nmEqA/6P/eDrTCbHKIICWqshPfBLBzY2tmKNbTewoRTd0FSTtI2hL5J5LJkPN/QXdBoSxVQO/oA2ZzEZa+Ozt0SOKaiIRFNetm7AxckSOSJFRxCJoRTZcA4NoVlypjdMI2YYZmOqz2E083qY4ZQVBI3o+cHBwfk5fOWOoaWYzR0zHcCyaSkivcLA7h7NW0ux8glDFELEyPnRhr5idHqoJXUbmrZgfYfpX4xG73yHyR7DUkoam4Sj8wOXmCg2u84OwJCposwU0xBDxW2oE0M1uJfvFXmG59yW00s3m0KKmdyD+9ImQ+ti4tbTud/USF2UmUuaHGyouAxfiOE8UBAZov6QNWQqYXByo5vNIMUMpzfdp83NPucPyqS5qTEDGBrDgp+h4jTMY0N1xPu4DdfQ7idCho/9DGlqONcmTdJr8AyXNdxpsAO7cEPFYaiqUQopMQSw4xyagAvNofazSDGT4VwjxTSR4xnuYsO43LLfo6U0wFDhGU6D75EaFhmZgzqJ4VHwnyWGGb6h2QwwHHfkDxkqjGESK6o67+M2HEMDNj0ohKEZRmyY4RrGyCica6h18Ojm3YaK3b+8qFjxLvgeOYYjPI/YqYcniT9hiAdwTsNCgKHkMdxVcBTVl8B75BhekKlSPXzZNNCQjFH9DJFizWmIFOOBhnYpbSgqUVwFFTaO4TmdDobPlwMNU1jR1xAqug0L74hhbKWqtC6u/R17eY9hiRqG6MUiGALFpq8hUPQYFt5h2KjYisrKr1vsFYsuw0aRCJ5HMGyHGeYCYihzYggUfUppxWMY27UVgWRyzS10vSJWzFtXpzSGEVaj+u1smGGOb9jE80WHYQ0ZFvwMKx7D2JpVBC9mnBxPL48VbcMRNQztDZFhNswwoJS+y1DBig5DZxT5gUSGRdbwkhoGjrmpYQYqZrNfYigTwxbnD8BSihSdhrFpUnEowpbV6YgNi4yhNWOMZJiFinzDDJn1v7uU+hhixYr7gp5UVIdiUp2zw2liWPywIfTzMUwFGeLERsJhGA8wLFSwouS9NFqBySOrmMwzYdQ9hpfvNESKvIspnLvxM6xxDJGi7GsIFTmGYAysz1jHPDsc5xmSOXFUQ6DY5hrmkKKvYc1jSDJw/oaglHINAY21akvmk0lrCKDT5JTdW9BZf8S2FMI1zGDFVNfPECh2XKUUpacCDLml1LrzlWIrWjN/EMO807BB58QX/O9hoYY+9RBn4Lqca9iw5oxhh+Ruggz5pdS69xfL0QqiTvKotqFJDSONaYINoWKQYc1tiHI3HzdEWXACnTbqJFXMtD5k0l8vBX8XpN9OB5VSpJjpcq5RQ1cpRYoyt8cvSJEMYR4cQ+dUOkn4M4YrahhhbtFOp4MNU7nohh2Su+HHEC/bhBqCGQc2pBNjPYkVk7bOEU3dhKQHYqiUQsV0gKFfKU34GcadqxmUgkRWpsLuaU2DSH7X6eKbbTilhuHTJ1gPgeKHDBNeQ5K7cS8sIgoSWZkKuyeda5gvMjGMUcNiSBaL1MN0OtDQr5QiRVcMseIt79twhuPDMcyzpTQ2jxxEXA/9DHEu1ceQrEwxhibJ3cQ7nAm7SZKp0evhjPzOM2yQeX+pFDZF7JfTAfUQL9vwDTN4TYM1jDXJ+iKnIi5oxl8KM2woNLFB3uAZxlbFiIrI0K8eZvGyja8hVHQY3tIl1I5rIaeFU1Q4E2e7cG9pRtNTNKvBNbSDWKq766LBfhAb+pRSuqbhawj3MrCG9wmiKHfYZP+xzAjahvcFaTlx72iB00WkqKr0La6h3WGA5qbes7aZmFdH5yV2RB5iiBQDDBM1h+G4Yy2Ed6R7uJp601oW5DgraBsuwUxDkpSX9Y22QTdoaLszvMoI/OxMON+QKaeIHbhAulMvufM3YYaB9RAlUx29+23NXuuXydp4gaSnOIZwMoW6SICCXpNVVKA4s75UV7mGRolRBGPUesnKMb7LMLAeAhwxjI2bnO0MCPneLHgNSWKDojLYzbFOl/hd9daos1Gss7zLMLAeug1jxx2uoqxosZinHkoBikz9hCMAnmEsdpEvfs6Q5lK5hlliOHC+z1GM1ySUI7zGQYzTj24KforKis3T6GTHhtcwNi0VeY7szLhbLSP4/SHaEdYun3KumeVME9J2JzgnnQSrCJpVhXykBQd1sqza37GGIwC3IviPM/s9Qq1rMqnwEv+XdSuOVK+0wyY3tBOMZxUfshlguOvIY3xt4rlgLOLNDmhkanD/jbzP7HA0nbsE0bfcK3gsRw0rFW9SeIR2/Ok+MyW4caNYtGJ57ve5LwXv0Vzet8YR9miao937axW1qcmX9ehDuzrN6dXosnc5mv7dIxkCgUAgEAgEAoFAIAjBaFzq89XqDh4lKtVX86PeX5olNvR5nuSpmINv4OcodE3qN9BYW3auY2GlUjHvyfX/OvQ71XEu06VIt8E997kpqB+PsU7iJbgAxSJMKb4dDg8fuQc+fzY6s7XIX3EFPnm6V61WD7ucE80/mcbM3nMToFiEhptDYFgdHp7+pkfbTCuunYxkD5XnFCpaANdgEKvl4d7Ttu87OjjvD1PjyfxstZrP15D5alYEnuwp1BX6+KaKFKt71UHIF/8Y1pI6m+/eTOGRTCfmaJ7M24or8m4GhrH8qxwDMO9sRWvr38khVizvpf+AYyNpFVR7v9QbVSzvlX+/4x2ti3lmBevBUgSOr7+pXeWwyns2awK08pAqVofDt1/WPzqZ004j73jb+LdHFcug7+h6H+rxa1jRfnHlugArI1UEDevj76mQpj5nD6Hc0dGNZw/42XBoK4JADk9/RWGdvsADKcy6eJI+g8I7ezIfD1lFEMh/P33iYcDDKI59jLGG9agUXov55FSEgXz+wTVy9FKxDhRZ229u6FDcXQ0xoE11KsIa+fojsx4aPJ1BNogBQeso8ZxuEfM7bPIMwuhQhJInDz+sj2ys1Yq1uwjugVOsopanhr5xOasO3YqgtFa7P6dKmrvJimODGFC0BDf0gTf8Qop5Rv2GV7L/8AOKa2M9kyquDWLsDiqdGLqfluJknN7zKqbT5Wr132CrPch0rTB7i6ifwp5IWJFZv/txW27eDoccRSg5fHw720qlNCfLCtoG59oDp8zYf3SDPNInuQ77vs2/Q08Y8Ra/MgzlU5S9Tl+HMV4r+DyKdw+c80iJdaQoQoUCLY7bMW0B2qL+6//UU07X1wV63MatWHlxmUR84g3haeguqmmGNojlydPZtzY+5nihynF6TsOjWPE8FMWg594j3pb57C6qaSfAspx7HnxHMA1td1mR2R3wbsVKxXt+7IY8DiZaCCGbE5ej0xAdKILBzD2/nn1ZK7sZD64l+DQxdvu7W7Ei3XOagpn6rhAitH/OnoOjmIUHUtrlcrb2vHjQPlFsDW3cOr6N1+AZP7L93U9RWvL+QU0l0vNu3IydzSpfER+Xhp7lttx9G5xpnlSfP+ZmPFksu4UO3Hfr2P7uoyhxHrsJWaNUMbPLP7ojG8cgRbQrHJoCshm5//y2aD2cjTVtwwgbMWOjaePx2aS1eFuCmHWayI23w5+jKPn5wWcWwWG48pE9wuM+E8dQxQzZ4o9ssS4khfaFN/FV9LLTQcfffJ7JyFWU4kvfhm2K9oMr7yyjlM2z3XdEU0ylUuwDCy0cj53ERFcs3Ac0aC9okBP8vKIgzKfq8CsUEx9WLEitoHbMQAdu3l8JWR5ohdyCYkG+5j+812IXjuKSnx1OaqcoX/V/Kxbi0iK0v51Bwa8YYz30YY38PxXl+DLCOrUpKZ+PIP2uwSMI5P+jGJdB6Yx230ll/oUzns3r455D8nsU5dr1ZHuJBXNwUmUkv1pRlmvyNvWI5EO3bJXXr1SUO53C8f87y/ZHez0p45bnixRrwM57PHi7GOPXPlyAbKc/qQifdF843nrR9EF7OP2XBV1l+2OKCTBMje8PfkrJ9GVz9tTPwIRyGz1+KlwRPisNDsFvjyMd5PshGJuzwVv3MQPHPnAWlbUsbdDUI9tOyf39xeQzs+atYmzGZ2AGeNo9SaTYcCZqt93TN/hg9N9qJhAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAi2xH8mjwi+FGSmewAAAABJRU5ErkJggg=="
+      "https://static.macupdate.com/products/49585/l/amazon-music-logo.webp?v=1581950120"
   },
   YOUTUBE_MUSIC: {
     subscriptionBrandId: "YOUTUBE_MUSIC",
     type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.name,
     name: "YouTube Music",
     logo:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Youtube_Music_logo.svg/1200px-Youtube_Music_logo.svg.png"
+      "https://lh3.googleusercontent.com/proxy/zs2U3TnbJA8DnAQpMC7JWdGklD67aGaz3CtEp4xEWxxwQjpnKjQGEccko5n43SEaN-JuHIvErZO04R49l9uk-TbBCxQLrD2I5Dk9Ga2c-aeWDoumMra76PvDAe8c6d6nR9ck292nkw"
   }
 };
 
@@ -163,7 +162,6 @@ const mobileSubscriptionBrandIds = [
   SUBSCRIPTION.TMOBILE_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.ATT_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.METRO_MOBILE.subscriptionBrandId,
-  SUBSCRIPTION.US_MOBILE_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.CRICKET_MOBILE.subscriptionBrandId
 ];
 
