@@ -50,7 +50,8 @@ body {
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
-  background-color: #e8e8e8;
+  background-color: #efefef;
+  padding: 20px;
 }
 
 .sign-up-container {
@@ -76,7 +77,6 @@ body {
   box-shadow: 5px 5px 10px #cccccc;
   padding: 24px;
   border-radius: 10px;
-  margin: 20px 50px 20px 20px;
   background-color: #ffffff;
 }
 
@@ -373,8 +373,8 @@ input[disabled] {
   position: relative;
   background-color: #ffffff;
   border-radius: 10px;
-  margin: 20px;
-  box-shadow: 0px 0px 5px #cccccc;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 5px #d8d8d8;
 }
 
 .search-text-input {
@@ -407,16 +407,40 @@ input[disabled] {
   max-width: 800px;
 }
 
-.subscription-logo {
+.create-listing-subscription-logo {
   max-height: 50px;
   max-width: 300px;
   margin-left: 50px;
 }
 
 .subscription-card {
+  display: flex;
+  flex-direction: row;
   background-color: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px #cccccc;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #d8d8d8;
   width: 500px;
+  margin-top: 20px;
+}
+
+.subscription-card-subscription-container {
+  height: 50px;
+  width: 200px;
+}
+
+.subscription-card-subscription-logo {
+  max-height: 50px;
+  max-width: 200px;
+}
+
+.subscription-card-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.subscription-card-info-name {
+  font-size: 18px;
+  font-weight: 600;
 }

@@ -32,7 +32,23 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
 
   const { subscriptionBrand, listingDescription } = subscription;
 
-  return <div className="subscription-card">{subscriptionBrand.name}</div>;
+  return (
+    <div className="subscription-card">
+      <div className="subscription-card-subscription-container">
+        <img
+          alt="Subscription logo"
+          className="subscription-card-subscription-logo"
+          src={subscriptionBrand.logo}
+        />
+      </div>
+      <div className="subscription-card-info">
+        <div className="subscription-card-info-name">
+          {subscriptionBrand.name}
+        </div>
+        <div>{listingDescription}</div>
+      </div>
+    </div>
+  );
 };
 
 const SearchCanvas = (props: ISearchCanvasProps) => {

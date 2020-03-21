@@ -103,7 +103,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
       <form
         className="form-container"
         onSubmit={handleSubmit}
-        style={{ width: "45%" }}
+        style={{ width: "45%", minWidth: 800 }}
       >
         <h2 className="form-header">Create Listing</h2>
 
@@ -122,7 +122,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
           <img
             alt="Subscription logo"
-            className="subscription-logo"
+            className="create-listing-subscription-logo"
             src={subscriptionBrandLogo}
           />
         </div>
