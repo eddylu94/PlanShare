@@ -330,7 +330,8 @@ export const createSubscription = (
       Object.assign(subscriptionData, {
         userId: findRes._id,
         firstName,
-        organization
+        organization,
+        createdDate: new Date()
       });
 
       const dbo = db.db(DATABASE_NAME);

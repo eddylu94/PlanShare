@@ -23,6 +23,7 @@ export interface ISubscriptionData {
   userId: string;
   firstName: string;
   organization: IOrganization;
+  createdDate: string;
 }
 
 interface ISearchCanvasProps {
@@ -36,8 +37,39 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
     subscriptionBrand,
     listingDescription,
     firstName,
-    organization
+    organization,
+    createdDate
   } = subscription;
+
+  const getDaysAgoString = (d: Date) => {
+    const differenceInMilliseconds = new Date().getTime() - d.getTime();
+
+    const differenceInMinutes = Math.floor(
+      differenceInMilliseconds / 1000 / 60
+    );
+
+    if (differenceInMinutes === 0) {
+      return "Just posted";
+    } else if (differenceInMinutes < 60) {
+      return `${differenceInMinutes} min ago`;
+    } else {
+      const differenceInHours = Math.floor(differenceInMinutes / 60);
+
+      if (differenceInHours === 1) {
+        return "1 hour ago";
+      } else if (differenceInHours < 24) {
+        return `${differenceInHours} hours ago`;
+      } else {
+        const differenceInDays = Math.floor(differenceInHours / 24);
+
+        if (differenceInDays === 1) {
+          return "1 day ago";
+        } else {
+          return `${differenceInDays} days ago`;
+        }
+      }
+    }
+  };
 
   return (
     <div className="subscription-card">
@@ -65,6 +97,9 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
             src={organization.logo}
           />
         </div>
+      </div>
+      <div className="subscription-card-date">
+        {getDaysAgoString(new Date(createdDate))}
       </div>
     </div>
   );
