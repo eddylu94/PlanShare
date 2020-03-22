@@ -163,6 +163,10 @@ const CreateListingProviderWithContext = (props: {
 
   const handleSubmitResponseHandler = (data: any) => {
     console.log(data);
+
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      history.push("/search");
+    }
   };
 
   const handleSubmitErrorHandler = (err: any) => {

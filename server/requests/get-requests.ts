@@ -194,6 +194,7 @@ export const getSubscriptions = (
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
             .find({ "organization.organizationId": organizationId })
+            .sort({ createdDate: -1 })
             .toArray()
             .then(findRes => {
               if (!findRes) {
