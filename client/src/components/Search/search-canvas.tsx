@@ -98,8 +98,18 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
           />
         </div>
       </div>
-      <div className="subscription-card-date">
-        {getDaysAgoString(new Date(createdDate))}
+      <div className="subscription-card-date-and-people">
+        <div className="subscription-card-date">
+          {getDaysAgoString(new Date(createdDate))}
+        </div>
+        <div className="subscription-card-people">
+          <img
+            alt="Number of people"
+            className="subscription-card-people-icon"
+            src="/people_icon.png"
+          />
+          {subscription.numberOfPeople}
+        </div>
       </div>
     </div>
   );

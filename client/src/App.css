@@ -511,13 +511,32 @@ input[disabled] {
   margin-left: 10px;
 }
 
-.subscription-card-date {
+.subscription-card-date-and-people {
+  margin-left: 20px;
   font-size: 14px;
   color: #686868;
-  margin-left: 20px;
-  min-width: 100px;
-  width: 100px;
+  min-width: 110px;
+  width: 110px;
+}
+
+.subscription-card-date {
   text-align: end;
+}
+
+.subscription-card-people {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 8px;
+  line-height: 20px;
+}
+
+.subscription-card-people-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+  margin-right: 5px;
 }
 
 .profile-container {
