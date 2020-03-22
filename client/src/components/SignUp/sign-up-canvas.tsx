@@ -69,7 +69,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
         value={value}
         onChange={handleInputChange}
       />
-      {isValid ? <ValidIcon /> : <InvalidIcon />}
+      {/* {isValid ? <ValidIcon /> : <InvalidIcon />} */}
     </div>
   );
 
@@ -89,7 +89,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
         <form
           className="form-container"
           onSubmit={handleSubmit}
-          style={{ width: "45%" }}
+          // style={{ width: "45%" }}
         >
           {isTermsOfUseDialogDisplayed ? (
             <TermsOfUse
