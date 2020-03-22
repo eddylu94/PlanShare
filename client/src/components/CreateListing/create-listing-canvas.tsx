@@ -100,7 +100,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   };
 
   return (
-    <div className="page-container" style={{ alignItems: "center" }}>
+    <div className="page-container">
       <form
         className="form-container"
         onSubmit={handleSubmit}

@@ -22,32 +22,58 @@ const NavBarWithContext = (props: {
     localStorage.setItem("auth", "");
 
     event.preventDefault();
-    history.push("/");
+    history.push("/login");
   };
 
-  const navBarLinks = [
-    <Link to="/">Home</Link>,
-    <Link to="/create">Create new listing</Link>
-  ];
-
   const user = userData?.user;
-  const additionalLinks =
-    user?.auth && user?.userId
-      ? [
-          <Link to="/profile">Profile</Link>,
-          <Link to="/logout" onClick={logoutHandler}>
-            Logout
-          </Link>
-        ]
-      : [<Link to="/login">Log In</Link>];
+  const isUser = user?.auth && user?.userId;
 
-  const navBarListItems = navBarLinks
-    .concat(additionalLinks)
-    .map((link, i) => <li key={"nav-bar-item-" + i}>{link}</li>);
+  const navBarLinks = [];
+
+  if (isUser) {
+    navBarLinks.push(<Link to="/">Home</Link>);
+    navBarLinks.push(<Link to="/create">Create new listing</Link>);
+  }
+
+  const navBarListItems = navBarLinks.map((link, i) => (
+    <li key={"nav-bar-item-" + i}>{link}</li>
+  ));
 
   return (
     <nav className="navbar">
       <ul>{navBarListItems}</ul>
+      <ul>
+        <li>
+          {isUser ? (
+            <Link to="/logout" onClick={logoutHandler}>
+              Logout
+            </Link>
+          ) : (
+            <Link to="/login">Log In</Link>
+          )}
+        </li>
+        <li>
+          {isUser ? (
+            <Link
+              to="/profile"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                padding: "0 16px",
+                textDecoration: "none"
+              }}
+            >
+              <img
+                alt="Profile"
+                className="nav-bar-profile-picture"
+                src="/profile_picture_placeholder.png"
+              />
+              <span className="navbar-first-name">Eddy</span>
+            </Link>
+          ) : null}
+        </li>
+      </ul>
     </nav>
   );
 };
