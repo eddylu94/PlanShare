@@ -1,4 +1,5 @@
 import React from "react";
+import { IOrganization } from "../../utils/utils";
 
 interface IOrganizationSelection {
   domain: string;
@@ -19,8 +20,9 @@ export interface ISubscriptionData {
   listingDescription: string;
   numberOfPeople: number;
   price: number;
-  organizationSelection: IOrganizationSelection;
   userId: string;
+  firstName: string;
+  organization: IOrganization;
 }
 
 interface ISearchCanvasProps {
@@ -30,7 +32,12 @@ interface ISearchCanvasProps {
 const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
   const { subscription } = props;
 
-  const { subscriptionBrand, listingDescription } = subscription;
+  const {
+    subscriptionBrand,
+    listingDescription,
+    firstName,
+    organization
+  } = subscription;
 
   return (
     <div className="subscription-card">
@@ -43,7 +50,21 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
         <div className="subscription-card-info-name">
           {subscriptionBrand.name}
         </div>
-        <div>{listingDescription}</div>
+        <div className="subscription-card-description">
+          {listingDescription}
+        </div>
+        <div className="subscription-card-author">
+          <div>
+            Posted by{" "}
+            <span className="subscription-card-first-name">{firstName}</span> at{" "}
+            {organization.name}
+          </div>
+          <img
+            alt="Organization logo"
+            className="subscription-card-organization-logo"
+            src={organization.logo}
+          />
+        </div>
       </div>
     </div>
   );

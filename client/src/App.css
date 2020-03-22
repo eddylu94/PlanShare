@@ -473,11 +473,40 @@ input[disabled] {
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  min-width: 0;
+}
+
+.subscription-card-description {
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.subscription-card-author {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  color: #686868;
+  font-size: 14px;
 }
 
 .subscription-card-info-name {
+  display: flex;
   font-size: 18px;
   font-weight: 600;
+}
+
+.subscription-card-first-name {
+  font-weight: 600;
+}
+
+.subscription-card-organization-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 10px;
 }
 
 .profile-container {
