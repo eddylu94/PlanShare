@@ -170,6 +170,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    console.log(organizationSelection);
     const postRequestData = {
       subscriptionData: {
         subscriptionBrand: subscriptionBrandSelection,
@@ -177,7 +178,7 @@ const CreateListingProviderWithContext = (props: {
         listingDescription,
         numberOfPeople,
         price,
-        organizationDomain: organizationSelection.domain
+        organizationId: organizationSelection.organizationId
       }
     };
 

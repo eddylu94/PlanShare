@@ -92,3 +92,5 @@ export const retrieveOrganizationByDomain = (domain: string) => {
     .map(id => ORGANIZATION[id])
     .find(organization => organization.domains.includes(domain));
 };
+
+export const retrieveOrganizationById = (id: string) => ORGANIZATION[id];

@@ -37,25 +37,31 @@ app.use((req, res, next) => {
 const port = process.env.PORT || 36322;
 app.set("port", port);
 
-const requestBuilder = (path: string, request: any) => {
+const getRequestBuilder = (path: string, request: any) => {
   return app.get(path, (postReq, postRes) =>
     request(mongoClient, postReq, postRes)
   );
 };
 
+const postRequestBuilder = (path: string, request: any) => {
+  return app.post(path, (postReq, postRes) =>
+    request(mongoClient, postReq, postRes)
+  );
+};
+
 // GET requests
-requestBuilder("/getvalidationemail", getValidationEmail);
-requestBuilder("/getorganizations", getOrganizations);
-requestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
-requestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
-requestBuilder("/getsubscriptions", getSubscriptions);
-requestBuilder("/getprofile", getProfile);
+getRequestBuilder("/getvalidationemail", getValidationEmail);
+getRequestBuilder("/getorganizations", getOrganizations);
+getRequestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
+getRequestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
+getRequestBuilder("/getsubscriptions", getSubscriptions);
+getRequestBuilder("/getprofile", getProfile);
 
 // POST requests
-requestBuilder("/signup", signUp);
-requestBuilder("/login", login);
-requestBuilder("/verifyemail", verifyEmail);
-requestBuilder("/createsubscription", createSubscription);
+postRequestBuilder("/signup", signUp);
+postRequestBuilder("/login", login);
+postRequestBuilder("/verifyemail", verifyEmail);
+postRequestBuilder("/createsubscription", createSubscription);
 
 app.listen(app.get("port"), () => {
   console.log(`Server is running on Port ${port}...`);

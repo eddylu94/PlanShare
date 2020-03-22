@@ -1,6 +1,7 @@
 import mongodb from "mongodb";
 
 import { EMAIL_SERVICE_EMAIL, transporter } from "./../email-service";
+import { retrieveOrganizationById } from "./../organizations";
 import {
   IPendingEmail,
   authenticate,
@@ -318,9 +319,19 @@ export const createSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
+      const { firstName } = findRes;
+
       const { subscriptionData } = obj;
 
-      Object.assign(subscriptionData, { userId: findRes._id });
+      const organization = retrieveOrganizationById(
+        subscriptionData.organizationId
+      );
+
+      Object.assign(subscriptionData, {
+        userId: findRes._id,
+        firstName,
+        organization
+      });
 
       const dbo = db.db(DATABASE_NAME);
 

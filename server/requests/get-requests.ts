@@ -188,11 +188,12 @@ export const getSubscriptions = (
 
       const promises = emails
         .map(email => getDomain(email))
-        .map(domain => {
-          console.log(domain);
+        .map(domain => retrieveOrganizationByDomain(domain))
+        .map((organization: any) => {
+          const organizationId = organization.organizationId;
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find({ organizationDomain: domain })
+            .find({ "organization.organizationId": organizationId })
             .toArray()
             .then(findRes => {
               if (!findRes) {
