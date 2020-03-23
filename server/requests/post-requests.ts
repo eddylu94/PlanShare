@@ -260,7 +260,7 @@ export const verifyEmail = (
         const pendingEmail = pendingEmails.find(
           pendingEmail => pendingEmail.email === email
         );
-        const confirmationCode = pendingEmail?.confirmationCode;
+        const confirmationCode = pendingEmail && pendingEmail.confirmationCode;
 
         if (!confirmationCode) {
           console.log("Unable to find pending account for validation");
