@@ -128,18 +128,29 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
   });
 
   return (
-    <div className="page-container">
-      <div className="search-bar">
-        <input
-          type="text"
-          className="search-text-input"
-          placeholder="Search for a subscription"
-        />
-        <button className="search-submit-button">
-          <img alt="Search" className="search-icon" src="/search_icon.png" />
-        </button>
+    <div className="search-panes">
+      <div className="filter-pane">Filters</div>
+      <div className="results-pane">
+        <div className="search-bar-container">
+          <div className="search-bar">
+            <input
+              type="text"
+              className="search-text-input"
+              placeholder="Search for a subscription"
+            />
+            <button className="search-submit-button">
+              <img
+                alt="Search"
+                className="search-icon"
+                src="/search_icon.png"
+              />
+            </button>
+          </div>
+        </div>
+        <div className="search-subscription-cards-container">
+          {subscriptionCards}
+        </div>
       </div>
-      {subscriptionCards}
     </div>
   );
 };

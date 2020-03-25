@@ -17,7 +17,7 @@ body {
 
 .navbar {
   box-shadow: 0 5px 5px #666666;
-  z-index: 1;
+  z-index: 300;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -395,16 +395,55 @@ input[disabled] {
   width: 120px;
 }
 
+.search-panes {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  background-color: #efefef;
+  overflow-y: auto;
+}
+
+.filter-pane {
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: #ffffff;
+  max-width: 250px;
+  width: 200px;
+}
+
+.results-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  /* padding: 20px 30px; */
+  flex-grow: 1;
+}
+
+.search-bar-container {
+  position: fixed;
+  display: flex;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  background-color: #efefef;
+  padding: 20px 30px 0 30px;
+  box-sizing: border-box;
+  height: 80px;
+  box-shadow: 0 5px 5px #efefef;
+}
+
 .search-bar {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 600px;
   height: 50px;
-  position: relative;
   background-color: #ffffff;
   border-radius: 25px;
-  margin-bottom: 20px;
   box-shadow: 0px 0px 10px #d8d8d8;
 }
 
@@ -428,7 +467,7 @@ input[disabled] {
   justify-content: center;
   height: 50px;
   line-height: 50px;
-  right: 10px;
+  right: 40px;
   background-color: transparent;
   border: none;
   font-size: 18px;
@@ -438,6 +477,11 @@ input[disabled] {
   width: 30px;
   height: 30px;
   opacity: 0.7;
+}
+
+.search-subscription-cards-container {
+  margin-top: 70px;
+  padding: 0 30px 30px 30px;
 }
 
 .create-listing-form {
@@ -476,7 +520,7 @@ input[disabled] {
   border-radius: 10px;
   box-shadow: 0px 0px 10px #d8d8d8;
   width: 600px;
-  margin-top: 20px;
+  margin-top: 30px;
   box-sizing: border-box;
 }
 
