@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import { History } from "history";
 
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
@@ -11,10 +13,17 @@ import {
 
 interface ISearchProviderProps {
   userData: IUserContext;
+  history: History;
 }
 
 const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const _userData = props.userData;
+
+  const { history } = props;
+
+  if (!_userData.user?.userId) {
+    history.push("/signup");
+  }
 
   const [subscriptionData, setSubscriptionData] = useState([]);
 
@@ -147,10 +156,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   );
 };
 
-const SearchProvider = () => (
+const SearchProvider = (props: { history: History }) => (
   <UserDataContext.Consumer>
-    {userData => <SearchProviderWithContext userData={userData} />}
+    {userData => (
+      <SearchProviderWithContext userData={userData} history={props.history} />
+    )}
   </UserDataContext.Consumer>
 );
 
-export default SearchProvider;
+export default withRouter(SearchProvider);

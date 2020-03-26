@@ -17,6 +17,10 @@ const SignUpProviderWithContext = (props: {
 
   const { history } = props;
 
+  if (_userData.user?.userId) {
+    history.push("/search");
+  }
+
   const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setIsFirstNameValid] = useState(false);
 

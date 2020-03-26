@@ -23,7 +23,7 @@ const App = () => (
           <NavBar />
           <Switch>
             <Route exact path="/">
-              <Search />
+              <SignUp />
             </Route>
             <Route path="/signup">
               <SignUp />

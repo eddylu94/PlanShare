@@ -17,6 +17,10 @@ const LoginProviderWithContext = (props: {
 
   const { history } = props;
 
+  if (_userData.user?.userId) {
+    history.push("/search");
+  }
+
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
 
@@ -62,7 +66,7 @@ const LoginProviderWithContext = (props: {
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
 
-        history.push("/");
+        history.push("/search");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
