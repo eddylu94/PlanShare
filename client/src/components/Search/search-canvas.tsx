@@ -6,6 +6,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
+import Slider from "@material-ui/core/Slider";
 
 interface ISubscription {
   name: string;
@@ -149,7 +151,11 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
                 toggleFiltersOrganization(e, organization.organizationId)
               }
               name="gilad"
-              style={{ padding: 0, margin: "5px 5px 5px 20px" }}
+              style={{
+                padding: 0,
+                margin: "5px 5px 5px 20px",
+                color: "#673ab7"
+              }}
             />
           }
           label={organization.name}
@@ -157,6 +163,21 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       );
     }
   );
+
+  const marks = [
+    {
+      value: 0,
+      label: "0"
+    },
+    {
+      value: 30,
+      label: "30"
+    }
+  ];
+
+  function valuetext(value: number) {
+    return `${value}°C`;
+  }
 
   return (
     <div className="search-panes">
@@ -166,9 +187,29 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             component="legend"
             style={{ marginBottom: 12, color: "#686868" }}
           >
-            Subscription Category
+            Organization
           </FormLabel>
           <FormGroup>{organizationCheckboxes}</FormGroup>
+        </FormControl>
+
+        <FormControl component="fieldset" style={{ marginTop: 20 }}>
+          <FormLabel
+            component="legend"
+            style={{ marginBottom: 12, color: "#686868" }}
+          >
+            Days Active
+          </FormLabel>
+          <Slider
+            style={{ marginLeft: 12, width: 180, color: "#673ab7" }}
+            defaultValue={30}
+            getAriaValueText={valuetext}
+            aria-labelledby="discrete-slider-custom"
+            step={1}
+            valueLabelDisplay="auto"
+            marks={marks}
+            min={0}
+            max={30}
+          />
         </FormControl>
       </div>
       <div className="results-pane">
