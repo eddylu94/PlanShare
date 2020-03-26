@@ -1,10 +1,11 @@
 import React from "react";
-import { IOrganization } from "../../utils/utils";
+import { IOrganization, IFiltersOrganization } from "../../utils/utils";
 
-interface IOrganizationSelection {
-  domain: string;
-  name: string;
-}
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
 interface ISubscription {
   name: string;
@@ -28,6 +29,11 @@ export interface ISubscriptionData {
 
 interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
+  filterOrganizations: IFiltersOrganization[];
+  toggleFiltersOrganization: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    organizationId: string
+  ) => void;
 }
 
 const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
@@ -116,7 +122,11 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
 };
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
-  const { subscriptionData } = props;
+  const {
+    subscriptionData,
+    filterOrganizations,
+    toggleFiltersOrganization
+  } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
     return (
@@ -127,9 +137,40 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     );
   });
 
+  const organizationCheckboxes = filterOrganizations.map(
+    (organization, index) => {
+      return (
+        <FormControlLabel
+          key={"filters-organization-" + index}
+          control={
+            <Checkbox
+              checked={organization.isSelected}
+              onChange={e =>
+                toggleFiltersOrganization(e, organization.organizationId)
+              }
+              name="gilad"
+              style={{ padding: 0, margin: "5px 5px 5px 20px" }}
+            />
+          }
+          label={organization.name}
+        />
+      );
+    }
+  );
+
   return (
     <div className="search-panes">
-      <div className="filter-pane">Filters</div>
+      <div className="filter-pane">
+        <FormControl component="fieldset">
+          <FormLabel
+            component="legend"
+            style={{ marginBottom: 12, color: "#686868" }}
+          >
+            Subscription Category
+          </FormLabel>
+          <FormGroup>{organizationCheckboxes}</FormGroup>
+        </FormControl>
+      </div>
       <div className="results-pane">
         <div className="search-bar-container">
           <div className="search-bar">

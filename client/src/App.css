@@ -409,8 +409,14 @@ input[disabled] {
   flex-direction: column;
   flex-grow: 1;
   background-color: #ffffff;
+  min-width: 250px;
   max-width: 250px;
   width: 200px;
+  margin: 20px 10px 20px 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px #d8d8d8;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .results-pane {
@@ -430,9 +436,9 @@ input[disabled] {
   flex-direction: row;
   flex-grow: 1;
   background-color: #efefef;
-  padding: 20px 30px 0 30px;
+  padding: 20px 20px 0 20px;
   box-sizing: border-box;
-  height: 80px;
+  height: 72px;
   box-shadow: 0 5px 5px #efefef;
 }
 
@@ -441,7 +447,7 @@ input[disabled] {
   flex-direction: row;
   align-items: center;
   width: 600px;
-  height: 50px;
+  height: 42px;
   background-color: #ffffff;
   border-radius: 25px;
   box-shadow: 0px 0px 10px #d8d8d8;
@@ -451,13 +457,13 @@ input[disabled] {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  height: 50px;
-  line-height: 50px;
+  height: 42px;
+  line-height: 42px;
   background-color: transparent;
   border: none;
   box-sizing: border-box;
   padding: 0 50px 0 20px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .search-submit-button {
@@ -474,14 +480,14 @@ input[disabled] {
 }
 
 .search-icon {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   opacity: 0.7;
 }
 
 .search-subscription-cards-container {
-  margin-top: 70px;
-  padding: 0 30px 30px 30px;
+  margin-top: 62px;
+  padding: 0 20px 30px 20px;
 }
 
 .create-listing-form {
@@ -520,7 +526,7 @@ input[disabled] {
   border-radius: 10px;
   box-shadow: 0px 0px 10px #d8d8d8;
   width: 600px;
-  margin-top: 30px;
+  margin-top: 20px;
   box-sizing: border-box;
 }
 

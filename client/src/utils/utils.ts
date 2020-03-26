@@ -27,6 +27,12 @@ export interface IProfileOrganizationData {
   organization: IOrganization;
 }
 
+export interface IFiltersOrganization {
+  organizationId: string;
+  name: string;
+  isSelected: boolean;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

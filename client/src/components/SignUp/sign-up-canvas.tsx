@@ -22,13 +22,13 @@ interface ISignUpCanvasProps {
   setIsTermsOfUseDialogDisplayed: (value: boolean) => void;
 }
 
-const ValidIcon = () => (
-  <span className="validity-icon valid-icon">&#10004;</span>
-);
+// const ValidIcon = () => (
+//   <span className="validity-icon valid-icon">&#10004;</span>
+// );
 
-const InvalidIcon = () => (
-  <span className="validity-icon invalid-icon">&#10006;</span>
-);
+// const InvalidIcon = () => (
+//   <span className="validity-icon invalid-icon">&#10006;</span>
+// );
 
 const SignUpCanvas = (props: ISignUpCanvasProps) => {
   const {
