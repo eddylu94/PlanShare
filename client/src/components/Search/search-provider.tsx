@@ -4,7 +4,10 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE } from "../../utils/constants";
-import { IFiltersOrganization } from "./../../utils/utils";
+import {
+  IFiltersOrganization,
+  IFiltersSubscriptionCategory
+} from "./../../utils/utils";
 
 interface ISearchProviderProps {
   userData: IUserContext;
@@ -18,6 +21,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const [filtersOrganizations, setFiltersOrganizations] = useState(
     [] as IFiltersOrganization[]
   );
+
+  const [
+    filtersSubscriptionCategories,
+    setFiltersSubscriptionCategories
+  ] = useState([] as IFiltersSubscriptionCategory[]);
 
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
@@ -83,17 +91,58 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersOrganizations(list);
   };
 
+  const toggleFiltersSubscriptionCategory = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    subscriptionCategoryId: string
+  ) => {
+    const list = filtersSubscriptionCategories.slice(0);
+    let category = filtersSubscriptionCategories.find(
+      category => category.subscriptionCategoryId === subscriptionCategoryId
+    ) as IFiltersSubscriptionCategory;
+    Object.assign(category, { isSelected: !category.isSelected });
+    setFiltersSubscriptionCategories(list);
+  };
+
+  const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const body = data.body;
+
+      const subscriptionCategories = body.subscriptionCategories as IFiltersSubscriptionCategory[];
+      const filterSubscriptionCategoriesData = subscriptionCategories.map(
+        category => Object.assign(category, { isSelected: true })
+      );
+      setFiltersSubscriptionCategories(filterSubscriptionCategoriesData);
+    }
+  };
+
+  const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const retrieveSubscriptionCategories = () => {
+    baseGetRequest(
+      "getsubscriptioncategories",
+      [],
+      retrieveSubscriptionCategoriesResponseHandler,
+      retrieveSubscriptionCategoriesErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     retrieveSubscriptions();
     retrieveOrganizations();
+    retrieveSubscriptionCategories();
     // eslint-disable-next-line
   }, []);
 
   return (
     <SearchCanvas
       subscriptionData={subscriptionData}
-      filterOrganizations={filtersOrganizations}
+      filtersOrganizations={filtersOrganizations}
+      filtersSubscriptionCategories={filtersSubscriptionCategories}
       toggleFiltersOrganization={toggleFiltersOrganization}
+      toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
     />
   );
 };

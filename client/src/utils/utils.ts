@@ -33,6 +33,12 @@ export interface IFiltersOrganization {
   isSelected: boolean;
 }
 
+export interface IFiltersSubscriptionCategory {
+  subscriptionCategoryId: string;
+  name: string;
+  isSelected: boolean;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

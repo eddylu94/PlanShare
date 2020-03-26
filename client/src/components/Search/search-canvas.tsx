@@ -1,12 +1,15 @@
 import React from "react";
-import { IOrganization, IFiltersOrganization } from "../../utils/utils";
+import {
+  IOrganization,
+  IFiltersOrganization,
+  IFiltersSubscriptionCategory
+} from "../../utils/utils";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 
 interface ISubscription {
@@ -31,10 +34,15 @@ export interface ISubscriptionData {
 
 interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
-  filterOrganizations: IFiltersOrganization[];
+  filtersOrganizations: IFiltersOrganization[];
+  filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   toggleFiltersOrganization: (
     event: React.ChangeEvent<HTMLInputElement>,
     organizationId: string
+  ) => void;
+  toggleFiltersSubscriptionCategory: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    subscriptionCategoryId: string
   ) => void;
 }
 
@@ -126,8 +134,10 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
 const SearchCanvas = (props: ISearchCanvasProps) => {
   const {
     subscriptionData,
-    filterOrganizations,
-    toggleFiltersOrganization
+    filtersOrganizations,
+    filtersSubscriptionCategories,
+    toggleFiltersOrganization,
+    toggleFiltersSubscriptionCategory
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -139,7 +149,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     );
   });
 
-  const organizationCheckboxes = filterOrganizations.map(
+  const organizationCheckboxes = filtersOrganizations.map(
     (organization, index) => {
       return (
         <FormControlLabel
@@ -147,10 +157,11 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           control={
             <Checkbox
               checked={organization.isSelected}
+              // TODO: Remove lambda expression
               onChange={e =>
                 toggleFiltersOrganization(e, organization.organizationId)
               }
-              name="gilad"
+              name={organization.name}
               style={{
                 padding: 0,
                 margin: "5px 5px 5px 20px",
@@ -159,6 +170,35 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             />
           }
           label={organization.name}
+        />
+      );
+    }
+  );
+
+  const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
+    (category, index) => {
+      return (
+        <FormControlLabel
+          key={"filters-category-" + index}
+          control={
+            <Checkbox
+              checked={category.isSelected}
+              // TODO: Remove lambda expression
+              onChange={e =>
+                toggleFiltersSubscriptionCategory(
+                  e,
+                  category.subscriptionCategoryId
+                )
+              }
+              name={category.name}
+              style={{
+                padding: 0,
+                margin: "5px 5px 5px 20px",
+                color: "#673ab7"
+              }}
+            />
+          }
+          label={category.name}
         />
       );
     }
@@ -190,6 +230,16 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             Organization
           </FormLabel>
           <FormGroup>{organizationCheckboxes}</FormGroup>
+        </FormControl>
+
+        <FormControl component="fieldset" style={{ marginTop: 20 }}>
+          <FormLabel
+            component="legend"
+            style={{ marginBottom: 12, color: "#686868" }}
+          >
+            Subscription Category
+          </FormLabel>
+          <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
         </FormControl>
 
         <FormControl component="fieldset" style={{ marginTop: 20 }}>
