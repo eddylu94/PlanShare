@@ -78,7 +78,7 @@ body {
   align-items: center;
 }
 
-.signup-form-submit-button {
+.form-submit-button {
   margin-top: 10px;
   background-color: #6c5dbdee;
   border: none;
@@ -90,7 +90,7 @@ body {
   cursor: pointer;
 }
 
-.signup-form-text-input {
+.form-text-input {
   background-color: #6c5dbd15;
   display: flex;
   flex-grow: 1;
@@ -115,7 +115,7 @@ body {
   box-sizing: border-box;
 }
 
-.signup-form-header {
+.form-header {
   margin: 10px 0 20px 0;
   color: #333333;
   font-size: 28px;
@@ -141,13 +141,6 @@ body {
   border-radius: 10px;
   background-color: #ffffff;
   box-sizing: border-box;
-}
-
-.form-header {
-  margin: 10px 0;
-  color: #333333;
-  font-size: 28px;
-  font-weight: 500;
 }
 
 .form-subheader {
@@ -187,18 +180,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.form-text-input {
-  display: flex;
-  flex-grow: 1;
-  font-size: 18px;
-  line-height: 50px;
-  height: 50px;
-  border: 1px solid #d8d8d8;
-  border-radius: 3px;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 .form-text-area {
@@ -291,17 +272,6 @@ body {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
-}
-
-.form-submit-button {
-  border: none;
-  font-size: 18px;
-  line-height: 50px;
-  height: 50px;
-  border-radius: 8px;
-  background-color: #555555;
-  color: #ffffff;
-  cursor: pointer;
 }
 
 .form-submit-button :disabled,

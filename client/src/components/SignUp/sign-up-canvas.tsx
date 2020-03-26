@@ -62,7 +62,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     >
       <input
         key={"form-input-" + name}
-        className={"signup-form-text-input"}
+        className={"form-text-input"}
         name={name}
         type={type}
         placeholder={placeholder}
@@ -97,7 +97,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
             />
           ) : null}
-          <h2 className="signup-form-header">Sign Up</h2>
+          <h2 className="form-header">Sign Up</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.FIRST_NAME,
             "text",
@@ -147,7 +147,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             </span>
           </label>
           <input
-            className="signup-form-submit-button"
+            className="form-submit-button"
             type="submit"
             value="Submit"
             disabled={isFormDisabled}

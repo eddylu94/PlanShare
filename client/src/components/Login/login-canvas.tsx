@@ -32,7 +32,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
     >
       <input
         key={"form-input-" + name}
-        className={"signup-form-text-input"}
+        className={"form-text-input"}
         name={name}
         type={type}
         placeholder={placeholder}
@@ -50,7 +50,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
           onSubmit={handleSubmit}
           style={{ width: "45%" }}
         >
-          <h2 className="signup-form-header">Welcome back!</h2>
+          <h2 className="form-header">Welcome back!</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,
             "email",
@@ -64,7 +64,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
             pass
           )}
           <input
-            className="signup-form-submit-button"
+            className="form-submit-button"
             type="submit"
             value="Submit"
             disabled={isFormDisabled}
