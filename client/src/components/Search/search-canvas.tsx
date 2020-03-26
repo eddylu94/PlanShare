@@ -204,17 +204,6 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     }
   );
 
-  const marks = [
-    {
-      value: 0,
-      label: "0"
-    },
-    {
-      value: 30,
-      label: "30"
-    }
-  ];
-
   function valuetext(value: number) {
     return `${value}°C`;
   }
@@ -247,6 +236,35 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             component="legend"
             style={{ marginBottom: 12, color: "#686868" }}
           >
+            Group Size
+          </FormLabel>
+          <Slider
+            style={{ marginLeft: 12, width: 180, color: "#673ab7" }}
+            defaultValue={2}
+            getAriaValueText={valuetext}
+            aria-labelledby="discrete-slider-custom"
+            step={1}
+            valueLabelDisplay="auto"
+            marks={[
+              {
+                value: 0,
+                label: "0"
+              },
+              {
+                value: 10,
+                label: "10"
+              }
+            ]}
+            min={0}
+            max={10}
+          />
+        </FormControl>
+
+        <FormControl component="fieldset" style={{ marginTop: 20 }}>
+          <FormLabel
+            component="legend"
+            style={{ marginBottom: 12, color: "#686868" }}
+          >
             Days Active
           </FormLabel>
           <Slider
@@ -256,7 +274,16 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             aria-labelledby="discrete-slider-custom"
             step={1}
             valueLabelDisplay="auto"
-            marks={marks}
+            marks={[
+              {
+                value: 0,
+                label: "0"
+              },
+              {
+                value: 30,
+                label: "30"
+              }
+            ]}
             min={0}
             max={30}
           />
