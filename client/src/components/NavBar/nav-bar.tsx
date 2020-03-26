@@ -39,7 +39,7 @@ const NavBarWithContext = (props: {
     <li key={"nav-bar-item-" + i}>{link}</li>
   ));
 
-  return (
+  return isUser ? (
     <nav className="navbar">
       <ul>{navBarListItems}</ul>
       <ul>
@@ -75,7 +75,7 @@ const NavBarWithContext = (props: {
         </li>
       </ul>
     </nav>
-  );
+  ) : null;
 };
 
 const NavBar = (props: { history: History }) => (

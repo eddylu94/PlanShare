@@ -165,7 +165,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               style={{
                 padding: 0,
                 margin: "5px 5px 5px 20px",
-                color: "#673ab7"
+                color: "#6C5DBD"
               }}
             />
           }
@@ -194,7 +194,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               style={{
                 padding: 0,
                 margin: "5px 5px 5px 20px",
-                color: "#673ab7"
+                color: "#6C5DBD"
               }}
             />
           }
@@ -239,7 +239,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             Group Size
           </FormLabel>
           <Slider
-            style={{ marginLeft: 12, width: 180, color: "#673ab7" }}
+            style={{ marginLeft: 12, width: 180, color: "#6C5DBD" }}
             defaultValue={2}
             getAriaValueText={valuetext}
             aria-labelledby="discrete-slider-custom"
@@ -268,7 +268,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             Days Active
           </FormLabel>
           <Slider
-            style={{ marginLeft: 12, width: 180, color: "#673ab7" }}
+            style={{ marginLeft: 12, width: 180, color: "#6C5DBD" }}
             defaultValue={30}
             getAriaValueText={valuetext}
             aria-labelledby="discrete-slider-custom"

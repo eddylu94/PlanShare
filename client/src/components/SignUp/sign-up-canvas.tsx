@@ -62,7 +62,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     >
       <input
         key={"form-input-" + name}
-        className={"form-text-input"}
+        className={"signup-form-text-input"}
         name={name}
         type={type}
         placeholder={placeholder}
@@ -84,10 +84,10 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
       <div className="sign-up-container">
         <form
-          className="form-container"
+          className="signup-form-container"
           onSubmit={handleSubmit}
           // style={{ width: "45%" }}
         >
@@ -97,7 +97,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
             />
           ) : null}
-          <h2 className="form-header">Sign Up</h2>
+          <h2 className="signup-form-header">Sign Up</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.FIRST_NAME,
             "text",
@@ -147,7 +147,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             </span>
           </label>
           <input
-            className="form-submit-button"
+            className="signup-form-submit-button"
             type="submit"
             value="Submit"
             disabled={isFormDisabled}
