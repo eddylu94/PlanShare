@@ -12,6 +12,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Slider from "@material-ui/core/Slider";
 
+import SearchIcon from "./search_icon.svg";
+
 interface ISubscription {
   name: string;
   type: string;
@@ -154,6 +156,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       return (
         <FormControlLabel
           key={"filters-organization-" + index}
+          style={{ color: "#686868" }}
           control={
             <Checkbox
               checked={organization.isSelected}
@@ -180,6 +183,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       return (
         <FormControlLabel
           key={"filters-category-" + index}
+          style={{ color: "#686868" }}
           control={
             <Checkbox
               checked={category.isSelected}
@@ -214,7 +218,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
         <FormControl component="fieldset">
           <FormLabel
             component="legend"
-            style={{ marginBottom: 12, color: "#686868" }}
+            style={{ marginBottom: 12, color: "#6C5DBD" }}
           >
             Organization
           </FormLabel>
@@ -224,7 +228,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
         <FormControl component="fieldset" style={{ marginTop: 20 }}>
           <FormLabel
             component="legend"
-            style={{ marginBottom: 12, color: "#686868" }}
+            style={{ marginBottom: 12, color: "#6C5DBD" }}
           >
             Subscription Category
           </FormLabel>
@@ -234,7 +238,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
         <FormControl component="fieldset" style={{ marginTop: 20 }}>
           <FormLabel
             component="legend"
-            style={{ marginBottom: 12, color: "#686868" }}
+            style={{ marginBottom: 12, color: "#6C5DBD" }}
           >
             Group Size
           </FormLabel>
@@ -263,7 +267,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
         <FormControl component="fieldset" style={{ marginTop: 20 }}>
           <FormLabel
             component="legend"
-            style={{ marginBottom: 12, color: "#686868" }}
+            style={{ marginBottom: 12, color: "#6C5DBD" }}
           >
             Days Active
           </FormLabel>
@@ -301,7 +305,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               <img
                 alt="Search"
                 className="search-icon"
-                src="/search_icon.png"
+                src="/search_icon.svg"
               />
             </button>
           </div>
