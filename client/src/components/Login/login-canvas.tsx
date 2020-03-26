@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { FORM_INPUT_TYPE } from "./login-utils";
 
@@ -69,6 +70,9 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
             value="Submit"
             disabled={isFormDisabled}
           />
+          <Link className="signup-toggle" to="/signup">
+            Need to create an account? Sign up here
+          </Link>
         </form>
       </div>
     </div>

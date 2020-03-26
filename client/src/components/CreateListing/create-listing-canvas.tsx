@@ -64,7 +64,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     ));
     return (
       <select
-        className="form-text-input form-input"
+        className="form-text-input form-input select-input"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_TYPE}
         onChange={handleInputChange}
         value={subscriptionCategorySelection.subscriptionCategoryId}
@@ -89,7 +89,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     ));
     return (
       <select
-        className="form-text-input form-input"
+        className="form-text-input form-input select-input"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
         onChange={handleInputChange}
         value={subscriptionBrandSelection.subscriptionBrandId}
@@ -100,11 +100,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ alignItems: "center" }}>
       <form
         className="form-container"
         onSubmit={handleSubmit}
-        style={{ width: "45%", minWidth: 800 }}
+        style={{ width: "45%", minWidth: 600 }}
       >
         <h2 className="form-header">Create Listing</h2>
 
@@ -163,7 +163,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             </label>
 
             <select
-              className="form-text-input form-input"
+              className="form-text-input form-input select-input"
               style={{ maxWidth: 500 }}
             >
               {organizations.map((organization, i) => {

@@ -22,7 +22,7 @@ const NavBarWithContext = (props: {
     localStorage.setItem("auth", "");
 
     event.preventDefault();
-    history.push("/login");
+    history.push("/signup");
   };
 
   const user = userData?.user;

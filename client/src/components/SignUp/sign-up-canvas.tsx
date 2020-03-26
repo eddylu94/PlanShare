@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import TermsOfUse from "./../TermsOfUse/terms-of-use";
@@ -152,6 +153,9 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             value="Submit"
             disabled={isFormDisabled}
           />
+          <Link className="signup-toggle" to="/login">
+            Already have an account? Log in here
+          </Link>
         </form>
       </div>
     </div>

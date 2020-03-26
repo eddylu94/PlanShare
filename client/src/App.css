@@ -103,6 +103,11 @@ body {
   box-sizing: border-box;
 }
 
+.signup-toggle {
+  margin-top: 20px;
+  text-align: center;
+}
+
 .signup-form-container {
   display: flex;
   flex-direction: column;
@@ -291,6 +296,10 @@ input[disabled] {
   font-size: 12px;
   line-height: 12px;
   margin-left: 10px;
+}
+
+.select-input {
+  cursor: pointer;
 }
 
 .valid-icon {
@@ -490,7 +499,7 @@ input[disabled] {
   justify-content: center;
   height: 30px;
   line-height: 30px;
-  right: 40px;
+  right: 30px;
   background-color: transparent;
   border: none;
   font-size: 18px;
