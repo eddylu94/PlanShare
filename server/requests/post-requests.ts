@@ -334,6 +334,11 @@ export const createSubscription = (
         createdDate: new Date()
       });
 
+      Object.assign(subscriptionData, {
+        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
+        price: parseFloat(subscriptionData.price)
+      });
+
       const dbo = db.db(DATABASE_NAME);
 
       dbo

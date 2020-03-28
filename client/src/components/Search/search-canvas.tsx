@@ -12,8 +12,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Slider from "@material-ui/core/Slider";
 
-import SearchIcon from "./search_icon.svg";
-
 interface ISubscription {
   name: string;
   type: string;
@@ -38,6 +36,7 @@ interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
+  filtersGroupSize: number[];
   toggleFiltersOrganization: (
     event: React.ChangeEvent<HTMLInputElement>,
     organizationId: string
@@ -45,6 +44,10 @@ interface ISearchCanvasProps {
   toggleFiltersSubscriptionCategory: (
     event: React.ChangeEvent<HTMLInputElement>,
     subscriptionCategoryId: string
+  ) => void;
+  handleGroupSizeChange: (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
   ) => void;
 }
 
@@ -138,8 +141,10 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     subscriptionData,
     filtersOrganizations,
     filtersSubscriptionCategories,
+    filtersGroupSize,
     toggleFiltersOrganization,
-    toggleFiltersSubscriptionCategory
+    toggleFiltersSubscriptionCategory,
+    handleGroupSizeChange
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -244,22 +249,23 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </FormLabel>
           <Slider
             style={{ marginLeft: 12, width: 180, color: "#6C5DBD" }}
-            defaultValue={2}
             getAriaValueText={valuetext}
-            aria-labelledby="discrete-slider-custom"
+            aria-labelledby="range-slider"
             step={1}
             valueLabelDisplay="auto"
+            value={filtersGroupSize}
+            onChange={handleGroupSizeChange}
             marks={[
               {
-                value: 0,
-                label: "0"
+                value: 2,
+                label: "2"
               },
               {
                 value: 10,
                 label: "10"
               }
             ]}
-            min={0}
+            min={2}
             max={10}
           />
         </FormControl>
@@ -305,7 +311,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               <img
                 alt="Search"
                 className="search-icon"
-                src="/search_icon.svg"
+                src="/search_icon.png"
               />
             </button>
           </div>

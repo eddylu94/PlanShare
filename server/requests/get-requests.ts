@@ -182,7 +182,14 @@ export const getSubscriptions = (
 
       const emails = findRes.emails;
 
-      console.log(emails);
+      // console.log(emails);
+
+      const { gs } = postReq.query;
+
+      let [minGroupSize, maxGroupSize] = gs
+        ? gs.split(",").map((val: string) => parseInt(val))
+        : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
+      console.log(minGroupSize, maxGroupSize);
 
       const dbo = db.db(DATABASE_NAME);
 
@@ -193,7 +200,13 @@ export const getSubscriptions = (
           const organizationId = organization.organizationId;
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find({ "organization.organizationId": organizationId })
+            .find({
+              "organization.organizationId": organizationId,
+              numberOfPeople: {
+                $gt: minGroupSize - 1,
+                $lt: maxGroupSize + 1
+              }
+            })
             .sort({ createdDate: -1 })
             .toArray()
             .then(findRes => {
@@ -226,7 +239,7 @@ export const getSubscriptions = (
           (acc, curr) => acc.concat(curr),
           [] as any
         );
-        console.log(subscriptions);
+        // console.log(subscriptions);
 
         db.close();
         postRes.json({

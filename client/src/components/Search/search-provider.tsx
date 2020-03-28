@@ -36,6 +36,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories
   ] = useState([] as IFiltersSubscriptionCategory[]);
 
+  const [filtersGroupSize, setFiltersGroupSize] = useState([2, 5]);
+
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
@@ -47,10 +49,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     console.log(error);
   };
 
-  const retrieveSubscriptions = () => {
+  const retrieveSubscriptions = (query?: { [key: string]: any }[]) => {
     baseGetRequest(
       "getsubscriptions",
-      [],
+      query ?? [],
       retrieveSubscriptionsResponseHandler,
       retrieveSubscriptionsErrorHandler,
       _userData.user?.auth
@@ -112,6 +114,16 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories(list);
   };
 
+  const handleGroupSizeChange = (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => {
+    event.preventDefault();
+
+    const newValue = value as number[];
+    setFiltersGroupSize(newValue);
+  };
+
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
@@ -139,6 +151,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   useEffect(() => {
+    console.log(filtersGroupSize);
+    retrieveSubscriptions([{ gs: filtersGroupSize }]);
+  }, [filtersGroupSize]);
+
+  useEffect(() => {
     retrieveSubscriptions();
     retrieveOrganizations();
     retrieveSubscriptionCategories();
@@ -150,8 +167,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       subscriptionData={subscriptionData}
       filtersOrganizations={filtersOrganizations}
       filtersSubscriptionCategories={filtersSubscriptionCategories}
+      filtersGroupSize={filtersGroupSize}
       toggleFiltersOrganization={toggleFiltersOrganization}
       toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
+      handleGroupSizeChange={handleGroupSizeChange}
     />
   );
 };
