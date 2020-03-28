@@ -22,6 +22,7 @@ body {
   flex-direction: row;
   justify-content: space-between;
   background-color: #6c5dbd;
+  padding: 0 20px;
 }
 
 .navbar ul {
@@ -34,13 +35,16 @@ body {
 
 .navbar li {
   display: flex;
+  flex-direction: column;
 }
 
 .navbar li a {
-  display: block;
+  display: flex;
+  align-items: center;
   color: white;
   text-align: center;
-  padding: 14px 16px;
+  padding: 0 20px;
+  height: 50px;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
 }
@@ -48,6 +52,19 @@ body {
 /* Change the link color to #111 (black) on hover */
 .navbar li a:hover {
   background-color: #4735ad;
+}
+
+.navbar li ul {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  top: 50px;
+  background-color: #6c5dbd;
+}
+
+.navbar li:hover ul {
+  display: flex;
+  flex-direction: column;
 }
 
 .navbar li a:focus {
@@ -64,6 +81,17 @@ body {
 .navbar-first-name {
   color: #ffffff;
   margin-left: 8px;
+}
+
+.navbar-home-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.navbar-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
 }
 
 .page-container {

@@ -31,8 +31,16 @@ const NavBarWithContext = (props: {
   const navBarLinks = [];
 
   if (isUser) {
-    navBarLinks.push(<Link to="/">Home</Link>);
-    navBarLinks.push(<Link to="/create">Create new listing</Link>);
+    navBarLinks.push(
+      <Link to="/">
+        <img
+          alt="Home"
+          className="navbar-home-icon"
+          src={"./home_icon_white.png"}
+        />
+      </Link>
+    );
+    navBarLinks.push();
   }
 
   const navBarListItems = navBarLinks.map((link, i) => (
@@ -43,36 +51,65 @@ const NavBarWithContext = (props: {
     <nav className="navbar">
       <ul>{navBarListItems}</ul>
       <ul>
-        <li>
-          {isUser ? (
-            <Link to="/logout" onClick={logoutHandler}>
-              Logout
-            </Link>
-          ) : (
-            <Link to="/login">Log In</Link>
-          )}
-        </li>
-        <li>
-          {isUser ? (
-            <Link
-              to="/profile"
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                padding: "0 16px",
-                textDecoration: "none"
-              }}
-            >
-              <img
-                alt="Profile"
-                className="nav-bar-profile-picture"
-                src="/profile_picture_placeholder.png"
-              />
-              <span className="navbar-first-name">Eddy</span>
-            </Link>
-          ) : null}
-        </li>
+        {isUser ? (
+          <>
+            <li>
+              <Link to="/search">
+                <img
+                  alt="Search listings"
+                  className="navbar-icon"
+                  src={"./search_icon_white.png"}
+                />
+                Search listings
+              </Link>
+            </li>
+            <li>
+              <Link to="/create">
+                <img
+                  alt="Create new listing"
+                  className="navbar-icon"
+                  src={"./create_icon_white.png"}
+                />
+                Create listing
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/profile"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  padding: "0 16px",
+                  textDecoration: "none"
+                }}
+              >
+                <img
+                  alt="Profile"
+                  className="nav-bar-profile-picture"
+                  src="/profile_picture_placeholder.png"
+                />
+                <span className="navbar-first-name">Eddy</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <Link to="/logout" onClick={logoutHandler}>
+                    Logout
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          </>
+        ) : (
+          <>
+            <li>
+              <Link to="/login">Log In</Link>
+            </li>
+          </>
+        )}
       </ul>
     </nav>
   ) : null;
