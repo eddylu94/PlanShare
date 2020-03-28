@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
@@ -11,6 +11,8 @@ import {
   IFiltersSubscriptionCategory
 } from "./../../utils/utils";
 
+const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
+
 interface ISearchProviderProps {
   userData: IUserContext;
   history: History;
@@ -18,6 +20,8 @@ interface ISearchProviderProps {
 
 const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const _userData = props.userData;
+
+  let _throttle = useRef(null as any);
 
   const { history } = props;
 
@@ -151,9 +155,13 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   useEffect(() => {
-    console.log(filtersGroupSize);
-    retrieveSubscriptions([{ gs: filtersGroupSize }]);
-  }, [filtersGroupSize]);
+    if (_throttle.current) {
+      clearTimeout(_throttle.current);
+    }
+    _throttle.current = setTimeout(() => {
+      retrieveSubscriptions([{ gs: filtersGroupSize }]);
+    }, THROTTLE_TIMEOUT);
+  }, [_throttle, filtersGroupSize]);
 
   useEffect(() => {
     retrieveSubscriptions();
