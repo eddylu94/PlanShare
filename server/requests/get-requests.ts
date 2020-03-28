@@ -203,8 +203,8 @@ export const getSubscriptions = (
             .find({
               "organization.organizationId": organizationId,
               numberOfPeople: {
-                $gt: minGroupSize - 1,
-                $lt: maxGroupSize + 1
+                $gte: minGroupSize,
+                $lte: maxGroupSize
               }
             })
             .sort({ createdDate: -1 })
