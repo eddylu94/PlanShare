@@ -40,7 +40,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories
   ] = useState([] as IFiltersSubscriptionCategory[]);
 
-  const [filtersGroupSize, setFiltersGroupSize] = useState([2, 5]);
+  const [filtersGroupSize, setFiltersGroupSize] = useState([2, 10]);
 
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {

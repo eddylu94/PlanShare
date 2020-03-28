@@ -22,6 +22,7 @@ export const UserContextProvider = (props: { children: any }) => {
 
   const updateUser = (userData: UserDataType) => {
     setUser(userData);
+    console.log(userData);
   };
 
   return (

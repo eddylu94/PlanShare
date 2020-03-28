@@ -19,6 +19,10 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
     subscriptionCategoryId: "LIVE_TV_STREAMING",
     name: "Live TV Streaming"
   },
+  ONLINE_STREAMING: {
+    subscriptionCategoryId: "ONLINE_STREAMING",
+    name: "Online Streaming"
+  },
   MOBILE_SERVICE: {
     subscriptionCategoryId: "MOBILE_SERVICE",
     name: "Mobile Service"
@@ -30,6 +34,7 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
 };
 
 const tvSubscriptionCategoriesIds = [
+  SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId
@@ -40,6 +45,41 @@ export const subscriptionCategories = tvSubscriptionCategoriesIds.map(
 );
 
 export const SUBSCRIPTION: ISubscription = {
+  NETFLIX_ONLINE_STREAMING: {
+    subscriptionBrandId: "NETFLIX_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.name,
+    name: "Netflix",
+    logo:
+      "https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1474467529/zlaaxu2whczitkpkxxk9.jpg"
+  },
+  PRIME_ONLINE_STREAMING: {
+    subscriptionBrandId: "PRIME_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.name,
+    name: "Prime Video",
+    logo:
+      "https://static-s.aa-cdn.net/img/ios/545519333/e5f660c03b5b101636f5d5e74a7a1656?v=1"
+  },
+  HULU_ONLINE_STREAMING: {
+    subscriptionBrandId: "HULU_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.name,
+    name: "Hulu",
+    logo:
+      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/bk8cux6dapq8qjzylfaj"
+  },
+  DISNEY_ONLINE_STREAMING: {
+    subscriptionBrandId: "DISNEY_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.name,
+    name: "Disney Plus",
+    logo:
+      "https://b.thumbs.redditmedia.com/i0u_V1MX8xCS5MGbTkjafMi1MyY_WSvWHkx2XTSf3hY.png"
+  },
+  ESPN_ONLINE_STREAMING: {
+    subscriptionBrandId: "ESPN_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.name,
+    name: "ESPN Plus",
+    logo:
+      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1460573872/gjea3w1kxocgn0qviykf.png"
+  },
   YOUTUBE_TV: {
     subscriptionBrandId: "YOUTUBE_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.name,
@@ -146,7 +186,15 @@ export const SUBSCRIPTION: ISubscription = {
   }
 };
 
-const tvSubscriptionBrandIds = [
+const onlineStreamingBrandIds = [
+  SUBSCRIPTION.NETFLIX_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.PRIME_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.HULU_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.DISNEY_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId
+];
+
+const liveTvSubscriptionBrandIds = [
   SUBSCRIPTION.YOUTUBE_TV.subscriptionBrandId,
   SUBSCRIPTION.SLING_TV.subscriptionBrandId,
   SUBSCRIPTION.HULU_TV.subscriptionBrandId,
@@ -173,8 +221,11 @@ const musicSubscriptionBrandIds = [
 export const retrieveSubscriptionBrands = (type: string) => {
   let ids;
   switch (type) {
+    case SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId:
+      ids = onlineStreamingBrandIds;
+      break;
     case SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId:
-      ids = tvSubscriptionBrandIds;
+      ids = liveTvSubscriptionBrandIds;
       break;
     case SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId:
       ids = mobileSubscriptionBrandIds;
@@ -183,7 +234,7 @@ export const retrieveSubscriptionBrands = (type: string) => {
       ids = musicSubscriptionBrandIds;
       break;
     default:
-      ids = tvSubscriptionBrandIds;
+      ids = onlineStreamingBrandIds;
       break;
   }
 
