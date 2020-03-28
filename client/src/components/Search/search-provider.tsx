@@ -161,10 +161,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([{ gs: filtersGroupSize }]);
     }, THROTTLE_TIMEOUT);
+    // eslint-disable-next-line
   }, [_throttle, filtersGroupSize]);
 
   useEffect(() => {
-    retrieveSubscriptions();
+    // retrieveSubscriptions();
     retrieveOrganizations();
     retrieveSubscriptionCategories();
     // eslint-disable-next-line

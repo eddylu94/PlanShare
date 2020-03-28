@@ -93,7 +93,7 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
   };
 
   return (
-    <div className="subscription-card">
+    <div className="subscription-card" tabIndex={0}>
       <img
         alt="Subscription logo"
         className="subscription-card-subscription-logo"
