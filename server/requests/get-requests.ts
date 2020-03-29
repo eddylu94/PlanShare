@@ -194,10 +194,17 @@ export const getSubscriptions = (
 
       let sort: any;
       switch (sb) {
+        case SORT_BY.DATE_DES:
+          sort = { createdDate: -1 };
         case SORT_BY.DATE_ASC:
           sort = { createdDate: 1 };
           break;
-        case SORT_BY.DATE_DES:
+        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+          sort = { "subscriptionBrand.name": 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_DES:
+          sort = { "subscriptionBrand.name": -1 };
+          break;
         default:
           sort = { createdDate: -1 };
           break;

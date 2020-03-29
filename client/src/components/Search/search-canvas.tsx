@@ -353,6 +353,32 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               }
               label="Date (oldest at top)"
             />
+            <FormControlLabel
+              value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
+              control={
+                <Radio
+                  style={{
+                    padding: 0,
+                    margin: "5px 5px 5px 20px",
+                    color: "#6C5DBD"
+                  }}
+                />
+              }
+              label="Title (A to Z)"
+            />
+            <FormControlLabel
+              value={SORT_BY.SUBSCRIPTION_BRAND_DES}
+              control={
+                <Radio
+                  style={{
+                    padding: 0,
+                    margin: "5px 5px 5px 20px",
+                    color: "#6C5DBD"
+                  }}
+                />
+              }
+              label="Title (Z to A)"
+            />
           </RadioGroup>
         </FormControl>
       </div>
