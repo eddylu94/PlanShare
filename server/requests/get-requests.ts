@@ -185,12 +185,14 @@ export const getSubscriptions = (
 
       // console.log(emails);
 
-      const { gs, sb, da } = postReq.query;
+      const { sc, gs, sb, da } = postReq.query;
+
+      const subscriptionCategories = sc.split(",");
+      console.log(subscriptionCategories);
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
         : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
-      console.log(minGroupSize, maxGroupSize);
 
       let sort: any;
       switch (sb) {
@@ -233,7 +235,8 @@ export const getSubscriptions = (
               createdDate: {
                 $lte: new Date(currentDate),
                 $gte: new Date(oldestDate)
-              }
+              },
+              "subscriptionBrand.type": { $in: subscriptionCategories }
             })
             .sort(sort)
             .toArray()

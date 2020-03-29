@@ -177,15 +177,30 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     if (_throttle.current) {
       clearTimeout(_throttle.current);
     }
+
+    const sc = filtersSubscriptionCategories
+      ? filtersSubscriptionCategories
+          .filter(category => category.isSelected)
+          .map(category => category.subscriptionCategoryId)
+          .join(",")
+      : "";
+
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
         { gs: filtersGroupSize },
         { sb: filtersSortBy },
-        { da: filtersDaysActive }
+        { da: filtersDaysActive },
+        { sc }
       ]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
-  }, [_throttle, filtersGroupSize, filtersSortBy, filtersDaysActive]);
+  }, [
+    _throttle,
+    filtersGroupSize,
+    filtersSortBy,
+    filtersDaysActive,
+    filtersSubscriptionCategories
+  ]);
 
   useEffect(() => {
     // retrieveSubscriptions();
