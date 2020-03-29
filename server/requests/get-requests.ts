@@ -12,7 +12,8 @@ import {
   DATABASE_COLLECTION,
   STATUS_CODE,
   STATUS_MESSAGE,
-  MONGO_PREREQUISITIES
+  MONGO_PREREQUISITIES,
+  SORT_BY
 } from "./../constants";
 
 export const getValidationEmail = (
@@ -184,12 +185,25 @@ export const getSubscriptions = (
 
       // console.log(emails);
 
-      const { gs } = postReq.query;
+      const { gs, sb } = postReq.query;
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
         : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
       console.log(minGroupSize, maxGroupSize);
+
+      console.log(sb);
+
+      let sort: any;
+      switch (sb) {
+        case SORT_BY.DATE_ASC:
+          sort = { createdDate: 1 };
+          break;
+        case SORT_BY.DATE_DES:
+        default:
+          sort = { createdDate: -1 };
+          break;
+      }
 
       const dbo = db.db(DATABASE_NAME);
 
@@ -207,7 +221,7 @@ export const getSubscriptions = (
                 $lte: maxGroupSize
               }
             })
-            .sort({ createdDate: -1 })
+            .sort(sort)
             .toArray()
             .then(findRes => {
               if (!findRes) {

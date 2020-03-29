@@ -30,3 +30,10 @@ export const MONGO_PREREQUISITIES = {
   useNewUrlParser: true,
   useUnifiedTopology: true
 };
+
+// Client-Server constants
+
+export const SORT_BY = {
+  DATE_ASC: "date_asc",
+  DATE_DES: "date_des"
+};

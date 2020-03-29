@@ -10,6 +10,7 @@ import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
 } from "./../../utils/utils";
+import { SORT_BY } from "./search-utils";
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
@@ -41,6 +42,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   ] = useState([] as IFiltersSubscriptionCategory[]);
 
   const [filtersGroupSize, setFiltersGroupSize] = useState([2, 10]);
+
+  const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
 
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
@@ -128,6 +131,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersGroupSize(newValue);
   };
 
+  const handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFiltersSortBy((event.target as HTMLInputElement).value);
+  };
+
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
@@ -159,10 +166,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       clearTimeout(_throttle.current);
     }
     _throttle.current = setTimeout(() => {
-      retrieveSubscriptions([{ gs: filtersGroupSize }]);
+      retrieveSubscriptions([{ gs: filtersGroupSize }, { sb: filtersSortBy }]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
-  }, [_throttle, filtersGroupSize]);
+  }, [_throttle, filtersGroupSize, filtersSortBy]);
 
   useEffect(() => {
     // retrieveSubscriptions();
@@ -177,9 +184,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       filtersOrganizations={filtersOrganizations}
       filtersSubscriptionCategories={filtersSubscriptionCategories}
       filtersGroupSize={filtersGroupSize}
+      filtersSortBy={filtersSortBy}
       toggleFiltersOrganization={toggleFiltersOrganization}
       toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
       handleGroupSizeChange={handleGroupSizeChange}
+      handleSortByChange={handleSortByChange}
     />
   );
 };

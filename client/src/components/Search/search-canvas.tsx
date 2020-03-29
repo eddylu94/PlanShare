@@ -4,6 +4,7 @@ import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
 } from "../../utils/utils";
+import { SORT_BY } from "./search-utils";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -11,6 +12,8 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Slider from "@material-ui/core/Slider";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 
 interface ISubscription {
   name: string;
@@ -37,6 +40,7 @@ interface ISearchCanvasProps {
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];
+  filtersSortBy: string;
   toggleFiltersOrganization: (
     event: React.ChangeEvent<HTMLInputElement>,
     organizationId: string
@@ -49,6 +53,7 @@ interface ISearchCanvasProps {
     event: React.ChangeEvent<{}>,
     value: number | number[]
   ) => void;
+  handleSortByChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
@@ -142,9 +147,11 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
+    filtersSortBy,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
-    handleGroupSizeChange
+    handleGroupSizeChange,
+    handleSortByChange
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -297,6 +304,48 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             min={0}
             max={30}
           />
+        </FormControl>
+
+        <FormControl component="fieldset" style={{ marginTop: 20 }}>
+          <FormLabel
+            component="legend"
+            style={{ marginBottom: 12, color: "#6C5DBD" }}
+          >
+            Sort Results by
+          </FormLabel>
+          <RadioGroup
+            aria-label="Sort results by"
+            name="sort-by"
+            value={filtersSortBy}
+            onChange={handleSortByChange}
+          >
+            <FormControlLabel
+              value={SORT_BY.DATE_DES}
+              control={
+                <Radio
+                  style={{
+                    padding: 0,
+                    margin: "5px 5px 5px 20px",
+                    color: "#6C5DBD"
+                  }}
+                />
+              }
+              label="Date (newest at top)"
+            />
+            <FormControlLabel
+              value={SORT_BY.DATE_ASC}
+              control={
+                <Radio
+                  style={{
+                    padding: 0,
+                    margin: "5px 5px 5px 20px",
+                    color: "#6C5DBD"
+                  }}
+                />
+              }
+              label="Date (oldest at top)"
+            />
+          </RadioGroup>
         </FormControl>
       </div>
       <div className="results-pane">
