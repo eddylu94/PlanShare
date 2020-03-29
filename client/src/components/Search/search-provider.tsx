@@ -185,21 +185,30 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
           .join(",")
       : "";
 
+    const o = filtersOrganizations
+      ? filtersOrganizations
+          .filter(organization => organization.isSelected)
+          .map(organization => organization.organizationId)
+          .join(",")
+      : [];
+
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
         { gs: filtersGroupSize },
         { sb: filtersSortBy },
         { da: filtersDaysActive },
-        { sc }
+        { sc },
+        { o }
       ]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
   }, [
     _throttle,
+    filtersSubscriptionCategories,
+    filtersOrganizations,
     filtersGroupSize,
     filtersSortBy,
-    filtersDaysActive,
-    filtersSubscriptionCategories
+    filtersDaysActive
   ]);
 
   useEffect(() => {

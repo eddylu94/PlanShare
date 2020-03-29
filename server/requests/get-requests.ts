@@ -183,12 +183,11 @@ export const getSubscriptions = (
 
       const emails = findRes.emails;
 
-      // console.log(emails);
+      const { o, sc, gs, sb, da } = postReq.query;
 
-      const { sc, gs, sb, da } = postReq.query;
+      const subscriptionOrganizations = o.split(",");
 
       const subscriptionCategories = sc.split(",");
-      console.log(subscriptionCategories);
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
@@ -198,6 +197,7 @@ export const getSubscriptions = (
       switch (sb) {
         case SORT_BY.DATE_DES:
           sort = { createdDate: -1 };
+          break;
         case SORT_BY.DATE_ASC:
           sort = { createdDate: 1 };
           break;
@@ -227,7 +227,8 @@ export const getSubscriptions = (
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
             .find({
-              "organization.organizationId": organizationId,
+              "organization.organizationId": { $in: subscriptionOrganizations },
+              "subscriptionBrand.type": { $in: subscriptionCategories },
               numberOfPeople: {
                 $gte: minGroupSize,
                 $lte: maxGroupSize
@@ -235,8 +236,7 @@ export const getSubscriptions = (
               createdDate: {
                 $lte: new Date(currentDate),
                 $gte: new Date(oldestDate)
-              },
-              "subscriptionBrand.type": { $in: subscriptionCategories }
+              }
             })
             .sort(sort)
             .toArray()
