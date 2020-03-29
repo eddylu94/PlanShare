@@ -45,6 +45,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
 
+  const [filtersDaysActive, setFiltersDaysActive] = useState(30);
+
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
@@ -131,6 +133,16 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersGroupSize(newValue);
   };
 
+  const handleDaysActiveChange = (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => {
+    event.preventDefault();
+
+    const newValue = value as number;
+    setFiltersDaysActive(newValue);
+  };
+
   const handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFiltersSortBy((event.target as HTMLInputElement).value);
   };
@@ -166,10 +178,14 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       clearTimeout(_throttle.current);
     }
     _throttle.current = setTimeout(() => {
-      retrieveSubscriptions([{ gs: filtersGroupSize }, { sb: filtersSortBy }]);
+      retrieveSubscriptions([
+        { gs: filtersGroupSize },
+        { sb: filtersSortBy },
+        { da: filtersDaysActive }
+      ]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
-  }, [_throttle, filtersGroupSize, filtersSortBy]);
+  }, [_throttle, filtersGroupSize, filtersSortBy, filtersDaysActive]);
 
   useEffect(() => {
     // retrieveSubscriptions();
@@ -185,10 +201,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       filtersSubscriptionCategories={filtersSubscriptionCategories}
       filtersGroupSize={filtersGroupSize}
       filtersSortBy={filtersSortBy}
+      filtersDaysActive={filtersDaysActive}
       toggleFiltersOrganization={toggleFiltersOrganization}
       toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
       handleGroupSizeChange={handleGroupSizeChange}
       handleSortByChange={handleSortByChange}
+      handleDaysActiveChange={handleDaysActiveChange}
     />
   );
 };

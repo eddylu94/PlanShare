@@ -41,6 +41,7 @@ interface ISearchCanvasProps {
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];
   filtersSortBy: string;
+  filtersDaysActive: number;
   toggleFiltersOrganization: (
     event: React.ChangeEvent<HTMLInputElement>,
     organizationId: string
@@ -54,6 +55,10 @@ interface ISearchCanvasProps {
     value: number | number[]
   ) => void;
   handleSortByChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDaysActiveChange: (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => void;
 }
 
 const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
@@ -148,10 +153,12 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersSortBy,
+    filtersDaysActive,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
-    handleSortByChange
+    handleSortByChange,
+    handleDaysActiveChange
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -286,7 +293,8 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </FormLabel>
           <Slider
             style={{ marginLeft: 12, width: 180, color: "#6C5DBD" }}
-            defaultValue={30}
+            value={filtersDaysActive}
+            onChange={handleDaysActiveChange}
             getAriaValueText={valuetext}
             aria-labelledby="discrete-slider-custom"
             step={1}
@@ -355,6 +363,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               type="text"
               className="search-text-input"
               placeholder="Search for a subscription"
+              autoFocus
             />
             <button className="search-submit-button">
               <img

@@ -185,14 +185,12 @@ export const getSubscriptions = (
 
       // console.log(emails);
 
-      const { gs, sb } = postReq.query;
+      const { gs, sb, da } = postReq.query;
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
         : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
       console.log(minGroupSize, maxGroupSize);
-
-      console.log(sb);
 
       let sort: any;
       switch (sb) {
@@ -207,6 +205,11 @@ export const getSubscriptions = (
 
       const dbo = db.db(DATABASE_NAME);
 
+      const currentDate = new Date();
+      const oldestDate = new Date(
+        new Date().setDate(new Date().getDate() - parseInt(da) - 1)
+      );
+
       const promises = emails
         .map(email => getDomain(email))
         .map(domain => retrieveOrganizationByDomain(domain))
@@ -219,6 +222,10 @@ export const getSubscriptions = (
               numberOfPeople: {
                 $gte: minGroupSize,
                 $lte: maxGroupSize
+              },
+              createdDate: {
+                $lte: new Date(currentDate),
+                $gte: new Date(oldestDate)
               }
             })
             .sort(sort)
