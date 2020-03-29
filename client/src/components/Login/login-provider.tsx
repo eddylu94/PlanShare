@@ -65,6 +65,7 @@ const LoginProviderWithContext = (props: {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
+        localStorage.setItem("firstName", newUserData.firstName);
 
         history.push("/search");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {

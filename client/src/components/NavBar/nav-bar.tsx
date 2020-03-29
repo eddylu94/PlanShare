@@ -21,6 +21,7 @@ const NavBarWithContext = (props: {
 
     localStorage.setItem("userId", "");
     localStorage.setItem("auth", "");
+    localStorage.setItem("firstName", "");
 
     event.preventDefault();
     history.push("/signup");

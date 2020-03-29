@@ -25,11 +25,15 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   },
   MOBILE_SERVICE: {
     subscriptionCategoryId: "MOBILE_SERVICE",
-    name: "Mobile Service"
+    name: "Mobile"
   },
   MUSIC_SERVICE: {
     subscriptionCategoryId: "MUSIC_SERVICE",
-    name: "Music Service"
+    name: "Music"
+  },
+  GYM_MEMBERSHIPS: {
+    subscriptionCategoryId: "GYM_MEMBERSHIPS",
+    name: "Gym Memberships"
   }
 };
 
@@ -37,7 +41,8 @@ const tvSubscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId
+  SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
+  SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId
 ];
 
 export const subscriptionCategories = tvSubscriptionCategoriesIds.map(
@@ -183,6 +188,20 @@ export const SUBSCRIPTION: ISubscription = {
     name: "YouTube Music",
     logo:
       "https://lh3.googleusercontent.com/proxy/zs2U3TnbJA8DnAQpMC7JWdGklD67aGaz3CtEp4xEWxxwQjpnKjQGEccko5n43SEaN-JuHIvErZO04R49l9uk-TbBCxQLrD2I5Dk9Ga2c-aeWDoumMra76PvDAe8c6d6nR9ck292nkw"
+  },
+  TWENTY_FOUR_HOUR_FITNESS: {
+    subscriptionBrandId: "TWENTY_FOUR_HOUR_FITNESS",
+    type: SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.name,
+    name: "24 Hour Fitness",
+    logo:
+      "https://s11284.pcdn.co/wp-content/uploads/2015/06/24-hour-fitness-logo.jpg"
+  },
+  LA_FITNESS: {
+    subscriptionBrandId: "LA_FITNESS",
+    type: SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.name,
+    name: "LA Fitness",
+    logo:
+      "https://www.mallmaverick.com/system/stores/store_fronts/000/045/815/original/LA_Fitness.png?1549387921"
   }
 };
 
@@ -218,6 +237,11 @@ const musicSubscriptionBrandIds = [
   SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId
 ];
 
+const gymMembershipBrandIds = [
+  SUBSCRIPTION.TWENTY_FOUR_HOUR_FITNESS.subscriptionBrandId,
+  SUBSCRIPTION.LA_FITNESS.subscriptionBrandId
+];
+
 export const retrieveSubscriptionBrands = (type: string) => {
   let ids;
   switch (type) {
@@ -232,6 +256,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
       break;
     case SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId:
       ids = musicSubscriptionBrandIds;
+      break;
+    case SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId:
+      ids = gymMembershipBrandIds;
       break;
     default:
       ids = onlineStreamingBrandIds;

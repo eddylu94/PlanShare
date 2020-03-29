@@ -112,6 +112,7 @@ const SignUpProviderWithContext = (props: {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
+        localStorage.setItem("firstName", newUserData.auth);
 
         history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
