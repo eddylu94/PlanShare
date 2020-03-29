@@ -184,6 +184,7 @@ export const login = (
         }
 
         const userId = findRes._id;
+        const { firstName } = findRes;
 
         const authToken = generateAuthToken();
 
@@ -197,7 +198,8 @@ export const login = (
               statusCode: STATUS_CODE.SUCCESS,
               body: {
                 userId: userId.toString(),
-                auth: authToken.key
+                auth: authToken.key,
+                firstName
               }
             });
           });

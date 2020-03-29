@@ -168,7 +168,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       return (
         <FormControlLabel
           key={"filters-organization-" + index}
-          style={{ color: "#686868" }}
+          style={{ color: "#000000" }}
           control={
             <Checkbox
               checked={organization.isSelected}
@@ -195,7 +195,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       return (
         <FormControlLabel
           key={"filters-category-" + index}
-          style={{ color: "#686868" }}
+          style={{ color: "#000000" }}
           control={
             <Checkbox
               checked={category.isSelected}

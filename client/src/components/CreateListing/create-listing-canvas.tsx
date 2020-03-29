@@ -116,7 +116,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             {renderSubscriptionCategoryDropdown()}
           </div>
 
-          <div className="form-field" style={{ marginLeft: 50 }}>
+          <div className="form-field" style={{ marginLeft: 30 }}>
             <label className="form-label">Subscription:</label>
             {renderSubscriptionBrandDropdown()}
           </div>

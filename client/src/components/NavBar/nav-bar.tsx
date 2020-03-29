@@ -15,7 +15,8 @@ const NavBarWithContext = (props: {
   ) => {
     userData.updateUser({
       userId: "",
-      auth: ""
+      auth: "",
+      firstName: ""
     });
 
     localStorage.setItem("userId", "");
@@ -89,7 +90,7 @@ const NavBarWithContext = (props: {
                   className="nav-bar-profile-picture"
                   src="/profile_picture_placeholder.png"
                 />
-                <span className="navbar-first-name">Eddy</span>
+                <span className="navbar-first-name">{user?.firstName}</span>
               </Link>
               <ul>
                 <li>
