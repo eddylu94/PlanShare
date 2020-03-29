@@ -37,6 +37,7 @@ export interface ISubscriptionData {
 
 interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
+  filtersText: string;
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];
@@ -50,6 +51,7 @@ interface ISearchCanvasProps {
     event: React.ChangeEvent<HTMLInputElement>,
     subscriptionCategoryId: string
   ) => void;
+  handleTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleGroupSizeChange: (
     event: React.ChangeEvent<{}>,
     value: number | number[]
@@ -149,6 +151,7 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
 const SearchCanvas = (props: ISearchCanvasProps) => {
   const {
     subscriptionData,
+    filtersText,
     filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -156,6 +159,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     filtersDaysActive,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
+    handleTextChange,
     handleGroupSizeChange,
     handleSortByChange,
     handleDaysActiveChange
@@ -389,6 +393,8 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               type="text"
               className="search-text-input"
               placeholder="Search for a subscription"
+              value={filtersText}
+              onChange={handleTextChange}
               autoFocus
             />
             <button className="search-submit-button">

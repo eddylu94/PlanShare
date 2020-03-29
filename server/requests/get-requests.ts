@@ -183,7 +183,7 @@ export const getSubscriptions = (
 
       const emails = findRes.emails;
 
-      const { o, sc, gs, sb, da } = postReq.query;
+      const { t, o, sc, gs, sb, da } = postReq.query;
 
       const subscriptionOrganizations = o.split(",");
 
@@ -222,22 +222,35 @@ export const getSubscriptions = (
       const promises = emails
         .map(email => getDomain(email))
         .map(domain => retrieveOrganizationByDomain(domain))
-        .map((organization: any) => {
-          const organizationId = organization.organizationId;
+        .map((organization: any) => organization.organizationId)
+        .filter(organizationId =>
+          subscriptionOrganizations.includes(organizationId)
+        )
+        .map(organizationId => {
+          const findQuery = {
+            "organization.organizationId": organizationId,
+            "subscriptionBrand.type": { $in: subscriptionCategories },
+            numberOfPeople: {
+              $gte: minGroupSize,
+              $lte: maxGroupSize
+            },
+            createdDate: {
+              $lte: new Date(currentDate),
+              $gte: new Date(oldestDate)
+            }
+          };
+
+          if (t.length) {
+            Object.assign(findQuery, {
+              $text: { $search: t }
+            });
+          }
+
+          console.log(findQuery);
+
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find({
-              "organization.organizationId": { $in: subscriptionOrganizations },
-              "subscriptionBrand.type": { $in: subscriptionCategories },
-              numberOfPeople: {
-                $gte: minGroupSize,
-                $lte: maxGroupSize
-              },
-              createdDate: {
-                $lte: new Date(currentDate),
-                $gte: new Date(oldestDate)
-              }
-            })
+            .find(findQuery)
             .sort(sort)
             .toArray()
             .then(findRes => {

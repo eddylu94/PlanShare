@@ -14,3 +14,6 @@ db.Users.insertOne({
 	email: 'eddy',
 	pass: 'eddy'
 });
+
+// Create index for searching of subscriptions
+db.Subscriptions.createIndex( { "subscriptionBrandName": "text", listingDescription: "text" } )

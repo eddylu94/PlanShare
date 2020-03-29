@@ -333,12 +333,10 @@ export const createSubscription = (
         userId: findRes._id,
         firstName,
         organization,
-        createdDate: new Date()
-      });
-
-      Object.assign(subscriptionData, {
+        createdDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
-        price: parseFloat(subscriptionData.price)
+        price: parseFloat(subscriptionData.price),
+        subscriptionBrandName: subscriptionData.subscriptionBrand.name
       });
 
       const dbo = db.db(DATABASE_NAME);
@@ -359,6 +357,7 @@ export const createSubscription = (
           const subscriptionId = insertRes.insertedId;
 
           console.log("Subscription created:", subscriptionId);
+
           db.close();
           postRes.json({
             statusCode: STATUS_CODE.SUCCESS,

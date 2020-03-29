@@ -32,6 +32,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [subscriptionData, setSubscriptionData] = useState([]);
 
+  const [filtersText, setFiltersText] = useState("");
+
   const [filtersOrganizations, setFiltersOrganizations] = useState(
     [] as IFiltersOrganization[]
   );
@@ -123,6 +125,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories(list);
   };
 
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFiltersText(event.target.value);
+  };
+
   const handleGroupSizeChange = (
     event: React.ChangeEvent<{}>,
     value: number | number[]
@@ -194,16 +200,18 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
-        { gs: filtersGroupSize },
-        { sb: filtersSortBy },
-        { da: filtersDaysActive },
-        { sc },
-        { o }
+        { t: filtersText },
+        { o }, // Subscription organization
+        { sc }, // Subscription category
+        { gs: filtersGroupSize }, // Group size
+        { sb: filtersSortBy }, // Sort by
+        { da: filtersDaysActive } // Days active
       ]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
   }, [
     _throttle,
+    filtersText,
     filtersSubscriptionCategories,
     filtersOrganizations,
     filtersGroupSize,
@@ -221,6 +229,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   return (
     <SearchCanvas
       subscriptionData={subscriptionData}
+      filtersText={filtersText}
       filtersOrganizations={filtersOrganizations}
       filtersSubscriptionCategories={filtersSubscriptionCategories}
       filtersGroupSize={filtersGroupSize}
@@ -228,6 +237,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       filtersDaysActive={filtersDaysActive}
       toggleFiltersOrganization={toggleFiltersOrganization}
       toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
+      handleTextChange={handleTextChange}
       handleGroupSizeChange={handleGroupSizeChange}
       handleSortByChange={handleSortByChange}
       handleDaysActiveChange={handleDaysActiveChange}
