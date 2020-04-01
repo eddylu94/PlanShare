@@ -39,6 +39,26 @@ export interface IFiltersSubscriptionCategory {
   isSelected: boolean;
 }
 
+export interface ISubscription {
+  name: string;
+  type: string;
+  logo: string;
+}
+
+export interface ISubscriptionData {
+  _id: string;
+  subscriptionTypeSelection: string;
+  subscriptionBrand: ISubscription;
+  subscriptionUrl: string;
+  listingDescription: string;
+  numberOfPeople: number;
+  price: number;
+  userId: string;
+  firstName: string;
+  organization: IOrganization;
+  createdDate: string;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

@@ -1,10 +1,12 @@
 import React from "react";
+
 import {
-  IOrganization,
   IFiltersOrganization,
-  IFiltersSubscriptionCategory
+  IFiltersSubscriptionCategory,
+  ISubscriptionData
 } from "../../utils/utils";
 import { SORT_BY } from "./search-utils";
+import Subscription from "./../Subscription/subscription-provider";
 
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -15,26 +17,6 @@ import Slider from "@material-ui/core/Slider";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 
-interface ISubscription {
-  name: string;
-  type: string;
-  logo: string;
-}
-
-export interface ISubscriptionData {
-  _id: string;
-  subscriptionTypeSelection: string;
-  subscriptionBrand: ISubscription;
-  subscriptionUrl: string;
-  listingDescription: string;
-  numberOfPeople: number;
-  price: number;
-  userId: string;
-  firstName: string;
-  organization: IOrganization;
-  createdDate: string;
-}
-
 interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
   filtersText: string;
@@ -43,6 +25,7 @@ interface ISearchCanvasProps {
   filtersGroupSize: number[];
   filtersSortBy: string;
   filtersDaysActive: number;
+  selectedSubscription: string;
   toggleFiltersOrganization: (
     event: React.ChangeEvent<HTMLInputElement>,
     organizationId: string
@@ -61,12 +44,17 @@ interface ISearchCanvasProps {
     event: React.ChangeEvent<{}>,
     value: number | number[]
   ) => void;
+  handleSubscriptionCardClick: (subscriptionId: string) => void;
 }
 
-const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
-  const { subscription } = props;
+const SubscriptionCard = (props: {
+  subscription: ISubscriptionData;
+  handleSubscriptionCardClick: (subscriptionId: string) => void;
+}) => {
+  const { subscription, handleSubscriptionCardClick } = props;
 
   const {
+    _id,
     subscriptionBrand,
     listingDescription,
     firstName,
@@ -105,7 +93,11 @@ const SubscriptionCard = (props: { subscription: ISubscriptionData }) => {
   };
 
   return (
-    <div className="subscription-card" tabIndex={0}>
+    <div
+      className="subscription-card"
+      tabIndex={0}
+      onClick={() => handleSubscriptionCardClick(_id)}
+    >
       <img
         alt="Subscription logo"
         className="subscription-card-subscription-logo"
@@ -157,12 +149,14 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     filtersGroupSize,
     filtersSortBy,
     filtersDaysActive,
+    selectedSubscription,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleTextChange,
     handleGroupSizeChange,
     handleSortByChange,
-    handleDaysActiveChange
+    handleDaysActiveChange,
+    handleSubscriptionCardClick
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -170,6 +164,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       <SubscriptionCard
         key={"subscription-card-" + i}
         subscription={subscription}
+        handleSubscriptionCardClick={handleSubscriptionCardClick}
       />
     );
   });
@@ -407,6 +402,9 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         </div>
         <div className="search-subscription-cards-container">
+          {selectedSubscription ? (
+            <Subscription subscriptionId={selectedSubscription} />
+          ) : null}
           {subscriptionCards}
         </div>
       </div>

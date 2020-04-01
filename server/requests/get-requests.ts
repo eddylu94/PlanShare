@@ -16,6 +16,8 @@ import {
   SORT_BY
 } from "./../constants";
 
+const ObjectId = mongodb.ObjectID;
+
 export const getValidationEmail = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
@@ -297,6 +299,41 @@ export const getSubscriptions = (
     .catch(err => {
       console.log(err);
     });
+};
+
+export const getSubscription = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving subscription...");
+  authenticate(mongoClient, postReq, postRes).then(res => {
+    const [db, findRes] = res;
+
+    const emails = findRes.emails;
+    const domains = emails.map(email => getDomain(email));
+
+    const { subscriptionId } = postReq.query;
+
+    console.log(subscriptionId);
+
+    const dbo = db.db(DATABASE_NAME);
+
+    return dbo
+      .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+      .findOne({ _id: new ObjectId(subscriptionId) }, (findErr, findRes) => {
+        console.log(findRes.subscriptionBrand.name);
+
+        // Check with domains
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          body: {
+            subscriptionData: findRes
+          }
+        });
+      });
+  });
 };
 
 export const getProfile = (

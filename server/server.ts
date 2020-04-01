@@ -14,7 +14,8 @@ import {
   getSubscriptionCategories,
   getSubscriptionBrands,
   getSubscriptions,
-  getProfile
+  getProfile,
+  getSubscription
 } from "./requests/get-requests";
 import {
   signUp,
@@ -56,6 +57,7 @@ getRequestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
 getRequestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
 getRequestBuilder("/getsubscriptions", getSubscriptions);
 getRequestBuilder("/getprofile", getProfile);
+getRequestBuilder("/getsubscription", getSubscription);
 
 // POST requests
 postRequestBuilder("/signup", signUp);

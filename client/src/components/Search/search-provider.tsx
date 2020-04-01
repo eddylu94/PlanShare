@@ -49,6 +49,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersDaysActive, setFiltersDaysActive] = useState(30);
 
+  const [selectedSubscription, setSelectedSubscription] = useState("");
+
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
@@ -153,6 +155,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSortBy((event.target as HTMLInputElement).value);
   };
 
+  const handleSubscriptionCardClick = (subscriptionId: string) => {
+    setSelectedSubscription(subscriptionId);
+  };
+
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
@@ -235,12 +241,14 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       filtersGroupSize={filtersGroupSize}
       filtersSortBy={filtersSortBy}
       filtersDaysActive={filtersDaysActive}
+      selectedSubscription={selectedSubscription}
       toggleFiltersOrganization={toggleFiltersOrganization}
       toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
       handleTextChange={handleTextChange}
       handleGroupSizeChange={handleGroupSizeChange}
       handleSortByChange={handleSortByChange}
       handleDaysActiveChange={handleDaysActiveChange}
+      handleSubscriptionCardClick={handleSubscriptionCardClick}
     />
   );
 };
