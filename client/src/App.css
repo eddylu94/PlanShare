@@ -137,9 +137,16 @@ body {
   box-sizing: border-box;
 }
 
+.form-text-input:focus {
+  border: 2px solid #6c5dbdee;
+  outline: none !important;
+}
+
 .signup-toggle {
   margin-top: 20px;
   text-align: center;
+  text-decoration: underline;
+  color: #6c5dbd;
 }
 
 .signup-form-container {
@@ -233,6 +240,11 @@ body {
   box-sizing: border-box;
 }
 
+.form-text-area:focus {
+  border: 2px solid #6c5dbdee;
+  outline: none !important;
+}
+
 .form-number-input {
   padding-right: 0;
   flex-grow: 0;
@@ -276,6 +288,11 @@ body {
   height: 26px;
   width: 26px;
   background-color: #eee;
+}
+
+.form-terms-checkmark:focus {
+  border: 2px solid #6c5dbdee;
+  outline: none !important;
 }
 
 /* On mouse-over, add a grey background color */
@@ -468,9 +485,9 @@ input[disabled] {
   flex-direction: column;
   flex-grow: 1;
   background-color: #ffffff;
-  min-width: 250px;
-  max-width: 250px;
-  width: 200px;
+  min-width: 260px;
+  max-width: 260px;
+  width: 260px;
   margin: 20px 10px 20px 20px;
   border-radius: 10px;
   box-shadow: 0px 0px 10px #d8d8d8;
