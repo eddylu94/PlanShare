@@ -417,17 +417,17 @@ input[disabled] {
 
 .terms-of-use-dialog {
   width: 50%;
+  min-width: 600px;
   height: 100%;
   max-width: 800px;
   background-color: #ffffff;
   z-index: 200;
   border-radius: 5px;
-  box-shadow: 5px 5px 10px #888888;
   box-sizing: border-box;
 }
 
 .terms-of-use-header {
-  margin: 0 0 20px 0;
+  margin: 20px;
   text-align: center;
 }
 
@@ -437,7 +437,6 @@ input[disabled] {
   flex-grow: 1;
   overflow-y: auto;
   height: 100%;
-  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -447,15 +446,17 @@ input[disabled] {
   flex-grow: 1;
   overflow-y: auto;
   height: 100%;
-  padding: 10px 0;
+  padding: 10px 20px;
   box-sizing: border-box;
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
 }
 
 .terms-of-use-buttons {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .terms-of-use-button {
