@@ -81,7 +81,9 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
       </div>
       <div className="subscription-label">Subscription</div>
       <div className="subscription-detail">
-        <a href={subscriptionUrl}>{subscriptionUrl}</a>
+        <a href={subscriptionUrl} target="_blank">
+          {subscriptionUrl}
+        </a>
       </div>
       <div className="subscription-label">Description</div>
       <div className="subscription-detail">

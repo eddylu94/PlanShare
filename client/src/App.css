@@ -602,6 +602,10 @@ input[disabled] {
   overflow-y: auto;
 }
 
+.search-no-results {
+  color: #686868;
+}
+
 .create-listing-form {
   display: flex;
   flex-direction: column;
@@ -863,4 +867,8 @@ input[disabled] {
   font-weight: 500;
   color: #686868;
   margin-left: 20px;
+}
+
+.b {
+  font-weight: 500;
 }

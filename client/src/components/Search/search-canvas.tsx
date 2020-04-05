@@ -58,9 +58,15 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             </button>
           </div>
         </div>
-        <div className="search-subscription-cards-container">
-          {subscriptionCards}
-        </div>
+        {filtersText && !subscriptionData.length ? (
+          <div className="subscription-pane search-no-results">
+            No results found for <span className="b">{filtersText}</span>
+          </div>
+        ) : (
+          <div className="search-subscription-cards-container">
+            {subscriptionCards}
+          </div>
+        )}
       </div>
       {selectedSubscription ? (
         <div className="subscription-pane search-pane">
