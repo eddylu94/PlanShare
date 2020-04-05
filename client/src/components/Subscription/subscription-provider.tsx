@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { History } from "history";
 
 import SubscriptionCanvas from "./subscription-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";

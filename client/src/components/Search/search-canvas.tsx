@@ -232,7 +232,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
 
   return (
     <div className="search-panes">
-      <div className="filter-pane">
+      <div className="filter-pane search-pane">
         <FormControl component="fieldset">
           <FormLabel
             component="legend"
@@ -402,12 +402,14 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         </div>
         <div className="search-subscription-cards-container">
-          {selectedSubscription ? (
-            <Subscription subscriptionId={selectedSubscription} />
-          ) : null}
           {subscriptionCards}
         </div>
       </div>
+      {selectedSubscription ? (
+        <div className="subscription-pane search-pane">
+          <Subscription subscriptionId={selectedSubscription} />
+        </div>
+      ) : null}
     </div>
   );
 };
