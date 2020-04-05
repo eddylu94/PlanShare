@@ -710,7 +710,7 @@ input[disabled] {
   margin-left: 10px;
 }
 
-.subscription-card-date-and-people {
+.subscription-card-basic-info {
   margin-left: 20px;
   font-size: 14px;
   color: #686868;
@@ -718,7 +718,7 @@ input[disabled] {
   width: 110px;
 }
 
-.subscription-card-date-and-people:hover {
+.subscription-card-basic-info:hover {
   box-shadow: none;
 }
 
@@ -726,12 +726,12 @@ input[disabled] {
   text-align: end;
 }
 
-.subscription-card-people {
+.subscription-card-basic-info-detail {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 8px;
+  margin-top: 5px;
   line-height: 20px;
 }
 
@@ -758,7 +758,7 @@ input[disabled] {
   width: 20px;
   height: 20px;
   opacity: 0.5;
-  margin-right: 8px;
+  margin-right: 5px;
 }
 
 .subscription-detail-icon {
