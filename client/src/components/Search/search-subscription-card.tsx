@@ -1,0 +1,80 @@
+import React from "react";
+
+import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
+
+interface ISearchSubscriptionCardProps {
+  subscription: ISubscriptionData;
+  handleSubscriptionCardClick: (subscriptionId: string) => void;
+}
+
+const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
+  const { subscription, handleSubscriptionCardClick } = props;
+
+  const {
+    _id,
+    subscriptionBrand,
+    listingDescription,
+    firstName,
+    organization,
+    createdDate
+  } = subscription;
+
+  const renderSubscriptionLogo = () => (
+    <img
+      alt="Subscription logo"
+      className="subscription-card-subscription-logo"
+      src={subscriptionBrand.logo}
+    />
+  );
+
+  const renderSubscriptionInfo = () => (
+    <div className="subscription-card-info">
+      <div className="subscription-card-info-name">
+        {subscriptionBrand.name}
+      </div>
+      <div className="subscription-card-description">{listingDescription}</div>
+      <div className="subscription-card-author">
+        <div>
+          Posted by{" "}
+          <span className="subscription-card-first-name">{firstName}</span> at{" "}
+          {organization.name}
+        </div>
+        <img
+          alt="Organization logo"
+          className="subscription-card-organization-logo"
+          src={organization.logo}
+        />
+      </div>
+    </div>
+  );
+
+  const renderSubscriptionDateAndPeople = () => (
+    <div className="subscription-card-date-and-people">
+      <div className="subscription-card-date">
+        {getDaysAgoString(new Date(createdDate))}
+      </div>
+      <div className="subscription-card-people">
+        <img
+          alt="Number of people"
+          className="subscription-card-people-icon"
+          src="/people_icon.png"
+        />
+        {subscription.numberOfPeople}
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      className="subscription-card"
+      tabIndex={0}
+      onClick={() => handleSubscriptionCardClick(_id)}
+    >
+      {renderSubscriptionLogo()}
+      {renderSubscriptionInfo()}
+      {renderSubscriptionDateAndPeople()}
+    </div>
+  );
+};
+
+export default SearchSubscriptionCard;

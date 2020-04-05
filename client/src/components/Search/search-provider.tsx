@@ -10,7 +10,7 @@ import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
 } from "./../../utils/utils";
-import { SORT_BY } from "./search-utils";
+import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
@@ -232,22 +232,26 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     // eslint-disable-next-line
   }, []);
 
+  const searchFilters = {
+    filtersOrganizations,
+    filtersSubscriptionCategories,
+    filtersGroupSize,
+    filtersSortBy,
+    filtersDaysActive,
+    toggleFiltersOrganization,
+    toggleFiltersSubscriptionCategory,
+    handleGroupSizeChange,
+    handleSortByChange,
+    handleDaysActiveChange
+  } as ISearchFiltersProps;
+
   return (
     <SearchCanvas
       subscriptionData={subscriptionData}
       filtersText={filtersText}
-      filtersOrganizations={filtersOrganizations}
-      filtersSubscriptionCategories={filtersSubscriptionCategories}
-      filtersGroupSize={filtersGroupSize}
-      filtersSortBy={filtersSortBy}
-      filtersDaysActive={filtersDaysActive}
       selectedSubscription={selectedSubscription}
-      toggleFiltersOrganization={toggleFiltersOrganization}
-      toggleFiltersSubscriptionCategory={toggleFiltersSubscriptionCategory}
+      searchFilters={searchFilters}
       handleTextChange={handleTextChange}
-      handleGroupSizeChange={handleGroupSizeChange}
-      handleSortByChange={handleSortByChange}
-      handleDaysActiveChange={handleDaysActiveChange}
       handleSubscriptionCardClick={handleSubscriptionCardClick}
     />
   );
