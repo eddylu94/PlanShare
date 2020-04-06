@@ -324,7 +324,22 @@ export const getSubscription = (
       .findOne({ _id: new ObjectId(subscriptionId) }, (findErr, findRes) => {
         console.log(findRes.subscriptionBrand.name);
 
-        // Check with domains
+        const organizationIds = domains
+          .map(domain => retrieveOrganizationByDomain(domain))
+          .map(organization => organization && organization.organizationId);
+
+        if (!organizationIds.includes(findRes.organizationId)) {
+          console.log(
+            "User does not belong in organization of selected subscription"
+          );
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+          });
+          return;
+        }
+
         db.close();
         postRes.json({
           statusCode: STATUS_CODE.SUCCESS,

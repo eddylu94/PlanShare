@@ -17,7 +17,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     firstName,
     organization,
     createdDate,
-    price
+    price,
+    numberOfPeople
   } = subscription;
 
   const renderSubscriptionLogo = () => (
@@ -55,7 +56,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
         {getDaysAgoString(new Date(createdDate))}
       </div>
       <div className="subscription-card-basic-info-detail">
-        ${subscription.price.toFixed(2)}
+        ${price.toFixed(2)}
       </div>
       <div className="subscription-card-basic-info-detail">
         <img
@@ -63,7 +64,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           className="subscription-card-people-icon"
           src="/people_icon.png"
         />
-        {subscription.numberOfPeople}
+        {numberOfPeople}
       </div>
     </div>
   );

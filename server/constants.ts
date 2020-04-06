@@ -19,7 +19,8 @@ export const STATUS_MESSAGE = {
   EMAIL_ALREADY_VALIDATED: "email_already_validated",
   INCORRECT_VALIDATION_CODE: "incorrect_validation_code",
   USER_NOT_VALIDATED: "user_not_validated",
-  CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions"
+  CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
+  USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization"
 };
 
 // MongoDB constants
