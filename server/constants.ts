@@ -1,3 +1,5 @@
+export const TITLE = "Loofah";
+
 // Database collections
 export const DATABASE_COLLECTION = {
   USERS_COLLECTION: "Users",

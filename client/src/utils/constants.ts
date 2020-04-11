@@ -1,3 +1,5 @@
+export const TITLE = "Loofah";
+
 // Status codes
 export const STATUS_CODE = {
   SUCCESS: 1,

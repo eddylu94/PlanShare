@@ -9,6 +9,7 @@ import {
   generateAuthToken
 } from "./../utils";
 import {
+  TITLE,
   MONGO_URL,
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -103,8 +104,8 @@ export const signUp = (
               }
             });
 
-            const mailSubject = "Welcome to Project 3632";
-            const mailMessage = `Thank you for registering for Project 3632!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
+            const mailSubject = `Welcome to ${TITLE}`;
+            const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
 
             const mailOptions = {
               from: EMAIL_SERVICE_EMAIL,

@@ -3,6 +3,7 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { History } from "history";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
+import { TITLE } from "./../../utils/constants";
 
 const NavBarWithContext = (props: {
   userData: IUserContext;
@@ -40,6 +41,7 @@ const NavBarWithContext = (props: {
           className="navbar-home-icon"
           src={"./home_icon_white.png"}
         />
+        <span className="navbar-title">{TITLE}</span>
       </Link>
     );
     navBarLinks.push();
