@@ -36,11 +36,7 @@ const NavBarWithContext = (props: {
   if (isUser) {
     navBarLinks.push(
       <Link to="/">
-        <img
-          alt="Home"
-          className="navbar-home-icon"
-          src={"./home_icon_white.png"}
-        />
+        <img alt="Home" className="navbar-home-icon" src={"./icon.png"} />
         <span className="navbar-title">{TITLE}</span>
       </Link>
     );
