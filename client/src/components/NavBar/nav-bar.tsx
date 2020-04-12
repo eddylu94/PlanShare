@@ -60,7 +60,7 @@ const NavBarWithContext = (props: {
                   className="navbar-icon"
                   src={"./search_icon_white.png"}
                 />
-                Search listings
+                <span className="navbar-link-label">Search listings</span>
               </Link>
             </li>
             <li>
@@ -70,7 +70,7 @@ const NavBarWithContext = (props: {
                   className="navbar-icon"
                   src={"./create_icon_white.png"}
                 />
-                Create listing
+                <span className="navbar-link-label">Create listing</span>
               </Link>
             </li>
             <li>
@@ -80,7 +80,6 @@ const NavBarWithContext = (props: {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
-                  padding: "0 16px",
                   textDecoration: "none"
                 }}
               >

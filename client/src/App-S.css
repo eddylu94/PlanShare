@@ -23,14 +23,11 @@
   }
 
   .navbar li a {
-    display: flex;
-    align-items: center;
-    color: white;
-    text-align: center;
-    padding: 0 20px;
-    height: 50px;
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
+    padding: 0 10px;
+  }
+
+  .navbar-link-label {
+    display: none;
   }
 
   /* Change the link color to #111 (black) on hover */
@@ -63,8 +60,7 @@
   }
 
   .navbar-first-name {
-    color: #ffffff;
-    margin-left: 8px;
+    display: none;
   }
 
   .navbar-home-icon {
@@ -73,15 +69,12 @@
   }
 
   .navbar-title {
-    margin-left: 8px;
-    font-size: 22px;
-    font-weight: 450;
+    display: none;
   }
 
   .navbar-icon {
     width: 25px;
     height: 25px;
-    margin-right: 5px;
   }
 
   .page-container {
