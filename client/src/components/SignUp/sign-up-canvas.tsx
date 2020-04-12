@@ -116,7 +116,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.PASS1,
             "password",
-            "Password (8+ char. with letters and numbers)",
+            "Password (8+ letters & nums)",
             pass1,
             isPass1Valid
           )}

@@ -14,3 +14,191 @@ body {
   flex-grow: 1;
   height: 100%;
 }
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #efefef;
+}
+
+.signup-form-container {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 10px #686868;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  max-width: 600px;
+}
+
+.form-header {
+  color: #333333;
+  text-align: center;
+}
+
+.form-text-input {
+  background-color: #6c5dbd15;
+  display: flex;
+  flex-grow: 1;
+  border: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.form-submit-button {
+  background-color: #6c5dbdee;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.form-submit-button :disabled,
+input[disabled] {
+  background-color: #d8d8d8;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+/* The container */
+.form-terms-container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.form-terms-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.form-terms-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #eee;
+}
+
+.form-terms-checkmark:focus {
+  border: 2px solid #6c5dbdee;
+  outline: none !important;
+}
+
+/* On mouse-over, add a grey background color */
+.form-terms-container:hover input ~ .form-terms-checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.form-terms-container input:checked ~ .form-terms-checkmark {
+  background-color: #555555;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.form-terms-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.form-terms-container input:checked ~ .form-terms-checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.form-terms-container .form-terms-checkmark:after {
+  border: solid white;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.signup-toggle {
+  text-align: center;
+  text-decoration: underline;
+  color: #6c5dbd;
+}
+
+.terms-label {
+  text-decoration: underline;
+  color: #6c5dbd;
+}
+
+.terms-of-use-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: #333333;
+  opacity: 0.7;
+  z-index: 100;
+}
+
+.terms-of-use-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+
+.terms-of-use-dialog {
+  height: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  z-index: 200;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.terms-of-use-header {
+  text-align: center;
+}
+
+.terms-of-use-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.terms-of-use-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+}
+
+.terms-of-use-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.terms-of-use-button {
+  border: none;
+  cursor: pointer;
+  background-color: #cccccc;
+}
