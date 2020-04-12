@@ -144,8 +144,8 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           valueLabelDisplay="auto"
           value={filtersGroupSize}
           onChange={handleGroupSizeChange}
-          marks={createMarks([2, 10])}
-          min={2}
+          marks={createMarks([1, 10])}
+          min={1}
           max={10}
         />
       </FormControl>
