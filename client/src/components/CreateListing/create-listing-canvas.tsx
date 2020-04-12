@@ -101,31 +101,29 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
-      <form
-        className="form-container"
-        onSubmit={handleSubmit}
-        style={{ width: "45%", minWidth: 600 }}
-      >
+      <form className="form-container" onSubmit={handleSubmit}>
         <h2 className="form-header">Create Listing</h2>
 
         <h3 className="form-subheader">Subscription Information</h3>
 
-        <div className="form-row">
+        <div className="subscription-fields">
           <div className="form-field">
             <label className="form-label">Subscription type:</label>
             {renderSubscriptionCategoryDropdown()}
           </div>
 
-          <div className="form-field" style={{ marginLeft: 30 }}>
-            <label className="form-label">Subscription:</label>
-            {renderSubscriptionBrandDropdown()}
-          </div>
+          <div className="subscription-field-and-logo">
+            <div className="form-field subscription-field">
+              <label className="form-label">Subscription:</label>
+              {renderSubscriptionBrandDropdown()}
+            </div>
 
-          <img
-            alt="Subscription logo"
-            className="create-listing-subscription-logo"
-            src={subscriptionBrandLogo}
-          />
+            <img
+              alt="Subscription logo"
+              className="create-listing-subscription-logo"
+              src={subscriptionBrandLogo}
+            />
+          </div>
         </div>
 
         <div className="form-field">
@@ -142,7 +140,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         <div className="form-field">
           <label className="form-label">
-            URL for subscription information (optional):
+            URL for subscription information:
           </label>
           <input
             className="form-text-input form-input"
@@ -196,13 +194,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                 placeholder="2"
                 value={numberOfPeople}
                 onChange={handleInputChange}
+                style={{ width: 100 }}
               />
               <span style={{ marginLeft: 10 }}>people</span>
             </div>
           </div>
 
           <div className="form-field" style={{ marginLeft: 50 }}>
-            <label className="form-label">Estimated price per person:</label>
+            <label className="form-label">Price per person:</label>
             <div className="form-number-input-with-label">
               <input
                 className="form-text-input form-input form-number-input"

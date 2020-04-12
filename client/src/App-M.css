@@ -123,6 +123,11 @@
     padding: 24px;
   }
 
+  .signup-form-header {
+    margin: 10px 0 20px 0;
+    font-size: 28px;
+  }
+
   .form-header {
     margin: 10px 0 20px 0;
     font-size: 28px;
@@ -137,15 +142,11 @@
   }
 
   .form-container {
-    display: flex;
-    flex-direction: column;
     width: 600px;
     max-width: 600px;
     box-shadow: 0px 0px 10px #d8d8d8;
     padding: 24px;
     border-radius: 10px;
-    background-color: #ffffff;
-    box-sizing: border-box;
   }
 
   .form-subheader {
@@ -160,10 +161,16 @@
     align-items: center;
   }
 
+  .subscription-fields {
+    flex-direction: row;
+  }
+
   .form-field {
-    display: flex;
-    flex-direction: column;
     margin-bottom: 15px;
+  }
+
+  .subscription-field {
+    margin-left: 30px;
   }
 
   .form-label {
@@ -188,32 +195,15 @@
   }
 
   .form-text-area {
-    resize: vertical;
-    display: flex;
-    flex-grow: 1;
     font-size: 18px;
     height: 150px;
-    border: 1px solid #d8d8d8;
-    border-radius: 3px;
-    padding: 10px;
-    box-sizing: border-box;
+    padding: 10px 20px;
+    border-radius: 25px;
   }
 
   .form-text-area:focus {
     border: 2px solid #6c5dbdee;
     outline: none !important;
-  }
-
-  .form-number-input {
-    padding-right: 0;
-    flex-grow: 0;
-    text-align: end;
-  }
-
-  .form-number-input-with-label {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
   }
 
   /* The container */
@@ -252,6 +242,7 @@
 
   .select-input {
     padding: 0 20px;
+    max-height: 50px;
   }
 
   .valid-icon {
@@ -462,7 +453,8 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    margin-left: 30px;
+    align-self: flex-end;
+    margin: 0 0 15px 15px;
   }
 
   .create-listing-organization-field {
@@ -475,7 +467,8 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    margin-left: 30px;
+    align-self: flex-end;
+    margin: 0 0 15px 15px;
   }
 
   .subscription-card {

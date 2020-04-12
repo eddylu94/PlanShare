@@ -98,7 +98,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
             />
           ) : null}
-          <h2 className="form-header">Sign Up</h2>
+          <h2 className="signup-form-header">Sign Up</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.FIRST_NAME,
             "text",

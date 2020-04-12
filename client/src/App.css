@@ -45,7 +45,6 @@ body {
   flex-grow: 1;
   overflow-y: auto;
   background-color: #efefef;
-  flex-shrink: 0;
 }
 
 .signup-form-container {
@@ -63,6 +62,11 @@ body {
   text-align: center;
 }
 
+.signup-form-header {
+  color: #333333;
+  text-align: center;
+}
+
 .form-text-input {
   background-color: #6c5dbd15;
   display: flex;
@@ -70,6 +74,24 @@ body {
   border: none;
   box-sizing: border-box;
   width: 100%;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.subscription-fields {
+  display: flex;
+}
+
+.form-text-area {
+  background-color: #6c5dbd15;
+  resize: vertical;
+  display: flex;
+  flex-grow: 1;
+  border: none;
+  box-sizing: border-box;
 }
 
 .form-submit-button {
@@ -240,4 +262,30 @@ input[disabled] {
   background-repeat: no-repeat;
   background-color: #6c5dbd15;
   cursor: pointer;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  max-width: 600px;
+}
+
+.subscription-field-and-logo {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-number-input {
+  padding-right: 0;
+  flex-grow: 0;
+  text-align: end;
+}
+
+.form-number-input-with-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }

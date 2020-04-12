@@ -47,7 +47,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
     <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
       <div className="login-container">
         <form className="signup-form-container" onSubmit={handleSubmit}>
-          <h2 className="form-header">Welcome back!</h2>
+          <h2 className="signup-form-header">Welcome back!</h2>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,
             "email",
