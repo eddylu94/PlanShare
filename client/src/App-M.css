@@ -256,7 +256,7 @@
   }
 
   .select-input {
-    cursor: pointer;
+    padding: 0 20px;
   }
 
   .valid-icon {
