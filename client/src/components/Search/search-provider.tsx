@@ -159,6 +159,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setSelectedSubscription(subscriptionId);
   };
 
+  const closeModal = () => {
+    setSelectedSubscription("");
+  };
+
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
@@ -253,6 +257,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       searchFilters={searchFilters}
       handleTextChange={handleTextChange}
       handleSubscriptionCardClick={handleSubscriptionCardClick}
+      closeModal={closeModal}
     />
   );
 };

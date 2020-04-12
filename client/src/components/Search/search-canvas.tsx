@@ -2,9 +2,12 @@ import React from "react";
 
 import { ISubscriptionData } from "../../utils/utils";
 import { ISearchFiltersProps } from "./search-utils";
+import { DEVICE_MODE } from "./../../utils/constants";
 import SearchFiltersPane from "./search-filters";
 import SearchSubscriptionCard from "./search-subscription-card";
 import Subscription from "./../Subscription/subscription-provider";
+
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISearchCanvasProps {
   subscriptionData: ISubscriptionData[];
@@ -13,6 +16,7 @@ interface ISearchCanvasProps {
   searchFilters: ISearchFiltersProps;
   handleTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubscriptionCardClick: (subscriptionId: string) => void;
+  closeModal: () => void;
 }
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
@@ -22,7 +26,8 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     selectedSubscription,
     searchFilters,
     handleTextChange,
-    handleSubscriptionCardClick
+    handleSubscriptionCardClick,
+    closeModal
   } = props;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
@@ -35,8 +40,33 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     );
   });
 
+  const small = useMediaQuery("(max-width:768px)");
+  const medium = useMediaQuery("(min-width:768px)");
+  const large = useMediaQuery("(min-width:992px)");
+
+  let deviceMode;
+  if (small) {
+    deviceMode = DEVICE_MODE.MOBILE;
+  } else if (medium && !large) {
+    deviceMode = DEVICE_MODE.TABLET;
+  } else {
+    deviceMode = DEVICE_MODE.DESKTOP;
+  }
+
   return (
     <div className="search-panes">
+      {selectedSubscription &&
+      (deviceMode === DEVICE_MODE.MOBILE ||
+        deviceMode === DEVICE_MODE.TABLET) ? (
+        <>
+          <div className="overlay" onClick={closeModal}></div>
+          <div className="search-modal-container">
+            <div className="search-modal">
+              <Subscription subscriptionId={selectedSubscription} />
+            </div>
+          </div>
+        </>
+      ) : null}
       <SearchFiltersPane {...searchFilters} />
       <div className="results-pane">
         <div className="search-bar-container">
@@ -68,7 +98,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         )}
       </div>
-      {selectedSubscription ? (
+      {selectedSubscription && deviceMode === DEVICE_MODE.DESKTOP ? (
         <div className="subscription-pane search-pane">
           <Subscription subscriptionId={selectedSubscription} />
         </div>

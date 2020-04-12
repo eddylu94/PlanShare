@@ -12,3 +12,9 @@ export const STATUS_MESSAGE = {
   EMAIL_ALREADY_EXISTS: "email_already_exists",
   INCORRECT_CRED: "incorrect_cred"
 };
+
+export const DEVICE_MODE = {
+  MOBILE: "MOBILE", // width of less than 768px
+  TABLET: "TABLET", // width between 768px and 992px
+  DESKTOP: "DESKTOP" // width greater than 992px
+};

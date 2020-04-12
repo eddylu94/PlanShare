@@ -196,10 +196,7 @@ const TermsOfUse = (props: ITermsOfUseProps) => {
 
   return (
     <div>
-      <div
-        className="terms-of-use-overlay"
-        onClick={dismissTermsOfUseDialog}
-      ></div>
+      <div className="overlay" onClick={dismissTermsOfUseDialog}></div>
       <TermsOfUseDialog
         dismissTermsOfUseDialog={dismissTermsOfUseDialog}
         setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
