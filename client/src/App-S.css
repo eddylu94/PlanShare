@@ -48,6 +48,10 @@
     outline: none !important;
   }
 
+  .nav-bar-profile {
+    padding: 0 10px;
+  }
+
   .nav-bar-profile-picture {
     width: 30px;
     height: 30px;

@@ -35,6 +35,27 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+.nav-bar-profile {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-align: center;
+  height: 50px;
+  min-height: 50px;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-bar-profile:hover {
+  background-color: #4735ad;
+}
+
+.nav-bar-profile:focus {
+  background-color: #4735ad;
+  outline: none !important;
+}
+
 .nav-bar-profile-picture {
   background-color: #cccccc;
 }

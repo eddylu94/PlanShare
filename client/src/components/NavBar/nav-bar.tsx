@@ -74,22 +74,14 @@ const NavBarWithContext = (props: {
               </Link>
             </li>
             <li>
-              <Link
-                to="/profile"
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  textDecoration: "none"
-                }}
-              >
+              <div className="nav-bar-profile">
                 <img
                   alt="Profile"
                   className="nav-bar-profile-picture"
                   src="/profile_picture_placeholder.png"
                 />
                 <span className="navbar-first-name">{user?.firstName}</span>
-              </Link>
+              </div>
               <ul>
                 <li>
                   <Link to="/profile">Profile</Link>
