@@ -64,7 +64,9 @@
   }
 
   .navbar-title {
-    display: none;
+    margin-left: 10px;
+    font-size: 22px;
+    font-weight: 350;
   }
 
   .navbar-icon {
