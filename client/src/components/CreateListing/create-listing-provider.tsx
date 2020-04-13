@@ -6,7 +6,7 @@ import CreateListingCanvas from "./create-listing-canvas";
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
-import { STATUS_CODE } from "./../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 const CreateListingProviderWithContext = (props: {
@@ -14,6 +14,9 @@ const CreateListingProviderWithContext = (props: {
   history: History;
 }) => {
   const _userData = props.userData;
+
+  // Whether at least one request has been executed for listing creation data
+  let _isRetrievedListingCreationDataDirty = false;
 
   const { history } = props;
 
@@ -88,10 +91,18 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveOrganizationsResponseHandler = (data: any) => {
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
+    ) {
+      console.log("User not validated");
+      history.push("/validate");
+    }
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
       setOrganizations(body.organizations);
       setOrganizationSelection(body.defaultOrganization);
+      _isRetrievedListingCreationDataDirty = true;
     }
   };
 
@@ -234,7 +245,7 @@ const CreateListingProviderWithContext = (props: {
     setIsFormDisabled(newIsFormDisabled);
   }, [subscriptionUrl, listingDescription, numberOfPeople, price]);
 
-  return (
+  return _isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}
@@ -251,7 +262,7 @@ const CreateListingProviderWithContext = (props: {
       isFormDisabled={isFormDisabled}
       handleSubmit={handleSubmit}
     />
-  );
+  ) : null;
 };
 
 const CreateListingProvider = (props: { history: History }) => (

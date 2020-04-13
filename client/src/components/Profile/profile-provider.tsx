@@ -6,12 +6,16 @@ import ProfileCanvas from "./profile-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest } from "./../../base-requests";
 import { IProfileOrganizationData } from "./../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
 }) => {
   const _userData = props.userData;
+
+  // Whether at least one request has been executed for profile
+  let _isRetrievedProfileDirty = false;
 
   const { history } = props;
 
@@ -28,13 +32,22 @@ const ProfileProviderWithContext = (props: {
   console.log(_userData);
 
   const retrieveProfileResponseHandler = (data: any) => {
-    console.log(data);
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
+    ) {
+      console.log("User not validated");
+      history.push("/validate");
+    }
 
     const profileData = data?.body?.profileData;
     if (profileData) {
+      console.log(profileData);
+
       setFirstName(profileData.firstName);
       setOrganizations(profileData.organizations);
       setJoinedDate(profileData.joinedDate);
+      _isRetrievedProfileDirty = true;
     }
   };
 
@@ -57,13 +70,13 @@ const ProfileProviderWithContext = (props: {
     // eslint-disable-next-line
   }, []);
 
-  return (
+  return _isRetrievedProfileDirty ? (
     <ProfileCanvas
       firstName={firstName}
       organizations={organizations}
       joinedDate={joinedDate}
     />
-  );
+  ) : null;
 };
 
 const ProfileProvider = (props: { history: History }) => (

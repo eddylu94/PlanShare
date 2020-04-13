@@ -10,7 +10,13 @@ export const STATUS_CODE = {
 export const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
-  INCORRECT_CRED: "incorrect_cred"
+  INCORRECT_CRED: "incorrect_cred",
+  CANNOT_FIND_ACCOUNT_FOR_VALIDATION: "cannot_find_account_for_validation",
+  EMAIL_ALREADY_VALIDATED: "email_already_validated",
+  INCORRECT_VALIDATION_CODE: "incorrect_validation_code",
+  USER_NOT_VALIDATED: "user_not_validated",
+  CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
+  USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization"
 };
 
 export const DEVICE_MODE = {

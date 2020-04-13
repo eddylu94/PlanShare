@@ -5,7 +5,7 @@ import { History } from "history";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
-import { STATUS_CODE } from "../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
@@ -21,6 +21,9 @@ interface ISearchProviderProps {
 
 const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const _userData = props.userData;
+
+  // Whether at least one request has been executed for retrieving subscriptions
+  let _isRetrievedSubscriptionsDirty = false;
 
   let _throttle = useRef(null as any);
 
@@ -58,9 +61,17 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveSubscriptionsResponseHandler = (data: any) => {
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
+    ) {
+      console.log("User not validated");
+      history.push("/validate");
+    }
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
       setSubscriptionData(data.body?.subscriptions);
+      _isRetrievedSubscriptionsDirty = true;
     }
   };
 
@@ -255,7 +266,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     handleDaysActiveChange
   } as ISearchFiltersProps;
 
-  return (
+  return _isRetrievedSubscriptionsDirty ? (
     <SearchCanvas
       isFiltersDrawerOpen={isFiltersDrawerOpen}
       subscriptionData={subscriptionData}
@@ -267,7 +278,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       closeModal={closeModal}
       toggleFiltersDrawer={toggleFiltersDrawer}
     />
-  );
+  ) : null;
 };
 
 const SearchProvider = (props: { history: History }) => (
