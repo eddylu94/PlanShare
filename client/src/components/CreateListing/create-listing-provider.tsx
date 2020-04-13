@@ -16,7 +16,10 @@ const CreateListingProviderWithContext = (props: {
   const _userData = props.userData;
 
   // Whether at least one request has been executed for listing creation data
-  let _isRetrievedListingCreationDataDirty = false;
+  const [
+    isRetrievedListingCreationDataDirty,
+    setIsRetrievedListingCreationDataDirty
+  ] = useState(false);
 
   const { history } = props;
 
@@ -97,12 +100,11 @@ const CreateListingProviderWithContext = (props: {
     ) {
       console.log("User not validated");
       history.push("/validate");
-    }
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
       setOrganizations(body.organizations);
       setOrganizationSelection(body.defaultOrganization);
-      _isRetrievedListingCreationDataDirty = true;
+      setIsRetrievedListingCreationDataDirty(true);
     }
   };
 
@@ -245,7 +247,7 @@ const CreateListingProviderWithContext = (props: {
     setIsFormDisabled(newIsFormDisabled);
   }, [subscriptionUrl, listingDescription, numberOfPeople, price]);
 
-  return _isRetrievedListingCreationDataDirty ? (
+  return isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}

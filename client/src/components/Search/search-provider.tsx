@@ -23,7 +23,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const _userData = props.userData;
 
   // Whether at least one request has been executed for retrieving subscriptions
-  let _isRetrievedSubscriptionsDirty = false;
+  const [
+    isRetrievedSubscriptionsDirty,
+    setIsRetrievedSubscriptionsDirty
+  ] = useState(false);
 
   let _throttle = useRef(null as any);
 
@@ -70,7 +73,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
       setSubscriptionData(data.body?.subscriptions);
-      _isRetrievedSubscriptionsDirty = true;
+      setIsRetrievedSubscriptionsDirty(true);
     }
   };
 
@@ -265,7 +268,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     handleDaysActiveChange
   } as ISearchFiltersProps;
 
-  return _isRetrievedSubscriptionsDirty ? (
+  return isRetrievedSubscriptionsDirty ? (
     <SearchCanvas
       isFiltersDrawerOpen={isFiltersDrawerOpen}
       subscriptionData={subscriptionData}

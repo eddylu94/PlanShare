@@ -15,7 +15,7 @@ const ProfileProviderWithContext = (props: {
   const _userData = props.userData;
 
   // Whether at least one request has been executed for profile
-  let _isRetrievedProfileDirty = false;
+  const [isRetrievedProfileDirty, setIsRetrievedProfileDirty] = useState(false);
 
   const { history } = props;
 
@@ -47,7 +47,7 @@ const ProfileProviderWithContext = (props: {
       setFirstName(profileData.firstName);
       setOrganizations(profileData.organizations);
       setJoinedDate(profileData.joinedDate);
-      _isRetrievedProfileDirty = true;
+      setIsRetrievedProfileDirty(true);
     }
   };
 
@@ -70,7 +70,7 @@ const ProfileProviderWithContext = (props: {
     // eslint-disable-next-line
   }, []);
 
-  return _isRetrievedProfileDirty ? (
+  return isRetrievedProfileDirty ? (
     <ProfileCanvas
       firstName={firstName}
       organizations={organizations}
