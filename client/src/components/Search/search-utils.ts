@@ -11,6 +11,7 @@ export const SORT_BY = {
 };
 
 export interface ISearchFiltersProps {
+  isDrawer?: boolean;
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];

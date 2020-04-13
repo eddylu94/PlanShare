@@ -17,6 +17,7 @@ import {
 
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
+    isDrawer,
     filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -122,8 +123,12 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     color: "#6C5DBD"
   };
 
+  const filterPaneClassName = isDrawer
+    ? "filter-pane"
+    : "filter-pane search-pane";
+
   return (
-    <div className="filter-pane search-pane">
+    <div className={filterPaneClassName}>
       <FormControl component="fieldset">
         <FiltersFormLabel label={"Organization"} />
         <FormGroup>{organizationCheckboxes}</FormGroup>

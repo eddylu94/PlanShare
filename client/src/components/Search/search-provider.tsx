@@ -30,6 +30,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     history.push("/signup");
   }
 
+  const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
+
   const [subscriptionData, setSubscriptionData] = useState([]);
 
   const [filtersText, setFiltersText] = useState("");
@@ -50,6 +52,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const [filtersDaysActive, setFiltersDaysActive] = useState(30);
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
+
+  const toggleFiltersDrawer = () => {
+    setIsFiltersDrawerOpen(!isFiltersDrawerOpen);
+  };
 
   const retrieveSubscriptionsResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
@@ -251,6 +257,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   return (
     <SearchCanvas
+      isFiltersDrawerOpen={isFiltersDrawerOpen}
       subscriptionData={subscriptionData}
       filtersText={filtersText}
       selectedSubscription={selectedSubscription}
@@ -258,6 +265,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       handleTextChange={handleTextChange}
       handleSubscriptionCardClick={handleSubscriptionCardClick}
       closeModal={closeModal}
+      toggleFiltersDrawer={toggleFiltersDrawer}
     />
   );
 };

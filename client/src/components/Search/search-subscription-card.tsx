@@ -4,11 +4,12 @@ import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
+  isMobile: boolean;
   handleSubscriptionCardClick: (subscriptionId: string) => void;
 }
 
 const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
-  const { subscription, handleSubscriptionCardClick } = props;
+  const { subscription, isMobile, handleSubscriptionCardClick } = props;
 
   const {
     _id,
@@ -29,24 +30,28 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     />
   );
 
+  const renderSubsciptionCardAuthor = () => (
+    <div className="subscription-card-author">
+      <div>
+        Posted by{" "}
+        <span className="subscription-card-first-name">{firstName}</span> at{" "}
+        {organization.name}
+      </div>
+      <img
+        alt="Organization logo"
+        className="subscription-card-organization-logo"
+        src={organization.logo}
+      />
+    </div>
+  );
+
   const renderSubscriptionInfo = () => (
     <div className="subscription-card-info">
       <div className="subscription-card-info-name">
         {subscriptionBrand.name}
       </div>
       <div className="subscription-card-description">{listingDescription}</div>
-      <div className="subscription-card-author">
-        <div>
-          Posted by{" "}
-          <span className="subscription-card-first-name">{firstName}</span> at{" "}
-          {organization.name}
-        </div>
-        <img
-          alt="Organization logo"
-          className="subscription-card-organization-logo"
-          src={organization.logo}
-        />
-      </div>
+      {!isMobile ? renderSubsciptionCardAuthor() : null}
     </div>
   );
 
@@ -75,8 +80,11 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       tabIndex={0}
       onClick={() => handleSubscriptionCardClick(_id)}
     >
-      {renderSubscriptionLogo()}
-      {renderSubscriptionInfo()}
+      <div className="subscription-card-logo-and-info">
+        {renderSubscriptionLogo()}
+        {renderSubscriptionInfo()}
+      </div>
+      {isMobile ? renderSubsciptionCardAuthor() : null}
       {renderSubscriptionBasicInfo()}
     </div>
   );

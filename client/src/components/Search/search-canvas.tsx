@@ -10,6 +10,7 @@ import Subscription from "./../Subscription/subscription-provider";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISearchCanvasProps {
+  isFiltersDrawerOpen: boolean;
   subscriptionData: ISubscriptionData[];
   filtersText: string;
   selectedSubscription: string;
@@ -17,34 +18,27 @@ interface ISearchCanvasProps {
   handleTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubscriptionCardClick: (subscriptionId: string) => void;
   closeModal: () => void;
+  toggleFiltersDrawer: () => void;
 }
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
   const {
+    isFiltersDrawerOpen,
     subscriptionData,
     filtersText,
     selectedSubscription,
     searchFilters,
     handleTextChange,
     handleSubscriptionCardClick,
-    closeModal
+    closeModal,
+    toggleFiltersDrawer
   } = props;
-
-  const subscriptionCards = subscriptionData.map((subscription, i) => {
-    return (
-      <SearchSubscriptionCard
-        key={"subscription-card-" + i}
-        subscription={subscription}
-        handleSubscriptionCardClick={handleSubscriptionCardClick}
-      />
-    );
-  });
 
   const small = useMediaQuery("(max-width:768px)");
   const medium = useMediaQuery("(min-width:768px)");
   const large = useMediaQuery("(min-width:992px)");
 
-  let deviceMode;
+  let deviceMode: string;
   if (small) {
     deviceMode = DEVICE_MODE.MOBILE;
   } else if (medium && !large) {
@@ -53,11 +47,30 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     deviceMode = DEVICE_MODE.DESKTOP;
   }
 
+  const subscriptionCards = subscriptionData.map((subscription, i) => {
+    return (
+      <SearchSubscriptionCard
+        key={"subscription-card-" + i}
+        subscription={subscription}
+        isMobile={deviceMode === DEVICE_MODE.MOBILE}
+        handleSubscriptionCardClick={handleSubscriptionCardClick}
+      />
+    );
+  });
+
   return (
     <div className="search-panes">
-      {selectedSubscription &&
-      (deviceMode === DEVICE_MODE.MOBILE ||
-        deviceMode === DEVICE_MODE.TABLET) ? (
+      {isFiltersDrawerOpen && deviceMode === DEVICE_MODE.MOBILE ? (
+        <>
+          <div className="overlay" onClick={toggleFiltersDrawer}></div>
+          <div className="search-filters-drawer-container">
+            <div className="search-filters-drawer">
+              <SearchFiltersPane {...searchFilters} isDrawer={true} />
+            </div>
+          </div>
+        </>
+      ) : null}
+      {selectedSubscription && deviceMode !== DEVICE_MODE.DESKTOP ? (
         <>
           <div className="overlay" onClick={closeModal}></div>
           <div className="search-modal-container">
@@ -67,25 +80,41 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         </>
       ) : null}
-      <SearchFiltersPane {...searchFilters} />
+      {deviceMode !== DEVICE_MODE.MOBILE ? (
+        <SearchFiltersPane {...searchFilters} />
+      ) : null}
       <div className="results-pane">
-        <div className="search-bar-container">
-          <div className="search-bar">
-            <input
-              type="text"
-              className="search-text-input"
-              placeholder="Search for a subscription"
-              value={filtersText}
-              onChange={handleTextChange}
-              autoFocus
-            />
-            <button className="search-submit-button">
+        <div className="search-bar-and-filter">
+          {deviceMode === DEVICE_MODE.MOBILE ? (
+            <button
+              className="search-filters-button"
+              onClick={toggleFiltersDrawer}
+            >
               <img
-                alt="Search"
-                className="search-icon"
-                src="/search_icon.png"
+                alt="Filter search results"
+                className="filter-icon"
+                src="/filter_icon.png"
               />
             </button>
+          ) : null}
+          <div className="search-bar-container">
+            <div className="search-bar">
+              <input
+                type="text"
+                className="search-text-input"
+                placeholder="Search for a subscription"
+                value={filtersText}
+                onChange={handleTextChange}
+                autoFocus
+              />
+              <button className="search-submit-button">
+                <img
+                  alt="Search"
+                  className="search-icon"
+                  src="/search_icon.png"
+                />
+              </button>
+            </div>
           </div>
         </div>
         {filtersText && !subscriptionData.length ? (
