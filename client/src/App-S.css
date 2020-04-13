@@ -520,6 +520,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    max-width: 250px;
   }
 
   .subscription-card-author {
