@@ -419,3 +419,22 @@ input[disabled] {
   flex-direction: row;
   align-items: center;
 }
+
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px #d8d8d8;
+  max-width: 500px;
+}
+
+.profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile-profile-picture {
+  background-color: #cccccc;
+  border-radius: 50%;
+}

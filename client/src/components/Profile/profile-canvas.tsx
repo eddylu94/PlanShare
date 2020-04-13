@@ -15,7 +15,10 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     profileOrganizationData: IProfileOrganizationData,
     index: number
   ) => {
-    const { email, organization } = profileOrganizationData;
+    const {
+      // email,
+      organization
+    } = profileOrganizationData;
 
     return (
       <div
@@ -28,7 +31,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
           src={organization.logo}
         />
         <div className="profile-organization-name">{organization.name}</div>
-        <div className="profile-organization-email">({email})</div>
+        {/* <div className="profile-organization-email">({email})</div> */}
       </div>
     );
   };
@@ -48,23 +51,25 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   return (
     <div className="page-container">
       <div className="profile-container">
-        <div className="profile-header">
-          <img
-            alt="Profile"
-            className="profile-profile-picture"
-            src="/profile_picture_placeholder.png"
-          />
-          <div className="profile-name-and-joined-date">
-            <div className="profile-first-name">{firstName}</div>
-            <div className="profile-joined-date">
-              Member since:
-              <span className="profile-joined-date-value">
-                {new Date(joinedDate).toDateString()}
-              </span>
+        <div className="profile-wrapper">
+          <div className="profile-header">
+            <img
+              alt="Profile"
+              className="profile-profile-picture"
+              src="/profile_picture_placeholder.png"
+            />
+            <div className="profile-name-and-joined-date">
+              <div className="profile-first-name">{firstName}</div>
+              <div className="profile-joined-date">
+                Member since:
+                <span className="profile-joined-date-value">
+                  {new Date(joinedDate).toDateString()}
+                </span>
+              </div>
             </div>
           </div>
+          {renderOrganizations()}
         </div>
-        {renderOrganizations()}
       </div>
     </div>
   );
