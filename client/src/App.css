@@ -68,6 +68,22 @@ body {
   background-color: #efefef;
 }
 
+.validate-text-input {
+  display: flex;
+  border: 1px solid #cccccc;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.validate-incorrect-message {
+  text-align: center;
+  margin-top: 10px;
+  color: #800000;
+  font-style: italic;
+}
+
 .signup-form-container {
   display: flex;
   flex-direction: column;

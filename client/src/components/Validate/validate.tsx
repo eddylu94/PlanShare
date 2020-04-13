@@ -4,7 +4,7 @@ import { History } from "history";
 
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
-import { STATUS_CODE } from "./../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 const NUMBER_OF_VALIDATION_TEXT_INPUTS = 5;
 
@@ -19,7 +19,11 @@ const ValidateWithContext = (props: {
   const [validationEmail, setValidationEmail] = useState("");
 
   const inputRefs: any = useRef(
-    [...Array(NUMBER_OF_VALIDATION_TEXT_INPUTS + 1)].map(() => createRef())
+    [...Array(NUMBER_OF_VALIDATION_TEXT_INPUTS)].map(() => createRef())
+  );
+
+  const [isIncorrectValidationCode, setIsIncorrectValidationCode] = useState(
+    false
   );
 
   const inputFields = new Array(NUMBER_OF_VALIDATION_TEXT_INPUTS);
@@ -42,7 +46,7 @@ const ValidateWithContext = (props: {
 
     setInputFields[index](value);
 
-    if (index < NUMBER_OF_VALIDATION_TEXT_INPUTS) {
+    if (index < NUMBER_OF_VALIDATION_TEXT_INPUTS - 1) {
       inputRefs.current[index + 1].current.focus();
     }
   };
@@ -69,6 +73,8 @@ const ValidateWithContext = (props: {
       className="validate-text-input"
       name={"validate" + i}
       type="text"
+      autoComplete="off"
+      autoCapitalize="none"
       value={value}
       maxLength={1}
       onChange={handleInputChange}
@@ -82,7 +88,7 @@ const ValidateWithContext = (props: {
 
   useEffect(() => {
     if (!inputFields.reduce((acc, curr) => (acc = acc || !curr), false)) {
-      inputRefs.current[NUMBER_OF_VALIDATION_TEXT_INPUTS].current.focus();
+      inputRefs.current[NUMBER_OF_VALIDATION_TEXT_INPUTS - 1].current.focus();
     }
   }, [inputFields]);
 
@@ -113,8 +119,14 @@ const ValidateWithContext = (props: {
   };
 
   const handleSubmitResponseHandler = (res: any) => {
-    if (res.statusCode === STATUS_CODE.SUCCESS) {
+    if (
+      res.statusCode === STATUS_CODE.FAILURE &&
+      res.statusMessage === STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
+    ) {
+      setIsIncorrectValidationCode(true);
+    } else if (res.statusCode === STATUS_CODE.SUCCESS) {
       // console.log("Validation successful for:", email);
+      setIsIncorrectValidationCode(false);
       history.push("/");
     }
   };
@@ -123,7 +135,7 @@ const ValidateWithContext = (props: {
     console.log(error);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = () => {
     const validationCode = inputFields.reduce((acc, curr) => (acc += curr), "");
 
     if (!inputFields.reduce((acc, curr) => (acc = acc || !curr), false)) {
@@ -139,33 +151,33 @@ const ValidateWithContext = (props: {
         _userData.user?.auth
       );
     }
-
-    event.preventDefault();
   };
+
+  useEffect(() => {
+    const isValid = !inputFields.reduce(
+      (acc, curr) => (acc = acc || !curr),
+      false
+    );
+    if (isValid) {
+      handleSubmit();
+    }
+    // eslint-disable-next-line
+  }, [inputFields]);
 
   return (
     <div
       className="page-container"
       style={{ alignItems: "center", justifyContent: "center" }}
     >
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className="form-container">
         <label className="form-label">
-          Please enter the validation code sent to{" "}
+          Please enter the validation code sent to
+          <br />
           <span style={{ fontWeight: "bold" }}>{validationEmail}</span>:
         </label>
-        <div className="validate-text-input-row">
-          {inputs}
-          <input
-            ref={inputRefs.current[NUMBER_OF_VALIDATION_TEXT_INPUTS]}
-            className="form-submit-button"
-            style={{ marginLeft: 20, width: 100 }}
-            type="submit"
-            value="Submit"
-            disabled={inputFields.reduce(
-              (acc, curr) => (acc = acc || !curr),
-              false
-            )}
-          />
+        <div className="validate-text-input-row">{inputs}</div>
+        <div className="validate-incorrect-message">
+          {isIncorrectValidationCode ? "Incorrect validation code" : ""}
         </div>
       </form>
     </div>

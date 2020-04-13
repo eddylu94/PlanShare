@@ -67,8 +67,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     ) {
       console.log("User not validated");
       history.push("/validate");
-    }
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body?.subscriptions);
       setSubscriptionData(data.body?.subscriptions);
       _isRetrievedSubscriptionsDirty = true;
