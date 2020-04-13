@@ -367,6 +367,7 @@ input[disabled] {
 .search-bar-and-filter {
   display: flex;
   flex-direction: row;
+  flex-shrink: 0;
 }
 
 .filter-icon {
