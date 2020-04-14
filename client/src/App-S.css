@@ -482,6 +482,7 @@
     padding: 20px;
     border-radius: 10px;
     margin: 10px 0;
+    max-height: 150px;
   }
 
   .subscription-card:hover {

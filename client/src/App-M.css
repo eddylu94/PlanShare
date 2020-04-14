@@ -365,7 +365,7 @@
     flex-direction: column;
     overflow-y: auto;
     padding: 20px 20px 0 20px;
-    max-width: 500px;
+    max-width: 700px;
   }
 
   .search-bar-container {
@@ -483,6 +483,7 @@
     padding: 20px;
     border-radius: 10px;
     margin: 10px 0;
+    max-height: 115px;
   }
 
   .subscription-card:hover {

@@ -79,7 +79,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <span className="subscription-detail-bold">${price.toFixed(2)}</span>{" "}
         per person
       </div>
-      <div className="subscription-label">Subscription</div>
+      <div className="subscription-label">Subscription URL</div>
       <div className="subscription-detail">
         <a href={subscriptionUrl} target="_blank" rel="noopener noreferrer">
           {subscriptionUrl}

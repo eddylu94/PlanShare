@@ -454,6 +454,7 @@ input[disabled] {
 .subscription-card-logo-and-info {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
   align-items: center;
 }
 
