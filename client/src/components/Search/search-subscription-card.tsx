@@ -5,11 +5,17 @@ import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
   isMobile: boolean;
-  handleSubscriptionCardClick: (subscriptionId: string) => void;
+  isProfile?: boolean;
+  handleSubscriptionCardClick?: (subscriptionId: string) => void;
 }
 
 const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
-  const { subscription, isMobile, handleSubscriptionCardClick } = props;
+  const {
+    subscription,
+    isMobile,
+    isProfile,
+    handleSubscriptionCardClick
+  } = props;
 
   const {
     _id,
@@ -33,9 +39,13 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   const renderSubsciptionCardAuthor = () => (
     <div className="subscription-card-author">
       <div>
-        Posted by{" "}
-        <span className="subscription-card-first-name">{firstName}</span> at{" "}
-        {organization.name}
+        {!isProfile ? (
+          <>
+            Posted by{" "}
+            <span className="subscription-card-first-name">{firstName}</span>{" "}
+          </>
+        ) : null}
+        at {organization.name}
       </div>
       <img
         alt="Organization logo"
@@ -78,7 +88,9 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <div
       className="subscription-card"
       tabIndex={0}
-      onClick={() => handleSubscriptionCardClick(_id)}
+      onClick={() =>
+        handleSubscriptionCardClick ? handleSubscriptionCardClick(_id) : {}
+      }
     >
       <div className="subscription-card-logo-and-info">
         {renderSubscriptionLogo()}

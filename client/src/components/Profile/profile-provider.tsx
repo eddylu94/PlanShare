@@ -5,7 +5,10 @@ import { History } from "history";
 import ProfileCanvas from "./profile-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest } from "./../../base-requests";
-import { IProfileOrganizationData } from "./../../utils/utils";
+import {
+  IProfileOrganizationData,
+  ISubscriptionData
+} from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 const ProfileProviderWithContext = (props: {
@@ -24,6 +27,10 @@ const ProfileProviderWithContext = (props: {
     [] as IProfileOrganizationData[]
   );
   const [joinedDate, setJoinedDate] = useState(-1);
+
+  const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
+    [] as ISubscriptionData[]
+  );
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -66,8 +73,10 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionsByUserResponseHandler = (data: any) => {
-    if (data) {
-      console.log(data.subscriptions);
+    const authoredSubscriptions = data?.body?.subscriptions;
+    if (authoredSubscriptions) {
+      console.log(authoredSubscriptions);
+      setAuthoredSubscriptions(authoredSubscriptions);
     }
   };
 
@@ -96,6 +105,7 @@ const ProfileProviderWithContext = (props: {
       firstName={firstName}
       organizations={organizations}
       joinedDate={joinedDate}
+      authoredSubscriptions={authoredSubscriptions}
     />
   ) : null;
 };

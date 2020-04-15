@@ -466,6 +466,12 @@ input[disabled] {
   max-width: 500px;
 }
 
+.profile-authored-subscriptions {
+  display: flex;
+  flex-direction: column;
+  max-width: 540px;
+}
+
 .profile-wrapper {
   display: flex;
   flex-direction: column;
