@@ -390,3 +390,77 @@ export const getProfile = (
       console.log(err);
     });
 };
+
+export const getSubscriptionsByAuthor = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving subscriptions by author...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const emails = findRes.emails;
+
+      const { userId } = postReq.query;
+
+      const dbo = db.db(DATABASE_NAME);
+
+      const promises = emails
+        .map(email => getDomain(email))
+        .map(domain => retrieveOrganizationByDomain(domain))
+        .map((organization: any) => organization.organizationId)
+        .map((organizationId: string) => {
+          return dbo
+            .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+            .find({
+              userId: new ObjectId(userId),
+              "organization.organizationId": organizationId
+            })
+            .toArray()
+            .then(findRes => {
+              if (!findRes) {
+                console.log("Unable to find subscriptions");
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                });
+                return;
+              }
+
+              return findRes;
+            })
+            .catch(findErr => {
+              if (findErr) {
+                console.log("Error finding record");
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                });
+              }
+            });
+        });
+
+      Promise.all(promises).then(results => {
+        const subscriptions = results.reduce(
+          (acc, curr) => acc.concat(curr),
+          [] as any
+        );
+        // console.log(subscriptions);
+
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          body: {
+            subscriptions
+          }
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

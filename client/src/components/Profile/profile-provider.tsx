@@ -65,8 +65,29 @@ const ProfileProviderWithContext = (props: {
     );
   };
 
+  const retrieveSubscriptionsByUserResponseHandler = (data: any) => {
+    if (data) {
+      console.log(data.subscriptions);
+    }
+  };
+
+  const retrieveSubscriptionsByUserErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const retrieveSubscriptionsByUser = () => {
+    baseGetRequest(
+      "getsubscriptionsbyauthor",
+      [{ userId: _userData.user?.userId as string }],
+      retrieveSubscriptionsByUserResponseHandler,
+      retrieveSubscriptionsByUserErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     retrieveProfile();
+    retrieveSubscriptionsByUser();
     // eslint-disable-next-line
   }, []);
 
