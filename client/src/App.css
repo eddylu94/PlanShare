@@ -374,6 +374,7 @@ input[disabled] {
   background-color: #ffffff;
   z-index: 500;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .search-filters-button {

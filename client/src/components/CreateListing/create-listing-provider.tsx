@@ -40,7 +40,10 @@ const CreateListingProviderWithContext = (props: {
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     {} as ISubscriptionBrand
   );
+
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+
+  const [listingContact, setListingContact] = useState("");
 
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
@@ -78,6 +81,9 @@ const CreateListingProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
         setSubscriptionUrl(value);
+        break;
+      case FORM_INPUT_TYPE.LISTING_CONTACT:
+        setListingContact(value);
         break;
       case FORM_INPUT_TYPE.LISTING_DESCRIPTION:
         setListingDescription(value);
@@ -192,6 +198,7 @@ const CreateListingProviderWithContext = (props: {
       subscriptionData: {
         subscriptionBrand: subscriptionBrandSelection,
         subscriptionUrl,
+        listingContact,
         listingDescription,
         numberOfPeople,
         price,
@@ -239,13 +246,13 @@ const CreateListingProviderWithContext = (props: {
 
   useEffect(() => {
     const newIsFormDisabled = !(
-      subscriptionUrl &&
+      listingContact &&
       listingDescription &&
       numberOfPeople &&
       price
     );
     setIsFormDisabled(newIsFormDisabled);
-  }, [subscriptionUrl, listingDescription, numberOfPeople, price]);
+  }, [listingContact, listingDescription, numberOfPeople, price]);
 
   return isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
@@ -255,9 +262,10 @@ const CreateListingProviderWithContext = (props: {
       subscriptionBrands={subscriptionBrands}
       subscriptionBrandLogo={subscriptionBrandLogo}
       subscriptionBrandSelection={subscriptionBrandSelection}
+      subscriptionUrl={subscriptionUrl}
       organizations={organizations}
       organizationSelection={organizationSelection}
-      subscriptionUrl={subscriptionUrl}
+      listingContact={listingContact}
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
       price={price}

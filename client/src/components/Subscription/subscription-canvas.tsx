@@ -23,6 +23,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     numberOfPeople,
     createdDate,
     price,
+    listingContact,
     subscriptionUrl
   } = subscriptionData;
 
@@ -79,17 +80,23 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <span className="subscription-detail-bold">${price.toFixed(2)}</span>{" "}
         per person
       </div>
-      <div className="subscription-label">Subscription URL</div>
-      <div className="subscription-detail">
-        <a href={subscriptionUrl} target="_blank" rel="noopener noreferrer">
-          {subscriptionUrl}
-        </a>
-      </div>
       <div className="subscription-label">Description</div>
       <div className="subscription-detail">
         <div className="subscription-card-description">
           {listingDescription}
         </div>
+      </div>
+      <div className="subscription-label">How to contact me</div>
+      <div className="subscription-detail">{listingContact}</div>
+      <div className="subscription-label">Link to subscription</div>
+      <div className="subscription-detail">
+        {subscriptionUrl ? (
+          <a href={subscriptionUrl} target="_blank" rel="noopener noreferrer">
+            {subscriptionUrl}
+          </a>
+        ) : (
+          "---"
+        )}
       </div>
       <div className="subscription-label">Organization</div>
       <div className="subscription-detail">

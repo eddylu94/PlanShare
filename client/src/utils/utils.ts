@@ -49,7 +49,7 @@ export interface ISubscriptionData {
   _id: string;
   subscriptionTypeSelection: string;
   subscriptionBrand: ISubscription;
-  subscriptionUrl: string;
+  listingContact: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;
@@ -57,6 +57,7 @@ export interface ISubscriptionData {
   firstName: string;
   organization: IOrganization;
   createdDate: string;
+  subscriptionUrl?: string;
 }
 
 export const KEYBOARD_CHAR_CODE = {
