@@ -96,7 +96,7 @@ const LoginProviderWithContext = (props: {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       const postRequestData = {
-        email,
+        email: email.toLocaleLowerCase(),
         pass
       };
       basePostRequest(

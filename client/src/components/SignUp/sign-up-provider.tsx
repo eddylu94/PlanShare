@@ -144,7 +144,7 @@ const SignUpProviderWithContext = (props: {
     if (!isFormDisabled) {
       const postRequestData = {
         firstName,
-        email,
+        email: email.toLocaleLowerCase(),
         pass: pass1
       };
       basePostRequest(

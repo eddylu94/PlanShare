@@ -41,7 +41,7 @@ export const signUp = (
     const dbo = db.db(DATABASE_NAME);
 
     // Verify if user already exists
-    const email = obj.email;
+    const email = obj.email.toLocaleLowerCase();
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ email }, (findErr, findRes) => {
@@ -150,7 +150,8 @@ export const login = (
     const dbo = db.db(DATABASE_NAME);
 
     // Verify if user exists
-    const { email, pass } = obj;
+    const email = obj.email.toLocaleLowerCase();
+    const { pass } = obj;
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ email }, (findErr, findRes) => {
