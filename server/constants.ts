@@ -1,4 +1,4 @@
-export const TITLE = "Loofah";
+export const TITLE = "PlanShare";
 
 // Database collections
 export const DATABASE_COLLECTION = {

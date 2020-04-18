@@ -1,4 +1,4 @@
-export const TITLE = "Loofah";
+export const TITLE = "PlanShare";
 
 // Status codes
 export const STATUS_CODE = {
