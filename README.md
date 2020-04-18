@@ -66,16 +66,16 @@ Add and save the following configurations:
 ```
 server {
 	listen 80;
-	server_name loofah.io;
-	rewrite ^/(.*) https://loofah.io/$1 permanent;
+	server_name planshare.io;
+	rewrite ^/(.*) https://planshare.io/$1 permanent;
 }
 
 server {
 	listen 443 ssl;
 
-	server_name loofah.io;
-	ssl_certificate /root/loofah.io.crt;
-	ssl_certificate_key /root/loofah.io.key;
+	server_name planshare.io;
+	ssl_certificate /root/planshare.io.crt;
+	ssl_certificate_key /root/planshare.io.key;
 	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 	ssl_prefer_server_ciphers on;
 	ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
