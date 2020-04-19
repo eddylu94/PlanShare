@@ -34,6 +34,10 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   GYM_MEMBERSHIPS: {
     subscriptionCategoryId: "GYM_MEMBERSHIPS",
     name: "Gym Memberships"
+  },
+  INTERVIEW_PREP: {
+    subscriptionCategoryId: "INTERVIEW_PREP",
+    name: "Interview Prep"
   }
 };
 
@@ -42,7 +46,8 @@ const tvSubscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId
+  SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
+  SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId
 ];
 
 export const subscriptionCategories = tvSubscriptionCategoriesIds.map(
@@ -202,6 +207,13 @@ export const SUBSCRIPTION: ISubscription = {
     name: "LA Fitness",
     logo:
       "https://www.mallmaverick.com/system/stores/store_fronts/000/045/815/original/LA_Fitness.png?1549387921"
+  },
+  LEETCODE: {
+    subscriptionBrandId: "LEETCODE",
+    type: SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
+    name: "LeetCode",
+    logo:
+      "https://media.licdn.com/dms/image/C4E0BAQFvx45x7j4Zhg/company-logo_200_200/0?e=2159024400&v=beta&t=Qk8MU_WjUw8GIpZtZhWF4rxpbuEEEJ6Eypq1q0loNzM"
   }
 };
 
@@ -242,6 +254,8 @@ const gymMembershipBrandIds = [
   SUBSCRIPTION.LA_FITNESS.subscriptionBrandId
 ];
 
+const interviewPrepBrandIds = [SUBSCRIPTION.LEETCODE.subscriptionBrandId];
+
 export const retrieveSubscriptionBrands = (type: string) => {
   let ids;
   switch (type) {
@@ -259,6 +273,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
       break;
     case SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId:
       ids = gymMembershipBrandIds;
+      break;
+    case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
+      ids = interviewPrepBrandIds;
       break;
     default:
       ids = onlineStreamingBrandIds;
