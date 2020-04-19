@@ -151,6 +151,14 @@ body {
   opacity: 0.9;
 }
 
+.subscription-icons {
+  transition: all 0.2s ease-in-out;
+}
+
+.subscription-icons:hover {
+  transform: scale(1.05);
+}
+
 .vertical-divider {
   display: flex;
   flex-direction: column;
