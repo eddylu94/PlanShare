@@ -35,6 +35,9 @@ const SignUpProviderWithContext = (props: {
 
   const [termsOfUseAcknowledged, setTermsOfUseAcknowledged] = useState(false);
 
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPassFocused, setIsPassFocused] = useState(false);
+
   const [
     isTermsOfUseDialogDisplayed,
     setIsTermsOfUseDialogDisplayed
@@ -158,6 +161,14 @@ const SignUpProviderWithContext = (props: {
     event.preventDefault();
   };
 
+  const togglePassFocused = (value: boolean) => {
+    setIsPassFocused(value);
+  };
+
+  const toggleEmailFocused = (value: boolean) => {
+    setIsEmailFocused(value);
+  };
+
   return (
     <SignUpCanvas
       handleInputChange={handleInputChange}
@@ -175,6 +186,10 @@ const SignUpProviderWithContext = (props: {
       isFormDisabled={isFormDisabled}
       isTermsOfUseDialogDisplayed={isTermsOfUseDialogDisplayed}
       setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
+      isPassFocused={isPassFocused}
+      togglePassFocused={togglePassFocused}
+      isEmailFocused={isEmailFocused}
+      toggleEmailFocused={toggleEmailFocused}
     />
   );
 };

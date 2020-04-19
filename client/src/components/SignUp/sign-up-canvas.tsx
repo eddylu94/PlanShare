@@ -5,6 +5,8 @@ import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import TermsOfUse from "./../TermsOfUse/terms-of-use";
 import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -21,15 +23,11 @@ interface ISignUpCanvasProps {
   isFormDisabled: boolean;
   isTermsOfUseDialogDisplayed: boolean;
   setIsTermsOfUseDialogDisplayed: (value: boolean) => void;
+  isPassFocused: boolean;
+  togglePassFocused: (value: boolean) => void;
+  isEmailFocused: boolean;
+  toggleEmailFocused: (value: boolean) => void;
 }
-
-// const ValidIcon = () => (
-//   <span className="validity-icon valid-icon">&#10004;</span>
-// );
-
-// const InvalidIcon = () => (
-//   <span className="validity-icon invalid-icon">&#10006;</span>
-// );
 
 const SignUpCanvas = (props: ISignUpCanvasProps) => {
   const {
@@ -47,7 +45,11 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     setTermsOfUseAcknowledged,
     isFormDisabled,
     isTermsOfUseDialogDisplayed,
-    setIsTermsOfUseDialogDisplayed
+    setIsTermsOfUseDialogDisplayed,
+    isPassFocused,
+    togglePassFocused,
+    isEmailFocused,
+    toggleEmailFocused
   } = props;
 
   const renderTextInputWithValidation = (
@@ -56,23 +58,72 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     placeholder: string,
     value: string,
     isValid: boolean
-  ) => (
-    <div
-      key={"form-input-with-validation-" + name}
-      className="form-text-input-with-validation"
-    >
-      <input
-        key={"form-input-" + name}
-        className={"form-text-input"}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={handleInputChange}
-      />
-      {/* {isValid ? <ValidIcon /> : <InvalidIcon />} */}
-    </div>
-  );
+  ) => {
+    let tooltip = "";
+    switch (name) {
+      case "email":
+        tooltip = "To verify that you belong to a certain organization";
+        break;
+      case "pass1":
+        tooltip = "Do not use your actual work password";
+        break;
+      default:
+        break;
+    }
+
+    const onFocusHandler = () => {
+      switch (name) {
+        case "email":
+          return toggleEmailFocused(true);
+        case "pass1":
+          return togglePassFocused(true);
+        default:
+          return {};
+      }
+    };
+
+    const onBlurHandler = () => {
+      switch (name) {
+        case "email":
+          return toggleEmailFocused(false);
+        case "pass1":
+          return togglePassFocused(false);
+        default:
+          return {};
+      }
+    };
+
+    const isOpen =
+      (name === "email" && isEmailFocused) ||
+      (name === "pass1" && isPassFocused);
+
+    return (
+      <div
+        key={"form-input-with-validation-" + name}
+        className="form-text-input-with-validation"
+      >
+        <Tooltip
+          title={tooltip}
+          aria-label="add"
+          placement="bottom-start"
+          open={isOpen}
+        >
+          <input
+            key={"form-input-" + name}
+            className={"form-text-input"}
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={handleInputChange}
+            autoComplete="off"
+            onFocus={onFocusHandler}
+            onBlur={onBlurHandler}
+          />
+        </Tooltip>
+      </div>
+    );
+  };
 
   const handleClickTermsOfUse = () => {
     setIsTermsOfUseDialogDisplayed(true);
@@ -87,11 +138,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   return (
     <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
       <div className="sign-up-container">
-        <form
-          className="signup-form-container"
-          onSubmit={handleSubmit}
-          // style={{ width: "45%" }}
-        >
+        <form className="signup-form-container" onSubmit={handleSubmit}>
           {isTermsOfUseDialogDisplayed ? (
             <TermsOfUse
               setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
@@ -109,7 +156,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,
             "email",
-            "Personal email address",
+            "Work email address",
             email,
             isEmailValid
           )}
