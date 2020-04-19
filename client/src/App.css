@@ -84,11 +84,100 @@ body {
   font-style: italic;
 }
 
+.intro-and-signup {
+  display: flex;
+  box-shadow: 0px 0px 10px #686868;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.intro-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.intro-footer {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 20px;
+  color: #686868;
+  font-size: 16px;
+}
+
+.intro-list {
+  margin-top: 15px;
+}
+
+.intro-logo-and-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-icon {
+  width: 42px;
+  height: 42px;
+}
+
+.intro-title {
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: 450;
+}
+
+.subscription-icons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.vertical-divider {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border-right: 1px solid #cccccc;
+  margin: 20px 10px;
+}
+
+.horizontal-divider {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  border-top: 1px solid #cccccc;
+  margin: 10px 20px;
+}
+
 .signup-form-container {
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 10px #686868;
-  border-radius: 10px;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  max-width: 600px;
+}
+
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
   background-color: #ffffff;
   box-sizing: border-box;
   max-width: 600px;
@@ -102,6 +191,7 @@ body {
 .signup-form-header {
   color: #333333;
   text-align: center;
+  font-weight: 450;
 }
 
 .form-text-input {

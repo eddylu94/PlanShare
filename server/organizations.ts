@@ -41,7 +41,7 @@ export const ORGANIZATION: IOrganization = {
     type: ORGANIZATION_CATEGORY.COMPANY.name,
     name: "Google",
     logo:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png",
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/992px-Google_%22G%22_Logo.svg.png",
     domains: ["gmail.com"]
   },
   YAHOO_COMPANY: {

@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import TermsOfUse from "./../TermsOfUse/terms-of-use";
 import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
+import { TITLE } from "./../../utils/constants";
+import { DEVICE_MODE } from "./../../utils/constants";
 
 import Tooltip from "@material-ui/core/Tooltip";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
@@ -135,75 +138,125 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     }
   };
 
+  const small = useMediaQuery("(max-width:768px)");
+  const medium = useMediaQuery("(min-width:768px)");
+  const large = useMediaQuery("(min-width:992px)");
+
+  let deviceMode: string;
+  if (small) {
+    deviceMode = DEVICE_MODE.MOBILE;
+  } else if (medium && !large) {
+    deviceMode = DEVICE_MODE.TABLET;
+  } else {
+    deviceMode = DEVICE_MODE.DESKTOP;
+  }
+
   return (
     <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
       <div className="sign-up-container">
-        <form className="signup-form-container" onSubmit={handleSubmit}>
-          {isTermsOfUseDialogDisplayed ? (
-            <TermsOfUse
-              setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
-              setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
-            />
-          ) : null}
-          <h2 className="signup-form-header">Sign Up</h2>
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.FIRST_NAME,
-            "text",
-            "First name",
-            firstName,
-            isFirstNameValid
+        <div className="intro-and-signup">
+          <div className="intro">
+            <div className="intro-header">
+              <div className="intro-logo-and-title">
+                <img alt={TITLE} className="intro-icon" src={"./icon.png"} />
+                <span className="intro-title">{TITLE}</span>
+              </div>
+            </div>
+            <div className="subscription-icons-container">
+              <img
+                alt="Subscriptions"
+                className="subscription-icons"
+                src={"./subscription_icons.png"}
+              />
+            </div>
+            <div className="intro-footer">
+              <div>
+                <span className="b" style={{ color: "#6C5DBD" }}>
+                  {TITLE}
+                </span>{" "}
+                is a classifieds website that helps you find colleagues to split
+                costs on group plans. We leave the communication and payments up
+                to you.
+              </div>
+              <ol className="intro-list">
+                <li>Create an account</li>
+                <li>Verify your email address</li>
+                <li>Search and save on group plans!</li>
+              </ol>
+            </div>
+          </div>
+          {deviceMode === DEVICE_MODE.DESKTOP ? (
+            <div className="vertical-divider"></div>
+          ) : (
+            <div className="horizontal-divider"></div>
           )}
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.EMAIL,
-            "email",
-            "Work email address",
-            email,
-            isEmailValid
-          )}
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.PASS1,
-            "password",
-            "Password (8+ letters & nums)",
-            pass1,
-            isPass1Valid
-          )}
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.PASS2,
-            "password",
-            "Confirm password",
-            pass2,
-            isPass2Valid
-          )}
-          <label className="form-terms-container">
+          <form className="signup-form-container" onSubmit={handleSubmit}>
+            {isTermsOfUseDialogDisplayed ? (
+              <TermsOfUse
+                setIsTermsOfUseDialogDisplayed={setIsTermsOfUseDialogDisplayed}
+                setTermsOfUseAcknowledged={setTermsOfUseAcknowledged}
+              />
+            ) : null}
+            <h2 className="signup-form-header">Sign Up</h2>
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.FIRST_NAME,
+              "text",
+              "First name",
+              firstName,
+              isFirstNameValid
+            )}
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.EMAIL,
+              "email",
+              "Work email address",
+              email,
+              isEmailValid
+            )}
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.PASS1,
+              "password",
+              "Password (8+ letters & nums)",
+              pass1,
+              isPass1Valid
+            )}
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.PASS2,
+              "password",
+              "Confirm password",
+              pass2,
+              isPass2Valid
+            )}
+            <label className="form-terms-container">
+              <input
+                name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
+                type="checkbox"
+                checked={termsOfUseAcknowledged}
+                onChange={handleInputChange}
+                tabIndex={-1}
+              />
+              <span
+                className="form-terms-checkmark"
+                role="checkbox"
+                aria-checked={termsOfUseAcknowledged}
+                tabIndex={0}
+                onKeyPress={handleKeyPressCheckbox}
+              ></span>
+              By signing up, you agree to the{" "}
+              <span className="terms-label" onClick={handleClickTermsOfUse}>
+                Terms of Use
+              </span>
+            </label>
             <input
-              name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
-              type="checkbox"
-              checked={termsOfUseAcknowledged}
-              onChange={handleInputChange}
-              tabIndex={-1}
+              className="form-submit-button"
+              type="submit"
+              value="Submit"
+              disabled={isFormDisabled}
             />
-            <span
-              className="form-terms-checkmark"
-              role="checkbox"
-              aria-checked={termsOfUseAcknowledged}
-              tabIndex={0}
-              onKeyPress={handleKeyPressCheckbox}
-            ></span>
-            By signing up, you agree to the{" "}
-            <span className="terms-label" onClick={handleClickTermsOfUse}>
-              Terms of Use
-            </span>
-          </label>
-          <input
-            className="form-submit-button"
-            type="submit"
-            value="Submit"
-            disabled={isFormDisabled}
-          />
-          <Link className="signup-toggle" to="/login">
-            Already have an account? Log in here
-          </Link>
-        </form>
+            <Link className="signup-toggle" to="/login">
+              Already have an account? Log in here
+            </Link>
+          </form>
+        </div>
       </div>
     </div>
   );

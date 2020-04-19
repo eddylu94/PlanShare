@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { FORM_INPUT_TYPE } from "./login-utils";
+import { TITLE } from "./../../utils/constants";
 
 interface ILoginCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
@@ -46,8 +47,11 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
   return (
     <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
       <div className="login-container">
-        <form className="signup-form-container" onSubmit={handleSubmit}>
-          <h2 className="signup-form-header">Welcome back!</h2>
+        <form className="login-form-container" onSubmit={handleSubmit}>
+          <div className="intro-logo-and-title" style={{ marginBottom: 20 }}>
+            <img alt={TITLE} className="intro-icon" src={"./icon.png"} />
+            <span className="intro-title">{TITLE}</span>
+          </div>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,
             "email",
