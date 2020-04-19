@@ -424,17 +424,11 @@
   }
 
   .search-submit-button {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 36px;
     height: 30px;
     line-height: 30px;
     right: 10px;
-    background-color: transparent;
-    border: none;
     font-size: 18px;
-    cursor: pointer;
   }
 
   .search-submit-button:focus {
@@ -717,5 +711,18 @@
 
   .b {
     font-weight: 500;
+  }
+
+  .close-button {
+    right: 15px;
+    top: 15px;
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+  }
+
+  .close-icon {
+    width: 24px;
+    height: 24px;
   }
 }

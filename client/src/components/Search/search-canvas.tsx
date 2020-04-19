@@ -75,6 +75,9 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           <div className="overlay" onClick={closeModal}></div>
           <div className="search-modal-container">
             <div className="search-modal">
+              <button className="close-button" onClick={closeModal}>
+                <img alt="Close" className="close-icon" src="/close_icon.png" />
+              </button>
               <Subscription subscriptionId={selectedSubscription} />
             </div>
           </div>

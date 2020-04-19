@@ -350,6 +350,7 @@ input[disabled] {
 }
 
 .search-modal {
+  position: relative;
   min-height: 500px;
   background-color: #ffffff;
   z-index: 500;
@@ -419,6 +420,16 @@ input[disabled] {
   opacity: 0.7;
 }
 
+.search-submit-button {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
 .search-subscription-cards-container {
   display: flex;
   flex-direction: column;
@@ -486,4 +497,20 @@ input[disabled] {
 .profile-profile-picture {
   background-color: #cccccc;
   border-radius: 50%;
+}
+
+.close-button {
+  position: absolute;
+  display: table-cell;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.close-button:hover {
+  background-color: #cccccc;
 }

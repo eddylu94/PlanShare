@@ -417,17 +417,11 @@
   }
 
   .search-submit-button {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 36px;
     height: 30px;
     line-height: 30px;
     right: 10px;
-    background-color: transparent;
-    border: none;
     font-size: 18px;
-    cursor: pointer;
   }
 
   .search-submit-button:focus {
