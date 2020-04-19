@@ -147,6 +147,7 @@ body {
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
+  opacity: 0.9;
 }
 
 .vertical-divider {
@@ -154,7 +155,7 @@ body {
   flex-direction: column;
   flex-grow: 1;
   border-right: 1px solid #cccccc;
-  margin: 20px 10px;
+  margin: 20px 0px;
 }
 
 .horizontal-divider {
@@ -162,7 +163,7 @@ body {
   flex-direction: row;
   flex-grow: 1;
   border-top: 1px solid #cccccc;
-  margin: 10px 20px;
+  margin: 0px 20px;
 }
 
 .signup-form-container {
