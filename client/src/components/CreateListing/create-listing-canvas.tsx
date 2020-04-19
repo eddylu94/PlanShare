@@ -220,8 +220,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                   type="number"
                   min="1"
                   max="50"
-                  placeholder="2"
-                  value={numberOfPeople}
+                  placeholder="0"
+                  value={numberOfPeople || ""}
                   onChange={handleInputChange}
                   style={{ width: 100 }}
                   onFocus={() => toggleNumberOfPeopleFocused(true)}
@@ -248,8 +248,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                   min="0.01"
                   step="0.01"
                   max="1000"
-                  placeholder="10.00"
-                  value={price}
+                  placeholder="0.00"
+                  value={price || ""}
                   onChange={handleInputChange}
                   style={{ width: 100 }}
                   onFocus={() => togglePriceFocused(true)}
