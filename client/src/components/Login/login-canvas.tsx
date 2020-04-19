@@ -52,6 +52,16 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
             <img alt={TITLE} className="intro-icon" src={"./icon.png"} />
             <span className="intro-title">{TITLE}</span>
           </div>
+          <div
+            className="subscription-icons-container"
+            style={{ marginBottom: 20 }}
+          >
+            <img
+              alt="Subscriptions"
+              className="subscription-icons"
+              src={"./subscription_icons.png"}
+            />
+          </div>
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.EMAIL,
             "email",
