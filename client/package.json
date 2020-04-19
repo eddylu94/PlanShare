@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "PORT=36321 ./node_modules/.bin/react-scripts start",
-    "build": "./node_modules/.bin/react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false ./node_modules/.bin/react-scripts build",
     "start-win": "set PORT=36321 && react-scripts start",
     "build-win": "react-scripts build",
     "test": "react-scripts test",
