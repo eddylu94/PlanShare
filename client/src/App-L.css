@@ -341,6 +341,25 @@
     margin: 20px 10px 20px 20px;
   }
 
+  .search-filters-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    line-height: 42px;
+    font-size: 18px;
+    box-shadow: 0px 0px 10px #d8d8d8;
+    border-radius: 25px;
+  }
+
+  .search-filters-button:hover {
+    box-shadow: 0px 0px 10px #888888;
+  }
+
+  .search-filters-button:focus {
+    box-shadow: 0px 0px 10px #6c5dbdee;
+    outline: none !important;
+  }
+
   .subscription-pane {
     min-width: 300px;
     max-width: 300px;
@@ -382,18 +401,11 @@
   }
 
   .search-text-input {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
     height: 42px;
     line-height: 42px;
-    background-color: transparent;
-    border: none;
-    box-sizing: border-box;
     padding: 0 50px 0 20px;
     font-size: 16px;
     border-radius: 25px;
-    transition: all 0.2s ease-in-out;
   }
 
   .search-text-input:hover {
@@ -402,7 +414,6 @@
 
   .search-text-input:focus {
     box-shadow: 0px 0px 10px #6c5dbdee;
-    outline: none !important;
   }
 
   .search-submit-button {
@@ -474,6 +485,7 @@
     border-radius: 10px;
     margin: 10px 0;
     max-height: 115px;
+    box-shadow: 0px 0px 10px #d8d8d8;
   }
 
   .subscription-card:hover {
