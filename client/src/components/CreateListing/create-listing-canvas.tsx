@@ -7,6 +7,8 @@ import {
   IOrganization
 } from "./../../utils/utils";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 interface ICreateListingCanvasProps {
   subscriptionCategories: ISubscriptionCategory[];
   subscriptionCategorySelection: ISubscriptionCategory;
@@ -27,6 +29,11 @@ interface ICreateListingCanvasProps {
   isFormDisabled: boolean;
 
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+
+  isNumberOfPeopleFocused: boolean;
+  toggleNumberOfPeopleFocused: (value: boolean) => void;
+  isPriceFocused: boolean;
+  togglePriceFocused: (value: boolean) => void;
 }
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
@@ -45,7 +52,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     numberOfPeople,
     price,
     isFormDisabled,
-    handleSubmit
+    handleSubmit,
+    isNumberOfPeopleFocused,
+    toggleNumberOfPeopleFocused,
+    isPriceFocused,
+    togglePriceFocused
   } = props;
 
   const renderSubscriptionCategoryDropdown = () => {
@@ -102,7 +113,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className="form-container" onSubmit={handleSubmit} noValidate>
         <h2 className="form-header">Create Listing</h2>
 
         <h3 className="form-subheader">Subscription Information</h3>
@@ -197,17 +208,26 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <div className="form-field">
             <label className="form-label">Looking for:</label>
             <div className="form-number-input-with-label">
-              <input
-                className="form-text-input form-input form-number-input"
-                name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
-                type="number"
-                min="1"
-                max="10"
-                placeholder="2"
-                value={numberOfPeople}
-                onChange={handleInputChange}
-                style={{ width: 100 }}
-              />
+              <Tooltip
+                title={"Between 1 to 50 people per group"}
+                aria-label="add"
+                placement="bottom-start"
+                open={isNumberOfPeopleFocused}
+              >
+                <input
+                  className="form-text-input form-input form-number-input"
+                  name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
+                  type="number"
+                  min="1"
+                  max="50"
+                  placeholder="2"
+                  value={numberOfPeople}
+                  onChange={handleInputChange}
+                  style={{ width: 100 }}
+                  onFocus={() => toggleNumberOfPeopleFocused(true)}
+                  onBlur={() => toggleNumberOfPeopleFocused(false)}
+                />
+              </Tooltip>
               <span style={{ marginLeft: 10 }}>people</span>
             </div>
           </div>
@@ -215,18 +235,27 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <div className="form-field" style={{ marginLeft: 50 }}>
             <label className="form-label">Price per person:</label>
             <div className="form-number-input-with-label">
-              <input
-                className="form-text-input form-input form-number-input"
-                name={FORM_INPUT_TYPE.PRICE}
-                type="number"
-                min="0.01"
-                step="0.01"
-                max="2500"
-                placeholder="10.00"
-                value={price}
-                onChange={handleInputChange}
-                style={{ width: 100 }}
-              />
+              <Tooltip
+                title={"Between $0.01 to $1000"}
+                aria-label="add"
+                placement="bottom-start"
+                open={isPriceFocused}
+              >
+                <input
+                  className="form-text-input form-input form-number-input"
+                  name={FORM_INPUT_TYPE.PRICE}
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  max="1000"
+                  placeholder="10.00"
+                  value={price}
+                  onChange={handleInputChange}
+                  style={{ width: 100 }}
+                  onFocus={() => togglePriceFocused(true)}
+                  onBlur={() => togglePriceFocused(false)}
+                />
+              </Tooltip>
               <span style={{ marginLeft: 10 }}>$</span>
             </div>
           </div>

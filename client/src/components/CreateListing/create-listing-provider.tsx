@@ -57,6 +57,9 @@ const CreateListingProviderWithContext = (props: {
   const [organizations, setOrganizations] = useState([]);
   const [organizationSelection, setOrganizationSelection] = useState({} as any);
 
+  const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
+  const [isPriceFocused, setIsPriceFocused] = useState(false);
+
   const handleInputChange = (event: React.ChangeEvent<any>) => {
     const target = event.target;
     const value = target.value;
@@ -254,6 +257,14 @@ const CreateListingProviderWithContext = (props: {
     setIsFormDisabled(newIsFormDisabled);
   }, [listingContact, listingDescription, numberOfPeople, price]);
 
+  const toggleNumberOfPeopleFocused = (value: boolean) => {
+    setIsNumberOfPeopleFocused(value);
+  };
+
+  const togglePriceFocused = (value: boolean) => {
+    setIsPriceFocused(value);
+  };
+
   return isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
       handleInputChange={handleInputChange}
@@ -271,6 +282,10 @@ const CreateListingProviderWithContext = (props: {
       price={price}
       isFormDisabled={isFormDisabled}
       handleSubmit={handleSubmit}
+      isNumberOfPeopleFocused={isNumberOfPeopleFocused}
+      toggleNumberOfPeopleFocused={toggleNumberOfPeopleFocused}
+      isPriceFocused={isPriceFocused}
+      togglePriceFocused={togglePriceFocused}
     />
   ) : null;
 };
