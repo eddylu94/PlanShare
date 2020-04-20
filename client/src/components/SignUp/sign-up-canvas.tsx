@@ -65,7 +65,8 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     let tooltip = "";
     switch (name) {
       case "email":
-        tooltip = "To verify that you belong to a certain organization";
+        tooltip =
+          "To verify your current company; your email address will not be shown to anyone but yourself";
         break;
       case "pass1":
         tooltip = "Do not use your actual work password";
