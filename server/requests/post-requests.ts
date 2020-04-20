@@ -3,6 +3,8 @@ import mongodb from "mongodb";
 import { EMAIL_SERVICE_EMAIL, transporter } from "./../email-service";
 import { retrieveOrganizationById } from "./../organizations";
 import {
+  encryptPassword,
+  comparePassword,
   IPendingEmail,
   authenticate,
   generateConfirmationCode,
@@ -80,49 +82,67 @@ export const signUp = (
           ]
         });
 
-        // Insert user into database
-        dbo
-          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .insertOne(obj, (insertErr, insertRes) => {
-            if (insertErr) {
-              console.log("Error inserting record");
+        const plainPass = obj.pass;
+        delete obj.pass;
+
+        const addUser = (err: any, hash: any) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+
+          if (!hash) {
+            return;
+          }
+
+          obj.pass = hash;
+
+          // Insert user into database
+          dbo
+            .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+            .insertOne(obj, (insertErr, insertRes) => {
+              if (insertErr) {
+                console.log("Error inserting record");
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                });
+                throw insertErr;
+              }
+
+              console.log("User created:", email);
               db.close();
               postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                statusCode: STATUS_CODE.SUCCESS,
+                body: {
+                  userId: insertRes.insertedId,
+                  auth: authToken.key
+                }
               });
-              throw insertErr;
-            }
 
-            console.log("User created:", email);
-            db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.SUCCESS,
-              body: {
-                userId: insertRes.insertedId,
-                auth: authToken.key
-              }
+              const mailSubject = `Welcome to ${TITLE}`;
+              const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
+
+              const mailOptions = {
+                from: EMAIL_SERVICE_EMAIL,
+                to: email,
+                subject: mailSubject,
+                html: mailMessage
+              };
+
+              transporter.sendMail(mailOptions, function(sendErr, info) {
+                if (sendErr) {
+                  console.log("Error sending email");
+                  throw sendErr;
+                } else {
+                  console.log("Email sent: " + info.response);
+                }
+              });
             });
+        };
 
-            const mailSubject = `Welcome to ${TITLE}`;
-            const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
-
-            const mailOptions = {
-              from: EMAIL_SERVICE_EMAIL,
-              to: email,
-              subject: mailSubject,
-              html: mailMessage
-            };
-
-            transporter.sendMail(mailOptions, function(sendErr, info) {
-              if (sendErr) {
-                console.log("Error sending email");
-                throw sendErr;
-              } else {
-                console.log("Email sent: " + info.response);
-              }
-            });
-          });
+        encryptPassword(plainPass, addUser);
       });
   });
 };
@@ -175,36 +195,48 @@ export const login = (
           return;
         }
 
-        if (findRes.pass !== pass) {
-          console.log("Incorrect password:", email);
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
-          });
-          return;
-        }
+        const authenticateUser = (err: any, isPasswordMatch: any) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
 
-        const userId = findRes._id;
-        const { firstName } = findRes;
-
-        const authToken = generateAuthToken();
-
-        dbo
-          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .updateOne({ _id: findRes._id }, { $push: { authTokens: authToken } })
-          .then(() => {
-            console.log("User logged in:", email);
+          if (isPasswordMatch === false) {
+            console.log("Incorrect password:", email);
             db.close();
             postRes.json({
-              statusCode: STATUS_CODE.SUCCESS,
-              body: {
-                userId: userId.toString(),
-                auth: authToken.key,
-                firstName
-              }
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.INCORRECT_CRED
             });
-          });
+            return;
+          } else if (isPasswordMatch === true) {
+            const userId = findRes._id;
+            const { firstName } = findRes;
+
+            const authToken = generateAuthToken();
+
+            dbo
+              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+              .updateOne(
+                { _id: findRes._id },
+                { $push: { authTokens: authToken } }
+              )
+              .then(() => {
+                console.log("User logged in:", email);
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.SUCCESS,
+                  body: {
+                    userId: userId.toString(),
+                    auth: authToken.key,
+                    firstName
+                  }
+                });
+              });
+          }
+        };
+
+        comparePassword(pass, findRes.pass, authenticateUser);
       });
   });
 };

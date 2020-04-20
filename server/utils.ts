@@ -1,4 +1,5 @@
 import mongodb from "mongodb";
+import bcrypt from "bcrypt";
 
 import {
   MONGO_URL,
@@ -38,6 +39,28 @@ interface IUniversity {
   domains: string[];
   country: string;
 }
+
+const SALT_ROUNDS = 10;
+
+export const encryptPassword = function(password: any, callback: any) {
+  bcrypt.genSalt(SALT_ROUNDS, function(err: any, salt: any) {
+    if (err) return callback(err);
+
+    bcrypt.hash(password, salt, function(err: any, hash: any) {
+      return callback(err, hash);
+    });
+  });
+};
+
+export const comparePassword = function(
+  plainPass: string,
+  hashword: string,
+  callback: any
+) {
+  bcrypt.compare(plainPass, hashword, function(err: any, isPasswordMatch: any) {
+    return err == null ? callback(null, isPasswordMatch) : callback(err);
+  });
+};
 
 export const authenticate = (
   mongoClient: typeof mongodb.MongoClient,
