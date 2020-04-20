@@ -129,7 +129,10 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     );
   };
 
-  const handleClickTermsOfUse = () => {
+  const handleClickTermsOfUse = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     setIsTermsOfUseDialogDisplayed(true);
   };
 
