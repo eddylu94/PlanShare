@@ -1,5 +1,5 @@
 import mongodb from "mongodb";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 import {
   MONGO_URL,
