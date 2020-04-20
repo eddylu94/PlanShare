@@ -405,3 +405,85 @@ export const createSubscription = (
       console.log(err);
     });
 };
+
+export const deleteUser = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Deleting user...");
+
+  const obj = postReq.body;
+
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
+    if (connectErr) {
+      console.log("Connection error");
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.FAILURE,
+        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+      });
+      throw connectErr;
+    }
+
+    const dbo = db.db(DATABASE_NAME);
+
+    // Verify if user exists
+    const email = obj.email.toLocaleLowerCase();
+    const { pass } = obj;
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ email }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+          throw findErr;
+        }
+
+        if (!findRes) {
+          console.log("Email address does not exist:", email);
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
+          });
+          return;
+        }
+
+        const removeUser = (err: any, isPasswordMatch: any) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+
+          if (isPasswordMatch === false) {
+            console.log("Incorrect password:", email);
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.INCORRECT_CRED
+            });
+            return;
+          } else if (isPasswordMatch === true) {
+            dbo
+              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+              .remove({ _id: findRes._id })
+              .then(() => {
+                console.log("User has been removee:", email);
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.SUCCESS,
+                  body: {}
+                });
+              });
+          }
+        };
+
+        comparePassword(pass, findRes.pass, removeUser);
+      });
+  });
+};

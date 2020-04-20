@@ -464,3 +464,28 @@ export const getSubscriptionsByAuthor = (
       console.log(err);
     });
 };
+
+export const getEmailAddress = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving email address...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { email } = findRes;
+
+      db.close();
+      postRes.json({
+        statusCode: STATUS_CODE.SUCCESS,
+        body: {
+          email
+        }
+      });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
