@@ -175,12 +175,9 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             </div>
             <div className="intro-footer">
               <div>
-                <span className="b" style={{ color: "#6C5DBD" }}>
-                  {TITLE}
-                </span>{" "}
-                is a classifieds website that helps you find colleagues to split
-                costs on group plans. We leave the communication and payments up
-                to you.
+                <span className="b">{TITLE}</span> is a classifieds website that
+                helps you find colleagues to split costs on group plans. We
+                leave the communication and payments up to you.
               </div>
               <ol className="intro-list">
                 <li>Create an account</li>
