@@ -67,7 +67,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           src="/people_icon.png"
         />
         <span className="subscription-detail-bold">
-          {numberOfPeople} people
+          {`${numberOfPeople} ${numberOfPeople === 1 ? "person" : "people"}`}
         </span>
         needed
       </div>
