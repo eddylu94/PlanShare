@@ -428,7 +428,7 @@ input[disabled] {
 }
 
 .filter-pane {
-  display: flex;
+  display: block;
   flex-shrink: 0;
   flex-direction: column;
 }

@@ -129,17 +129,20 @@ const SearchFilters = (props: ISearchFiltersProps) => {
 
   return (
     <div className={filterPaneClassName}>
-      <FormControl component="fieldset">
+      <FormControl component="fieldset" style={{ flexShrink: 0 }}>
         <FiltersFormLabel label={"Organization"} />
         <FormGroup>{organizationCheckboxes}</FormGroup>
       </FormControl>
 
-      <FormControl component="fieldset" style={{ marginTop: 20 }}>
+      <FormControl
+        component="fieldset"
+        style={{ flexShrink: 0, marginTop: 20 }}
+      >
         <FiltersFormLabel label={"Subscription Category"} />
         <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
       </FormControl>
 
-      <FormControl component="fieldset" style={{ marginTop: 20 }}>
+      <FormControl component="fieldset" style={{ flexShrink: 0 }}>
         <FiltersFormLabel label={"Group Size"} />
         <Slider
           style={sliderStyles}
@@ -155,7 +158,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
         />
       </FormControl>
 
-      <FormControl component="fieldset" style={{ marginTop: 20 }}>
+      <FormControl
+        component="fieldset"
+        style={{ flexShrink: 0, marginTop: 20 }}
+      >
         <FiltersFormLabel label={"Days Active"} />
         <Slider
           style={sliderStyles}
@@ -171,7 +177,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
         />
       </FormControl>
 
-      <FormControl component="fieldset" style={{ marginTop: 20 }}>
+      <FormControl
+        component="fieldset"
+        style={{ flexShrink: 0, marginTop: 20 }}
+      >
         <FiltersFormLabel label={"Sort Results by"} />
         <RadioGroup
           aria-label="Sort results by"
