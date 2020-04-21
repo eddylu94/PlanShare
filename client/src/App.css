@@ -142,6 +142,24 @@ body {
   font-weight: 450;
 }
 
+.subscription-card-description-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.subscription-card-description {
+  display: flex;
+  overflow: hidden;
+}
+
+.subscription-card-description span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .subscription-icons-container {
   display: flex;
   flex-direction: column;
@@ -434,7 +452,7 @@ input[disabled] {
 }
 
 .results-pane {
-  flex-shrink: 0;
+  flex-shrink: 1;
   flex-grow: 1;
 }
 
@@ -572,6 +590,7 @@ input[disabled] {
   flex-direction: row;
   flex-grow: 1;
   align-items: center;
+  min-width: 0;
 }
 
 .profile-container {

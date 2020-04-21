@@ -549,14 +549,6 @@
     box-shadow: none;
   }
 
-  .subscription-card-description {
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 200px;
-  }
-
   .subscription-card-author {
     display: flex;
     flex-direction: row;

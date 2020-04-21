@@ -142,7 +142,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
         <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
       </FormControl>
 
-      <FormControl component="fieldset" style={{ flexShrink: 0 }}>
+      <FormControl
+        component="fieldset"
+        style={{ flexShrink: 0, marginTop: 20 }}
+      >
         <FiltersFormLabel label={"Group Size"} />
         <Slider
           style={sliderStyles}
