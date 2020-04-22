@@ -15,6 +15,12 @@ const ConversationProviderWithContext = (props: {
 
   const { history } = props;
 
+  const [text, setText] = useState("");
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setText(event.target.value);
+  };
+
   if (!_userData.user?.auth) {
     history.push("/signup");
   }
@@ -23,10 +29,16 @@ const ConversationProviderWithContext = (props: {
     // eslint-disable-next-line
   }, []);
 
-  return true ? <ConversationCanvas /> : null;
+  return true ? (
+    <ConversationCanvas
+      userId={_userData?.user?.userId as string}
+      text={text}
+      handleChange={handleChange}
+    />
+  ) : null;
 };
 
-const MessagesProvider = (props: { history: History }) => (
+const ConversationProvider = (props: { history: History }) => (
   <UserDataContext.Consumer>
     {userData => (
       <ConversationProviderWithContext
@@ -37,4 +49,4 @@ const MessagesProvider = (props: { history: History }) => (
   </UserDataContext.Consumer>
 );
 
-export default withRouter(MessagesProvider);
+export default withRouter(ConversationProvider);
