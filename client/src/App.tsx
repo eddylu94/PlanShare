@@ -13,6 +13,8 @@ import CreateListing from "./components/CreateListing/create-listing-provider";
 import Login from "./components/Login/login-provider";
 import Profile from "./components/Profile/profile-provider";
 import Settings from "./components/Settings/settings-provider";
+import Messages from "./components/Messages/messages-provider";
+import Conversation from "./components/Conversation/conversation-provider";
 import { UserContextProvider } from "./user-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
@@ -49,6 +51,12 @@ const App = () => (
             </Route>
             <Route path="/settings">
               <Settings />
+            </Route>
+            <Route path="/messages">
+              <Messages />
+            </Route>
+            <Route path="/conversation">
+              <Conversation />
             </Route>
           </Switch>
         </div>

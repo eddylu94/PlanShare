@@ -73,7 +73,7 @@ const NavBarWithContext = (props: {
                 <span className="navbar-link-label">Create listing</span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/messages">
                 <img
                   alt="Messages"
@@ -82,7 +82,7 @@ const NavBarWithContext = (props: {
                 />
                 <span className="navbar-link-label">Messages</span>
               </Link>
-            </li>
+            </li> */}
             <li>
               <div className="nav-bar-profile">
                 <img
