@@ -129,16 +129,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
 
   return (
     <div className={filterPaneClassName}>
-      <FormControl component="fieldset" style={{ flexShrink: 0 }}>
+      {/* <FormControl component="fieldset" style={{ flexShrink: 0 }}>
         <FiltersFormLabel label={"Organization"} />
         <FormGroup>{organizationCheckboxes}</FormGroup>
-      </FormControl>
+      </FormControl> */}
 
-      <FormControl
-        component="fieldset"
-        style={{ flexShrink: 0, marginTop: 20 }}
-      >
-        <FiltersFormLabel label={"Subscription Category"} />
+      <FormControl component="fieldset" style={{ flexShrink: 0 }}>
+        <FiltersFormLabel label={"Category"} />
         <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
       </FormControl>
 

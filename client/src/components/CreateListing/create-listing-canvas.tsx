@@ -116,7 +116,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
       <form className="form-container" onSubmit={handleSubmit} noValidate>
         <h2 className="form-header">Create Listing</h2>
 
-        <h3 className="form-subheader">Subscription Information</h3>
+        {/* <h3 className="form-subheader">Subscription Information</h3> */}
 
         <div className="subscription-fields">
           <div className="form-field">
@@ -175,7 +175,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           />
         </div>
 
-        <h3 className="form-subheader">Membership Information</h3>
+        {/* <h3 className="form-subheader">Membership Information</h3>
 
         <div className="create-listing-organization-field">
           <div className="form-field">
@@ -202,7 +202,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             className="create-listing-organization-logo"
             src={organizationSelection.logo}
           />
-        </div>
+        </div> */}
 
         <div className="form-row">
           <div className="form-field">

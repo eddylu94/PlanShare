@@ -74,6 +74,16 @@ const NavBarWithContext = (props: {
               </Link>
             </li>
             <li>
+              <Link to="/messages">
+                <img
+                  alt="Messages"
+                  className="navbar-icon"
+                  src={"./message_icon_white.png"}
+                />
+                <span className="navbar-link-label">Messages</span>
+              </Link>
+            </li>
+            <li>
               <div className="nav-bar-profile">
                 <img
                   alt="Profile"

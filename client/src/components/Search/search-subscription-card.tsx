@@ -45,13 +45,13 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
             <span className="subscription-card-first-name">{firstName}</span>{" "}
           </>
         ) : null}
-        at {organization.name}
+        {/* at {organization.name} */}
       </div>
-      <img
+      {/* <img
         alt="Organization logo"
         className="subscription-card-organization-logo"
         src={organization.logo}
-      />
+      /> */}
     </div>
   );
 
@@ -65,7 +65,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           <span>{listingDescription}</span>
         </div>
       </div>
-      {!isMobile ? renderSubsciptionCardAuthor() : null}
+      {!isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
     </div>
   );
 
@@ -96,11 +96,14 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
         handleSubscriptionCardClick ? handleSubscriptionCardClick(_id) : {}
       }
     >
-      <div className="subscription-card-logo-and-info">
+      <div
+        className="subscription-card-logo-and-info"
+        style={{ marginBottom: isProfile ? 10 : 0 }}
+      >
         {renderSubscriptionLogo()}
         {renderSubscriptionInfo()}
       </div>
-      {isMobile ? renderSubsciptionCardAuthor() : null}
+      {isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
       {renderSubscriptionBasicInfo()}
     </div>
   );
