@@ -58,6 +58,10 @@
     border-radius: 50%;
   }
 
+  .navbar-profile-menu {
+    right: 10px;
+  }
+
   .navbar-first-name {
     display: none;
   }

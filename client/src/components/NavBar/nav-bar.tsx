@@ -92,7 +92,7 @@ const NavBarWithContext = (props: {
                 />
                 <span className="navbar-first-name">{user?.firstName}</span>
               </div>
-              <ul>
+              <ul className="navbar-profile-menu">
                 <li>
                   <Link to="/profile">Profile</Link>
                 </li>

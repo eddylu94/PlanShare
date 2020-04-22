@@ -62,6 +62,10 @@
     margin-left: 8px;
   }
 
+  .navbar-profile-menu {
+    right: 20px;
+  }
+
   .navbar-home-icon {
     width: 32px;
     height: 32px;
