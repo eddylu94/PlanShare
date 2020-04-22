@@ -15,6 +15,7 @@ export interface ISearchFiltersProps {
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];
+  filtersPrice: number[];
   filtersSortBy: string;
   filtersDaysActive: number;
   toggleFiltersOrganization: (
@@ -26,6 +27,10 @@ export interface ISearchFiltersProps {
     subscriptionCategoryId: string
   ) => void;
   handleGroupSizeChange: (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => void;
+  handlePriceChange: (
     event: React.ChangeEvent<{}>,
     value: number | number[]
   ) => void;

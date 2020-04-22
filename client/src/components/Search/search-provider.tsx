@@ -53,6 +53,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 10]);
 
+  const [filtersPrice, setFiltersPrice] = useState([0, 100]);
+
   const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
 
   const [filtersDaysActive, setFiltersDaysActive] = useState(30);
@@ -160,6 +162,16 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersGroupSize(newValue);
   };
 
+  const handlePriceChange = (
+    event: React.ChangeEvent<{}>,
+    value: number | number[]
+  ) => {
+    event.preventDefault();
+
+    const newValue = value as number[];
+    setFiltersPrice(newValue);
+  };
+
   const handleDaysActiveChange = (
     event: React.ChangeEvent<{}>,
     value: number | number[]
@@ -233,6 +245,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
         { o }, // Subscription organization
         { sc }, // Subscription category
         { gs: filtersGroupSize }, // Group size
+        { p: filtersPrice }, // Price
         { sb: filtersSortBy }, // Sort by
         { da: filtersDaysActive } // Days active
       ]);
@@ -244,6 +257,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     filtersSubscriptionCategories,
     filtersOrganizations,
     filtersGroupSize,
+    filtersPrice,
     filtersSortBy,
     filtersDaysActive
   ]);
@@ -259,11 +273,13 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
+    filtersPrice,
     filtersSortBy,
     filtersDaysActive,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
+    handlePriceChange,
     handleSortByChange,
     handleDaysActiveChange
   } as ISearchFiltersProps;

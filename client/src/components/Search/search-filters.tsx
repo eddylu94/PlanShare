@@ -21,11 +21,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
+    filtersPrice,
     filtersSortBy,
     filtersDaysActive,
     toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
+    handlePriceChange,
     handleSortByChange,
     handleDaysActiveChange
   } = props;
@@ -112,9 +114,12 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     color: "#6C5DBD"
   };
 
-  const createMarks = (values: number[]) =>
+  const createMarks = (values: number[], isCurrency?: boolean) =>
     values.map(value => {
-      return { value, label: value.toString() };
+      return {
+        value,
+        label: isCurrency ? "$" + value.toString() : value.toString()
+      };
     });
 
   const sliderStyles = {
@@ -137,6 +142,25 @@ const SearchFilters = (props: ISearchFiltersProps) => {
       <FormControl component="fieldset" style={{ flexShrink: 0 }}>
         <FiltersFormLabel label={"Category"} />
         <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
+      </FormControl>
+
+      <FormControl
+        component="fieldset"
+        style={{ flexShrink: 0, marginTop: 20 }}
+      >
+        <FiltersFormLabel label={"Price"} />
+        <Slider
+          style={sliderStyles}
+          getAriaValueText={valuetext}
+          aria-labelledby="range-slider"
+          step={1}
+          valueLabelDisplay="auto"
+          value={filtersPrice}
+          onChange={handlePriceChange}
+          marks={createMarks([0, 100], true)}
+          min={0}
+          max={100}
+        />
       </FormControl>
 
       <FormControl

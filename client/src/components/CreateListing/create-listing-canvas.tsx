@@ -236,7 +236,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             <label className="form-label">Price per person:</label>
             <div className="form-number-input-with-label">
               <Tooltip
-                title={"Between $0.01 to $1000"}
+                title={"Between $0.01 to $100"}
                 aria-label="add"
                 placement="bottom-start"
                 open={isPriceFocused}
@@ -247,7 +247,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                   type="number"
                   min="0.01"
                   step="0.01"
-                  max="1000"
+                  max="100"
                   placeholder="0.00"
                   value={price || ""}
                   onChange={handleInputChange}

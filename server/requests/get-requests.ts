@@ -185,7 +185,7 @@ export const getSubscriptions = (
 
       const emails = findRes.emails;
 
-      const { t, o, sc, gs, sb, da } = postReq.query;
+      const { t, o, sc, gs, sb, da, p } = postReq.query;
 
       const subscriptionOrganizations = o.split(",");
 
@@ -193,6 +193,10 @@ export const getSubscriptions = (
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
+        : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
+
+      let [minPrice, maxPrice] = p
+        ? p.split(",").map((val: string) => parseInt(val))
         : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
 
       let sort: any;
@@ -235,6 +239,10 @@ export const getSubscriptions = (
             numberOfPeople: {
               $gte: minGroupSize,
               $lte: maxGroupSize
+            },
+            price: {
+              $gte: minPrice,
+              $lte: maxPrice
             },
             createdDate: {
               $lte: new Date(currentDate),
