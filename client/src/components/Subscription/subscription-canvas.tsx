@@ -91,8 +91,17 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           {listingDescription}
         </div>
       </div>
-      <div className="subscription-label">How to contact me</div>
-      <div className="subscription-detail">{listingContact}</div>
+      <div className="subscription-label">Contact</div>
+      <div className="subscription-detail">
+        <img
+          alt="Posted date"
+          className="subscription-detail-icon"
+          src="/message_icon.png"
+        />
+        <Link to={`conversation?id=${userId}`}>
+          <span className="b">{"Message " + firstName}</span>
+        </Link>
+      </div>
       <div className="subscription-label">Link to subscription</div>
       <div className="subscription-detail">
         {subscriptionUrl ? (

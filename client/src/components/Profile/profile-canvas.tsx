@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "./../Search/search-subscription-card";
 import {
@@ -14,10 +15,19 @@ interface IProfileCanvasProps {
   organizations: IProfileOrganizationData[];
   joinedDate: number;
   authoredSubscriptions: ISubscriptionData[];
+  isDifferentUser: boolean;
+  otherUserId: string;
 }
 
 const ProfileCanvas = (props: IProfileCanvasProps) => {
-  const { firstName, organizations, joinedDate, authoredSubscriptions } = props;
+  const {
+    firstName,
+    organizations,
+    joinedDate,
+    authoredSubscriptions,
+    isDifferentUser,
+    otherUserId
+  } = props;
 
   const renderOrganization = (
     profileOrganizationData: IProfileOrganizationData,
@@ -83,6 +93,17 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   return (
     <div className="page-container">
       <div className="profile-container">
+        {isDifferentUser ? (
+          <div className="profile-message-button">
+            <Link to={`conversation?id=${otherUserId}`}>
+              <img
+                alt="Posted date"
+                className="profile-message-icon"
+                src="/message_icon.png"
+              />
+            </Link>
+          </div>
+        ) : null}
         <div className="profile-wrapper">
           <div className="profile-header">
             <img

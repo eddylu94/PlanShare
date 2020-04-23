@@ -120,6 +120,12 @@ const ProfileProviderWithContext = (props: {
       organizations={organizations}
       joinedDate={joinedDate}
       authoredSubscriptions={authoredSubscriptions}
+      isDifferentUser={
+        !!(
+          profileUserId && profileUserId !== (_userData.user?.userId as string)
+        )
+      }
+      otherUserId={profileUserId as string}
     />
   ) : null;
 };

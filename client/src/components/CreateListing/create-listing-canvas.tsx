@@ -151,19 +151,6 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         </div>
 
         <div className="form-field">
-          <label className="form-label">How to contact me:</label>
-          <textarea
-            className="form-text-area form-input"
-            name={FORM_INPUT_TYPE.LISTING_CONTACT}
-            rows={2}
-            placeholder='Message me on Slack at "josmith"'
-            value={listingContact}
-            onChange={handleInputChange}
-            style={{ height: 80 }}
-          />
-        </div>
-
-        <div className="form-field">
           <label className="form-label">Link to subscription (optional):</label>
           <input
             className="form-text-input form-input"
