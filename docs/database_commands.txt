@@ -7,6 +7,7 @@ use project3632db
 // CREATE COLLECTION
 db.createCollection("Users");
 db.createCollection("Subscriptions");
+db.createCollection("Conversations");
 
 // CREATE USERS
 db.Users.insertOne({

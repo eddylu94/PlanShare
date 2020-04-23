@@ -14,13 +14,17 @@ import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
+  location: Location;
 }) => {
   const _userData = props.userData;
 
   // Whether at least one request has been executed for profile
   const [isRetrievedProfileDirty, setIsRetrievedProfileDirty] = useState(false);
 
-  const { history } = props;
+  const { history, location } = props;
+
+  var params = new URLSearchParams(location.search);
+  const profileUserId = params.get("id");
 
   const [firstName, setFirstName] = useState("");
   const [organizations, setOrganizations] = useState(
@@ -63,9 +67,14 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveProfile = () => {
+    const query = [] as any[];
+    if (profileUserId) {
+      query.push({ profileUserId });
+    }
+
     baseGetRequest(
       "getprofile",
-      [],
+      query,
       retrieveProfileResponseHandler,
       retrieveProfileErrorHandler,
       _userData.user?.auth
@@ -85,9 +94,14 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionsByUser = () => {
+    const query = [{ userId: _userData.user?.userId as string }] as any[];
+    if (profileUserId) {
+      query.push({ profileUserId });
+    }
+
     baseGetRequest(
       "getsubscriptionsbyauthor",
-      [{ userId: _userData.user?.userId as string }],
+      query,
       retrieveSubscriptionsByUserResponseHandler,
       retrieveSubscriptionsByUserErrorHandler,
       _userData.user?.auth
@@ -110,10 +124,14 @@ const ProfileProviderWithContext = (props: {
   ) : null;
 };
 
-const ProfileProvider = (props: { history: History }) => (
+const ProfileProvider = (props: { history: History; location: any }) => (
   <UserDataContext.Consumer>
     {userData => (
-      <ProfileProviderWithContext userData={userData} history={props.history} />
+      <ProfileProviderWithContext
+        userData={userData}
+        history={props.history}
+        location={props.location}
+      />
     )}
   </UserDataContext.Consumer>
 );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 
@@ -25,7 +26,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     organization,
     createdDate,
     price,
-    numberOfPeople
+    numberOfPeople,
+    userId
   } = subscription;
 
   const renderSubscriptionLogo = () => (
@@ -42,7 +44,9 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
         {!isProfile ? (
           <>
             Posted by{" "}
-            <span className="subscription-card-first-name">{firstName}</span>{" "}
+            <Link to={`profile?id=${userId}`}>
+              <span className="subscription-card-first-name">{firstName}</span>{" "}
+            </Link>
           </>
         ) : null}
         {/* at {organization.name} */}

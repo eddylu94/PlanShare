@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import moment from "moment";
 
@@ -24,7 +25,8 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     createdDate,
     price,
     listingContact,
-    subscriptionUrl
+    subscriptionUrl,
+    userId
   } = subscriptionData;
 
   return (
@@ -49,7 +51,10 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         </div>
       </div>
       <div className="subscription-detail subscription-subscription-detail">
-        Posted by <span className="subscription-first-name">{firstName}</span>
+        Posted by{" "}
+        <Link to={`profile?id=${userId}`}>
+          <span className="subscription-first-name">{firstName}</span>
+        </Link>
       </div>
       <div className="subscription-detail subscription-subscription-detail">
         <img
