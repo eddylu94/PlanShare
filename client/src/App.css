@@ -160,6 +160,10 @@ body {
   white-space: nowrap;
 }
 
+.subscription-card-info a {
+  color: #6c5dbd;
+}
+
 .subscription-icons-container {
   display: flex;
   flex-direction: column;
