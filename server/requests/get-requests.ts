@@ -1,6 +1,11 @@
 import mongodb from "mongodb";
 
-import { authenticate, getDomain, isOverlappingDomains } from "./../utils";
+import {
+  authenticate,
+  getDomain,
+  isOverlappingDomains,
+  getOtherUser
+} from "./../utils";
 import {
   subscriptionCategories,
   retrieveSubscriptionBrands
@@ -834,4 +839,96 @@ export const getConversationById = (
     .catch(err => {
       console.log(err);
     });
+};
+
+export const getConversationsList = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving conversations list...");
+  authenticate(mongoClient, postReq, postRes).then(res => {
+    const [db, findRes] = res;
+
+    const userId = findRes._id.toString();
+
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+      .find({ userIds: userId })
+      .toArray()
+      .then(findRes => {
+        if (!(findRes && findRes.length)) {
+          console.log("Unable to find conversations list");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
+          });
+          return;
+        }
+
+        console.log(findRes);
+
+        const conversationsListPromises = findRes.map(conversation => {
+          const otherUserId = getOtherUser(conversation.userIds, userId);
+
+          return new Promise((resolve, reject) => {
+            dbo
+              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+              .findOne(
+                { _id: new ObjectId(otherUserId) },
+                (findUserErr, findUserRes) => {
+                  if (findUserErr) {
+                    db.close();
+                    postRes.json({
+                      statusCode: STATUS_CODE.FAILURE,
+                      statusMessage:
+                        STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
+                    });
+                    return;
+                  }
+
+                  const firstName = findUserRes.firstName;
+
+                  const messages = conversation.messages;
+                  const lastMessage = messages[messages.length - 1];
+
+                  resolve({
+                    firstName,
+                    lastMessage
+                  });
+                }
+              );
+          });
+        });
+
+        Promise.all(conversationsListPromises).then(conversationsList => {
+          conversationsList = conversationsList.filter(
+            conversationsList => !!conversationsList
+          );
+
+          console.log("Conversations list retrieved");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {
+              conversationsList
+            }
+          });
+        });
+
+        return findRes;
+      })
+      .catch(findErr => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+        }
+      });
+  });
 };

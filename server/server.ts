@@ -19,7 +19,8 @@ import {
   getSubscriptionsByAuthor,
   getEmailAddress,
   getConversation,
-  getConversationById
+  getConversationById,
+  getConversationsList
 } from "./requests/get-requests";
 import {
   signUp,
@@ -68,6 +69,7 @@ getRequestBuilder("/getsubscriptionsbyauthor", getSubscriptionsByAuthor);
 getRequestBuilder("/getemailaddress", getEmailAddress);
 getRequestBuilder("/getconversation", getConversation);
 getRequestBuilder("/getconversationbyid", getConversationById);
+getRequestBuilder("/getconversationslist", getConversationsList);
 
 // POST requests
 postRequestBuilder("/signup", signUp);

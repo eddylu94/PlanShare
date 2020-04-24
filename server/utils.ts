@@ -171,3 +171,7 @@ export const isOverlappingDomains = (
   }
   return false;
 };
+
+export const getOtherUser = (users: string[], currentUser: string) => {
+  return users.find(user => user !== currentUser);
+};

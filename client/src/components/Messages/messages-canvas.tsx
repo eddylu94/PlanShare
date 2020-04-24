@@ -1,11 +1,34 @@
 import React from "react";
 
-interface IMessagesCanvasProps {}
+import { IConversationSummary } from "./../../utils/utils";
+
+interface IMessagesCanvasProps {
+  conversationsList: IConversationSummary[];
+}
 
 const MessagesCanvas = (props: IMessagesCanvasProps) => {
-  const {} = props;
+  const { conversationsList } = props;
 
-  return <div className="page-container">Hello World !</div>;
+  const renderConversationSummary = (conversation: IConversationSummary) => {
+    const { firstName, lastMessage } = conversation;
+    const { userId, date, message } = lastMessage;
+
+    return (
+      <div>
+        <div>{firstName}</div>
+        {/* <div>{userId}</div> */}
+        <div>{date.toString()}</div>
+        <div>{message}</div>
+      </div>
+    );
+  };
+
+  const renderConversationsList = () =>
+    conversationsList.map(conversation =>
+      renderConversationSummary(conversation)
+    );
+
+  return <div className="page-container">{renderConversationsList()}</div>;
 };
 
 export default MessagesCanvas;

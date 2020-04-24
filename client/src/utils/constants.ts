@@ -19,7 +19,8 @@ export const STATUS_MESSAGE = {
   CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
   USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization",
   PROFILE_NOT_FOUND: "profile_not_found",
-  CANNOT_FIND_CONVERSATION: "cannot_find_conversation"
+  CANNOT_FIND_CONVERSATION: "cannot_find_conversation",
+  CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list"
 };
 
 export const DEVICE_MODE = {

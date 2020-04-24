@@ -72,6 +72,11 @@ export interface IConversationData {
   messages: IMessageData[];
 }
 
+export interface IConversationSummary {
+  firstName: string;
+  lastMessage: IMessageData;
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };
