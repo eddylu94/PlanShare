@@ -94,7 +94,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionsByUser = () => {
-    const query = [{ userId: _userData.user?.userId as string }] as any[];
+    const query = [] as any[];
     if (profileUserId) {
       query.push({ profileUserId });
     }

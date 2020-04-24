@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { authenticate, getDomain } from "./../utils";
+import { authenticate, getDomain, isOverlappingDomains } from "./../utils";
 import {
   subscriptionCategories,
   retrieveSubscriptionBrands
@@ -464,8 +464,9 @@ export const getSubscriptionsByAuthor = (
       const [db, findRes] = res;
 
       const findResEmails = findRes.emails;
+      const userId = findRes._id;
 
-      const { userId, profileUserId } = postReq.query;
+      const { profileUserId } = postReq.query;
 
       if (profileUserId) {
         const dbo = db.db(DATABASE_NAME);
@@ -634,6 +635,137 @@ export const getEmailAddress = (
           email
         }
       });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const getConversation = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving conversation...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const currentUserEmails = findRes.emails;
+      const currentUserId = findRes._id.toString();
+
+      const { userId } = postReq.query;
+
+      if (currentUserId === userId) {
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.FAILURE,
+          statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+        });
+      }
+
+      console.log(userId);
+
+      const dbo = db.db(DATABASE_NAME);
+      dbo
+        .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+        .findOne(
+          { _id: new ObjectId(userId) },
+          (findProfileErr, findProfileRes) => {
+            if (findProfileErr) {
+              postRes.json({
+                statusCode: STATUS_CODE.FAILURE,
+                statusMessage: STATUS_MESSAGE.PROFILE_NOT_FOUND
+              });
+            }
+            if (findProfileRes) {
+              const userEmails = findProfileRes.emails;
+              const userDomains = userEmails.map((email: string) =>
+                getDomain(email)
+              );
+
+              const currentUserDomains = currentUserEmails.map(
+                (email: string) => getDomain(email)
+              );
+
+              const isValid = isOverlappingDomains(
+                currentUserDomains,
+                userDomains
+              );
+              if (isValid) {
+                console.log(currentUserId, userId);
+
+                dbo
+                  .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+                  .findOne(
+                    { userIds: { $all: [currentUserId, userId] } },
+                    (findConversationErr, findConversationRes) => {
+                      if (findConversationErr) {
+                        postRes.json({
+                          statusCode: STATUS_CODE.FAILURE,
+                          statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                        });
+                        return;
+                      }
+
+                      console.log(findConversationRes);
+                      if (!findConversationRes) {
+                        const conversationData = {
+                          userIds: [currentUserId, userId],
+                          messages: []
+                        };
+
+                        dbo
+                          .collection(
+                            DATABASE_COLLECTION.CONVERSATIONS_COLLECTION
+                          )
+                          .insertOne(
+                            conversationData,
+                            (insertErr, insertRes) => {
+                              if (insertErr) {
+                                console.log("Error inserting record");
+                                db.close();
+                                postRes.json({
+                                  statusCode: STATUS_CODE.FAILURE,
+                                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                                });
+                                throw insertErr;
+                              }
+
+                              console.log("Conversation created");
+                              db.close();
+                              postRes.json({
+                                statusCode: STATUS_CODE.SUCCESS,
+                                body: {
+                                  conversation: {
+                                    firstName: findProfileRes.firstName,
+                                    messages: []
+                                  }
+                                }
+                              });
+                            }
+                          );
+
+                        return;
+                      } else {
+                        console.log("Conversation retrieved");
+                        db.close();
+                        postRes.json({
+                          statusCode: STATUS_CODE.SUCCESS,
+                          body: {
+                            conversation: {
+                              firstName: findProfileRes.firstName,
+                              messages: findConversationRes.messages
+                            }
+                          }
+                        });
+                      }
+                    }
+                  );
+              }
+            }
+          }
+        );
     })
     .catch(err => {
       console.log(err);

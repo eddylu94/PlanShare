@@ -4,7 +4,8 @@ export const SLOGAN = "Find colleagues to split costs on group plans";
 // Database collections
 export const DATABASE_COLLECTION = {
   USERS_COLLECTION: "Users",
-  SUBSCRIPTIONS_COLLECTION: "Subscriptions"
+  SUBSCRIPTIONS_COLLECTION: "Subscriptions",
+  CONVERSATIONS_COLLECTION: "Conversations"
 };
 
 // Status codes
@@ -24,7 +25,8 @@ export const STATUS_MESSAGE = {
   USER_NOT_VALIDATED: "user_not_validated",
   CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
   USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization",
-  PROFILE_NOT_FOUND: "profile_not_found"
+  PROFILE_NOT_FOUND: "profile_not_found",
+  CANNOT_FIND_CONVERSATION: "cannot_find_conversation"
 };
 
 // MongoDB constants

@@ -60,6 +60,17 @@ export interface ISubscriptionData {
   subscriptionUrl?: string;
 }
 
+export interface IMessageData {
+  userId: string;
+  date: Date;
+  message: string;
+}
+
+export interface IConversationData {
+  firstName: string;
+  messages: IMessageData[];
+}
+
 export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };

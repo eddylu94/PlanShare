@@ -1,62 +1,60 @@
 import React from "react";
 
+import { IMessageData } from "./../../utils/utils";
+
 interface IConversationCanvasProps {
-  userId: string;
+  currentUserId: string;
+  firstName: string;
+  messages: IMessageData[];
   text: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface IMessageData {
-  userId: string;
-  date: Date;
-  message: string;
-}
-
 const ConversationCanvas = (props: IConversationCanvasProps) => {
-  const { userId, text, handleChange } = props;
+  const { currentUserId, firstName, messages, text, handleChange } = props;
 
-  const messages = [
-    {
-      userId: userId,
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: "abc",
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: userId,
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: "abc",
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: userId,
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: userId,
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: "abc",
-      date: new Date(),
-      message: "Hello World !"
-    },
-    {
-      userId: "abc",
-      date: new Date(),
-      message: "Hello World !"
-    }
-  ];
+  // const messages = [
+  //   {
+  //     userId: currentUserId,
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: "abc",
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: currentUserId,
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: "abc",
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: currentUserId,
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: currentUserId,
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: "abc",
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   },
+  //   {
+  //     userId: "abc",
+  //     date: new Date(),
+  //     message: "Hello World !"
+  //   }
+  // ];
 
   const renderCurrentUserMessage = (messageData: IMessageData) => {
     return (
@@ -75,7 +73,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
   };
 
   const renderMessage = (messageData: IMessageData) =>
-    messageData.userId === userId
+    messageData.userId === currentUserId
       ? renderCurrentUserMessage(messageData)
       : renderOtherUserMessage(messageData);
 
@@ -92,7 +90,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
             className="conversation-header-profile-picture"
             src="/profile_picture_placeholder.png"
           />
-          <span className="conversation-header-first-name">John</span>
+          <span className="conversation-header-first-name">{firstName}</span>
         </div>
         <div className="conversation-body">{renderMessages(messages)}</div>
         <div className="conversation-footer">

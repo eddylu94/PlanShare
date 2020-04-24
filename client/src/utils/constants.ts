@@ -18,7 +18,8 @@ export const STATUS_MESSAGE = {
   USER_NOT_VALIDATED: "user_not_validated",
   CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
   USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization",
-  PROFILE_NOT_FOUND: "profile_not_found"
+  PROFILE_NOT_FOUND: "profile_not_found",
+  CANNOT_FIND_CONVERSATION: "cannot_find_conversation"
 };
 
 export const DEVICE_MODE = {

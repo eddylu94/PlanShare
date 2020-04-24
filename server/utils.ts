@@ -31,14 +31,14 @@ interface IFindResult {
   pendingEmails: IPendingEmail[];
 }
 
-interface IUniversity {
-  web_pages: string[];
-  name: string;
-  alpha_two_code: string;
-  "state-province": string;
-  domains: string[];
-  country: string;
-}
+// interface IUniversity {
+//   web_pages: string[];
+//   name: string;
+//   alpha_two_code: string;
+//   "state-province": string;
+//   domains: string[];
+//   country: string;
+// }
 
 const SALT_ROUNDS = 10;
 
@@ -118,8 +118,9 @@ export const generateConfirmationCode = () => {
   const CONFIRMATION_CODE_LENGTH = 5;
 
   let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  // const characters =
+  //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "0123456789";
   const charactersLength = characters.length;
   for (let i = 0; i < CONFIRMATION_CODE_LENGTH; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -157,4 +158,16 @@ export const generateAuthToken = () => {
 export const getDomain = (emailAddress: string) => {
   const atSign = emailAddress.indexOf("@");
   return emailAddress.substring(atSign + 1);
+};
+
+export const isOverlappingDomains = (
+  currentDomains: string[],
+  otherDomains: string[]
+) => {
+  for (let i = 0; i < currentDomains.length; i++) {
+    if (otherDomains.includes(currentDomains[i])) {
+      return true;
+    }
+  }
+  return false;
 };
