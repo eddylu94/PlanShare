@@ -20,6 +20,7 @@ const ConversationProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const otherUserId = params.get("id");
 
+  const [conversationId, setConversationId] = useState("");
   const [firstName, setFirstName] = useState("");
   const [messages, setMessages] = useState([] as IMessageData[]);
 
@@ -37,6 +38,7 @@ const ConversationProviderWithContext = (props: {
     const conversation = data?.body?.conversation as IConversationData;
     if (conversation) {
       console.log(conversation);
+      setConversationId(conversation.conversationId);
       setFirstName(conversation.firstName);
       setMessages(conversation.messages);
     }
@@ -58,6 +60,61 @@ const ConversationProviderWithContext = (props: {
     }
   };
 
+  const retrieveConversationByIdResponseHandler = (data: any) => {
+    const conversation = data?.body?.conversation as IConversationData;
+    if (conversation) {
+      console.log(conversation);
+      setMessages(conversation.messages);
+    }
+  };
+
+  const retrieveConversationByIdErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const retrieveConversationById = () => {
+    if (otherUserId) {
+      baseGetRequest(
+        "getconversationbyid",
+        [{ conversationId }],
+        retrieveConversationByIdResponseHandler,
+        retrieveConversationByIdErrorHandler,
+        _userData.user?.auth
+      );
+    }
+  };
+
+  const handleSubmitResponseHandler = (data: any) => {
+    console.log(data);
+    if (data?.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveConversationById();
+    }
+  };
+
+  const handleSubmitErrorHandler = (err: any) => {
+    console.log(err);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const postRequestData = {
+      conversationId,
+      message: text
+    };
+    console.log(postRequestData);
+
+    basePostRequest(
+      "sendmessage",
+      postRequestData,
+      handleSubmitResponseHandler,
+      handleSubmitErrorHandler,
+      _userData.user?.auth
+    );
+
+    setText("");
+
+    event.preventDefault();
+  };
+
   useEffect(() => {
     retrieveConversation();
     // eslint-disable-next-line
@@ -70,6 +127,7 @@ const ConversationProviderWithContext = (props: {
       messages={messages}
       text={text}
       handleChange={handleChange}
+      handleSubmit={handleSubmit}
     />
   ) : null;
 };

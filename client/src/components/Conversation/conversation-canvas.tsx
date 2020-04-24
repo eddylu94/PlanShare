@@ -8,53 +8,18 @@ interface IConversationCanvasProps {
   messages: IMessageData[];
   text: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const ConversationCanvas = (props: IConversationCanvasProps) => {
-  const { currentUserId, firstName, messages, text, handleChange } = props;
-
-  // const messages = [
-  //   {
-  //     userId: currentUserId,
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: "abc",
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: currentUserId,
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: "abc",
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: currentUserId,
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: currentUserId,
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: "abc",
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   },
-  //   {
-  //     userId: "abc",
-  //     date: new Date(),
-  //     message: "Hello World !"
-  //   }
-  // ];
+  const {
+    currentUserId,
+    firstName,
+    messages,
+    text,
+    handleChange,
+    handleSubmit
+  } = props;
 
   const renderCurrentUserMessage = (messageData: IMessageData) => {
     return (
@@ -94,7 +59,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
         </div>
         <div className="conversation-body">{renderMessages(messages)}</div>
         <div className="conversation-footer">
-          <div className="conversation-bar">
+          <form className="conversation-bar" onSubmit={handleSubmit}>
             <input
               type="text"
               className="conversation-text-input"
@@ -110,7 +75,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
                 src="/send_icon.png"
               />
             </button>
-          </div>
+          </form>
         </div>
       </div>
     </div>

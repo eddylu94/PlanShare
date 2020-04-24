@@ -18,14 +18,16 @@ import {
   getSubscription,
   getSubscriptionsByAuthor,
   getEmailAddress,
-  getConversation
+  getConversation,
+  getConversationById
 } from "./requests/get-requests";
 import {
   signUp,
   login,
   verifyEmail,
   createSubscription,
-  deleteUser
+  deleteUser,
+  sendMessage
 } from "./requests/post-requests";
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,6 +67,7 @@ getRequestBuilder("/getsubscription", getSubscription);
 getRequestBuilder("/getsubscriptionsbyauthor", getSubscriptionsByAuthor);
 getRequestBuilder("/getemailaddress", getEmailAddress);
 getRequestBuilder("/getconversation", getConversation);
+getRequestBuilder("/getconversationbyid", getConversationById);
 
 // POST requests
 postRequestBuilder("/signup", signUp);
@@ -72,6 +75,7 @@ postRequestBuilder("/login", login);
 postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
+postRequestBuilder("/sendmessage", sendMessage);
 
 app.listen(app.get("port"), () => {
   console.log(`Server is running on Port ${port}...`);

@@ -708,7 +708,6 @@ export const getConversation = (
                         return;
                       }
 
-                      console.log(findConversationRes);
                       if (!findConversationRes) {
                         const conversationData = {
                           userIds: [currentUserId, userId],
@@ -738,6 +737,7 @@ export const getConversation = (
                                 statusCode: STATUS_CODE.SUCCESS,
                                 body: {
                                   conversation: {
+                                    conversationId: insertRes.insertedId,
                                     firstName: findProfileRes.firstName,
                                     messages: []
                                   }
@@ -754,6 +754,7 @@ export const getConversation = (
                           statusCode: STATUS_CODE.SUCCESS,
                           body: {
                             conversation: {
+                              conversationId: findConversationRes._id,
                               firstName: findProfileRes.firstName,
                               messages: findConversationRes.messages
                             }
@@ -763,6 +764,69 @@ export const getConversation = (
                     }
                   );
               }
+            }
+          }
+        );
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const getConversationById = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Submitting message...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const userId = findRes._id.toString();
+
+      const { conversationId } = postReq.query;
+
+      const dbo = db.db(DATABASE_NAME);
+      dbo
+        .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+        .findOne(
+          { _id: new ObjectId(conversationId) },
+          (findConversationErr, findConversationRes) => {
+            if (findConversationErr) {
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.FAILURE,
+                statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+              });
+
+              return;
+            }
+
+            if (findConversationRes) {
+              const { userIds } = findConversationRes;
+
+              if (!userIds.includes(userId)) {
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                });
+
+                return;
+              }
+
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.SUCCESS,
+                body: {
+                  conversation: {
+                    conversationId: findConversationRes._id,
+                    firstName: "Yo Yo Ma",
+                    messages: findConversationRes.messages
+                  }
+                }
+              });
             }
           }
         );

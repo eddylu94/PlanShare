@@ -20,6 +20,8 @@ import {
   MONGO_PREREQUISITIES
 } from "./../constants";
 
+const ObjectId = mongodb.ObjectID;
+
 export const signUp = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
@@ -486,4 +488,78 @@ export const deleteUser = (
         comparePassword(pass, findRes.pass, removeUser);
       });
   });
+};
+
+export const sendMessage = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Submitting message...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const userId = findRes._id.toString();
+
+      const { conversationId, message } = postReq.body;
+
+      console.log(conversationId);
+      console.log(message);
+
+      const dbo = db.db(DATABASE_NAME);
+      dbo
+        .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+        .findOne(
+          { _id: new ObjectId(conversationId) },
+          (findConversationErr, findConversationRes) => {
+            if (findConversationErr) {
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.FAILURE,
+                statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+              });
+
+              return;
+            }
+
+            if (findConversationRes) {
+              const { userIds } = findConversationRes;
+
+              if (!userIds.includes(userId)) {
+                db.close();
+                postRes.json({
+                  statusCode: STATUS_CODE.FAILURE,
+                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                });
+
+                return;
+              }
+
+              const messageData = {
+                userId,
+                date: new Date(),
+                message
+              };
+
+              dbo
+                .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+                .updateOne(
+                  { _id: new ObjectId(conversationId) },
+                  { $push: { messages: messageData } }
+                )
+                .then(() => {
+                  db.close();
+                  postRes.json({
+                    statusCode: STATUS_CODE.SUCCESS,
+                    body: {}
+                  });
+                });
+            }
+          }
+        );
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
