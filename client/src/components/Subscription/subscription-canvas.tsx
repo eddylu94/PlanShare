@@ -7,10 +7,11 @@ import { ISubscriptionData } from "./../../utils/utils";
 
 interface ISubscriptionCanvasProps {
   subscriptionData: ISubscriptionData;
+  currentUser: string;
 }
 
 const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
-  const { subscriptionData } = props;
+  const { subscriptionData, currentUser } = props;
 
   if (!subscriptionData) {
     return null;
@@ -91,17 +92,21 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           {listingDescription}
         </div>
       </div>
-      <div className="subscription-label">Contact</div>
-      <div className="subscription-detail">
-        <img
-          alt="Posted date"
-          className="subscription-detail-icon"
-          src="/message_icon.png"
-        />
-        <Link to={`conversation?id=${userId}`}>
-          <span className="b">{"Message " + firstName}</span>
-        </Link>
-      </div>
+      {userId && userId !== currentUser ? (
+        <>
+          <div className="subscription-label">Contact</div>
+          <div className="subscription-detail">
+            <img
+              alt="Posted date"
+              className="subscription-detail-icon"
+              src="/message_icon.png"
+            />
+            <Link to={`conversation?id=${userId}`}>
+              <span className="b">{"Message " + firstName}</span>
+            </Link>
+          </div>
+        </>
+      ) : null}
       <div className="subscription-label">Link to subscription</div>
       <div className="subscription-detail">
         {subscriptionUrl ? (

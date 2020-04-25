@@ -43,7 +43,12 @@ const SubscriptionProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [subscriptionId]);
 
-  return <SubscriptionCanvas subscriptionData={subscriptionData} />;
+  return (
+    <SubscriptionCanvas
+      subscriptionData={subscriptionData}
+      currentUser={_userData.user?.userId as string}
+    />
+  );
 };
 
 const SubscriptionProvider = (props: { subscriptionId: string }) => (

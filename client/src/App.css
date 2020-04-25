@@ -684,12 +684,10 @@ input[disabled] {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  align-self: center;
+  margin: 20px 20px 20px 0;
   background-color: #ffffff;
-  border-radius: 5px;
   box-shadow: 0px 0px 10px #d8d8d8;
-  width: 600px;
-  max-width: 600px;
+  border-radius: 5px;
 }
 
 .conversation-header {
@@ -806,4 +804,25 @@ input[disabled] {
   width: 24px;
   height: 24px;
   opacity: 0.7;
+}
+
+.messages-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #efefef;
+}
+
+.message-summaries-pane {
+  width: 300px;
+  margin: 20px;
+}
+
+.message-summary {
+  background-color: #ffffff;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px #d8d8d8;
+  border-radius: 5px;
 }

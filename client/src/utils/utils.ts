@@ -73,6 +73,7 @@ export interface IConversationData {
 }
 
 export interface IConversationSummary {
+  conversationId: string;
   firstName: string;
   lastMessage: IMessageData;
 }

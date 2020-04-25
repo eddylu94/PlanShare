@@ -667,6 +667,7 @@ export const getConversation = (
           statusCode: STATUS_CODE.FAILURE,
           statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
         });
+        return;
       }
 
       console.log(userId);
@@ -678,10 +679,12 @@ export const getConversation = (
           { _id: new ObjectId(userId) },
           (findProfileErr, findProfileRes) => {
             if (findProfileErr) {
+              db.close();
               postRes.json({
                 statusCode: STATUS_CODE.FAILURE,
                 statusMessage: STATUS_MESSAGE.PROFILE_NOT_FOUND
               });
+              return;
             }
             if (findProfileRes) {
               const userEmails = findProfileRes.emails;
@@ -698,14 +701,13 @@ export const getConversation = (
                 userDomains
               );
               if (isValid) {
-                console.log(currentUserId, userId);
-
                 dbo
                   .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
                   .findOne(
                     { userIds: { $all: [currentUserId, userId] } },
                     (findConversationErr, findConversationRes) => {
                       if (findConversationErr) {
+                        db.close();
                         postRes.json({
                           statusCode: STATUS_CODE.FAILURE,
                           statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
@@ -893,8 +895,10 @@ export const getConversationsList = (
 
                   const messages = conversation.messages;
                   const lastMessage = messages[messages.length - 1];
+                  const conversationId = conversation._id.toString();
 
                   resolve({
+                    conversationId,
                     firstName,
                     lastMessage
                   });
