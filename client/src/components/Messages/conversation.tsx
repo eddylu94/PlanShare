@@ -1,10 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { IMessageData } from "./../../utils/utils";
 
 interface IConversationCanvasProps {
   currentUserId: string;
   firstName: string;
+  userId: string;
   messages: IMessageData[];
   text: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,6 +18,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
   const {
     currentUserId,
     firstName,
+    userId,
     messages,
     text,
     handleChange,
@@ -64,7 +67,9 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           className="conversation-header-profile-picture"
           src="/profile_picture_placeholder.png"
         />
-        <span className="conversation-header-first-name">{firstName}</span>
+        <Link to={`profile?id=${userId}`}>
+          <span className="conversation-header-first-name">{firstName}</span>
+        </Link>
       </div>
       <div className="conversation-body">{renderMessages(messages)}</div>
       <div className="conversation-footer">

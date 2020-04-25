@@ -70,12 +70,14 @@ export interface IMessageData {
 export interface IConversationData {
   conversationId: string;
   firstName: string;
+  userId: string;
   messages: IMessageData[];
 }
 
 export interface IConversationSummary {
   conversationId: string;
   firstName: string;
+  userId: string;
   lastMessage: IMessageData;
 }
 

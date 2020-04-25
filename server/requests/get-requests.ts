@@ -746,6 +746,7 @@ export const getConversation = (
                                   conversation: {
                                     conversationId: insertRes.insertedId,
                                     firstName: findProfileRes.firstName,
+                                    userId: findProfileRes._id.toString(),
                                     messages: []
                                   }
                                 }
@@ -763,6 +764,7 @@ export const getConversation = (
                             conversation: {
                               conversationId: findConversationRes._id,
                               firstName: findProfileRes.firstName,
+                              userId: findProfileRes._id.toString(),
                               messages: findConversationRes.messages
                             }
                           }
@@ -847,6 +849,7 @@ export const getConversationById = (
                         conversation: {
                           conversationId: findConversationRes._id,
                           firstName: findOtherUserRes.firstName.toString(),
+                          userId: findOtherUserRes._id.toString(),
                           messages: findConversationRes.messages
                         }
                       }

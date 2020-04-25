@@ -10,6 +10,7 @@ interface IMessagesCanvasProps {
   conversationsList: IConversationSummary[];
   currentUserId: string;
   firstName: string;
+  userId: string;
   messages: IMessageData[];
   text: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,6 +24,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     conversationsList,
     currentUserId,
     firstName,
+    userId,
     messages,
     text,
     handleChange,
@@ -93,6 +95,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
         <Conversation
           currentUserId={currentUserId}
           firstName={firstName}
+          userId={userId}
           messages={messages}
           text={text}
           handleChange={handleChange}

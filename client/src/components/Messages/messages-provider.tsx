@@ -39,7 +39,7 @@ const MessagesProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const [conversationId, setConversationId] = useState(params.get("c"));
 
-  const otherUserId = params.get("id");
+  const [otherUserId, setUserId] = useState(params.get("id") as string);
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -75,6 +75,7 @@ const MessagesProviderWithContext = (props: {
       console.log(conversation);
       setConversationId(conversation.conversationId);
       setFirstName(conversation.firstName);
+      setUserId(conversation.userId);
       setMessages(conversation.messages);
     }
   };
@@ -103,6 +104,7 @@ const MessagesProviderWithContext = (props: {
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
       setFirstName(conversation.firstName);
+      setUserId(conversation.userId);
     }
   };
 
@@ -184,6 +186,7 @@ const MessagesProviderWithContext = (props: {
       conversationsList={conversationsList}
       currentUserId={currentUserId}
       firstName={firstName}
+      userId={otherUserId as string}
       messages={messages}
       text={text}
       handleChange={handleChange}
