@@ -77,6 +77,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversation = () => {
+    debugger;
     if (otherUserId) {
       baseGetRequest(
         "getconversation",

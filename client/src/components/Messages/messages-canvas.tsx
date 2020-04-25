@@ -33,7 +33,17 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     index: number
   ) => {
     const { firstName, lastMessage, conversationId } = conversation;
-    const { date, message } = lastMessage;
+
+    let lastMessageComponent: any;
+    if (lastMessage) {
+      const { date, message } = lastMessage;
+      lastMessageComponent = (
+        <>
+          <div>{date.toString()}</div>
+          <div>{message}</div>
+        </>
+      );
+    }
 
     return (
       <div
@@ -42,8 +52,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
         onClick={() => handleConversationSelection(conversationId)}
       >
         <div>{firstName}</div>
-        <div>{date.toString()}</div>
-        <div>{message}</div>
+        {lastMessage ? lastMessageComponent : null}
       </div>
     );
   };
