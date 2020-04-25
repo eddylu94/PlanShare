@@ -18,13 +18,13 @@ import {
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
-    filtersOrganizations,
+    // filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
-    toggleFiltersOrganization,
+    // toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,
@@ -32,36 +32,36 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     handleDaysActiveChange
   } = props;
 
-  const organizationCheckboxes = filtersOrganizations.map(
-    (organization, index) => {
-      return (
-        <FormControlLabel
-          key={"filters-organization-" + index}
-          style={{ color: "#000000" }}
-          control={
-            <Checkbox
-              checked={organization.isSelected}
-              // TODO: Remove lambda expression
-              onChange={e =>
-                toggleFiltersOrganization(e, organization.organizationId)
-              }
-              name={organization.name}
-              style={{
-                padding: 0,
-                margin: "5px 5px 5px 20px",
-                color: "#6C5DBD"
-              }}
-            />
-          }
-          label={
-            <Typography style={{ fontSize: 15 }}>
-              {organization.name}
-            </Typography>
-          }
-        />
-      );
-    }
-  );
+  // const organizationCheckboxes = filtersOrganizations.map(
+  //   (organization, index) => {
+  //     return (
+  //       <FormControlLabel
+  //         key={"filters-organization-" + index}
+  //         style={{ color: "#000000" }}
+  //         control={
+  //           <Checkbox
+  //             checked={organization.isSelected}
+  //             // TODO: Remove lambda expression
+  //             onChange={e =>
+  //               toggleFiltersOrganization(e, organization.organizationId)
+  //             }
+  //             name={organization.name}
+  //             style={{
+  //               padding: 0,
+  //               margin: "5px 5px 5px 20px",
+  //               color: "#6C5DBD"
+  //             }}
+  //           />
+  //         }
+  //         label={
+  //           <Typography style={{ fontSize: 15 }}>
+  //             {organization.name}
+  //           </Typography>
+  //         }
+  //       />
+  //     );
+  //   }
+  // );
 
   const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
     (category, index) => {

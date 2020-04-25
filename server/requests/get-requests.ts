@@ -891,40 +891,45 @@ export const getConversationsList = (
 
         console.log(findRes);
 
-        const conversationsListPromises = findRes.map(conversation => {
-          const otherUserId = getOtherUser(conversation.userIds, userId);
+        const conversationsListPromises = findRes
+          .filter(
+            conversation =>
+              conversation.messages && conversation.messages.length
+          )
+          .map(conversation => {
+            const otherUserId = getOtherUser(conversation.userIds, userId);
 
-          return new Promise((resolve, reject) => {
-            dbo
-              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-              .findOne(
-                { _id: new ObjectId(otherUserId) },
-                (findUserErr, findUserRes) => {
-                  if (findUserErr) {
-                    db.close();
-                    postRes.json({
-                      statusCode: STATUS_CODE.FAILURE,
-                      statusMessage:
-                        STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
+            return new Promise((resolve, reject) => {
+              dbo
+                .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+                .findOne(
+                  { _id: new ObjectId(otherUserId) },
+                  (findUserErr, findUserRes) => {
+                    if (findUserErr) {
+                      db.close();
+                      postRes.json({
+                        statusCode: STATUS_CODE.FAILURE,
+                        statusMessage:
+                          STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
+                      });
+                      return;
+                    }
+
+                    const firstName = findUserRes.firstName;
+
+                    const messages = conversation.messages;
+                    const lastMessage = messages[messages.length - 1];
+                    const conversationId = conversation._id.toString();
+
+                    resolve({
+                      conversationId,
+                      firstName,
+                      lastMessage
                     });
-                    return;
                   }
-
-                  const firstName = findUserRes.firstName;
-
-                  const messages = conversation.messages;
-                  const lastMessage = messages[messages.length - 1];
-                  const conversationId = conversation._id.toString();
-
-                  resolve({
-                    conversationId,
-                    firstName,
-                    lastMessage
-                  });
-                }
-              );
+                );
+            });
           });
-        });
 
         Promise.all(conversationsListPromises).then(conversationsList => {
           conversationsList = conversationsList.filter(

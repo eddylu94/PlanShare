@@ -62,7 +62,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
       renderConversationSummary(conversation, i)
     );
 
-  return (
+  return conversationsList && conversationsList.length ? (
     <div className="messages-container">
       <div className="message-summaries-pane">{renderConversationsList()}</div>
       {conversationId ? (
@@ -76,6 +76,10 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
           handleConversationSelection={handleConversationSelection}
         />
       ) : null}
+    </div>
+  ) : (
+    <div className="messages-container">
+      <div className="messages-no-messages">You currently have no messages</div>
     </div>
   );
 };

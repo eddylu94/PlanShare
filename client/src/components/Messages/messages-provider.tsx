@@ -10,7 +10,7 @@ import {
   IConversationData,
   IMessageData
 } from "./../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { STATUS_CODE } from "./../../utils/constants";
 
 const MessagesProviderWithContext = (props: {
   userData: IUserContext;
@@ -77,7 +77,6 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversation = () => {
-    debugger;
     if (otherUserId) {
       baseGetRequest(
         "getconversation",

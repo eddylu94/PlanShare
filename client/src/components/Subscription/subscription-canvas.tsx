@@ -20,12 +20,10 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
   const {
     subscriptionBrand,
     listingDescription,
-    organization,
     firstName,
     numberOfPeople,
     createdDate,
     price,
-    listingContact,
     subscriptionUrl,
     userId
   } = subscriptionData;

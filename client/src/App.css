@@ -814,6 +814,10 @@ input[disabled] {
   background-color: #efefef;
 }
 
+.messages-no-messages {
+  margin: 20px;
+}
+
 .message-summaries-pane {
   width: 300px;
   margin: 20px;

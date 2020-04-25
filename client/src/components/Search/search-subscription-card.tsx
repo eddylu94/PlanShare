@@ -23,7 +23,6 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     subscriptionBrand,
     listingDescription,
     firstName,
-    organization,
     createdDate,
     price,
     numberOfPeople,
