@@ -23,6 +23,11 @@ const MessagesProviderWithContext = (props: {
 
   const { history, location } = props;
 
+  const [
+    isRetrievedConversationsDirty,
+    setIsRetrievedConversationsDirty
+  ] = useState(false);
+
   const [conversationsList, setConversationsList] = useState(
     [] as IConversationSummary[]
   );
@@ -43,12 +48,14 @@ const MessagesProviderWithContext = (props: {
   const retrieveConversationsListResponseHandler = (data: any) => {
     const conversationsList = data?.body?.conversationsList as any;
     if (conversationsList) {
+      setIsRetrievedConversationsDirty(true);
       console.log(conversationsList);
       setConversationsList(conversationsList);
     }
   };
 
   const retrieveConversationsListErrorHandler = (error: any) => {
+    setIsRetrievedConversationsDirty(true);
     console.log(error);
   };
 
@@ -91,6 +98,7 @@ const MessagesProviderWithContext = (props: {
   const retrieveConversationByIdResponseHandler = (data: any) => {
     const conversation = data?.body?.conversation as IConversationData;
     if (conversation) {
+      setIsRetrievedConversationsDirty(true);
       console.log(conversation);
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
@@ -99,6 +107,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversationByIdErrorHandler = (error: any) => {
+    setIsRetrievedConversationsDirty(true);
     console.log(error);
   };
 
@@ -117,6 +126,7 @@ const MessagesProviderWithContext = (props: {
   const handleSubmitResponseHandler = (data: any) => {
     console.log(data);
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveConversationsList();
       retrieveConversationById();
     }
   };
@@ -159,6 +169,7 @@ const MessagesProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
+    retrieveConversationsList();
     if (conversationId) {
       retrieveConversationById();
     } else if (otherUserId) {
@@ -167,7 +178,7 @@ const MessagesProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [conversationId]);
 
-  return true ? (
+  return isRetrievedConversationsDirty ? (
     <MessagesCanvas
       conversationId={conversationId}
       conversationsList={conversationsList}

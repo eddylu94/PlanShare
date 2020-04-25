@@ -34,7 +34,8 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     conversation: IConversationSummary,
     index: number
   ) => {
-    const { firstName, lastMessage, conversationId } = conversation;
+    const { firstName, lastMessage } = conversation;
+    const conversationSummaryConversationId = conversation.conversationId;
 
     let lastMessageComponent: any;
     if (lastMessage) {
@@ -47,13 +48,23 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
           </div>
         </>
       );
+    } else {
+      lastMessageComponent = (
+        <>
+          <div className="message-summary-message">Conversation is empty</div>
+          <div className="message-summary-date"></div>
+        </>
+      );
     }
 
-    return (
+    return lastMessage ||
+      conversationId === conversationSummaryConversationId ? (
       <div
         className="message-summary"
         key={"message-summary-" + index}
-        onClick={() => handleConversationSelection(conversationId)}
+        onClick={() =>
+          handleConversationSelection(conversationSummaryConversationId)
+        }
       >
         <div className="message-summary-header">
           <img
@@ -63,19 +74,21 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
           />
           <span className="conversation-header-first-name">{firstName}</span>
         </div>
-        {lastMessage ? lastMessageComponent : null}
+        {lastMessageComponent}
       </div>
+    ) : (
+      undefined
     );
   };
 
-  const renderConversationsList = () =>
-    conversationsList.map((conversation, i) =>
-      renderConversationSummary(conversation, i)
-    );
+  const conversationListComponent = conversationsList
+    .map((conversation, i) => renderConversationSummary(conversation, i))
+    .filter(conversationComponent => !!conversationComponent);
 
-  return conversationsList && conversationsList.length ? (
+  return (conversationListComponent && conversationListComponent.length) ||
+    conversationId ? (
     <div className="messages-container">
-      <div className="message-summaries-pane">{renderConversationsList()}</div>
+      <div className="message-summaries-pane">{conversationListComponent}</div>
       {conversationId ? (
         <Conversation
           currentUserId={currentUserId}
