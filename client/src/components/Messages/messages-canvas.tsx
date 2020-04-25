@@ -3,6 +3,8 @@ import React from "react";
 import Conversation from "./conversation";
 import { IConversationSummary, IMessageData } from "./../../utils/utils";
 
+import moment from "moment";
+
 interface IMessagesCanvasProps {
   conversationId: string | null;
   conversationsList: IConversationSummary[];
@@ -36,11 +38,13 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
 
     let lastMessageComponent: any;
     if (lastMessage) {
-      const { date, message } = lastMessage;
+      const { date, message, firstName } = lastMessage;
       lastMessageComponent = (
         <>
-          <div>{date.toString()}</div>
-          <div>{message}</div>
+          <div className="message-summary-message">{`${firstName}: ${message}`}</div>
+          <div className="message-summary-date">
+            {moment(date).format("lll")}
+          </div>
         </>
       );
     }
@@ -51,7 +55,14 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
         key={"message-summary-" + index}
         onClick={() => handleConversationSelection(conversationId)}
       >
-        <div>{firstName}</div>
+        <div className="message-summary-header">
+          <img
+            alt="Profile"
+            className="conversation-header-profile-picture"
+            src="/profile_picture_placeholder.png"
+          />
+          <span className="conversation-header-first-name">{firstName}</span>
+        </div>
         {lastMessage ? lastMessageComponent : null}
       </div>
     );

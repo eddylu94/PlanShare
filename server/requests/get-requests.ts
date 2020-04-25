@@ -872,6 +872,7 @@ export const getConversationsList = (
     const [db, findRes] = res;
 
     const userId = findRes._id.toString();
+    const currentUserFirstName = findRes.firstName;
 
     const dbo = db.db(DATABASE_NAME);
     dbo
@@ -918,7 +919,17 @@ export const getConversationsList = (
                     const firstName = findUserRes.firstName;
 
                     const messages = conversation.messages;
+
                     const lastMessage = messages[messages.length - 1];
+                    if (lastMessage) {
+                      Object.assign(lastMessage, {
+                        firstName:
+                          lastMessage.userId === userId
+                            ? currentUserFirstName
+                            : findUserRes.firstName
+                      });
+                    }
+
                     const conversationId = conversation._id.toString();
 
                     resolve({

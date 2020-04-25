@@ -64,6 +64,7 @@ export interface IMessageData {
   userId: string;
   date: Date;
   message: string;
+  firstName: string;
 }
 
 export interface IConversationData {

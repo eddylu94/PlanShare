@@ -829,4 +829,34 @@ input[disabled] {
   cursor: pointer;
   box-shadow: 0px 0px 10px #d8d8d8;
   border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.message-summary:hover {
+  box-shadow: 0px 0px 10px #888888;
+}
+
+.message-summary:focus {
+  outline: none !important;
+  box-shadow: 0px 0px 10px #6c5dbdee;
+}
+
+.message-summary-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.message-summary-message {
+  color: #686868;
+  font-size: 15px;
+}
+
+.message-summary-date {
+  margin-top: 3px;
+  font-size: 14px;
+  color: #686868;
+  font-style: italic;
 }
