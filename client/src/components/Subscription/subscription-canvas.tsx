@@ -101,7 +101,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
               className="subscription-detail-icon"
               src="/message_icon.png"
             />
-            <Link to={`conversation?id=${userId}`}>
+            <Link to={`messages?id=${userId}`}>
               <span className="b">{"Message " + firstName}</span>
             </Link>
           </div>

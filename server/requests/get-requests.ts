@@ -785,7 +785,7 @@ export const getConversationById = (
   postReq: any,
   postRes: any
 ) => {
-  console.log("Submitting message...");
+  console.log("Retrieving conversation by ID...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
       const [db, findRes] = res;
@@ -823,17 +823,36 @@ export const getConversationById = (
                 return;
               }
 
-              db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.SUCCESS,
-                body: {
-                  conversation: {
-                    conversationId: findConversationRes._id,
-                    firstName: "Yo Yo Ma",
-                    messages: findConversationRes.messages
+              const otherUserId = getOtherUser(userIds, userId);
+
+              dbo
+                .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+                .findOne(
+                  { _id: new ObjectId(otherUserId) },
+                  (findOtherUserErr, findOtherUserRes) => {
+                    if (findOtherUserErr || !findOtherUserRes) {
+                      db.close();
+                      postRes.json({
+                        statusCode: STATUS_CODE.FAILURE,
+                        statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                      });
+
+                      return;
+                    }
+
+                    db.close();
+                    postRes.json({
+                      statusCode: STATUS_CODE.SUCCESS,
+                      body: {
+                        conversation: {
+                          conversationId: findConversationRes._id,
+                          firstName: findOtherUserRes.firstName.toString(),
+                          messages: findConversationRes.messages
+                        }
+                      }
+                    });
                   }
-                }
-              });
+                );
             }
           }
         );

@@ -92,7 +92,9 @@ const MessagesProviderWithContext = (props: {
     const conversation = data?.body?.conversation as IConversationData;
     if (conversation) {
       console.log(conversation);
+      setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
+      setFirstName(conversation.firstName);
     }
   };
 
@@ -159,6 +161,8 @@ const MessagesProviderWithContext = (props: {
   useEffect(() => {
     if (conversationId) {
       retrieveConversationById();
+    } else if (otherUserId) {
+      retrieveConversation();
     }
     // eslint-disable-next-line
   }, [conversationId]);
