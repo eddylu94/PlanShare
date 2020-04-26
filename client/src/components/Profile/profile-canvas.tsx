@@ -94,13 +94,16 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     <div className="page-container">
       <div className="profile-container">
         {isDifferentUser ? (
-          <div className="profile-message-button">
+          <div>
             <Link to={`messages?id=${otherUserId}`}>
-              <img
-                alt="Posted date"
-                className="profile-message-icon"
-                src="/message_icon.png"
-              />
+              <button className="profile-message-button">
+                Message
+                <img
+                  alt="Posted date"
+                  className="profile-message-icon"
+                  src="/send_icon_white.png"
+                />
+              </button>
             </Link>
           </div>
         ) : null}

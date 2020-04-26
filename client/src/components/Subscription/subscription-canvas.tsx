@@ -94,13 +94,15 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <>
           <div className="subscription-label">Contact</div>
           <div className="subscription-detail">
-            <img
-              alt="Posted date"
-              className="subscription-detail-icon"
-              src="/message_icon.png"
-            />
             <Link to={`messages?id=${userId}`}>
-              <span className="b">{"Message " + firstName}</span>
+              <button className="subscription-message-button">
+                <span className="b subscription-message-label">{`Message ${firstName}`}</span>
+                <img
+                  alt="Posted date"
+                  className="subscription-message-icon"
+                  src="/send_icon_white.png"
+                />
+              </button>
             </Link>
           </div>
         </>

@@ -181,6 +181,35 @@ body {
   transform: scale(1.05);
 }
 
+.subscription-message-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  background-color: #6c5dbd;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 8px;
+  font-weight: 600;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: all 0.1s ease-in-out;
+}
+
+.subscription-message-button:hover {
+  opacity: 0.8;
+}
+
+.subscription-message-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
 .vertical-divider {
   display: flex;
   flex-direction: column;
@@ -617,14 +646,32 @@ input[disabled] {
 
 .profile-message-button {
   position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   top: 20px;
   right: 20px;
+  cursor: pointer;
+  background-color: #6c5dbd;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 8px;
+  font-weight: 500;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: all 0.1s ease-in-out;
+}
+
+.profile-message-button:hover {
+  opacity: 0.8;
 }
 
 .profile-message-icon {
-  width: 30px;
-  height: 30px;
-  opacity: 0.8;
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
 }
 
 .profile-authored-subscriptions {
