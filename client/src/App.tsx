@@ -5,6 +5,7 @@ import "./App.css";
 import "./App-S.css";
 import "./App-M.css";
 import "./App-L.css";
+import "./App-XL.css";
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
 import Validate from "./components/Validate/validate";

@@ -26,5 +26,6 @@ export const STATUS_MESSAGE = {
 export const DEVICE_MODE = {
   MOBILE: "MOBILE", // width of less than 768px
   TABLET: "TABLET", // width between 768px and 992px
-  DESKTOP: "DESKTOP" // width greater than 992px
+  DESKTOP: "DESKTOP", // width between 992px and 1200 px
+  LARGE_DESKTOP: "LARGE_DESKTOP" // width greater than 1200px
 };

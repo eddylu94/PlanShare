@@ -74,7 +74,7 @@
   .navbar-title {
     margin-left: 10px;
     font-size: 22px;
-    font-weight: 450;
+    font-weight: 350;
   }
 
   .navbar-icon {
@@ -366,9 +366,9 @@
   }
 
   .filter-pane {
-    min-width: 260px;
-    max-width: 260px;
-    width: 260px;
+    min-width: 250px;
+    max-width: 250px;
+    width: 250px;
     margin: 20px 10px 20px 20px;
   }
 
