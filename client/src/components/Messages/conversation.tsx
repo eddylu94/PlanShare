@@ -73,6 +73,9 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
       </div>
       <div className="conversation-body">{renderMessages(messages)}</div>
       <div className="conversation-footer">
+        <div className="conversation-warning">
+          Never share bank information or debit/credit card numbers
+        </div>
         <form className="conversation-bar" onSubmit={handleSubmit}>
           <input
             type="text"

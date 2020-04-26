@@ -337,14 +337,6 @@
     width: 120px;
   }
 
-  .search-panes {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    background-color: #efefef;
-    overflow-y: auto;
-  }
-
   .search-pane {
     z-index: 200;
     display: flex;

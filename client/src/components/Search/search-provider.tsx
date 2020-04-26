@@ -284,19 +284,23 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     handleDaysActiveChange
   } as ISearchFiltersProps;
 
-  return isRetrievedSubscriptionsDirty ? (
-    <SearchCanvas
-      isFiltersDrawerOpen={isFiltersDrawerOpen}
-      subscriptionData={subscriptionData}
-      filtersText={filtersText}
-      selectedSubscription={selectedSubscription}
-      searchFilters={searchFilters}
-      handleTextChange={handleTextChange}
-      handleSubscriptionCardClick={handleSubscriptionCardClick}
-      closeModal={closeModal}
-      toggleFiltersDrawer={toggleFiltersDrawer}
-    />
-  ) : null;
+  return (
+    <div className="search-panes">
+      {isRetrievedSubscriptionsDirty ? (
+        <SearchCanvas
+          isFiltersDrawerOpen={isFiltersDrawerOpen}
+          subscriptionData={subscriptionData}
+          filtersText={filtersText}
+          selectedSubscription={selectedSubscription}
+          searchFilters={searchFilters}
+          handleTextChange={handleTextChange}
+          handleSubscriptionCardClick={handleSubscriptionCardClick}
+          closeModal={closeModal}
+          toggleFiltersDrawer={toggleFiltersDrawer}
+        />
+      ) : null}
+    </div>
+  );
 };
 
 const SearchProvider = (props: { history: History }) => (
