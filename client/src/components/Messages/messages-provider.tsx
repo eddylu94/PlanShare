@@ -23,6 +23,8 @@ const MessagesProviderWithContext = (props: {
 
   const { history, location } = props;
 
+  let _firstConversationRetrieval = false;
+
   const [
     isRetrievedConversationsDirty,
     setIsRetrievedConversationsDirty
@@ -62,7 +64,9 @@ const MessagesProviderWithContext = (props: {
           return bValue - aValue;
         });
 
-      setConversationId(newConversationsList[0].conversationId);
+      if (newConversationsList[0]) {
+        setConversationId(newConversationsList[0].conversationId);
+      }
 
       if (conversationId) {
         retrieveConversationById();
@@ -98,6 +102,11 @@ const MessagesProviderWithContext = (props: {
       setFirstName(conversation.firstName);
       setOtherUserId(conversation.userId);
       setMessages(conversation.messages);
+
+      if (!_firstConversationRetrieval) {
+        retrieveConversationsList();
+      }
+      _firstConversationRetrieval = true;
     }
   };
 
@@ -187,7 +196,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   useEffect(() => {
-    retrieveConversationsList();
+    retrieveConversation();
     // eslint-disable-next-line
   }, []);
 
