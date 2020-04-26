@@ -37,20 +37,41 @@ const MessagesProviderWithContext = (props: {
   const [text, setText] = useState("");
 
   var params = new URLSearchParams(location.search);
-  const [conversationId, setConversationId] = useState(params.get("c"));
+  const [conversationId, setConversationId] = useState("");
 
-  const [otherUserId, setUserId] = useState(params.get("id") as string);
+  const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
   if (!_userData.user?.auth) {
     history.push("/signup");
   }
 
   const retrieveConversationsListResponseHandler = (data: any) => {
-    const conversationsList = data?.body?.conversationsList as any;
-    if (conversationsList) {
+    let newConversationsList = data?.body
+      ?.conversationsList as IConversationSummary[];
+    if (newConversationsList) {
       setIsRetrievedConversationsDirty(true);
-      console.log(conversationsList);
-      setConversationsList(conversationsList);
+
+      newConversationsList = newConversationsList
+        .filter(
+          conversation =>
+            !!conversation.lastMessage || conversation.userId === otherUserId
+        )
+        .sort((a, b) => {
+          const aValue = a.userId === otherUserId ? 1 : 0;
+          const bValue = b.userId === otherUserId ? 1 : 0;
+          return bValue - aValue;
+        });
+
+      setConversationId(newConversationsList[0].conversationId);
+
+      if (conversationId) {
+        retrieveConversationById();
+      } else if (otherUserId) {
+        retrieveConversation();
+      }
+
+      console.log(newConversationsList);
+      setConversationsList(newConversationsList);
     }
   };
 
@@ -75,7 +96,7 @@ const MessagesProviderWithContext = (props: {
       console.log(conversation);
       setConversationId(conversation.conversationId);
       setFirstName(conversation.firstName);
-      setUserId(conversation.userId);
+      setOtherUserId(conversation.userId);
       setMessages(conversation.messages);
     }
   };
@@ -104,7 +125,7 @@ const MessagesProviderWithContext = (props: {
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
       setFirstName(conversation.firstName);
-      setUserId(conversation.userId);
+      setOtherUserId(conversation.userId);
     }
   };
 
@@ -171,12 +192,7 @@ const MessagesProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
-    retrieveConversationsList();
-    if (conversationId) {
-      retrieveConversationById();
-    } else if (otherUserId) {
-      retrieveConversation();
-    }
+    retrieveConversationById();
     // eslint-disable-next-line
   }, [conversationId]);
 

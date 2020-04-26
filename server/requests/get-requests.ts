@@ -261,8 +261,6 @@ export const getSubscriptions = (
             });
           }
 
-          console.log(findQuery);
-
           return dbo
             .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
             .find(findQuery)
@@ -298,7 +296,6 @@ export const getSubscriptions = (
           (acc, curr) => acc.concat(curr),
           [] as any
         );
-        // console.log(subscriptions);
 
         db.close();
         postRes.json({
@@ -796,6 +793,8 @@ export const getConversationById = (
 
       const { conversationId } = postReq.query;
 
+      console.log("Conversation ID:", conversationId);
+
       const dbo = db.db(DATABASE_NAME);
       dbo
         .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
@@ -905,7 +904,7 @@ export const getConversationsList = (
           return;
         }
 
-        console.log(findRes);
+        console.log("Conversations length:", findRes.length);
 
         const conversationsListPromises = findRes.map(conversation => {
           const otherUserId = getOtherUser(conversation.userIds, userId);
@@ -927,6 +926,7 @@ export const getConversationsList = (
                   }
 
                   const firstName = findUserRes.firstName;
+                  const otherUserId = findUserRes._id.toString();
 
                   const messages = conversation.messages;
 
@@ -945,6 +945,7 @@ export const getConversationsList = (
                   resolve({
                     conversationId,
                     firstName,
+                    userId: otherUserId,
                     lastMessage
                   });
                 }

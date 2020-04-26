@@ -53,7 +53,12 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     } else {
       lastMessageComponent = (
         <>
-          <div className="message-summary-message">Conversation is empty</div>
+          <div
+            className="message-summary-message"
+            style={{ fontStyle: "italic" }}
+          >
+            New draft
+          </div>
           <div className="message-summary-date"></div>
         </>
       );

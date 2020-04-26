@@ -248,12 +248,7 @@ const CreateListingProviderWithContext = (props: {
   }, [subscriptionBrandSelection]);
 
   useEffect(() => {
-    const newIsFormDisabled = !(
-      listingContact &&
-      listingDescription &&
-      numberOfPeople &&
-      price
-    );
+    const newIsFormDisabled = !(listingDescription && numberOfPeople && price);
     setIsFormDisabled(newIsFormDisabled);
   }, [listingContact, listingDescription, numberOfPeople, price]);
 
