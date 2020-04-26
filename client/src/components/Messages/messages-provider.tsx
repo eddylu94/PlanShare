@@ -117,7 +117,10 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversation = () => {
-    if (otherUserId) {
+    if (!otherUserId && !_firstConversationRetrieval) {
+      retrieveConversationsList();
+      _firstConversationRetrieval = true;
+    } else if (otherUserId) {
       baseGetRequest(
         "getconversation",
         [{ userId: otherUserId }],
