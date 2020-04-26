@@ -6,6 +6,7 @@ import { IConversationSummary, IMessageData } from "./../../utils/utils";
 import moment from "moment";
 
 interface IMessagesCanvasProps {
+  initialConversationId: string | null;
   conversationId: string | null;
   conversationsList: IConversationSummary[];
   currentUserId: string;
@@ -20,6 +21,7 @@ interface IMessagesCanvasProps {
 
 const MessagesCanvas = (props: IMessagesCanvasProps) => {
   const {
+    initialConversationId,
     conversationId,
     conversationsList,
     currentUserId,
@@ -65,7 +67,8 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     }
 
     return lastMessage ||
-      conversationId === conversationSummaryConversationId ? (
+      conversationId === conversationSummaryConversationId ||
+      initialConversationId === conversationSummaryConversationId ? (
       <div
         className="message-summary"
         key={"message-summary-" + index}

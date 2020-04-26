@@ -40,6 +40,7 @@ const MessagesProviderWithContext = (props: {
 
   var params = new URLSearchParams(location.search);
   const [conversationId, setConversationId] = useState("");
+  const [initialConversationId, setInitialConversationId] = useState("");
 
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
@@ -99,6 +100,7 @@ const MessagesProviderWithContext = (props: {
     if (conversation) {
       console.log(conversation);
       setConversationId(conversation.conversationId);
+      setInitialConversationId(conversation.conversationId);
       setFirstName(conversation.firstName);
       setOtherUserId(conversation.userId);
       setMessages(conversation.messages);
@@ -207,6 +209,7 @@ const MessagesProviderWithContext = (props: {
 
   return isRetrievedConversationsDirty ? (
     <MessagesCanvas
+      initialConversationId={initialConversationId}
       conversationId={conversationId}
       conversationsList={conversationsList}
       currentUserId={currentUserId}
