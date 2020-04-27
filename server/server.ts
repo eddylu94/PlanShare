@@ -7,7 +7,11 @@ import bodyParser from "body-parser";
 import mongodb from "mongodb";
 const mongoClient = mongodb.MongoClient;
 
+import http from "http";
+const server = require("http").Server(app);
+
 import socketIo from "socket.io";
+const io = socketIo(server);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -52,9 +56,11 @@ app.use((req, res, next) => {
 const port = process.env.PORT || 36322;
 app.set("port", port);
 
-const server = app.listen(app.get("port"), () => {
-  console.log(`Server is running on Port ${port}...`);
-});
+server.listen(port);
+
+// app.listen(app.get("port"), () => {
+//   console.log(`Server is running on Port ${port}...`);
+// });
 
 const getRequestBuilder = (path: string, request: any) => {
   return app.get(path, (postReq, postRes) =>
@@ -72,7 +78,7 @@ const postRequestBuilder = (
   );
 };
 
-const io = socketIo.listen(server);
+// const io = socketIo.listen(server);
 
 io.on("connection", (socket: any) => {
   console.log("a user connected");
