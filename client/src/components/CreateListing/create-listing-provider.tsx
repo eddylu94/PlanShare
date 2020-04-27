@@ -31,6 +31,7 @@ const CreateListingProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
 
   const subscriptionIdParam = params.get("id") as string;
+  // eslint-disable-next-line
   const [subscriptionId, setSubscriptionId] = useState(
     subscriptionIdParam ?? ""
   );

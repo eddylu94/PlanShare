@@ -7,6 +7,13 @@ import bodyParser from "body-parser";
 import mongodb from "mongodb";
 const mongoClient = mongodb.MongoClient;
 
+import httpObject from "http";
+import socketIo from "socket.io";
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
 // Import requests
 import {
   getValidationEmail,
@@ -81,6 +88,16 @@ postRequestBuilder("/editsubscription", editSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
 postRequestBuilder("/sendmessage", sendMessage);
 
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log(`Server is running on Port ${port}...`);
+});
+
+const io = socketIo.listen(server);
+
+io.on("connection", (socket: any) => {
+  console.log("a user connected");
+
+  socket.on("hello", () => {
+    console.log("Conversation page rendered");
+  });
 });

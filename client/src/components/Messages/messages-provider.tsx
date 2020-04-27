@@ -4,13 +4,19 @@ import { History } from "history";
 
 import MessagesCanvas from "./messages-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { baseGetRequest, basePostRequest } from "./../../base-requests";
+import {
+  BASE_URL,
+  baseGetRequest,
+  basePostRequest
+} from "./../../base-requests";
 import {
   IConversationSummary,
   IConversationData,
   IMessageData
 } from "./../../utils/utils";
 import { STATUS_CODE } from "./../../utils/constants";
+
+import socketIOClient from "socket.io-client";
 
 const MessagesProviderWithContext = (props: {
   userData: IUserContext;
@@ -201,6 +207,9 @@ const MessagesProviderWithContext = (props: {
   };
 
   useEffect(() => {
+    const socket = socketIOClient(BASE_URL);
+    socket.emit("hello");
+
     retrieveConversation();
     // eslint-disable-next-line
   }, []);

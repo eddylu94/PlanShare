@@ -1,6 +1,6 @@
-const BASE_URL = `https://planshare.io/backend`;
-// const BASE_URL = `http://138.197.220.137/backend`;
-// const BASE_URL = `http://localhost:36322`;
+export const BASE_URL = `https://planshare.io/backend`;
+// export const BASE_URL = `http://138.197.220.137/backend`;
+// export const BASE_URL = `http://localhost:36322`;
 
 type GetRequestParams = {
   [key: string]: string;
