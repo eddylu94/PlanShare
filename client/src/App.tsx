@@ -40,6 +40,9 @@ const App = () => (
             <Route path="/create">
               <CreateListing />
             </Route>
+            <Route path="/edit">
+              <CreateListing />
+            </Route>
             <Route path="/login">
               <Login />
             </Route>

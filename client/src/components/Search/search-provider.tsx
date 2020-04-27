@@ -51,7 +51,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories
   ] = useState([] as IFiltersSubscriptionCategory[]);
 
-  const [filtersGroupSize, setFiltersGroupSize] = useState([1, 10]);
+  const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
 
   const [filtersPrice, setFiltersPrice] = useState([0, 100]);
 

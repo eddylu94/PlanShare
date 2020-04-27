@@ -27,6 +27,7 @@ import {
   login,
   verifyEmail,
   createSubscription,
+  editSubscription,
   deleteUser,
   sendMessage
 } from "./requests/post-requests";
@@ -76,6 +77,7 @@ postRequestBuilder("/signup", signUp);
 postRequestBuilder("/login", login);
 postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
+postRequestBuilder("/editsubscription", editSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
 postRequestBuilder("/sendmessage", sendMessage);
 

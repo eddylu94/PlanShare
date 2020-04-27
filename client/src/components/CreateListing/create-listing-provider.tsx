@@ -12,6 +12,7 @@ import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
+  location: Location;
 }) => {
   const _userData = props.userData;
 
@@ -21,11 +22,61 @@ const CreateListingProviderWithContext = (props: {
     setIsRetrievedListingCreationDataDirty
   ] = useState(false);
 
-  const { history } = props;
+  const { history, location } = props;
 
   if (!_userData.user?.auth) {
     history.push("/signup");
   }
+
+  var params = new URLSearchParams(location.search);
+
+  const subscriptionIdParam = params.get("id") as string;
+  const [subscriptionId, setSubscriptionId] = useState(
+    subscriptionIdParam ?? ""
+  );
+
+  const [isUserSelected, setIsUserSelected] = useState(false); // Whether the user has selected a subscription type
+
+  const retrieveSubscriptionResponseHandler = (data: any) => {
+    console.log(data);
+
+    const newSubscriptionData = data?.body?.subscriptionData;
+    if (newSubscriptionData) {
+      setIsRetrievedListingCreationDataDirty(true);
+
+      console.log(newSubscriptionData);
+      console.log(newSubscriptionData.subscriptionBrand.type);
+      setSubscriptionCategorySelection(
+        newSubscriptionData.subscriptionCategory
+      );
+      setSubscriptionBrandSelection(newSubscriptionData.subscriptionBrand);
+      setListingDescription(newSubscriptionData.listingDescription);
+      setSubscriptionUrl(newSubscriptionData.subscriptionUrl);
+      setNumberOfPeople(newSubscriptionData.numberOfPeople);
+      setPrice(newSubscriptionData.price);
+    }
+  };
+
+  const retrieveSubscriptionErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
+  const retrieveSubscription = () => {
+    baseGetRequest(
+      "getsubscription",
+      [{ subscriptionId }],
+      retrieveSubscriptionResponseHandler,
+      retrieveSubscriptionErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
+  useEffect(() => {
+    if (subscriptionId) {
+      retrieveSubscription();
+    }
+    // eslint-disable-next-line
+  }, [subscriptionId]);
 
   const [subscriptionCategories, setSubscriptionCategories] = useState(
     [] as ISubscriptionCategory[]
@@ -71,6 +122,7 @@ const CreateListingProviderWithContext = (props: {
           category => value === category.subscriptionCategoryId
         );
         if (category) {
+          setIsUserSelected(true);
           setSubscriptionCategorySelection(category);
         }
         break;
@@ -125,8 +177,10 @@ const CreateListingProviderWithContext = (props: {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
-      const newDefaultSubscriptionCategory = body.defaultSubscriptionCategory;
-      setSubscriptionCategorySelection(newDefaultSubscriptionCategory);
+      if (!subscriptionId) {
+        const newDefaultSubscriptionCategory = body.defaultSubscriptionCategory;
+        setSubscriptionCategorySelection(newDefaultSubscriptionCategory);
+      }
 
       const newSubscriptionCategories = body.subscriptionCategories;
       setSubscriptionCategories(newSubscriptionCategories);
@@ -154,8 +208,10 @@ const CreateListingProviderWithContext = (props: {
       const subscriptionBrands = body.subscriptionBrands;
       setSubscriptionBrands(subscriptionBrands);
 
-      const newDefaultSubscriptionBrand = body.defaultSubscriptionBrand;
-      setSubscriptionBrandSelection(newDefaultSubscriptionBrand);
+      if (!(subscriptionId && !isUserSelected)) {
+        const newDefaultSubscriptionBrand = body.defaultSubscriptionBrand;
+        setSubscriptionBrandSelection(newDefaultSubscriptionBrand);
+      }
     }
   };
 
@@ -199,6 +255,7 @@ const CreateListingProviderWithContext = (props: {
     console.log(organizationSelection);
     const postRequestData = {
       subscriptionData: {
+        subscriptionCategory: subscriptionCategorySelection,
         subscriptionBrand: subscriptionBrandSelection,
         subscriptionUrl,
         listingContact,
@@ -209,14 +266,29 @@ const CreateListingProviderWithContext = (props: {
       }
     };
 
+    console.log(subscriptionId);
+    if (subscriptionId) {
+      Object.assign(postRequestData.subscriptionData, { subscriptionId });
+    }
+
     if (!isFormDisabled) {
-      basePostRequest(
-        "createsubscription",
-        postRequestData,
-        handleSubmitResponseHandler,
-        handleSubmitErrorHandler,
-        _userData.user?.auth
-      );
+      if (subscriptionId) {
+        basePostRequest(
+          "editsubscription",
+          postRequestData,
+          handleSubmitResponseHandler,
+          handleSubmitErrorHandler,
+          _userData.user?.auth
+        );
+      } else {
+        basePostRequest(
+          "createsubscription",
+          postRequestData,
+          handleSubmitResponseHandler,
+          handleSubmitErrorHandler,
+          _userData.user?.auth
+        );
+      }
     }
 
     event.preventDefault();
@@ -229,14 +301,23 @@ const CreateListingProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
-    retrieveSubscriptionBrands(
-      subscriptionCategorySelection.subscriptionCategoryId
-    );
+    if (
+      subscriptionCategorySelection &&
+      Object.keys(subscriptionCategorySelection).length
+    ) {
+      retrieveSubscriptionBrands(
+        subscriptionCategorySelection.subscriptionCategoryId
+      );
+    }
     // eslint-disable-next-line
   }, [subscriptionCategorySelection]);
 
   useEffect(() => {
-    if (Object.keys(subscriptionBrandSelection).length) {
+    const subscriptionIdParam = params.get("id") as string;
+
+    if (subscriptionIdParam) {
+      setSubscriptionBrandLogo(subscriptionBrandSelection.logo);
+    } else if (Object.keys(subscriptionBrandSelection).length) {
       const brand = subscriptionBrands.find(
         (brand: any) =>
           brand.subscriptionBrandId ===
@@ -262,6 +343,7 @@ const CreateListingProviderWithContext = (props: {
 
   return isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
+      subscriptionId={subscriptionId}
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}
       subscriptionCategorySelection={subscriptionCategorySelection}
@@ -285,12 +367,13 @@ const CreateListingProviderWithContext = (props: {
   ) : null;
 };
 
-const CreateListingProvider = (props: { history: History }) => (
+const CreateListingProvider = (props: { history: History; location: any }) => (
   <UserDataContext.Consumer>
     {userData => (
       <CreateListingProviderWithContext
         userData={userData}
         history={props.history}
+        location={props.location}
       />
     )}
   </UserDataContext.Consumer>

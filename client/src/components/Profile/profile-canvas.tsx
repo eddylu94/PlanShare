@@ -89,6 +89,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
         isProfile={true}
+        isDisplayButtons={!isDifferentUser}
       />
     );
   });

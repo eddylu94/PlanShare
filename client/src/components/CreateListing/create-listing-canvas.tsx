@@ -10,6 +10,8 @@ import {
 import Tooltip from "@material-ui/core/Tooltip";
 
 interface ICreateListingCanvasProps {
+  subscriptionId: string;
+
   subscriptionCategories: ISubscriptionCategory[];
   subscriptionCategorySelection: ISubscriptionCategory;
   subscriptionBrands: ISubscriptionBrand[];
@@ -38,6 +40,7 @@ interface ICreateListingCanvasProps {
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
+    subscriptionId,
     subscriptionCategories,
     subscriptionCategorySelection,
     subscriptionBrands,
@@ -61,7 +64,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
   const renderSubscriptionCategoryDropdown = () => {
     if (
-      !(subscriptionCategories && Object.keys(subscriptionCategories).length)
+      !(
+        subscriptionCategories &&
+        Object.keys(subscriptionCategories).length &&
+        subscriptionCategorySelection
+      )
     ) {
       return null;
     }
@@ -114,9 +121,9 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
       <form className="form-container" onSubmit={handleSubmit} noValidate>
-        <h2 className="form-header">Create Listing</h2>
-
-        {/* <h3 className="form-subheader">Subscription Information</h3> */}
+        <h2 className="form-header">
+          {subscriptionId ? "Edit Listing" : "Create Listing"}
+        </h2>
 
         <div className="subscription-fields">
           <div className="form-field">

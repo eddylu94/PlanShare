@@ -408,6 +408,68 @@ export const createSubscription = (
     });
 };
 
+export const editSubscription = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Editing subscription...");
+
+  const obj = postReq.body;
+
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { firstName } = findRes;
+
+      const { subscriptionData } = obj;
+
+      const { subscriptionId } = subscriptionData;
+
+      const organization = retrieveOrganizationById(
+        subscriptionData.organizationId
+      );
+
+      Object.assign(subscriptionData, {
+        firstName,
+        organization,
+        editedDate: new Date(),
+        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
+        price: parseFloat(subscriptionData.price),
+        subscriptionBrandName: subscriptionData.subscriptionBrand.name
+      });
+
+      console.log("=====");
+      console.log(subscriptionId);
+      console.log({ _id: new ObjectId(subscriptionId) });
+      console.log("=====");
+
+      const dbo = db.db(DATABASE_NAME);
+
+      dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .updateOne(
+          { _id: new ObjectId(subscriptionId) },
+          { $set: { ...subscriptionData } }
+        )
+        .then(() => {
+          console.log("Subscription updated:", subscriptionId);
+
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {
+              subscriptionId
+            }
+          });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 export const deleteUser = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,

@@ -8,6 +8,7 @@ interface ISearchSubscriptionCardProps {
   isMobile: boolean;
   isProfile?: boolean;
   handleSubscriptionCardClick?: (subscriptionId: string) => void;
+  isDisplayButtons?: boolean;
 }
 
 const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
@@ -15,7 +16,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     subscription,
     isMobile,
     isProfile,
-    handleSubscriptionCardClick
+    handleSubscriptionCardClick,
+    isDisplayButtons
   } = props;
 
   const {
@@ -92,23 +94,55 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   );
 
   return (
-    <div
-      className="subscription-card"
-      tabIndex={0}
-      onClick={() =>
-        handleSubscriptionCardClick ? handleSubscriptionCardClick(_id) : {}
-      }
-    >
+    <>
       <div
-        className="subscription-card-logo-and-info"
-        style={{ marginBottom: isProfile ? 10 : 0 }}
+        className="subscription-card"
+        tabIndex={0}
+        onClick={() =>
+          handleSubscriptionCardClick ? handleSubscriptionCardClick(_id) : {}
+        }
       >
-        {renderSubscriptionLogo()}
-        {renderSubscriptionInfo()}
+        <div
+          className="subscription-card-logo-and-info"
+          style={{ marginBottom: isProfile ? 10 : 0 }}
+        >
+          {renderSubscriptionLogo()}
+          {renderSubscriptionInfo()}
+        </div>
+        {isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
+        {renderSubscriptionBasicInfo()}
       </div>
-      {isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
-      {renderSubscriptionBasicInfo()}
-    </div>
+      {isDisplayButtons ? (
+        <div className="subscription-card-buttons">
+          <Link to={`edit?id=${_id}`}>
+            <button className="subscription-card-button">
+              <img
+                alt="Edit"
+                className="subscription-card-button-icon"
+                src="/edit_icon.png"
+              />
+              Edit
+            </button>
+          </Link>
+          <button className="subscription-card-button">
+            <img
+              alt="Archive"
+              className="subscription-card-button-icon"
+              src="/archive_icon.png"
+            />
+            Archive
+          </button>
+          <button className="subscription-card-button">
+            <img
+              alt="Delete"
+              className="subscription-card-button-icon"
+              src="/delete_icon.png"
+            />
+            Delete
+          </button>
+        </div>
+      ) : null}
+    </>
   );
 };
 

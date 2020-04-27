@@ -38,10 +38,10 @@ const MessagesProviderWithContext = (props: {
   const [messages, setMessages] = useState([] as IMessageData[]);
   const [text, setText] = useState("");
 
-  var params = new URLSearchParams(location.search);
   const [conversationId, setConversationId] = useState("");
   const [initialConversationId, setInitialConversationId] = useState("");
 
+  var params = new URLSearchParams(location.search);
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
   if (!_userData.user?.auth) {
