@@ -7,7 +7,6 @@ import bodyParser from "body-parser";
 import mongodb from "mongodb";
 const mongoClient = mongodb.MongoClient;
 
-import httpObject from "http";
 import socketIo from "socket.io";
 
 app.get("/", (req, res) => {
@@ -53,17 +52,42 @@ app.use((req, res, next) => {
 const port = process.env.PORT || 36322;
 app.set("port", port);
 
+const server = app.listen(app.get("port"), () => {
+  console.log(`Server is running on Port ${port}...`);
+});
+
 const getRequestBuilder = (path: string, request: any) => {
   return app.get(path, (postReq, postRes) =>
     request(mongoClient, postReq, postRes)
   );
 };
 
-const postRequestBuilder = (path: string, request: any) => {
+const postRequestBuilder = (
+  path: string,
+  request: any,
+  io?: socketIo.Server
+) => {
   return app.post(path, (postReq, postRes) =>
-    request(mongoClient, postReq, postRes)
+    request(mongoClient, postReq, postRes, io)
   );
 };
+
+const io = socketIo.listen(server);
+
+io.on("connection", (socket: any) => {
+  console.log("a user connected");
+
+  const room = socket.request._query.conversationId;
+  console.log("Room:", room);
+
+  socket.join(room);
+
+  socket.on("send message", (query: any) => {
+    console.log("send message");
+    console.log(query);
+    io.to(room).emit("message received");
+  });
+});
 
 // GET requests
 getRequestBuilder("/getvalidationemail", getValidationEmail);
@@ -86,18 +110,4 @@ postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/editsubscription", editSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
-postRequestBuilder("/sendmessage", sendMessage);
-
-const server = app.listen(app.get("port"), () => {
-  console.log(`Server is running on Port ${port}...`);
-});
-
-const io = socketIo.listen(server);
-
-io.on("connection", (socket: any) => {
-  console.log("a user connected");
-
-  socket.on("hello", () => {
-    console.log("Conversation page rendered");
-  });
-});
+postRequestBuilder("/sendmessage", sendMessage, io);

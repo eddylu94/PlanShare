@@ -50,6 +50,8 @@ const MessagesProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
+  const [socket, setSocket] = useState(null as any);
+
   if (!_userData.user?.auth) {
     history.push("/signup");
   }
@@ -170,7 +172,12 @@ const MessagesProviderWithContext = (props: {
     console.log(data);
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
       retrieveConversationsList();
-      retrieveConversationById();
+
+      if (socket) {
+        socket.emit("send message", "asfsafasfs");
+      } else {
+        retrieveConversationById();
+      }
     }
   };
 
@@ -207,17 +214,34 @@ const MessagesProviderWithContext = (props: {
   };
 
   useEffect(() => {
-    const socket = socketIOClient(BASE_URL);
-    socket.emit("hello");
-
     retrieveConversation();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
+    if (conversationId) {
+      setSocket(
+        socketIOClient(BASE_URL, {
+          query: {
+            conversationId
+          }
+        })
+      );
+    }
+
     retrieveConversationById();
     // eslint-disable-next-line
   }, [conversationId]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("message received", () => {
+        console.log("Message received");
+        retrieveConversationById();
+      });
+    }
+    // eslint-disable-next-line
+  }, [socket]);
 
   return isRetrievedConversationsDirty ? (
     <MessagesCanvas

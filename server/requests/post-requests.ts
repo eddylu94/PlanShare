@@ -1,5 +1,7 @@
 import mongodb from "mongodb";
 
+import socketIo from "socket.io";
+
 import { EMAIL_SERVICE_EMAIL, transporter } from "./../email-service";
 import { retrieveOrganizationById } from "./../organizations";
 import {
@@ -555,7 +557,8 @@ export const deleteUser = (
 export const sendMessage = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
-  postRes: any
+  postRes: any,
+  io: socketIo.Server
 ) => {
   console.log("Submitting message...");
   authenticate(mongoClient, postReq, postRes)
@@ -611,6 +614,8 @@ export const sendMessage = (
                   { $push: { messages: messageData } }
                 )
                 .then(() => {
+                  io.emit("message sent", "Hello World !");
+
                   db.close();
                   postRes.json({
                     statusCode: STATUS_CODE.SUCCESS,
