@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { IMessageData } from "./../../utils/utils";
@@ -59,6 +59,16 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
     return messages.map((messageData, i) => renderMessage(messageData, i));
   };
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef) {
+      (messagesEndRef as any).current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(scrollToBottom, [messages]);
+
   return (
     <div className="conversation-container">
       <div className="conversation-header">
@@ -71,7 +81,10 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           <span className="conversation-header-first-name">{firstName}</span>
         </Link>
       </div>
-      <div className="conversation-body">{renderMessages(messages)}</div>
+      <div className="conversation-body">
+        {renderMessages(messages)}
+        <div ref={messagesEndRef} />
+      </div>
       <div className="conversation-footer">
         <div className="conversation-warning">
           Never share your bank account or debit/credit card information
