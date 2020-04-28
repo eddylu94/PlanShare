@@ -6,6 +6,7 @@ import MessagesCanvas from "./messages-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import {
   BASE_URL,
+  SOCKET_IO_PATH,
   baseGetRequest,
   basePostRequest
 } from "./../../base-requests";
@@ -222,6 +223,7 @@ const MessagesProviderWithContext = (props: {
     if (conversationId) {
       setSocket(
         socketIOClient(BASE_URL, {
+          path: SOCKET_IO_PATH,
           query: {
             conversationId
           }
@@ -235,6 +237,10 @@ const MessagesProviderWithContext = (props: {
 
   useEffect(() => {
     if (socket) {
+      socket.on("room joined", (data: any) => {
+        console.log("Room joined:", data);
+      });
+
       socket.on("message received", () => {
         console.log("Message received");
         retrieveConversationById();

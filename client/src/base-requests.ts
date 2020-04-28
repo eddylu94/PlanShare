@@ -2,6 +2,9 @@ export const BASE_URL = `https://planshare.io/backend`;
 // export const BASE_URL = `http://138.197.220.137/backend`;
 // export const BASE_URL = `http://localhost:36322`;
 
+export const SOCKET_IO_PATH = "/backend/socket.io";
+// export const SOCKET_IO_PATH = '/socket.io';
+
 type GetRequestParams = {
   [key: string]: string;
 };

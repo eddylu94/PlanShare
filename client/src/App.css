@@ -909,7 +909,7 @@ input[disabled] {
   font-style: italic;
   font-size: 15px;
   color: #686868;
-  margin: 0 0 10px 10px;
+  margin: 10px 0 10px 10px;
 }
 
 .messages-container {

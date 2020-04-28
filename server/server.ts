@@ -7,7 +7,6 @@ import bodyParser from "body-parser";
 import mongodb from "mongodb";
 const mongoClient = mongodb.MongoClient;
 
-import http from "http";
 const server = require("http").Server(app);
 
 import socketIo from "socket.io";
@@ -87,6 +86,8 @@ io.on("connection", (socket: any) => {
   console.log("Room:", room);
 
   socket.join(room);
+
+  socket.emit("room joined", room);
 
   socket.on("send message", (query: any) => {
     console.log("send message");
