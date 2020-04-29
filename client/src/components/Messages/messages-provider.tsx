@@ -5,10 +5,10 @@ import { History } from "history";
 import MessagesCanvas from "./messages-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import {
-  BASE_URL,
   SOCKET_IO_PATH,
   baseGetRequest,
-  basePostRequest
+  basePostRequest,
+  SOCKET_URL
 } from "./../../base-requests";
 import {
   IConversationSummary,
@@ -222,7 +222,7 @@ const MessagesProviderWithContext = (props: {
   useEffect(() => {
     if (conversationId) {
       setSocket(
-        socketIOClient(BASE_URL, {
+        socketIOClient(SOCKET_URL, {
           path: SOCKET_IO_PATH,
           query: {
             conversationId
