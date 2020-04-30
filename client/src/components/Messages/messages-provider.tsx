@@ -198,6 +198,11 @@ const MessagesProviderWithContext = (props: {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!text) {
+      event.preventDefault();
+      return;
+    }
+
     const postRequestData = {
       conversationId,
       message: text
