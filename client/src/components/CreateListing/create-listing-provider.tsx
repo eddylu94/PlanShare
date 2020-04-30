@@ -7,7 +7,11 @@ import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
-import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
+import {
+  ISubscriptionCategory,
+  ISubscriptionBrand,
+  isValidURL
+} from "./../../utils/utils";
 
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;
@@ -109,8 +113,15 @@ const CreateListingProviderWithContext = (props: {
   const [organizations, setOrganizations] = useState([]);
   const [organizationSelection, setOrganizationSelection] = useState({} as any);
 
+  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
   const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
   const [isPriceFocused, setIsPriceFocused] = useState(false);
+
+  const [isSubscriptionUrlValid, setIsSubscriptionUrlValid] = useState(true);
+  const [
+    isDisplaySubscriptionUrlErrorLabel,
+    setIsDisplaySubscriptionUrlErrorLabel
+  ] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<any>) => {
     const target = event.target;
@@ -330,9 +341,28 @@ const CreateListingProviderWithContext = (props: {
   }, [subscriptionBrandSelection]);
 
   useEffect(() => {
-    const newIsFormDisabled = !(listingDescription && numberOfPeople && price);
+    setIsSubscriptionUrlValid(!subscriptionUrl || isValidURL(subscriptionUrl));
+  }, [subscriptionUrl]);
+
+  useEffect(() => {
+    const newIsFormDisabled = !(
+      listingDescription &&
+      numberOfPeople &&
+      price &&
+      isSubscriptionUrlValid
+    );
     setIsFormDisabled(newIsFormDisabled);
-  }, [listingContact, listingDescription, numberOfPeople, price]);
+  }, [
+    listingContact,
+    listingDescription,
+    numberOfPeople,
+    price,
+    isSubscriptionUrlValid
+  ]);
+
+  const toggleDescriptionFocused = (value: boolean) => {
+    setIsDescriptionFocused(value);
+  };
 
   const toggleNumberOfPeopleFocused = (value: boolean) => {
     setIsNumberOfPeopleFocused(value);
@@ -340,6 +370,12 @@ const CreateListingProviderWithContext = (props: {
 
   const togglePriceFocused = (value: boolean) => {
     setIsPriceFocused(value);
+  };
+
+  const handleOnBlurSubscriptionUrl = () => {
+    setIsDisplaySubscriptionUrlErrorLabel(
+      !!subscriptionUrl && !isSubscriptionUrlValid
+    );
   };
 
   return isRetrievedListingCreationDataDirty ? (
@@ -352,6 +388,7 @@ const CreateListingProviderWithContext = (props: {
       subscriptionBrandLogo={subscriptionBrandLogo}
       subscriptionBrandSelection={subscriptionBrandSelection}
       subscriptionUrl={subscriptionUrl}
+      isDisplaySubscriptionUrlErrorLabel={isDisplaySubscriptionUrlErrorLabel}
       organizations={organizations}
       organizationSelection={organizationSelection}
       listingContact={listingContact}
@@ -360,10 +397,13 @@ const CreateListingProviderWithContext = (props: {
       price={price}
       isFormDisabled={isFormDisabled}
       handleSubmit={handleSubmit}
+      isDescriptionFocused={isDescriptionFocused}
+      toggleDescriptionFocused={toggleDescriptionFocused}
       isNumberOfPeopleFocused={isNumberOfPeopleFocused}
       toggleNumberOfPeopleFocused={toggleNumberOfPeopleFocused}
       isPriceFocused={isPriceFocused}
       togglePriceFocused={togglePriceFocused}
+      handleOnBlurSubscriptionUrl={handleOnBlurSubscriptionUrl}
     />
   ) : null;
 };

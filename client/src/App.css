@@ -283,6 +283,19 @@ body {
   flex-direction: column;
 }
 
+.required-field:after {
+  content: "*";
+  margin-left: 5px;
+  color: #ff0000;
+  font-weight: 500;
+}
+
+.form-error-label {
+  color: #ff0000;
+  font-style: italic;
+  margin-top: 5px;
+}
+
 .subscription-fields {
   display: flex;
 }

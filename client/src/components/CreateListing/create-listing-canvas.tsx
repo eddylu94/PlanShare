@@ -18,6 +18,7 @@ interface ICreateListingCanvasProps {
   subscriptionBrandLogo: string;
   subscriptionBrandSelection: ISubscriptionBrand;
   subscriptionUrl: string;
+  isDisplaySubscriptionUrlErrorLabel: boolean;
   organizations: IOrganization[];
   organizationSelection: IOrganization;
 
@@ -32,10 +33,14 @@ interface ICreateListingCanvasProps {
 
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 
+  isDescriptionFocused: boolean;
+  toggleDescriptionFocused: (value: boolean) => void;
   isNumberOfPeopleFocused: boolean;
   toggleNumberOfPeopleFocused: (value: boolean) => void;
   isPriceFocused: boolean;
   togglePriceFocused: (value: boolean) => void;
+
+  handleOnBlurSubscriptionUrl: () => void;
 }
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
@@ -47,6 +52,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     subscriptionBrandLogo,
     subscriptionBrandSelection,
     subscriptionUrl,
+    isDisplaySubscriptionUrlErrorLabel,
     // organizations,
     // organizationSelection,
     handleInputChange,
@@ -56,10 +62,13 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     price,
     isFormDisabled,
     handleSubmit,
+    isDescriptionFocused,
+    toggleDescriptionFocused,
     isNumberOfPeopleFocused,
     toggleNumberOfPeopleFocused,
     isPriceFocused,
-    togglePriceFocused
+    togglePriceFocused,
+    handleOnBlurSubscriptionUrl
   } = props;
 
   const renderSubscriptionCategoryDropdown = () => {
@@ -108,7 +117,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     ));
     return (
       <select
-        className="form-text-input form-input select-input"
+        className="form-text-input form-input select-input required-field"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
         onChange={handleInputChange}
         value={subscriptionBrandSelection.subscriptionBrandId}
@@ -127,13 +136,15 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         <div className="subscription-fields">
           <div className="form-field">
-            <label className="form-label">Subscription type:</label>
+            <label className="form-label required-field">
+              Subscription type:
+            </label>
             {renderSubscriptionCategoryDropdown()}
           </div>
 
           <div className="subscription-field-and-logo">
             <div className="form-field subscription-field">
-              <label className="form-label">Subscription:</label>
+              <label className="form-label required-field">Subscription:</label>
               {renderSubscriptionBrandDropdown()}
             </div>
 
@@ -146,15 +157,27 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         </div>
 
         <div className="form-field">
-          <label className="form-label">Listing description:</label>
-          <textarea
-            className="form-text-area form-input"
-            name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
-            rows={5}
-            placeholder="Currently have two people, need three more!"
-            value={listingDescription}
-            onChange={handleInputChange}
-          />
+          <label className="form-label required-field">
+            Listing description:
+          </label>
+          <Tooltip
+            title={"Max 750 characters"}
+            aria-label="Max 750 characters"
+            placement="bottom-start"
+            open={isDescriptionFocused}
+          >
+            <textarea
+              className="form-text-area form-input"
+              name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
+              rows={5}
+              placeholder="Currently have two people, need three more!"
+              value={listingDescription}
+              onChange={handleInputChange}
+              onFocus={() => toggleDescriptionFocused(true)}
+              onBlur={() => toggleDescriptionFocused(false)}
+              maxLength={750}
+            />
+          </Tooltip>
         </div>
 
         <div className="form-field">
@@ -166,7 +189,13 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             placeholder="https://tv.youtube.com/"
             value={subscriptionUrl}
             onChange={handleInputChange}
+            onBlur={handleOnBlurSubscriptionUrl}
           />
+          {isDisplaySubscriptionUrlErrorLabel ? (
+            <div className="form-error-label">
+              Link must be a valid URL or blank
+            </div>
+          ) : null}
         </div>
 
         {/* <h3 className="form-subheader">Membership Information</h3>
@@ -200,7 +229,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         <div className="form-row">
           <div className="form-field">
-            <label className="form-label">Looking for:</label>
+            <label className="form-label required-field">Looking for:</label>
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between 1 to 50 people per group"}
@@ -227,7 +256,9 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
 
           <div className="form-field" style={{ marginLeft: 50 }}>
-            <label className="form-label">Price per person:</label>
+            <label className="form-label required-field">
+              Price per person:
+            </label>
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between $0.01 to $100"}
