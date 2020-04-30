@@ -29,7 +29,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
   } = subscriptionData;
 
   return (
-    <div>
+    <div className="subscription-wrapper">
       <div className="subscription-header">
         <img
           alt="Subscription logo"

@@ -215,6 +215,15 @@ body {
   color: #686868;
 }
 
+.subscription-pane {
+  display: block;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  max-height: 100%;
+}
+
 .vertical-divider {
   display: flex;
   flex-direction: column;
@@ -670,6 +679,11 @@ input[disabled] {
   flex-grow: 1;
   align-items: center;
   min-width: 0;
+}
+
+.subscription-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-container {
