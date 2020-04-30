@@ -87,7 +87,7 @@ const SignUpProviderWithContext = (props: {
 
   const validatePass1 = (pass1: string) => {
     // Minimum eight characters, at least one letter and one number
-    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/;
     return re.test(pass1);
   };
 
