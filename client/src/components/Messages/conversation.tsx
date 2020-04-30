@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { IMessageData } from "./../../utils/utils";
@@ -67,9 +67,13 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
 
   const scrollToBottom = () => {
     if (messagesEndRef) {
-      (messagesEndRef as any).current.scrollIntoView({ behavior: "smooth" });
+      const behavior = previousMessagesLength > 0 ? { behavior: "smooth" } : {};
+      (messagesEndRef as any).current.scrollIntoView(behavior);
+      setPreviousMessagesLength(messages.length);
     }
   };
+
+  const [previousMessagesLength, setPreviousMessagesLength] = useState(0);
 
   useEffect(scrollToBottom, [messages]);
 
