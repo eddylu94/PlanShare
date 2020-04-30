@@ -745,10 +745,6 @@
     width: 100%;
   }
 
-  .b {
-    font-weight: 500;
-  }
-
   .close-button {
     right: 15px;
     top: 15px;
@@ -760,5 +756,136 @@
   .close-icon {
     width: 24px;
     height: 24px;
+  }
+
+  .close-button {
+    right: 20px;
+    top: 20px;
+    width: 36px;
+    height: 36px;
+    padding: 3px;
+  }
+
+  .close-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .conversation-container {
+    background-color: #ffffff;
+    max-width: 800px;
+    height: 100%;
+  }
+
+  .conversation-header {
+    padding: 20px;
+  }
+
+  .conversation-header a {
+    font-weight: 600;
+  }
+
+  .conversation-header-profile-picture {
+    width: 30px;
+    height: 30px;
+  }
+
+  .conversation-header-first-name {
+    margin-left: 10px;
+  }
+
+  .conversation-body {
+    padding: 20px;
+  }
+
+  .conversation-message {
+    padding: 8px 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+
+  .conversation-footer {
+    padding: 0 20px 20px 20px;
+  }
+
+  .conversation-bar {
+    height: 42px;
+    border-radius: 25px;
+  }
+
+  .conversation-text-input {
+    height: 42px;
+    line-height: 42px;
+    padding: 0 50px 0 20px;
+    font-size: 16px;
+    border-radius: 25px;
+  }
+
+  .conversation-text-input:hover {
+    box-shadow: 0px 0px 10px #888888;
+  }
+
+  .conversation-text-input:focus {
+    box-shadow: 0px 0px 10px #6c5dbdee;
+  }
+
+  .conversation-send-button {
+    width: 36px;
+    height: 30px;
+    line-height: 30px;
+    right: 10px;
+    font-size: 18px;
+  }
+
+  .conversation-send-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .conversation-warning {
+    font-size: 15px;
+    margin: 10px 0 10px 10px;
+  }
+
+  .messages-no-messages {
+    margin: 20px;
+  }
+
+  .message-summaries-pane {
+    width: 100%;
+    margin: 20px;
+  }
+
+  .message-summary {
+    padding: 15px;
+    box-shadow: 0px 0px 10px #d8d8d8;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .message-summary:hover {
+    box-shadow: 0px 0px 10px #888888;
+  }
+
+  .message-summary:focus {
+    box-shadow: 0px 0px 10px #6c5dbdee;
+  }
+
+  .message-summary-header {
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .message-summary-message {
+    font-size: 15px;
+  }
+
+  .message-summary-date {
+    margin-top: 3px;
+    font-size: 14px;
+  }
+
+  .b {
+    font-weight: 500;
   }
 }

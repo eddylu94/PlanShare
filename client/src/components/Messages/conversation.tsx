@@ -12,6 +12,8 @@ interface IConversationCanvasProps {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleConversationSelection: (id: string) => void;
+  isConversationModalOpen?: boolean;
+  handleBackButtonClick?: () => void;
 }
 
 const ConversationCanvas = (props: IConversationCanvasProps) => {
@@ -22,7 +24,9 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
     messages,
     text,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    isConversationModalOpen,
+    handleBackButtonClick
   } = props;
 
   const renderCurrentUserMessage = (
@@ -72,6 +76,18 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
   return (
     <div className="conversation-container">
       <div className="conversation-header">
+        {isConversationModalOpen ? (
+          <button
+            className="conversation-back-button"
+            onClick={handleBackButtonClick}
+          >
+            <img
+              alt="Back to messages"
+              className="conversation-back-arrow-icon"
+              src="/back_arrow_icon.png"
+            />
+          </button>
+        ) : null}
         <img
           alt="Profile"
           className="conversation-header-profile-picture"
@@ -96,7 +112,6 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
             placeholder="Search for a subscription"
             value={text}
             onChange={handleChange}
-            autoFocus
           />
           <button className="conversation-send-button">
             <img

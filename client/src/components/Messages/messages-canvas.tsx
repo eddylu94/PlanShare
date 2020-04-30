@@ -2,10 +2,14 @@ import React from "react";
 
 import Conversation from "./conversation";
 import { IConversationSummary, IMessageData } from "./../../utils/utils";
+import { DEVICE_MODE } from "./../../utils/constants";
+
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import moment from "moment";
 
 interface IMessagesCanvasProps {
+  isConversationModalOpen: boolean;
   initialConversationId: string | null;
   conversationId: string | null;
   conversationsList: IConversationSummary[];
@@ -17,10 +21,12 @@ interface IMessagesCanvasProps {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleConversationSelection: (id: string) => void;
+  handleBackButtonClick: () => void;
 }
 
 const MessagesCanvas = (props: IMessagesCanvasProps) => {
   const {
+    isConversationModalOpen,
     initialConversationId,
     conversationId,
     conversationsList,
@@ -31,7 +37,8 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     text,
     handleChange,
     handleSubmit,
-    handleConversationSelection
+    handleConversationSelection,
+    handleBackButtonClick
   } = props;
 
   const renderConversationSummary = (
@@ -95,11 +102,43 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     .map((conversation, i) => renderConversationSummary(conversation, i))
     .filter(conversationComponent => !!conversationComponent);
 
+  const small = useMediaQuery("(max-width:768px)");
+  const medium = useMediaQuery("(min-width:768px)");
+  const large = useMediaQuery("(min-width:992px)");
+  const xLarge = useMediaQuery("(min-width:1200px)");
+
+  let deviceMode: string;
+  if (small) {
+    deviceMode = DEVICE_MODE.MOBILE;
+  } else if (medium && !large) {
+    deviceMode = DEVICE_MODE.TABLET;
+  } else if (large && !xLarge) {
+    deviceMode = DEVICE_MODE.DESKTOP;
+  } else {
+    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
+  }
+
   return (conversationListComponent && conversationListComponent.length) ||
     conversationId ? (
     <div className="messages-container">
+      {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (
+        <div className="conversation-modal">
+          <Conversation
+            isConversationModalOpen={isConversationModalOpen}
+            currentUserId={currentUserId}
+            firstName={firstName}
+            userId={userId}
+            messages={messages}
+            text={text}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handleConversationSelection={handleConversationSelection}
+            handleBackButtonClick={handleBackButtonClick}
+          />
+        </div>
+      ) : null}
       <div className="message-summaries-pane">{conversationListComponent}</div>
-      {conversationId ? (
+      {deviceMode !== DEVICE_MODE.MOBILE ? (
         <Conversation
           currentUserId={currentUserId}
           firstName={firstName}

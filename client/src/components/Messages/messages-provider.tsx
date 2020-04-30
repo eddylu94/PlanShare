@@ -41,6 +41,8 @@ const MessagesProviderWithContext = (props: {
     [] as IConversationSummary[]
   );
 
+  const [isConversationModalOpen, setIsConversationModalOpen] = useState(false);
+
   const [firstName, setFirstName] = useState("");
   const [messages, setMessages] = useState([] as IMessageData[]);
   const [text, setText] = useState("");
@@ -192,6 +194,7 @@ const MessagesProviderWithContext = (props: {
 
   const handleConversationSelection = (id: string) => {
     setConversationId(id);
+    setIsConversationModalOpen(true);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -249,8 +252,13 @@ const MessagesProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [socket]);
 
+  const handleBackButtonClick = () => {
+    setIsConversationModalOpen(false);
+  };
+
   return isRetrievedConversationsDirty ? (
     <MessagesCanvas
+      isConversationModalOpen={isConversationModalOpen}
       initialConversationId={initialConversationId}
       conversationId={conversationId}
       conversationsList={conversationsList}
@@ -262,6 +270,7 @@ const MessagesProviderWithContext = (props: {
       handleChange={handleChange}
       handleSubmit={handleSubmit}
       handleConversationSelection={handleConversationSelection}
+      handleBackButtonClick={handleBackButtonClick}
     />
   ) : null;
 };
