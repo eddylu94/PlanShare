@@ -28,7 +28,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     createdDate,
     price,
     numberOfPeople,
-    userId
+    userId,
+    otherSubscription
   } = subscription;
 
   const renderSubscriptionLogo = () => (
@@ -60,19 +61,24 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     </div>
   );
 
-  const renderSubscriptionInfo = () => (
-    <div className="subscription-card-info">
-      <div className="subscription-card-info-name">
-        {subscriptionBrand.name}
-      </div>
-      <div className="subscription-card-description-container">
-        <div className="subscription-card-description">
-          <span>{listingDescription}</span>
+  const renderSubscriptionInfo = () => {
+    const name =
+      subscriptionBrand.type === "OTHER"
+        ? otherSubscription
+        : subscriptionBrand.name;
+
+    return (
+      <div className="subscription-card-info">
+        <div className="subscription-card-info-name">{name}</div>
+        <div className="subscription-card-description-container">
+          <div className="subscription-card-description">
+            <span>{listingDescription}</span>
+          </div>
         </div>
+        {!isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
       </div>
-      {!isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
-    </div>
-  );
+    );
+  };
 
   const renderSubscriptionBasicInfo = () => (
     <div className="subscription-card-basic-info">

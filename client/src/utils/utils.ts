@@ -58,6 +58,7 @@ export interface ISubscriptionData {
   organization: IOrganization;
   createdDate: string;
   subscriptionUrl?: string;
+  otherSubscription?: string;
 }
 
 export interface IMessageData {

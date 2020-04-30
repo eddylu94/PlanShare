@@ -442,11 +442,6 @@ export const editSubscription = (
         subscriptionBrandName: subscriptionData.subscriptionBrand.name
       });
 
-      console.log("=====");
-      console.log(subscriptionId);
-      console.log({ _id: new ObjectId(subscriptionId) });
-      console.log("=====");
-
       const dbo = db.db(DATABASE_NAME);
 
       dbo

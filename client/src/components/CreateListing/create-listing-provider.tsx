@@ -55,6 +55,7 @@ const CreateListingProviderWithContext = (props: {
         newSubscriptionData.subscriptionCategory
       );
       setSubscriptionBrandSelection(newSubscriptionData.subscriptionBrand);
+      setOtherSubscription(newSubscriptionData.otherSubscription);
       setListingDescription(newSubscriptionData.listingDescription);
       setSubscriptionUrl(newSubscriptionData.subscriptionUrl);
       setNumberOfPeople(newSubscriptionData.numberOfPeople);
@@ -96,6 +97,10 @@ const CreateListingProviderWithContext = (props: {
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     {} as ISubscriptionBrand
   );
+
+  const [otherSubscription, setOtherSubscription] = useState("");
+
+  const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
 
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
 
@@ -145,6 +150,9 @@ const CreateListingProviderWithContext = (props: {
         if (brand) {
           setSubscriptionBrandSelection(brand);
         }
+        break;
+      case FORM_INPUT_TYPE.OTHER_SUBSCRIPTION:
+        setOtherSubscription(value);
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
         setSubscriptionUrl(value);
@@ -283,6 +291,10 @@ const CreateListingProviderWithContext = (props: {
       Object.assign(postRequestData.subscriptionData, { subscriptionId });
     }
 
+    if (isOtherInputDisplayed) {
+      Object.assign(postRequestData.subscriptionData, { otherSubscription });
+    }
+
     if (!isFormDisabled) {
       if (subscriptionId) {
         basePostRequest(
@@ -337,6 +349,10 @@ const CreateListingProviderWithContext = (props: {
       ) as ISubscriptionBrand;
       setSubscriptionBrandLogo(brand?.logo);
     }
+
+    setIsOtherInputDisplayed(
+      subscriptionBrandSelection.subscriptionBrandId === "OTHER"
+    );
     // eslint-disable-next-line
   }, [subscriptionBrandSelection]);
 
@@ -349,7 +365,8 @@ const CreateListingProviderWithContext = (props: {
       listingDescription &&
       numberOfPeople &&
       price &&
-      isSubscriptionUrlValid
+      isSubscriptionUrlValid &&
+      (!isOtherInputDisplayed || otherSubscription)
     );
     setIsFormDisabled(newIsFormDisabled);
   }, [
@@ -357,7 +374,9 @@ const CreateListingProviderWithContext = (props: {
     listingDescription,
     numberOfPeople,
     price,
-    isSubscriptionUrlValid
+    isSubscriptionUrlValid,
+    otherSubscription,
+    isOtherInputDisplayed
   ]);
 
   const toggleDescriptionFocused = (value: boolean) => {
@@ -387,7 +406,9 @@ const CreateListingProviderWithContext = (props: {
       subscriptionBrands={subscriptionBrands}
       subscriptionBrandLogo={subscriptionBrandLogo}
       subscriptionBrandSelection={subscriptionBrandSelection}
+      otherSubscription={otherSubscription}
       subscriptionUrl={subscriptionUrl}
+      isOtherInputDisplayed={isOtherInputDisplayed}
       isDisplaySubscriptionUrlErrorLabel={isDisplaySubscriptionUrlErrorLabel}
       organizations={organizations}
       organizationSelection={organizationSelection}

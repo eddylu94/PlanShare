@@ -17,10 +17,13 @@ interface ICreateListingCanvasProps {
   subscriptionBrands: ISubscriptionBrand[];
   subscriptionBrandLogo: string;
   subscriptionBrandSelection: ISubscriptionBrand;
+  otherSubscription: string;
   subscriptionUrl: string;
   isDisplaySubscriptionUrlErrorLabel: boolean;
   organizations: IOrganization[];
   organizationSelection: IOrganization;
+
+  isOtherInputDisplayed: boolean;
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
@@ -51,10 +54,12 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     subscriptionBrands,
     subscriptionBrandLogo,
     subscriptionBrandSelection,
+    otherSubscription,
     subscriptionUrl,
     isDisplaySubscriptionUrlErrorLabel,
     // organizations,
     // organizationSelection,
+    isOtherInputDisplayed,
     handleInputChange,
     // listingContact,
     listingDescription,
@@ -155,6 +160,24 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             />
           </div>
         </div>
+
+        {isOtherInputDisplayed ? (
+          <div className="form-field">
+            <label className="form-label required-field">
+              If other, please specify:
+            </label>
+            <input
+              className="form-text-input form-input"
+              name={FORM_INPUT_TYPE.OTHER_SUBSCRIPTION}
+              type="text"
+              placeholder="Custom subscription"
+              value={otherSubscription}
+              onChange={handleInputChange}
+              onBlur={handleOnBlurSubscriptionUrl}
+              style={{ width: 300 }}
+            />
+          </div>
+        ) : null}
 
         <div className="form-field">
           <label className="form-label required-field">

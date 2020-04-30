@@ -38,19 +38,24 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   INTERVIEW_PREP: {
     subscriptionCategoryId: "INTERVIEW_PREP",
     name: "Interview Prep"
+  },
+  OTHER: {
+    subscriptionCategoryId: "OTHER",
+    name: "Other"
   }
 };
 
-const tvSubscriptionCategoriesIds = [
+const subscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId
+  SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
+  SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId
 ];
 
-export const subscriptionCategories = tvSubscriptionCategoriesIds.map(
+export const subscriptionCategories = subscriptionCategoriesIds.map(
   id => SUBSCRIPTION_CATEGORY[id]
 );
 
@@ -214,6 +219,12 @@ export const SUBSCRIPTION: ISubscription = {
     name: "LeetCode",
     logo:
       "https://media.licdn.com/dms/image/C4E0BAQFvx45x7j4Zhg/company-logo_200_200/0?e=2159024400&v=beta&t=Qk8MU_WjUw8GIpZtZhWF4rxpbuEEEJ6Eypq1q0loNzM"
+  },
+  OTHER: {
+    subscriptionBrandId: "OTHER",
+    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
+    name: "Other",
+    logo: "https://planshare.io/icon.png"
   }
 };
 
@@ -222,14 +233,16 @@ const onlineStreamingBrandIds = [
   SUBSCRIPTION.PRIME_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.HULU_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.DISNEY_ONLINE_STREAMING.subscriptionBrandId,
-  SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId
+  SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
 const liveTvSubscriptionBrandIds = [
   SUBSCRIPTION.YOUTUBE_TV.subscriptionBrandId,
   SUBSCRIPTION.SLING_TV.subscriptionBrandId,
   SUBSCRIPTION.HULU_TV.subscriptionBrandId,
-  SUBSCRIPTION.ATT_TV.subscriptionBrandId
+  SUBSCRIPTION.ATT_TV.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
 const mobileSubscriptionBrandIds = [
@@ -238,7 +251,8 @@ const mobileSubscriptionBrandIds = [
   SUBSCRIPTION.TMOBILE_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.ATT_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.METRO_MOBILE.subscriptionBrandId,
-  SUBSCRIPTION.CRICKET_MOBILE.subscriptionBrandId
+  SUBSCRIPTION.CRICKET_MOBILE.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
 const musicSubscriptionBrandIds = [
@@ -246,15 +260,22 @@ const musicSubscriptionBrandIds = [
   SUBSCRIPTION.APPLE_MUSIC.subscriptionBrandId,
   SUBSCRIPTION.TIDAL_MUSIC.subscriptionBrandId,
   SUBSCRIPTION.AMAZON_MUSIC.subscriptionBrandId,
-  SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId
+  SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
 const gymMembershipBrandIds = [
   SUBSCRIPTION.TWENTY_FOUR_HOUR_FITNESS.subscriptionBrandId,
-  SUBSCRIPTION.LA_FITNESS.subscriptionBrandId
+  SUBSCRIPTION.LA_FITNESS.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
-const interviewPrepBrandIds = [SUBSCRIPTION.LEETCODE.subscriptionBrandId];
+const interviewPrepBrandIds = [
+  SUBSCRIPTION.LEETCODE.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
+];
+
+const otherBrandIds = [SUBSCRIPTION.OTHER.subscriptionBrandId];
 
 export const retrieveSubscriptionBrands = (type: string) => {
   let ids;
@@ -276,6 +297,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
       break;
     case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
       ids = interviewPrepBrandIds;
+      break;
+    case SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId:
+      ids = otherBrandIds;
       break;
     default:
       ids = onlineStreamingBrandIds;

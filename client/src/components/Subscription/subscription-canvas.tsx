@@ -25,8 +25,14 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     createdDate,
     price,
     subscriptionUrl,
-    userId
+    userId,
+    otherSubscription
   } = subscriptionData;
+
+  const name =
+    subscriptionBrand.type === "OTHER"
+      ? otherSubscription
+      : subscriptionBrand.name;
 
   return (
     <div className="subscription-wrapper">
@@ -46,7 +52,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
             alignItems: "center"
           }}
         >
-          {subscriptionBrand.name}
+          {name}
         </div>
       </div>
       <div className="subscription-detail subscription-subscription-detail">
