@@ -56,13 +56,28 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         </Link>
       </div>
       <div className="subscription-detail subscription-subscription-detail">
-        <img
-          alt="Posted date"
-          className="subscription-detail-icon"
-          src="/time_icon.png"
-        />
-        {moment(createdDate).format("MMM. D, YYYY h:mm a")}
+        <span className="subscription-detail-date">
+          {moment(createdDate).format("MMM. D, YYYY h:mm a")}
+        </span>
       </div>
+
+      {userId && userId !== currentUser ? (
+        <>
+          <div className="subscription-detail" style={{ marginTop: 15 }}>
+            <Link to={`messages?id=${userId}`}>
+              <button className="subscription-message-button">
+                <span className="b subscription-message-label">{`Message ${firstName}`}</span>
+                <img
+                  alt="Posted date"
+                  className="subscription-message-icon"
+                  src="/send_icon_white.png"
+                />
+              </button>
+            </Link>
+          </div>
+        </>
+      ) : null}
+
       <div className="subscription-label">Subscription</div>
       <div className="subscription-detail subscription-subscription-detail">
         <img
@@ -90,23 +105,6 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           {listingDescription}
         </div>
       </div>
-      {userId && userId !== currentUser ? (
-        <>
-          <div className="subscription-label">Contact</div>
-          <div className="subscription-detail">
-            <Link to={`messages?id=${userId}`}>
-              <button className="subscription-message-button">
-                <span className="b subscription-message-label">{`Message ${firstName}`}</span>
-                <img
-                  alt="Posted date"
-                  className="subscription-message-icon"
-                  src="/send_icon_white.png"
-                />
-              </button>
-            </Link>
-          </div>
-        </>
-      ) : null}
       <div className="subscription-label">Link to subscription</div>
       <div className="subscription-detail">
         {subscriptionUrl ? (

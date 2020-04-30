@@ -210,6 +210,11 @@ body {
   margin-left: 5px;
 }
 
+.subscription-detail-date {
+  font-style: italic;
+  color: #686868;
+}
+
 .vertical-divider {
   display: flex;
   flex-direction: column;
