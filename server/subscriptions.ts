@@ -39,6 +39,10 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
     subscriptionCategoryId: "INTERVIEW_PREP",
     name: "Interview Prep"
   },
+  DELIVERIES: {
+    subscriptionCategoryId: "DELIVERIES",
+    name: "Deliveries"
+  },
   OTHER: {
     subscriptionCategoryId: "OTHER",
     name: "Other"
@@ -52,6 +56,7 @@ const subscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
+  SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId
 ];
 
@@ -220,6 +225,12 @@ export const SUBSCRIPTION: ISubscription = {
     logo:
       "https://media.licdn.com/dms/image/C4E0BAQFvx45x7j4Zhg/company-logo_200_200/0?e=2159024400&v=beta&t=Qk8MU_WjUw8GIpZtZhWF4rxpbuEEEJ6Eypq1q0loNzM"
   },
+  GROCERIES: {
+    subscriptionBrandId: "GROCERIES",
+    type: SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
+    name: "Groceries",
+    logo: "https://www.foodbanknyc.org/wp-content/uploads/groceries-1.png"
+  },
   OTHER: {
     subscriptionBrandId: "OTHER",
     type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
@@ -275,6 +286,11 @@ const interviewPrepBrandIds = [
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
+const deliveryBrandIds = [
+  SUBSCRIPTION.GROCERIES.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
+];
+
 const otherBrandIds = [SUBSCRIPTION.OTHER.subscriptionBrandId];
 
 export const retrieveSubscriptionBrands = (type: string) => {
@@ -297,6 +313,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
       break;
     case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
       ids = interviewPrepBrandIds;
+      break;
+    case SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId:
+      ids = deliveryBrandIds;
       break;
     case SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId:
       ids = otherBrandIds;
