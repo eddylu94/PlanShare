@@ -127,6 +127,7 @@ const ValidateWithContext = (props: {
     } else if (res.statusCode === STATUS_CODE.SUCCESS) {
       // console.log("Validation successful for:", email);
       setIsIncorrectValidationCode(false);
+      alert("Your email is now verified");
       history.push("/");
     }
   };

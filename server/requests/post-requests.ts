@@ -122,7 +122,8 @@ export const signUp = (
                 statusCode: STATUS_CODE.SUCCESS,
                 body: {
                   userId: insertRes.insertedId,
-                  auth: authToken.key
+                  auth: authToken.key,
+                  firstName: obj.firstName
                 }
               });
 
