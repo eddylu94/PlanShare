@@ -530,16 +530,60 @@ export const deleteUser = (
             });
             return;
           } else if (isPasswordMatch === true) {
-            dbo
-              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-              .remove({ _id: findRes._id })
+            const currentUserId = findRes._id.toString();
+
+            const removeUserPromise = new Promise((resolve, reject) => {
+              dbo
+                .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+                .deleteOne({ _id: new ObjectId(currentUserId) })
+                .then(() => {
+                  console.log("User entry has been removed:");
+                  resolve();
+                });
+            });
+
+            const removeSubscriptionsPromise = new Promise(
+              (resolve, reject) => {
+                dbo
+                  .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+                  .deleteMany({ userId: new ObjectId(currentUserId) })
+                  .then(() => {
+                    console.log("Subscription entries have been removed");
+                    resolve();
+                  });
+              }
+            );
+
+            const removeConversationsPromise = new Promise(
+              (resolve, reject) => {
+                console.log({ userIds: currentUserId });
+                dbo
+                  .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+                  .deleteMany({
+                    userIds: { $elemMatch: { $eq: currentUserId } }
+                  })
+                  .then(res => {
+                    console.log("Conversation entries have been removed");
+                    resolve();
+                  });
+              }
+            );
+
+            Promise.all([
+              removeUserPromise,
+              removeSubscriptionsPromise,
+              removeConversationsPromise
+            ])
               .then(() => {
-                console.log("User has been removee:", email);
+                console.log("User has been removed", email);
                 db.close();
                 postRes.json({
                   statusCode: STATUS_CODE.SUCCESS,
                   body: {}
                 });
+              })
+              .catch(err => {
+                console.log(err);
               });
           }
         };
