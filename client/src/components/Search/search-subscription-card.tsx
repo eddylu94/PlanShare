@@ -12,6 +12,10 @@ interface ISearchSubscriptionCardProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
   ) => void;
+  deleteSubscription?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => void;
   isProfile?: boolean;
   handleSubscriptionCardClick?: (subscriptionId: string) => void;
   isDisplayButtons?: boolean;
@@ -26,6 +30,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     handleSubscriptionCardClick,
     isDisplayButtons,
     archiveSubscription,
+    deleteSubscription,
     isArchived
   } = props;
 
@@ -175,7 +180,12 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
               </button>
             </Tooltip>
           ) : null}
-          <button className="subscription-card-button">
+          <button
+            className="subscription-card-button"
+            onClick={e =>
+              deleteSubscription ? deleteSubscription(e, _id) : null
+            }
+          >
             <img
               alt="Delete"
               className="subscription-card-button-icon"

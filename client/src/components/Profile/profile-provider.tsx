@@ -128,6 +128,7 @@ const ProfileProviderWithContext = (props: {
     console.log(data);
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       retrieveSubscriptionsByUser();
+      retrieveArchivedSubscriptions();
       alert(
         "The listing has been archived. Only you are be able to view your archived listings"
       );
@@ -154,15 +155,48 @@ const ProfileProviderWithContext = (props: {
     );
   };
 
+  const handleDeleteSubscriptionResponseHandler = (data: any) => {
+    console.log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveSubscriptionsByUser();
+      retrieveArchivedSubscriptions();
+      alert("The listing has been deleted.");
+    }
+  };
+
+  const handleDeleteSubscriptionErrorHandler = (err: any) => {
+    console.log(err);
+  };
+
+  const deleteSubscription = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "deletesubscription",
+      postRequestData,
+      handleDeleteSubscriptionResponseHandler,
+      handleDeleteSubscriptionErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
+  const retrieveArchivedSubscriptions = () => {
+    baseGetRequest(
+      "getarchivedsubscriptions",
+      [],
+      retrieveArchivedSubscriptionsResponseHandler,
+      retrieveArchivedSubscriptionsErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     if (!profileUserId || _userData.user?.userId === profileUserId) {
-      baseGetRequest(
-        "getarchivedsubscriptions",
-        [],
-        retrieveArchivedSubscriptionsResponseHandler,
-        retrieveArchivedSubscriptionsErrorHandler,
-        _userData.user?.auth
-      );
+      retrieveArchivedSubscriptions();
     }
     // eslint-disable-next-line
   }, [profileUserId]);
@@ -178,6 +212,7 @@ const ProfileProviderWithContext = (props: {
       currentUserId={_userData.user?.userId as string}
       archivedSubscriptions={archivedSubscriptions}
       archiveSubscription={archiveSubscription}
+      deleteSubscription={deleteSubscription}
       firstName={firstName}
       organizations={organizations}
       joinedDate={joinedDate}

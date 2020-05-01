@@ -22,6 +22,10 @@ interface IProfileCanvasProps {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
   ) => void;
+  deleteSubscription: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => void;
   archivedSubscriptions?: ISubscriptionData[];
 }
 
@@ -35,7 +39,8 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     isDifferentUser,
     currentUserId,
     otherUserId,
-    archiveSubscription
+    archiveSubscription,
+    deleteSubscription
   } = props;
 
   const renderOrganization = (
@@ -95,6 +100,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     return (
       <SearchSubscriptionCard
         archiveSubscription={archiveSubscription}
+        deleteSubscription={deleteSubscription}
         key={"subscription-card-" + i}
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
@@ -110,6 +116,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
       return (
         <SearchSubscriptionCard
           archiveSubscription={archiveSubscription}
+          deleteSubscription={deleteSubscription}
           key={"subscription-card-" + i}
           subscription={subscription}
           isMobile={deviceMode === DEVICE_MODE.MOBILE}

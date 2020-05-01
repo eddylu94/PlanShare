@@ -39,6 +39,7 @@ import {
   createSubscription,
   editSubscription,
   archiveSubscription,
+  deleteSubscription,
   deleteUser,
   sendMessage
 } from "./requests/post-requests";
@@ -116,5 +117,6 @@ postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/editsubscription", editSubscription);
 postRequestBuilder("/archivesubscription", archiveSubscription);
+postRequestBuilder("/deletesubscription", deleteSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
 postRequestBuilder("/sendmessage", sendMessage, io);

@@ -508,6 +508,41 @@ export const archiveSubscription = (
     });
 };
 
+export const deleteSubscription = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Deleting subscription...");
+
+  const obj = postReq.body;
+
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { subscriptionId } = obj;
+
+      const dbo = db.db(DATABASE_NAME);
+
+      dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .deleteOne({ _id: new ObjectId(subscriptionId) })
+        .then(() => {
+          console.log("Subscription deleted:", subscriptionId);
+
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {}
+          });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
 export const deleteUser = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,

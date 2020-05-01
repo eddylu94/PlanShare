@@ -660,6 +660,10 @@ input[disabled] {
   margin-bottom: 20px;
 }
 
+.subscription-card-buttons a {
+  text-decoration: none;
+}
+
 .subscription-card-button {
   display: flex;
   flex-direction: row;
