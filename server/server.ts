@@ -26,6 +26,7 @@ import {
   getProfile,
   getSubscription,
   getSubscriptionsByAuthor,
+  getArchivedSubscriptions,
   getEmailAddress,
   getConversation,
   getConversationById,
@@ -37,6 +38,7 @@ import {
   verifyEmail,
   createSubscription,
   editSubscription,
+  archiveSubscription,
   deleteUser,
   sendMessage
 } from "./requests/post-requests";
@@ -55,11 +57,9 @@ app.use((req, res, next) => {
 const port = process.env.PORT || 36322;
 app.set("port", port);
 
-server.listen(port);
-
-// app.listen(app.get("port"), () => {
-//   console.log(`Server is running on Port ${port}...`);
-// });
+server.listen(port, () => {
+  console.log(`Server is running on Port ${port}...`);
+});
 
 const getRequestBuilder = (path: string, request: any) => {
   return app.get(path, (postReq, postRes) =>
@@ -76,8 +76,6 @@ const postRequestBuilder = (
     request(mongoClient, postReq, postRes, io)
   );
 };
-
-// const io = socketIo.listen(server);
 
 io.on("connection", (socket: any) => {
   console.log("a user connected");
@@ -105,6 +103,7 @@ getRequestBuilder("/getsubscriptions", getSubscriptions);
 getRequestBuilder("/getprofile", getProfile);
 getRequestBuilder("/getsubscription", getSubscription);
 getRequestBuilder("/getsubscriptionsbyauthor", getSubscriptionsByAuthor);
+getRequestBuilder("/getarchivedsubscriptions", getArchivedSubscriptions);
 getRequestBuilder("/getemailaddress", getEmailAddress);
 getRequestBuilder("/getconversation", getConversation);
 getRequestBuilder("/getconversationbyid", getConversationById);
@@ -116,5 +115,6 @@ postRequestBuilder("/login", login);
 postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/editsubscription", editSubscription);
+postRequestBuilder("/archivesubscription", archiveSubscription);
 postRequestBuilder("/deleteuser", deleteUser);
 postRequestBuilder("/sendmessage", sendMessage, io);

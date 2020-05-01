@@ -18,7 +18,8 @@ import {
   STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
-  SORT_BY
+  SORT_BY,
+  SUBSCRIPTION_STATUS
 } from "./../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -252,7 +253,8 @@ export const getSubscriptions = (
             createdDate: {
               $lte: new Date(currentDate),
               $gte: new Date(oldestDate)
-            }
+            },
+            status: SUBSCRIPTION_STATUS.ACTIVE
           };
 
           if (t.length) {
@@ -331,33 +333,52 @@ export const getSubscription = (
 
     return dbo
       .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-      .findOne({ _id: new ObjectId(subscriptionId) }, (findErr, findRes) => {
-        console.log(findRes.subscriptionBrand.name);
+      .findOne(
+        { _id: new ObjectId(subscriptionId) },
+        (findErr, subscriptionFindRes) => {
+          console.log(subscriptionFindRes.subscriptionBrand.name);
 
-        const organizationIds = domains
-          .map(domain => retrieveOrganizationByDomain(domain))
-          .map(organization => organization && organization.organizationId);
+          const organizationIds = domains
+            .map(domain => retrieveOrganizationByDomain(domain))
+            .map(organization => organization && organization.organizationId);
 
-        if (!organizationIds.includes(findRes.organizationId)) {
-          console.log(
-            "User does not belong in organization of selected subscription"
-          );
+          if (!organizationIds.includes(subscriptionFindRes.organizationId)) {
+            console.log(
+              "User does not belong in organization of selected subscription"
+            );
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+            });
+            return;
+          }
+
+          if (
+            !(
+              findRes._id.toString() === subscriptionFindRes.userId ||
+              subscriptionFindRes.status === SUBSCRIPTION_STATUS.ACTIVE
+            )
+          ) {
+            console.log("User does not have access to subscription");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage:
+                STATUS_MESSAGE.USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION
+            });
+            return;
+          }
+
           db.close();
           postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {
+              subscriptionData: subscriptionFindRes
+            }
           });
-          return;
         }
-
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          body: {
-            subscriptionData: findRes
-          }
-        });
-      });
+      );
   });
 };
 
@@ -509,7 +530,8 @@ export const getSubscriptionsByAuthor = (
                       .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
                       .find({
                         userId: new ObjectId(profileUserId),
-                        "organization.organizationId": organizationId
+                        "organization.organizationId": organizationId,
+                        status: SUBSCRIPTION_STATUS.ACTIVE
                       })
                       .toArray()
                       .then(findRes => {
@@ -568,7 +590,8 @@ export const getSubscriptionsByAuthor = (
               .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
               .find({
                 userId: new ObjectId(userId),
-                "organization.organizationId": organizationId
+                "organization.organizationId": organizationId,
+                status: SUBSCRIPTION_STATUS.ACTIVE
               })
               .toArray()
               .then(findRes => {
@@ -616,6 +639,61 @@ export const getSubscriptionsByAuthor = (
     .catch(err => {
       console.log(err);
     });
+};
+
+export const getArchivedSubscriptions = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving subscriptions by author...");
+  authenticate(mongoClient, postReq, postRes).then(res => {
+    const [db, findRes] = res;
+
+    const findResEmails = findRes.emails;
+    const userId = findRes._id;
+
+    const dbo = db.db(DATABASE_NAME);
+
+    dbo
+      .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+      .find({
+        userId: new ObjectId(userId),
+        status: SUBSCRIPTION_STATUS.DELISTED
+      })
+      .toArray()
+      .then(findSubscriptionsRes => {
+        if (!findSubscriptionsRes) {
+          console.log("Unable to find subscriptions");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+          });
+          return;
+        }
+
+        console.log("Archived subscriptions retrieved");
+
+        db.close();
+        postRes.json({
+          statusCode: STATUS_CODE.SUCCESS,
+          body: {
+            subscriptions: findSubscriptionsRes
+          }
+        });
+      })
+      .catch(findErr => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.FAILURE,
+            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+          });
+        }
+      });
+  });
 };
 
 export const getEmailAddress = (

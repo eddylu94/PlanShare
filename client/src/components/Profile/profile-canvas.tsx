@@ -16,7 +16,13 @@ interface IProfileCanvasProps {
   joinedDate: number;
   authoredSubscriptions: ISubscriptionData[];
   isDifferentUser: boolean;
+  currentUserId: string;
   otherUserId: string;
+  archiveSubscription: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => void;
+  archivedSubscriptions?: ISubscriptionData[];
 }
 
 const ProfileCanvas = (props: IProfileCanvasProps) => {
@@ -25,8 +31,11 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     organizations,
     joinedDate,
     authoredSubscriptions,
+    archivedSubscriptions,
     isDifferentUser,
-    otherUserId
+    currentUserId,
+    otherUserId,
+    archiveSubscription
   } = props;
 
   const renderOrganization = (
@@ -85,6 +94,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (
       <SearchSubscriptionCard
+        archiveSubscription={archiveSubscription}
         key={"subscription-card-" + i}
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
@@ -93,6 +103,56 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
       />
     );
   });
+
+  const archivedSubscriptionCards =
+    archivedSubscriptions &&
+    archivedSubscriptions.map((subscription, i) => {
+      return (
+        <SearchSubscriptionCard
+          archiveSubscription={archiveSubscription}
+          key={"subscription-card-" + i}
+          subscription={subscription}
+          isMobile={deviceMode === DEVICE_MODE.MOBILE}
+          isProfile={true}
+          isDisplayButtons={!isDifferentUser}
+          isArchived={true}
+        />
+      );
+    });
+
+  const profileSubscriptions = (
+    <>
+      <h3 className="profile-authored-subscriptions-header">
+        Listed subscriptions
+      </h3>
+      {subscriptionCards && subscriptionCards.length ? (
+        <div className="profile-authored-subscriptions">
+          {subscriptionCards}
+        </div>
+      ) : (
+        <div className="search-no-results">
+          No currently active subscriptions
+        </div>
+      )}
+    </>
+  );
+
+  const profileArchivedSubscriptions = (
+    <>
+      <h3 className="profile-authored-subscriptions-header">
+        Archived subscriptions
+      </h3>
+      {archivedSubscriptionCards && archivedSubscriptionCards.length ? (
+        <div className="profile-authored-subscriptions">
+          {archivedSubscriptionCards}
+        </div>
+      ) : (
+        <div className="search-no-results">
+          No currently archived subscriptions
+        </div>
+      )}
+    </>
+  );
 
   return (
     <div className="page-container">
@@ -131,10 +191,10 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
           {renderOrganizations()}
         </div>
       </div>
-      <h3 className="profile-authored-subscriptions-header">
-        Listed subscriptions
-      </h3>
-      <div className="profile-authored-subscriptions">{subscriptionCards}</div>
+      {profileSubscriptions}
+      {!otherUserId || currentUserId === otherUserId
+        ? profileArchivedSubscriptions
+        : null}
     </div>
   );
 };

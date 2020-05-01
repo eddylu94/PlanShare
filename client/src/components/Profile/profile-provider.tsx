@@ -4,7 +4,7 @@ import { History } from "history";
 
 import ProfileCanvas from "./profile-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { baseGetRequest } from "./../../base-requests";
+import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import {
   IProfileOrganizationData,
   ISubscriptionData
@@ -33,6 +33,10 @@ const ProfileProviderWithContext = (props: {
   const [joinedDate, setJoinedDate] = useState(-1);
 
   const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
+    [] as ISubscriptionData[]
+  );
+
+  const [archivedSubscriptions, setArchivedSubscriptions] = useState(
     [] as ISubscriptionData[]
   );
 
@@ -93,6 +97,18 @@ const ProfileProviderWithContext = (props: {
     console.log(error);
   };
 
+  const retrieveArchivedSubscriptionsResponseHandler = (data: any) => {
+    const newArchivedSubscriptions = data?.body?.subscriptions;
+    if (newArchivedSubscriptions) {
+      console.log(newArchivedSubscriptions);
+      setArchivedSubscriptions(newArchivedSubscriptions);
+    }
+  };
+
+  const retrieveArchivedSubscriptionsErrorHandler = (error: any) => {
+    console.log(error);
+  };
+
   const retrieveSubscriptionsByUser = () => {
     const query = [] as any[];
     if (profileUserId) {
@@ -108,6 +124,49 @@ const ProfileProviderWithContext = (props: {
     );
   };
 
+  const handleArchiveSubscriptionResponseHandler = (data: any) => {
+    console.log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveSubscriptionsByUser();
+      alert(
+        "The listing has been archived. Only you are be able to view your archived listings"
+      );
+    }
+  };
+
+  const handleArchiveSubscriptionErrorHandler = (err: any) => {
+    console.log(err);
+  };
+
+  const archiveSubscription = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "archivesubscription",
+      postRequestData,
+      handleArchiveSubscriptionResponseHandler,
+      handleArchiveSubscriptionErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
+  useEffect(() => {
+    if (!profileUserId || _userData.user?.userId === profileUserId) {
+      baseGetRequest(
+        "getarchivedsubscriptions",
+        [],
+        retrieveArchivedSubscriptionsResponseHandler,
+        retrieveArchivedSubscriptionsErrorHandler,
+        _userData.user?.auth
+      );
+    }
+    // eslint-disable-next-line
+  }, [profileUserId]);
+
   useEffect(() => {
     retrieveProfile();
     retrieveSubscriptionsByUser();
@@ -116,6 +175,9 @@ const ProfileProviderWithContext = (props: {
 
   return isRetrievedProfileDirty ? (
     <ProfileCanvas
+      currentUserId={_userData.user?.userId as string}
+      archivedSubscriptions={archivedSubscriptions}
+      archiveSubscription={archiveSubscription}
       firstName={firstName}
       organizations={organizations}
       joinedDate={joinedDate}

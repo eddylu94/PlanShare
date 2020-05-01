@@ -19,7 +19,8 @@ import {
   DATABASE_COLLECTION,
   STATUS_CODE,
   STATUS_MESSAGE,
-  MONGO_PREREQUISITIES
+  MONGO_PREREQUISITIES,
+  SUBSCRIPTION_STATUS
 } from "./../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -374,7 +375,8 @@ export const createSubscription = (
         createdDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
-        subscriptionBrandName: subscriptionData.subscriptionBrand.name
+        subscriptionBrandName: subscriptionData.subscriptionBrand.name,
+        status: SUBSCRIPTION_STATUS.ACTIVE
       });
 
       const dbo = db.db(DATABASE_NAME);
@@ -459,6 +461,44 @@ export const editSubscription = (
             body: {
               subscriptionId
             }
+          });
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};
+
+export const archiveSubscription = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Archiving subscription...");
+
+  const obj = postReq.body;
+
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const { subscriptionId } = obj;
+
+      const dbo = db.db(DATABASE_NAME);
+
+      dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .updateOne(
+          { _id: new ObjectId(subscriptionId) },
+          { $set: { status: SUBSCRIPTION_STATUS.DELISTED } }
+        )
+        .then(() => {
+          console.log("Subscription archived:", subscriptionId);
+
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {}
           });
         });
     })

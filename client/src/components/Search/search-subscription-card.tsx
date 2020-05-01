@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 
+import Tooltip from "@material-ui/core/Tooltip";
+
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
   isMobile: boolean;
+  archiveSubscription?: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    id: string
+  ) => void;
   isProfile?: boolean;
   handleSubscriptionCardClick?: (subscriptionId: string) => void;
   isDisplayButtons?: boolean;
+  isArchived?: boolean;
 }
 
 const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
@@ -17,7 +24,9 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     isMobile,
     isProfile,
     handleSubscriptionCardClick,
-    isDisplayButtons
+    isDisplayButtons,
+    archiveSubscription,
+    isArchived
   } = props;
 
   const {
@@ -99,6 +108,16 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     </div>
   );
 
+  const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
+
+  const handleMouseOverArchiveButton = () => {
+    setIsHoverArchiveButton(true);
+  };
+
+  const handleMouseLeaveArchiveButton = () => {
+    setIsHoverArchiveButton(false);
+  };
+
   return (
     <>
       <div
@@ -120,24 +139,42 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       </div>
       {isDisplayButtons ? (
         <div className="subscription-card-buttons">
-          <Link to={`edit?id=${_id}`}>
-            <button className="subscription-card-button">
-              <img
-                alt="Edit"
-                className="subscription-card-button-icon"
-                src="/edit_icon.png"
-              />
-              Edit
-            </button>
-          </Link>
-          <button className="subscription-card-button">
-            <img
-              alt="Archive"
-              className="subscription-card-button-icon"
-              src="/archive_icon.png"
-            />
-            Archive
-          </button>
+          {!isArchived ? (
+            <Link to={`edit?id=${_id}`}>
+              <button className="subscription-card-button">
+                <img
+                  alt="Edit"
+                  className="subscription-card-button-icon"
+                  src="/edit_icon.png"
+                />
+                Edit
+              </button>
+            </Link>
+          ) : null}
+          {!isArchived ? (
+            <Tooltip
+              title={"Archived listings will only be visible to you"}
+              aria-label="Archive listing"
+              placement="bottom-start"
+              open={isHoverArchiveButton}
+            >
+              <button
+                className="subscription-card-button"
+                onMouseOver={handleMouseOverArchiveButton}
+                onMouseLeave={handleMouseLeaveArchiveButton}
+                onClick={e =>
+                  archiveSubscription ? archiveSubscription(e, _id) : null
+                }
+              >
+                <img
+                  alt="Archive"
+                  className="subscription-card-button-icon"
+                  src="/archive_icon.png"
+                />
+                Archive
+              </button>
+            </Tooltip>
+          ) : null}
           <button className="subscription-card-button">
             <img
               alt="Delete"
