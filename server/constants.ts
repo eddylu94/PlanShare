@@ -37,6 +37,11 @@ export const SUBSCRIPTION_STATUS = {
   DELISTED: "delisted"
 };
 
+export const ACCOUNT_STATUS = {
+  LIVE: "live",
+  PENDING_VERIFICATION: "pending_verification"
+};
+
 // MongoDB constants
 export const MONGO_URL = "mongodb://localhost:27017/";
 export const DATABASE_NAME = "project3632db";

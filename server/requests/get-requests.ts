@@ -19,7 +19,8 @@ import {
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
   SORT_BY,
-  SUBSCRIPTION_STATUS
+  SUBSCRIPTION_STATUS,
+  ACCOUNT_STATUS
 } from "./../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -63,7 +64,7 @@ export const getValidationEmail = (
 
         const email: string = findRes.email;
 
-        if (findRes.emails.indexOf(email) >= 0) {
+        if (findRes.status === ACCOUNT_STATUS.LIVE) {
           console.log("Email already validated");
           db.close();
           postRes.json({
@@ -95,22 +96,19 @@ export const getOrganizations = (
     .then(res => {
       const [db, findRes] = res;
 
-      const emails = findRes.emails;
+      const email = findRes.email;
 
-      const organizations = emails
-        .map(currentEmail => getDomain(currentEmail))
-        .map(currentEmailDomain =>
-          retrieveOrganizationByDomain(currentEmailDomain)
-        );
+      const domain = getDomain(email);
+      const organization = retrieveOrganizationByDomain(domain);
 
-      const defaultOrganization = organizations[0];
+      const defaultOrganization = organization;
 
-      console.log("Organization retrieved:", organizations[0]);
+      console.log("Organization retrieved:", [organization]);
       db.close();
       postRes.json({
         statusCode: STATUS_CODE.SUCCESS,
         body: {
-          organizations,
+          organizations: [organization],
           defaultOrganization
         }
       });
@@ -189,11 +187,9 @@ export const getSubscriptions = (
     .then(res => {
       const [db, findRes] = res;
 
-      const emails = findRes.emails;
+      const email = findRes.email;
 
-      const { t, o, sc, gs, sb, da, p } = postReq.query;
-
-      const subscriptionOrganizations = o.split(",");
+      const { t, sc, gs, sb, da, p } = postReq.query;
 
       const subscriptionCategories = sc.split(",");
 
@@ -231,82 +227,68 @@ export const getSubscriptions = (
         new Date().setDate(new Date().getDate() - parseInt(da) - 1)
       );
 
-      const promises = emails
-        .map(email => getDomain(email))
-        .map(domain => retrieveOrganizationByDomain(domain))
-        .map((organization: any) => organization.organizationId)
-        .filter(organizationId =>
-          subscriptionOrganizations.includes(organizationId)
-        )
-        .map(organizationId => {
-          const findQuery = {
-            "organization.organizationId": organizationId,
-            "subscriptionBrand.type": { $in: subscriptionCategories },
-            numberOfPeople: {
-              $gte: minGroupSize,
-              $lte: maxGroupSize
-            },
-            price: {
-              $gte: minPrice,
-              $lte: maxPrice
-            },
-            createdDate: {
-              $lte: new Date(currentDate),
-              $gte: new Date(oldestDate)
-            },
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
+      const domain = getDomain(email);
+      const organization = retrieveOrganizationByDomain(domain);
+      const organizationId = organization && organization.organizationId;
 
-          if (t.length) {
-            Object.assign(findQuery, {
-              $text: { $search: t }
+      const findQuery = {
+        "organization.organizationId": organizationId,
+        "subscriptionBrand.type": { $in: subscriptionCategories },
+        numberOfPeople: {
+          $gte: minGroupSize,
+          $lte: maxGroupSize
+        },
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice
+        },
+        createdDate: {
+          $lte: new Date(currentDate),
+          $gte: new Date(oldestDate)
+        },
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      };
+
+      if (t.length) {
+        Object.assign(findQuery, {
+          $text: { $search: t }
+        });
+      }
+
+      return dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .find(findQuery)
+        .sort(sort)
+        .toArray()
+        .then(findRes => {
+          if (!findRes) {
+            console.log("Unable to find subscriptions");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
             });
+            return;
           }
 
-          return dbo
-            .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-            .find(findQuery)
-            .sort(sort)
-            .toArray()
-            .then(findRes => {
-              if (!findRes) {
-                console.log("Unable to find subscriptions");
-                db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                });
-                return;
-              }
-
-              return findRes;
-            })
-            .catch(findErr => {
-              if (findErr) {
-                console.log("Error finding record");
-                db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-                });
-              }
+          db.close();
+          postRes.json({
+            statusCode: STATUS_CODE.SUCCESS,
+            body: {
+              subscriptions: findRes
+            }
+          });
+        })
+        .catch(findErr => {
+          if (findErr) {
+            console.log("Error finding record");
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.FAILURE,
+              statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
             });
-        });
-
-      Promise.all(promises).then(results => {
-        const subscriptions = results.reduce(
-          (acc, curr) => acc.concat(curr),
-          [] as any
-        );
-
-        db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          body: {
-            subscriptions
           }
         });
-      });
     })
     .catch(err => {
       console.log(err);
@@ -322,8 +304,8 @@ export const getSubscription = (
   authenticate(mongoClient, postReq, postRes).then(res => {
     const [db, findRes] = res;
 
-    const emails = findRes.emails;
-    const domains = emails.map(email => getDomain(email));
+    const email = findRes.email;
+    const domain = getDomain(email);
 
     const { subscriptionId } = postReq.query;
 
@@ -338,11 +320,10 @@ export const getSubscription = (
         (findErr, subscriptionFindRes) => {
           console.log(subscriptionFindRes.subscriptionBrand.name);
 
-          const organizationIds = domains
-            .map(domain => retrieveOrganizationByDomain(domain))
-            .map(organization => organization && organization.organizationId);
+          const organization = retrieveOrganizationByDomain(domain);
+          const organizationId = organization && organization.organizationId;
 
-          if (!organizationIds.includes(subscriptionFindRes.organizationId)) {
+          if (!organizationId === subscriptionFindRes.organizationId) {
             console.log(
               "User does not belong in organization of selected subscription"
             );
@@ -392,24 +373,17 @@ export const getProfile = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName, emails, joinedDate } = findRes;
+      const { firstName, email, joinedDate } = findRes;
 
       const { profileUserId } = postReq.query;
 
       if (!profileUserId) {
-        const organizations = emails.map(currentEmail => {
-          const domain = getDomain(currentEmail);
-          const organization = retrieveOrganizationByDomain(domain);
-
-          return {
-            email: currentEmail,
-            organization
-          };
-        });
+        const domain = getDomain(email);
+        const organization = retrieveOrganizationByDomain(domain);
 
         const profileData = {
           firstName,
-          organizations,
+          organizations: [{ email, organization }],
           joinedDate
         };
 
@@ -433,30 +407,24 @@ export const getProfile = (
                 });
               }
               if (findProfileRes) {
-                const { firstName, joinedDate, emails } = findProfileRes;
+                const { firstName, joinedDate } = findProfileRes;
 
-                const currentUserDomains = findRes.emails.map(
-                  (currentEmail: string) => getDomain(currentEmail)
-                );
+                const otherUserEmail = findProfileRes.email;
 
-                const organizations = emails
-                  .map((currentEmail: string) => {
-                    const domain = getDomain(currentEmail);
+                const currentUserDomain = getDomain(findRes.email);
 
-                    if (currentUserDomains.includes(domain)) {
-                      const organization = retrieveOrganizationByDomain(domain);
+                const otherUserDomain = getDomain(otherUserEmail);
 
-                      return {
-                        email: currentEmail,
-                        organization
-                      };
-                    }
-                  })
-                  .filter((organization: any) => !!organization);
+                let otherUserOrganization;
+                if (currentUserDomain === otherUserDomain) {
+                  otherUserOrganization = retrieveOrganizationByDomain(
+                    otherUserDomain
+                  );
+                }
 
                 const profileData = {
                   firstName,
-                  organizations,
+                  organizations: [otherUserOrganization],
                   joinedDate
                 };
 
@@ -486,7 +454,7 @@ export const getSubscriptionsByAuthor = (
     .then(res => {
       const [db, findRes] = res;
 
-      const findResEmails = findRes.emails;
+      const findResEmail = findRes.email;
       const userId = findRes._id;
 
       const { profileUserId } = postReq.query;
@@ -505,97 +473,16 @@ export const getSubscriptionsByAuthor = (
                 });
               }
               if (findProfileRes) {
-                const findProfileResEmails = findProfileRes.emails;
+                const findProfileResEmail = findProfileRes.email;
 
-                const currentUserDomains = findRes.emails.map(
-                  (currentEmail: string) => getDomain(currentEmail)
-                );
+                const currentUserDomain = getDomain(findRes.email);
 
-                const emails = findProfileResEmails
-                  .map((currentEmail: string) => {
-                    const domain = getDomain(currentEmail);
+                const email =
+                  currentUserDomain === getDomain(findProfileResEmail)
+                    ? findProfileResEmail
+                    : undefined;
 
-                    if (currentUserDomains.includes(domain)) {
-                      return currentEmail;
-                    }
-                  })
-                  .filter((organization: any) => !!organization) as string[];
-
-                const promises = emails
-                  .map(email => getDomain(email))
-                  .map(domain => retrieveOrganizationByDomain(domain))
-                  .map((organization: any) => organization.organizationId)
-                  .map((organizationId: string) => {
-                    return dbo
-                      .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-                      .find({
-                        userId: new ObjectId(profileUserId),
-                        "organization.organizationId": organizationId,
-                        status: SUBSCRIPTION_STATUS.ACTIVE
-                      })
-                      .toArray()
-                      .then(findRes => {
-                        if (!findRes) {
-                          console.log("Unable to find subscriptions");
-                          db.close();
-                          postRes.json({
-                            statusCode: STATUS_CODE.FAILURE,
-                            statusMessage:
-                              STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                          });
-                          return;
-                        }
-
-                        return findRes;
-                      })
-                      .catch(findErr => {
-                        if (findErr) {
-                          console.log("Error finding record");
-                          db.close();
-                          postRes.json({
-                            statusCode: STATUS_CODE.FAILURE,
-                            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-                          });
-                        }
-                      });
-                  });
-
-                Promise.all(promises).then(results => {
-                  const subscriptions = results.reduce(
-                    (acc, curr) => acc.concat(curr),
-                    [] as any
-                  );
-                  // console.log(subscriptions);
-
-                  db.close();
-                  postRes.json({
-                    statusCode: STATUS_CODE.SUCCESS,
-                    body: {
-                      subscriptions
-                    }
-                  });
-                });
-              }
-            }
-          );
-      } else {
-        const dbo = db.db(DATABASE_NAME);
-
-        const promises = findResEmails
-          .map(email => getDomain(email))
-          .map(domain => retrieveOrganizationByDomain(domain))
-          .map((organization: any) => organization.organizationId)
-          .map((organizationId: string) => {
-            return dbo
-              .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-              .find({
-                userId: new ObjectId(userId),
-                "organization.organizationId": organizationId,
-                status: SUBSCRIPTION_STATUS.ACTIVE
-              })
-              .toArray()
-              .then(findRes => {
-                if (!findRes) {
+                if (!email) {
                   console.log("Unable to find subscriptions");
                   db.close();
                   postRes.json({
@@ -605,35 +492,95 @@ export const getSubscriptionsByAuthor = (
                   return;
                 }
 
-                return findRes;
-              })
-              .catch(findErr => {
-                if (findErr) {
-                  console.log("Error finding record");
-                  db.close();
-                  postRes.json({
-                    statusCode: STATUS_CODE.FAILURE,
-                    statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                const domain = getDomain(email);
+                const organization = retrieveOrganizationByDomain(domain);
+                const organizationId =
+                  organization && organization.organizationId;
+
+                dbo
+                  .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+                  .find({
+                    userId: new ObjectId(profileUserId),
+                    "organization.organizationId": organizationId,
+                    status: SUBSCRIPTION_STATUS.ACTIVE
+                  })
+                  .toArray()
+                  .then(findRes => {
+                    if (!findRes) {
+                      console.log("Unable to find subscriptions");
+                      db.close();
+                      postRes.json({
+                        statusCode: STATUS_CODE.FAILURE,
+                        statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                      });
+                      return;
+                    }
+
+                    db.close();
+                    postRes.json({
+                      statusCode: STATUS_CODE.SUCCESS,
+                      body: {
+                        findRes
+                      }
+                    });
+                  })
+                  .catch(findErr => {
+                    if (findErr) {
+                      console.log("Error finding record");
+                      db.close();
+                      postRes.json({
+                        statusCode: STATUS_CODE.FAILURE,
+                        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+                      });
+                    }
                   });
-                }
-              });
-          });
-
-        Promise.all(promises).then(results => {
-          const subscriptions = results.reduce(
-            (acc, curr) => acc.concat(curr),
-            [] as any
+              }
+            }
           );
-          // console.log(subscriptions);
+      } else {
+        const dbo = db.db(DATABASE_NAME);
 
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              subscriptions
+        const domain = getDomain(findResEmail);
+        const organization = retrieveOrganizationByDomain(domain);
+        const organizationId = organization && organization.organizationId;
+
+        dbo
+          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+          .find({
+            userId: new ObjectId(userId),
+            "organization.organizationId": organizationId,
+            status: SUBSCRIPTION_STATUS.ACTIVE
+          })
+          .toArray()
+          .then(findRes => {
+            if (!findRes) {
+              console.log("Unable to find subscriptions");
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.FAILURE,
+                statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+              });
+              return;
+            }
+
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.SUCCESS,
+              body: {
+                subscriptions: findRes
+              }
+            });
+          })
+          .catch(findErr => {
+            if (findErr) {
+              console.log("Error finding record");
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.FAILURE,
+                statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
+              });
             }
           });
-        });
       }
     })
     .catch(err => {
@@ -650,7 +597,6 @@ export const getArchivedSubscriptions = (
   authenticate(mongoClient, postReq, postRes).then(res => {
     const [db, findRes] = res;
 
-    const findResEmails = findRes.emails;
     const userId = findRes._id;
 
     const dbo = db.db(DATABASE_NAME);
@@ -731,7 +677,7 @@ export const getConversation = (
     .then(res => {
       const [db, findRes] = res;
 
-      const currentUserEmails = findRes.emails;
+      const currentUserEmail = findRes.email;
       const currentUserId = findRes._id.toString();
 
       const { userId } = postReq.query;
@@ -762,20 +708,12 @@ export const getConversation = (
               return;
             }
             if (findProfileRes) {
-              const userEmails = findProfileRes.emails;
-              const userDomains = userEmails.map((email: string) =>
-                getDomain(email)
-              );
+              const userEmail = findProfileRes.email;
+              const userDomain = getDomain(userEmail);
 
-              const currentUserDomains = currentUserEmails.map(
-                (email: string) => getDomain(email)
-              );
+              const currentUserDomain = getDomain(currentUserEmail);
 
-              const isValid = isOverlappingDomains(
-                currentUserDomains,
-                userDomains
-              );
-              if (isValid) {
+              if (currentUserDomain === userDomain) {
                 dbo
                   .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
                   .findOne(

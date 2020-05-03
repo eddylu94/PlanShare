@@ -7,7 +7,8 @@ import {
   DATABASE_COLLECTION,
   STATUS_CODE,
   STATUS_MESSAGE,
-  MONGO_PREREQUISITIES
+  MONGO_PREREQUISITIES,
+  ACCOUNT_STATUS
 } from "./constants";
 
 interface IAuthToken {
@@ -27,8 +28,8 @@ interface IFindResult {
   pass: string;
   joinedDate: number;
   authTokens: IAuthToken[];
-  emails: string[];
   pendingEmails: IPendingEmail[];
+  status: string;
 }
 
 // interface IUniversity {
@@ -98,7 +99,7 @@ export const authenticate = (
             return;
           }
 
-          if (findRes.emails.indexOf(findRes.email) < 0) {
+          if (findRes.status !== ACCOUNT_STATUS.LIVE) {
             console.log("User is not validated");
             db.close();
             postRes.json({
@@ -174,4 +175,18 @@ export const isOverlappingDomains = (
 
 export const getOtherUser = (users: string[], currentUser: string) => {
   return users.find(user => user !== currentUser);
+};
+
+export const postSuccess = (postRes: any, body: any) => {
+  postRes.json({
+    statusCode: STATUS_CODE.SUCCESS,
+    body
+  });
+};
+
+export const postFailure = (postRes: any, statusMessage: string) => {
+  postRes.json({
+    statusCode: STATUS_CODE.FAILURE,
+    statusMessage
+  });
 };

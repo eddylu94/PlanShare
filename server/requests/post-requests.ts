@@ -20,7 +20,8 @@ import {
   STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
-  SUBSCRIPTION_STATUS
+  SUBSCRIPTION_STATUS,
+  ACCOUNT_STATUS
 } from "./../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -78,13 +79,8 @@ export const signUp = (
         Object.assign(obj, {
           joinedDate: new Date().getTime(),
           authTokens: [authToken],
-          emails: [],
-          pendingEmails: [
-            {
-              email,
-              confirmationCode
-            }
-          ]
+          status: ACCOUNT_STATUS.PENDING_VERIFICATION,
+          confirmationCode
         });
 
         const plainPass = obj.pass;
@@ -140,7 +136,27 @@ export const signUp = (
               transporter.sendMail(mailOptions, function(sendErr, info) {
                 if (sendErr) {
                   console.log("Error sending email");
-                  throw sendErr;
+                  console.log(sendErr);
+                  transporter.sendMail(mailOptions, function(sendErr, info) {
+                    if (sendErr) {
+                      console.log("Error sending email");
+                      console.log(sendErr);
+                      transporter.sendMail(mailOptions, function(
+                        sendErr,
+                        info
+                      ) {
+                        if (sendErr) {
+                          console.log("Error sending email");
+                          console.log(sendErr);
+                          throw sendErr;
+                        } else {
+                          console.log("Email sent: " + info.response);
+                        }
+                      });
+                    } else {
+                      console.log("Email sent: " + info.response);
+                    }
+                  });
                 } else {
                   console.log("Email sent: " + info.response);
                 }
@@ -287,9 +303,8 @@ export const verifyEmail = (
         }
 
         const email: string = findRes.email;
-        const pendingEmails: IPendingEmail[] = findRes.pendingEmails;
 
-        if (findRes.emails.indexOf(email) >= 0) {
+        if (findRes.status === ACCOUNT_STATUS.LIVE) {
           console.log("Email already validated");
           db.close();
           postRes.json({
@@ -299,10 +314,7 @@ export const verifyEmail = (
           return;
         }
 
-        const pendingEmail = pendingEmails.find(
-          pendingEmail => pendingEmail.email === email
-        );
-        const confirmationCode = pendingEmail && pendingEmail.confirmationCode;
+        const confirmationCode = findRes.confirmationCode;
 
         if (!confirmationCode) {
           console.log("Unable to find pending account for validation");
@@ -325,24 +337,21 @@ export const verifyEmail = (
         }
 
         const dbo = db.db(DATABASE_NAME);
-
         dbo
           .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .updateOne({ _id: findRes._id }, { $push: { emails: email } })
+          .updateOne(
+            { _id: findRes._id },
+            { $set: { status: ACCOUNT_STATUS.LIVE } }
+          )
           .then(() => {
-            dbo
-              .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-              .updateOne(
-                { _id: findRes._id },
-                { $pull: { pendingEmails: { email: email } } }
-              )
-              .then(() => {
-                console.log("Email validated:", email);
-                db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.SUCCESS
-                });
-              });
+            console.log("Email validated:", email);
+            db.close();
+            postRes.json({
+              statusCode: STATUS_CODE.SUCCESS
+            });
+          })
+          .catch((error: any) => {
+            console.log(error);
           });
       });
   });
