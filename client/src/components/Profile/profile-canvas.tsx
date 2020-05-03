@@ -42,7 +42,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
 
   const renderOrganization = () => {
     return (
-      <div className="profile-organization">
+      <div className="profile-organization-container">
         <div className="profile-organization-header">Member of:</div>
         <div className="profile-organization">
           <img
