@@ -161,18 +161,6 @@ export const getDomain = (emailAddress: string) => {
   return emailAddress.substring(atSign + 1);
 };
 
-export const isOverlappingDomains = (
-  currentDomains: string[],
-  otherDomains: string[]
-) => {
-  for (let i = 0; i < currentDomains.length; i++) {
-    if (otherDomains.includes(currentDomains[i])) {
-      return true;
-    }
-  }
-  return false;
-};
-
 export const getOtherUser = (users: string[], currentUser: string) => {
   return users.find(user => user !== currentUser);
 };

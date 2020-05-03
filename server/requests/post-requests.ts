@@ -7,10 +7,11 @@ import { retrieveOrganizationById } from "./../organizations";
 import {
   encryptPassword,
   comparePassword,
-  IPendingEmail,
   authenticate,
   generateConfirmationCode,
-  generateAuthToken
+  generateAuthToken,
+  postSuccess,
+  postFailure
 } from "./../utils";
 import {
   TITLE,
@@ -39,10 +40,7 @@ export const signUp = (
     if (connectErr) {
       console.log("Connection error");
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.FAILURE,
-        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-      });
+      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
       throw connectErr;
     }
 
@@ -56,20 +54,14 @@ export const signUp = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           throw findErr;
         }
 
         if (!!findRes) {
           console.log("Email address already exists:", email);
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_EXISTS
-          });
+          postFailure(postRes, STATUS_MESSAGE.EMAIL_ALREADY_EXISTS);
           return;
         }
 
@@ -105,10 +97,7 @@ export const signUp = (
               if (insertErr) {
                 console.log("Error inserting record");
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-                });
+                postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
                 throw insertErr;
               }
 
@@ -182,10 +171,7 @@ export const login = (
     if (connectErr) {
       console.log("Connection error");
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.FAILURE,
-        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-      });
+      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
       throw connectErr;
     }
 
@@ -200,20 +186,14 @@ export const login = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           throw findErr;
         }
 
         if (!findRes) {
           console.log("Email address does not exist:", email);
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
-          });
+          postFailure(postRes, STATUS_MESSAGE.INCORRECT_CRED);
           return;
         }
 
@@ -226,10 +206,7 @@ export const login = (
           if (isPasswordMatch === false) {
             console.log("Incorrect password:", email);
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.INCORRECT_CRED
-            });
+            postFailure(postRes, STATUS_MESSAGE.INCORRECT_CRED);
             return;
           } else if (isPasswordMatch === true) {
             const userId = findRes._id;
@@ -246,13 +223,10 @@ export const login = (
               .then(() => {
                 console.log("User logged in:", email);
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.SUCCESS,
-                  body: {
-                    userId: userId.toString(),
-                    auth: authToken.key,
-                    firstName
-                  }
+                postSuccess(postRes, {
+                  userId: userId.toString(),
+                  auth: authToken.key,
+                  firstName
                 });
               });
           }
@@ -285,20 +259,17 @@ export const verifyEmail = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           throw findErr;
         }
 
         if (!findRes) {
           console.log("Unable to find account for validation");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          });
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
           return;
         }
 
@@ -307,10 +278,7 @@ export const verifyEmail = (
         if (findRes.status === ACCOUNT_STATUS.LIVE) {
           console.log("Email already validated");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
-          });
+          postSuccess(postRes, {});
           return;
         }
 
@@ -319,20 +287,17 @@ export const verifyEmail = (
         if (!confirmationCode) {
           console.log("Unable to find pending account for validation");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          });
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
           return;
         }
 
         if (confirmationCode !== obj.validationCode) {
           console.log("Incorrect validation code");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
-          });
+          postFailure(postRes, STATUS_MESSAGE.INCORRECT_VALIDATION_CODE);
           return;
         }
 
@@ -346,9 +311,7 @@ export const verifyEmail = (
           .then(() => {
             console.log("Email validated:", email);
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.SUCCESS
-            });
+            postSuccess(postRes, {});
           })
           .catch((error: any) => {
             console.log(error);
@@ -397,10 +360,7 @@ export const createSubscription = (
           if (insertErr) {
             console.log("Error inserting record");
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-            });
+            postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
             throw insertErr;
           }
 
@@ -409,11 +369,8 @@ export const createSubscription = (
           console.log("Subscription created:", subscriptionId);
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              subscriptionId
-            }
+          postSuccess(postRes, {
+            subscriptionId
           });
         });
     })
@@ -466,11 +423,8 @@ export const editSubscription = (
           console.log("Subscription updated:", subscriptionId);
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              subscriptionId
-            }
+          postSuccess(postRes, {
+            subscriptionId
           });
         });
     })
@@ -506,10 +460,7 @@ export const archiveSubscription = (
           console.log("Subscription archived:", subscriptionId);
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {}
-          });
+          postSuccess(postRes, {});
         });
     })
     .catch(err => {
@@ -541,10 +492,7 @@ export const deleteSubscription = (
           console.log("Subscription deleted:", subscriptionId);
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {}
-          });
+          postSuccess(postRes, {});
         });
     })
     .catch(err => {
@@ -565,10 +513,7 @@ export const deleteUser = (
     if (connectErr) {
       console.log("Connection error");
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.FAILURE,
-        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-      });
+      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
       throw connectErr;
     }
 
@@ -583,20 +528,14 @@ export const deleteUser = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           throw findErr;
         }
 
         if (!findRes) {
           console.log("Email address does not exist:", email);
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.INCORRECT_CRED
-          });
+          postFailure(postRes, STATUS_MESSAGE.INCORRECT_CRED);
           return;
         }
 
@@ -609,10 +548,7 @@ export const deleteUser = (
           if (isPasswordMatch === false) {
             console.log("Incorrect password:", email);
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.INCORRECT_CRED
-            });
+            postFailure(postRes, STATUS_MESSAGE.INCORRECT_CRED);
             return;
           } else if (isPasswordMatch === true) {
             const currentUserId = findRes._id.toString();
@@ -662,10 +598,7 @@ export const deleteUser = (
               .then(() => {
                 console.log("User has been removed", email);
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.SUCCESS,
-                  body: {}
-                });
+                postSuccess(postRes, {});
               })
               .catch(err => {
                 console.log(err);
@@ -704,10 +637,7 @@ export const sendMessage = (
           (findConversationErr, findConversationRes) => {
             if (findConversationErr) {
               db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-              });
+              postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATION);
 
               return;
             }
@@ -717,10 +647,7 @@ export const sendMessage = (
 
               if (!userIds.includes(userId)) {
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-                });
+                postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATION);
 
                 return;
               }
@@ -741,10 +668,7 @@ export const sendMessage = (
                   io.emit("message sent", "Hello World !");
 
                   db.close();
-                  postRes.json({
-                    statusCode: STATUS_CODE.SUCCESS,
-                    body: {}
-                  });
+                  postSuccess(postRes, {});
                 });
             }
           }

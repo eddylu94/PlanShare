@@ -3,8 +3,9 @@ import mongodb from "mongodb";
 import {
   authenticate,
   getDomain,
-  isOverlappingDomains,
-  getOtherUser
+  getOtherUser,
+  postSuccess,
+  postFailure
 } from "./../utils";
 import {
   subscriptionCategories,
@@ -15,7 +16,6 @@ import {
   MONGO_URL,
   DATABASE_NAME,
   DATABASE_COLLECTION,
-  STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
   SORT_BY,
@@ -45,20 +45,17 @@ export const getValidationEmail = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           throw findErr;
         }
 
         if (!findRes) {
           console.log("Unable to find account for validation");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          });
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
           return;
         }
 
@@ -66,22 +63,11 @@ export const getValidationEmail = (
 
         if (findRes.status === ACCOUNT_STATUS.LIVE) {
           console.log("Email already validated");
-          db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            statusMessage: STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED
-          });
-          return;
         }
 
         console.log("Email retrieved:", email);
         db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          body: {
-            email
-          }
-        });
+        postSuccess(postRes, {});
       });
   });
 };
@@ -105,12 +91,9 @@ export const getOrganizations = (
 
       console.log("Organization retrieved:", [organization]);
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.SUCCESS,
-        body: {
-          organizations: [organization],
-          defaultOrganization
-        }
+      postSuccess(postRes, {
+        organizations: [organization],
+        defaultOrganization
       });
     })
     .catch(err => {
@@ -131,12 +114,9 @@ export const getSubscriptionCategories = (
       const defaultSubscriptionCategory = subscriptionCategories[0];
 
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.SUCCESS,
-        body: {
-          subscriptionCategories: subscriptionCategories,
-          defaultSubscriptionCategory
-        }
+      postSuccess(postRes, {
+        subscriptionCategories: subscriptionCategories,
+        defaultSubscriptionCategory
       });
     })
     .catch(err => {
@@ -164,12 +144,9 @@ export const getSubscriptionBrands = (
       const defaultSubscriptionBrand = subscriptionBrands[0];
 
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.SUCCESS,
-        body: {
-          subscriptionBrands,
-          defaultSubscriptionBrand
-        }
+      postSuccess(postRes, {
+        subscriptionBrands,
+        defaultSubscriptionBrand
       });
     })
     .catch(err => {
@@ -255,6 +232,9 @@ export const getSubscriptions = (
         });
       }
 
+      console.log("asfasfsa");
+      console.log(findQuery);
+
       return dbo
         .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
         .find(findQuery)
@@ -264,29 +244,21 @@ export const getSubscriptions = (
           if (!findRes) {
             console.log("Unable to find subscriptions");
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-            });
+            postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
             return;
           }
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              subscriptions: findRes
-            }
+          postSuccess(postRes, {
+            subscriptions: findRes
           });
         })
         .catch(findErr => {
           if (findErr) {
             console.log("Error finding record");
+            console.log(findErr);
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-            });
+            postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
           }
         });
     })
@@ -328,10 +300,10 @@ export const getSubscription = (
               "User does not belong in organization of selected subscription"
             );
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage: STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
-            });
+            postFailure(
+              postRes,
+              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+            );
             return;
           }
 
@@ -343,20 +315,16 @@ export const getSubscription = (
           ) {
             console.log("User does not have access to subscription");
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.FAILURE,
-              statusMessage:
-                STATUS_MESSAGE.USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION
-            });
+            postFailure(
+              postRes,
+              STATUS_MESSAGE.USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION
+            );
             return;
           }
 
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              subscriptionData: subscriptionFindRes
-            }
+          postSuccess(postRes, {
+            subscriptionData: subscriptionFindRes
           });
         }
       );
@@ -389,10 +357,7 @@ export const getProfile = (
 
         console.log("Profile retrieved:", profileData);
         db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          body: { profileData }
-        });
+        postSuccess(postRes, { profileData });
       } else {
         const dbo = db.db(DATABASE_NAME);
         dbo
@@ -401,10 +366,7 @@ export const getProfile = (
             { _id: new ObjectId(profileUserId) },
             (findProfileErr, findProfileRes) => {
               if (findProfileErr) {
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.PROFILE_NOT_FOUND
-                });
+                postFailure(postRes, STATUS_MESSAGE.PROFILE_NOT_FOUND);
               }
               if (findProfileRes) {
                 const { firstName, joinedDate } = findProfileRes;
@@ -430,10 +392,7 @@ export const getProfile = (
 
                 console.log("Profile retrieved:", profileData);
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.SUCCESS,
-                  body: { profileData }
-                });
+                postSuccess(postRes, { profileData });
               }
             }
           );
@@ -467,10 +426,7 @@ export const getSubscriptionsByAuthor = (
             { _id: new ObjectId(profileUserId) },
             (findProfileErr, findProfileRes) => {
               if (findProfileErr) {
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.PROFILE_NOT_FOUND
-                });
+                postFailure(postRes, STATUS_MESSAGE.PROFILE_NOT_FOUND);
               }
               if (findProfileRes) {
                 const findProfileResEmail = findProfileRes.email;
@@ -485,10 +441,10 @@ export const getSubscriptionsByAuthor = (
                 if (!email) {
                   console.log("Unable to find subscriptions");
                   db.close();
-                  postRes.json({
-                    statusCode: STATUS_CODE.FAILURE,
-                    statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                  });
+                  postFailure(
+                    postRes,
+                    STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                  );
                   return;
                 }
 
@@ -509,29 +465,23 @@ export const getSubscriptionsByAuthor = (
                     if (!findRes) {
                       console.log("Unable to find subscriptions");
                       db.close();
-                      postRes.json({
-                        statusCode: STATUS_CODE.FAILURE,
-                        statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                      });
+                      postFailure(
+                        postRes,
+                        STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                      );
                       return;
                     }
 
                     db.close();
-                    postRes.json({
-                      statusCode: STATUS_CODE.SUCCESS,
-                      body: {
-                        findRes
-                      }
+                    postSuccess(postRes, {
+                      findRes
                     });
                   })
                   .catch(findErr => {
                     if (findErr) {
                       console.log("Error finding record");
                       db.close();
-                      postRes.json({
-                        statusCode: STATUS_CODE.FAILURE,
-                        statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-                      });
+                      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
                     }
                   });
               }
@@ -556,29 +506,20 @@ export const getSubscriptionsByAuthor = (
             if (!findRes) {
               console.log("Unable to find subscriptions");
               db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-              });
+              postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
               return;
             }
 
             db.close();
-            postRes.json({
-              statusCode: STATUS_CODE.SUCCESS,
-              body: {
-                subscriptions: findRes
-              }
+            postSuccess(postRes, {
+              subscriptions: findRes
             });
           })
           .catch(findErr => {
             if (findErr) {
               console.log("Error finding record");
               db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-              });
+              postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
             }
           });
       }
@@ -612,31 +553,22 @@ export const getArchivedSubscriptions = (
         if (!findSubscriptionsRes) {
           console.log("Unable to find subscriptions");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-          });
+          postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
           return;
         }
 
         console.log("Archived subscriptions retrieved");
 
         db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.SUCCESS,
-          body: {
-            subscriptions: findSubscriptionsRes
-          }
+        postSuccess(postRes, {
+          subscriptions: findSubscriptionsRes
         });
       })
       .catch(findErr => {
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
         }
       });
   });
@@ -655,11 +587,8 @@ export const getEmailAddress = (
       const { email } = findRes;
 
       db.close();
-      postRes.json({
-        statusCode: STATUS_CODE.SUCCESS,
-        body: {
-          email
-        }
+      postSuccess(postRes, {
+        email
       });
     })
     .catch(err => {
@@ -684,10 +613,7 @@ export const getConversation = (
 
       if (currentUserId === userId) {
         db.close();
-        postRes.json({
-          statusCode: STATUS_CODE.FAILURE,
-          statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-        });
+        postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATION);
         return;
       }
 
@@ -701,10 +627,7 @@ export const getConversation = (
           (findProfileErr, findProfileRes) => {
             if (findProfileErr) {
               db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.PROFILE_NOT_FOUND
-              });
+              postFailure(postRes, STATUS_MESSAGE.PROFILE_NOT_FOUND);
               return;
             }
             if (findProfileRes) {
@@ -721,10 +644,10 @@ export const getConversation = (
                     (findConversationErr, findConversationRes) => {
                       if (findConversationErr) {
                         db.close();
-                        postRes.json({
-                          statusCode: STATUS_CODE.FAILURE,
-                          statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-                        });
+                        postFailure(
+                          postRes,
+                          STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                        );
                         return;
                       }
 
@@ -744,24 +667,21 @@ export const getConversation = (
                               if (insertErr) {
                                 console.log("Error inserting record");
                                 db.close();
-                                postRes.json({
-                                  statusCode: STATUS_CODE.FAILURE,
-                                  statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-                                });
+                                postFailure(
+                                  postRes,
+                                  STATUS_MESSAGE.UNKNOWN_ERROR
+                                );
                                 throw insertErr;
                               }
 
                               console.log("Conversation created");
                               db.close();
-                              postRes.json({
-                                statusCode: STATUS_CODE.SUCCESS,
-                                body: {
-                                  conversation: {
-                                    conversationId: insertRes.insertedId,
-                                    firstName: findProfileRes.firstName,
-                                    userId: findProfileRes._id.toString(),
-                                    messages: []
-                                  }
+                              postSuccess(postRes, {
+                                conversation: {
+                                  conversationId: insertRes.insertedId,
+                                  firstName: findProfileRes.firstName,
+                                  userId: findProfileRes._id.toString(),
+                                  messages: []
                                 }
                               });
                             }
@@ -771,15 +691,12 @@ export const getConversation = (
                       } else {
                         console.log("Conversation retrieved");
                         db.close();
-                        postRes.json({
-                          statusCode: STATUS_CODE.SUCCESS,
-                          body: {
-                            conversation: {
-                              conversationId: findConversationRes._id,
-                              firstName: findProfileRes.firstName,
-                              userId: findProfileRes._id.toString(),
-                              messages: findConversationRes.messages
-                            }
+                        postSuccess(postRes, {
+                          conversation: {
+                            conversationId: findConversationRes._id,
+                            firstName: findProfileRes.firstName,
+                            userId: findProfileRes._id.toString(),
+                            messages: findConversationRes.messages
                           }
                         });
                       }
@@ -819,10 +736,7 @@ export const getConversationById = (
           (findConversationErr, findConversationRes) => {
             if (findConversationErr) {
               db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.FAILURE,
-                statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-              });
+              postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATION);
 
               return;
             }
@@ -832,10 +746,7 @@ export const getConversationById = (
 
               if (!userIds.includes(userId)) {
                 db.close();
-                postRes.json({
-                  statusCode: STATUS_CODE.FAILURE,
-                  statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-                });
+                postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATION);
 
                 return;
               }
@@ -849,24 +760,21 @@ export const getConversationById = (
                   (findOtherUserErr, findOtherUserRes) => {
                     if (findOtherUserErr || !findOtherUserRes) {
                       db.close();
-                      postRes.json({
-                        statusCode: STATUS_CODE.FAILURE,
-                        statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-                      });
+                      postFailure(
+                        postRes,
+                        STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                      );
 
                       return;
                     }
 
                     db.close();
-                    postRes.json({
-                      statusCode: STATUS_CODE.SUCCESS,
-                      body: {
-                        conversation: {
-                          conversationId: findConversationRes._id,
-                          firstName: findOtherUserRes.firstName.toString(),
-                          userId: findOtherUserRes._id.toString(),
-                          messages: findConversationRes.messages
-                        }
+                    postSuccess(postRes, {
+                      conversation: {
+                        conversationId: findConversationRes._id,
+                        firstName: findOtherUserRes.firstName.toString(),
+                        userId: findOtherUserRes._id.toString(),
+                        messages: findConversationRes.messages
                       }
                     });
                   }
@@ -901,21 +809,15 @@ export const getConversationsList = (
         if (!findRes) {
           console.log("Unable to find conversations list");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
-          });
+          postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST);
           return;
         }
 
         if (!findRes.length) {
           console.log("Conversations list empty");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              conversationsList: []
-            }
+          postSuccess(postRes, {
+            conversationsList: []
           });
           return;
         }
@@ -933,11 +835,10 @@ export const getConversationsList = (
                 (findUserErr, findUserRes) => {
                   if (findUserErr) {
                     db.close();
-                    postRes.json({
-                      statusCode: STATUS_CODE.FAILURE,
-                      statusMessage:
-                        STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
-                    });
+                    postFailure(
+                      postRes,
+                      STATUS_MESSAGE.CANNOT_FIND_CONVERSATIONS_LIST
+                    );
                     return;
                   }
 
@@ -976,11 +877,8 @@ export const getConversationsList = (
 
           console.log("Conversations list retrieved");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.SUCCESS,
-            body: {
-              conversationsList
-            }
+          postSuccess(postRes, {
+            conversationsList
           });
         });
 
@@ -990,10 +888,7 @@ export const getConversationsList = (
         if (findErr) {
           console.log("Error finding record");
           db.close();
-          postRes.json({
-            statusCode: STATUS_CODE.FAILURE,
-            statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
-          });
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
         }
       });
   });
