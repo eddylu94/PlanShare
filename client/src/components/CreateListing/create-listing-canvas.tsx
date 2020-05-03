@@ -1,11 +1,7 @@
 import React from "react";
 
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
-import {
-  ISubscriptionCategory,
-  ISubscriptionBrand,
-  IOrganization
-} from "./../../utils/utils";
+import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 import Tooltip from "@material-ui/core/Tooltip";
 
@@ -20,8 +16,6 @@ interface ICreateListingCanvasProps {
   otherSubscription: string;
   subscriptionUrl: string;
   isDisplaySubscriptionUrlErrorLabel: boolean;
-  organizations: IOrganization[];
-  organizationSelection: IOrganization;
 
   isOtherInputDisplayed: boolean;
 

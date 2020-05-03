@@ -2,17 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "./../Search/search-subscription-card";
-import {
-  IProfileOrganizationData,
-  ISubscriptionData
-} from "./../../utils/utils";
+import { ISubscriptionData, IOrganization } from "./../../utils/utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface IProfileCanvasProps {
   firstName: string;
-  organizations: IProfileOrganizationData[];
+  organization: IOrganization;
   joinedDate: number;
   authoredSubscriptions: ISubscriptionData[];
   isDifferentUser: boolean;
@@ -32,7 +29,7 @@ interface IProfileCanvasProps {
 const ProfileCanvas = (props: IProfileCanvasProps) => {
   const {
     firstName,
-    organizations,
+    organization,
     joinedDate,
     authoredSubscriptions,
     archivedSubscriptions,
@@ -43,39 +40,18 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     deleteSubscription
   } = props;
 
-  const renderOrganization = (
-    profileOrganizationData: IProfileOrganizationData,
-    index: number
-  ) => {
-    const {
-      // email,
-      organization
-    } = profileOrganizationData;
-
+  const renderOrganization = () => {
     return (
-      <div
-        key={"profile-organization-" + index}
-        className="profile-organization"
-      >
-        <img
-          alt="Organization logo"
-          className="profile-organization-logo"
-          src={organization.logo}
-        />
-        <div className="profile-organization-name">{organization.name}</div>
-        {/* <div className="profile-organization-email">({email})</div> */}
-      </div>
-    );
-  };
-
-  const renderOrganizations = () => {
-    const list = organizations.map((organization, i) =>
-      renderOrganization(organization, i)
-    );
-    return (
-      <div className="profile-organizations">
-        <div className="profile-organizations-header">Member of:</div>
-        {list}
+      <div className="profile-organization">
+        <div className="profile-organization-header">Member of:</div>
+        <div className="profile-organization">
+          <img
+            alt="Organization logo"
+            className="profile-organization-logo"
+            src={organization.logo}
+          />
+          <div className="profile-organization-name">{organization.name}</div>
+        </div>
       </div>
     );
   };
@@ -195,7 +171,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
               </div>
             </div>
           </div>
-          {renderOrganizations()}
+          {renderOrganization()}
         </div>
       </div>
       {profileSubscriptions}

@@ -22,11 +22,6 @@ export interface IOrganization {
   logo: string;
 }
 
-export interface IProfileOrganizationData {
-  email: string;
-  organization: IOrganization;
-}
-
 export interface IFiltersOrganization {
   organizationId: string;
   name: string;

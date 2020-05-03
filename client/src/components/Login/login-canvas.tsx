@@ -25,8 +25,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
     name: string,
     type: string,
     placeholder: string,
-    value: string,
-    isValid?: boolean
+    value: string
   ) => (
     <div
       key={"form-input-with-validation-" + name}

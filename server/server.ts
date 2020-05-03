@@ -19,7 +19,6 @@ app.get("/", (req, res) => {
 // Import requests
 import {
   getValidationEmail,
-  getOrganizations,
   getSubscriptionCategories,
   getSubscriptionBrands,
   getSubscriptions,
@@ -97,7 +96,6 @@ io.on("connection", (socket: any) => {
 
 // GET requests
 getRequestBuilder("/getvalidationemail", getValidationEmail);
-getRequestBuilder("/getorganizations", getOrganizations);
 getRequestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
 getRequestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
 getRequestBuilder("/getsubscriptions", getSubscriptions);

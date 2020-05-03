@@ -72,35 +72,6 @@ export const getValidationEmail = (
   });
 };
 
-export const getOrganizations = (
-  mongoClient: typeof mongodb.MongoClient,
-  postReq: any,
-  postRes: any
-) => {
-  console.log("Retrieving organizations...");
-  authenticate(mongoClient, postReq, postRes)
-    .then(res => {
-      const [db, findRes] = res;
-
-      const email = findRes.email;
-
-      const domain = getDomain(email);
-      const organization = retrieveOrganizationByDomain(domain);
-
-      const defaultOrganization = organization;
-
-      console.log("Organization retrieved:", [organization]);
-      db.close();
-      postSuccess(postRes, {
-        organizations: [organization],
-        defaultOrganization
-      });
-    })
-    .catch(err => {
-      console.log(err);
-    });
-};
-
 export const getSubscriptionCategories = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
@@ -351,7 +322,7 @@ export const getProfile = (
 
         const profileData = {
           firstName,
-          organizations: [{ email, organization }],
+          organization,
           joinedDate
         };
 
@@ -386,7 +357,7 @@ export const getProfile = (
 
                 const profileData = {
                   firstName,
-                  organizations: [otherUserOrganization],
+                  organization: otherUserOrganization,
                   joinedDate
                 };
 

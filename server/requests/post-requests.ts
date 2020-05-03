@@ -3,13 +3,17 @@ import mongodb from "mongodb";
 import socketIo from "socket.io";
 
 import { EMAIL_SERVICE_EMAIL, transporter } from "./../email-service";
-import { retrieveOrganizationById } from "./../organizations";
+import {
+  retrieveOrganizationById,
+  retrieveOrganizationByDomain
+} from "./../organizations";
 import {
   encryptPassword,
   comparePassword,
   authenticate,
   generateConfirmationCode,
   generateAuthToken,
+  getDomain,
   postSuccess,
   postFailure
 } from "./../utils";
@@ -333,13 +337,12 @@ export const createSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName } = findRes;
+      const { firstName, email } = findRes;
+
+      const domain = getDomain(email);
+      const organization = retrieveOrganizationByDomain(domain);
 
       const { subscriptionData } = obj;
-
-      const organization = retrieveOrganizationById(
-        subscriptionData.organizationId
-      );
 
       Object.assign(subscriptionData, {
         userId: findRes._id,

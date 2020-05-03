@@ -115,9 +115,6 @@ const CreateListingProviderWithContext = (props: {
 
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
-  const [organizations, setOrganizations] = useState([]);
-  const [organizationSelection, setOrganizationSelection] = useState({} as any);
-
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
   const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
   const [isPriceFocused, setIsPriceFocused] = useState(false);
@@ -174,7 +171,7 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const retrieveOrganizationsResponseHandler = (data: any) => {
+  const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
@@ -182,19 +179,6 @@ const CreateListingProviderWithContext = (props: {
       console.log("User not validated");
       history.push("/validate");
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-      setOrganizations(body.organizations);
-      setOrganizationSelection(body.defaultOrganization);
-      setIsRetrievedListingCreationDataDirty(true);
-    }
-  };
-
-  const retrieveOrganizationsErrorHandler = (error: any) => {
-    console.log(error);
-  };
-
-  const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
       if (!subscriptionId) {
@@ -204,6 +188,8 @@ const CreateListingProviderWithContext = (props: {
 
       const newSubscriptionCategories = body.subscriptionCategories;
       setSubscriptionCategories(newSubscriptionCategories);
+
+      setIsRetrievedListingCreationDataDirty(true);
     }
   };
 
@@ -249,16 +235,6 @@ const CreateListingProviderWithContext = (props: {
     );
   };
 
-  const retrieveOrganizations = () => {
-    baseGetRequest(
-      "getorganizations",
-      [],
-      retrieveOrganizationsResponseHandler,
-      retrieveOrganizationsErrorHandler,
-      _userData.user?.auth
-    );
-  };
-
   const handleSubmitResponseHandler = (data: any) => {
     console.log(data);
 
@@ -272,7 +248,6 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log(organizationSelection);
     const postRequestData = {
       subscriptionData: {
         subscriptionCategory: subscriptionCategorySelection,
@@ -281,8 +256,7 @@ const CreateListingProviderWithContext = (props: {
         listingContact,
         listingDescription,
         numberOfPeople,
-        price,
-        organizationId: organizationSelection.organizationId
+        price
       }
     };
 
@@ -319,7 +293,6 @@ const CreateListingProviderWithContext = (props: {
   };
 
   useEffect(() => {
-    retrieveOrganizations();
     retrieveSubscriptionCategories();
     // eslint-disable-next-line
   }, []);
@@ -410,8 +383,6 @@ const CreateListingProviderWithContext = (props: {
       subscriptionUrl={subscriptionUrl}
       isOtherInputDisplayed={isOtherInputDisplayed}
       isDisplaySubscriptionUrlErrorLabel={isDisplaySubscriptionUrlErrorLabel}
-      organizations={organizations}
-      organizationSelection={organizationSelection}
       listingContact={listingContact}
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}

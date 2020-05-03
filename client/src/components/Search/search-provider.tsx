@@ -6,10 +6,7 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
-import {
-  IFiltersOrganization,
-  IFiltersSubscriptionCategory
-} from "./../../utils/utils";
+import { IFiltersSubscriptionCategory } from "./../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
@@ -41,10 +38,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const [subscriptionData, setSubscriptionData] = useState([]);
 
   const [filtersText, setFiltersText] = useState("");
-
-  const [filtersOrganizations, setFiltersOrganizations] = useState(
-    [] as IFiltersOrganization[]
-  );
 
   const [
     filtersSubscriptionCategories,
@@ -91,49 +84,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       retrieveSubscriptionsErrorHandler,
       _userData.user?.auth
     );
-  };
-
-  const retrieveOrganizationsResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-      const organizations = body.organizations as IFiltersOrganization[];
-      const filterOrganizationsData = organizations.map(
-        (organization: IFiltersOrganization) => {
-          return {
-            organizationId: organization.organizationId,
-            name: organization.name,
-            isSelected: true
-          };
-        }
-      );
-      setFiltersOrganizations(filterOrganizationsData);
-    }
-  };
-
-  const retrieveOrganizationsErrorHandler = (error: any) => {
-    console.log(error);
-  };
-
-  const retrieveOrganizations = () => {
-    baseGetRequest(
-      "getorganizations",
-      [],
-      retrieveOrganizationsResponseHandler,
-      retrieveOrganizationsErrorHandler,
-      _userData.user?.auth
-    );
-  };
-
-  const toggleFiltersOrganization = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    organizationId: string
-  ) => {
-    const list = filtersOrganizations.slice(0);
-    let organization = filtersOrganizations.find(
-      organization => organization.organizationId === organizationId
-    ) as IFiltersOrganization;
-    Object.assign(organization, { isSelected: !organization.isSelected });
-    setFiltersOrganizations(list);
   };
 
   const toggleFiltersSubscriptionCategory = (
@@ -232,17 +182,9 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
           .join(",")
       : "";
 
-    const o = filtersOrganizations
-      ? filtersOrganizations
-          .filter(organization => organization.isSelected)
-          .map(organization => organization.organizationId)
-          .join(",")
-      : [];
-
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
         { t: filtersText },
-        { o }, // Subscription organization
         { sc }, // Subscription category
         { gs: filtersGroupSize }, // Group size
         { p: filtersPrice }, // Price
@@ -255,7 +197,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     _throttle,
     filtersText,
     filtersSubscriptionCategories,
-    filtersOrganizations,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
@@ -264,19 +205,16 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   useEffect(() => {
     // retrieveSubscriptions();
-    retrieveOrganizations();
     retrieveSubscriptionCategories();
     // eslint-disable-next-line
   }, []);
 
   const searchFilters = {
-    filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
-    toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,

@@ -5,10 +5,7 @@ import { History } from "history";
 import ProfileCanvas from "./profile-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
-import {
-  IProfileOrganizationData,
-  ISubscriptionData
-} from "./../../utils/utils";
+import { ISubscriptionData, IOrganization } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 const ProfileProviderWithContext = (props: {
@@ -27,9 +24,7 @@ const ProfileProviderWithContext = (props: {
   const profileUserId = params.get("id");
 
   const [firstName, setFirstName] = useState("");
-  const [organizations, setOrganizations] = useState(
-    [] as IProfileOrganizationData[]
-  );
+  const [organization, setOrganization] = useState({} as IOrganization);
   const [joinedDate, setJoinedDate] = useState(-1);
 
   const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
@@ -60,7 +55,7 @@ const ProfileProviderWithContext = (props: {
       console.log(profileData);
 
       setFirstName(profileData.firstName);
-      setOrganizations(profileData.organizations);
+      setOrganization(profileData.organization);
       setJoinedDate(profileData.joinedDate);
       setIsRetrievedProfileDirty(true);
     }
@@ -214,7 +209,7 @@ const ProfileProviderWithContext = (props: {
       archiveSubscription={archiveSubscription}
       deleteSubscription={deleteSubscription}
       firstName={firstName}
-      organizations={organizations}
+      organization={organization}
       joinedDate={joinedDate}
       authoredSubscriptions={authoredSubscriptions}
       isDifferentUser={
