@@ -57,11 +57,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     otherSubscription,
     subscriptionUrl,
     isDisplaySubscriptionUrlErrorLabel,
-    // organizations,
-    // organizationSelection,
     isOtherInputDisplayed,
     handleInputChange,
-    // listingContact,
     listingDescription,
     numberOfPeople,
     price,
@@ -132,6 +129,12 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     );
   };
 
+  const FormLabel = (props: { label: string; isRequired?: boolean }) => {
+    const { label, isRequired } = props;
+    const className = isRequired ? "form-label required-field" : "form-label";
+    return <label className={className}>{label}</label>;
+  };
+
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
       <form className="form-container" onSubmit={handleSubmit} noValidate>
@@ -141,15 +144,13 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         <div className="subscription-fields">
           <div className="form-field">
-            <label className="form-label required-field">
-              Subscription type:
-            </label>
+            <FormLabel label={"Subscription type:"} isRequired={true} />
             {renderSubscriptionCategoryDropdown()}
           </div>
 
           <div className="subscription-field-and-logo">
             <div className="form-field subscription-field">
-              <label className="form-label required-field">Subscription:</label>
+              <FormLabel label={"Subscription:"} isRequired={true} />
               {renderSubscriptionBrandDropdown()}
             </div>
 
@@ -163,9 +164,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
 
         {isOtherInputDisplayed ? (
           <div className="form-field">
-            <label className="form-label required-field">
-              If other, please specify:
-            </label>
+            <FormLabel label={"If other, please specify:"} isRequired={true} />
             <input
               className="form-text-input form-input"
               name={FORM_INPUT_TYPE.OTHER_SUBSCRIPTION}
@@ -180,9 +179,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         ) : null}
 
         <div className="form-field">
-          <label className="form-label required-field">
-            Listing description:
-          </label>
+          <FormLabel label={"Listing description:"} isRequired={true} />
           <Tooltip
             title={"Max 750 characters"}
             aria-label="Max 750 characters"
@@ -204,7 +201,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         </div>
 
         <div className="form-field">
-          <label className="form-label">Link to subscription (optional):</label>
+          <FormLabel label={"Link to subscription (optional):"} />
           <input
             className="form-text-input form-input"
             name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
@@ -221,38 +218,9 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           ) : null}
         </div>
 
-        {/* <h3 className="form-subheader">Membership Information</h3>
-
-        <div className="create-listing-organization-field">
-          <div className="form-field">
-            <label className="form-label">
-              Which organization you are posting to (Choose only one):
-            </label>
-
-            <select
-              className="form-text-input form-input select-input"
-              style={{ maxWidth: 500 }}
-            >
-              {organizations.map((organization, i) => {
-                return (
-                  <option
-                    value={organization.domains[0]}
-                    key={"organization-" + i}
-                  >{`${organization.name} (@${organization.domains[0]})`}</option>
-                );
-              })}
-            </select>
-          </div>
-          <img
-            alt="Organization logo"
-            className="create-listing-organization-logo"
-            src={organizationSelection.logo}
-          />
-        </div> */}
-
         <div className="form-row">
           <div className="form-field">
-            <label className="form-label required-field">Looking for:</label>
+            <FormLabel label={"Looking for:"} isRequired={true} />
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between 1 to 50 people per group"}
@@ -279,9 +247,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
 
           <div className="form-field" style={{ marginLeft: 50 }}>
-            <label className="form-label required-field">
-              Price per person:
-            </label>
+            <FormLabel label={"Price per person:"} isRequired={true} />
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between $0.01 to $100"}
