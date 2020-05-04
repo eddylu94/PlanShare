@@ -126,6 +126,24 @@ export const signUp = (
                 html: mailMessage
               };
 
+              let attempts = 0;
+              const SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS = 5;
+
+              const sendEmail = () => {
+                attempts++;
+                transporter.sendMail(mailOptions, function(sendErr, info) {
+                  if (sendErr) {
+                    console.log("Error sending email");
+                    console.log(sendErr);
+                    if (attempts <= SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS) {
+                      sendEmail();
+                    }
+                  } else {
+                    console.log("Email sent: " + info.response);
+                  }
+                });
+              };
+
               transporter.sendMail(mailOptions, function(sendErr, info) {
                 if (sendErr) {
                   console.log("Error sending email");
