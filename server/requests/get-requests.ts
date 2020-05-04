@@ -67,7 +67,7 @@ export const getValidationEmail = (
 
         console.log("Email retrieved:", email);
         db.close();
-        postSuccess(postRes, {});
+        postSuccess(postRes, { email });
       });
   });
 };
