@@ -53,7 +53,7 @@ const MessagesProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
-  const [socket, setSocket] = useState(null as any);
+  const [sockets, setSockets] = useState({} as any);
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -76,7 +76,7 @@ const MessagesProviderWithContext = (props: {
           return bValue - aValue;
         });
 
-      if (newConversationsList[0]) {
+      if (!conversationId && newConversationsList[0]) {
         setConversationId(newConversationsList[0].conversationId);
       }
 
@@ -147,6 +147,7 @@ const MessagesProviderWithContext = (props: {
     if (conversation) {
       setIsRetrievedConversationsDirty(true);
       console.log(conversation);
+
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
       setFirstName(conversation.firstName);
@@ -176,8 +177,8 @@ const MessagesProviderWithContext = (props: {
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
       retrieveConversationsList();
 
-      if (socket) {
-        socket.emit("send message", "asfsafasfs");
+      if (sockets[conversationId]) {
+        sockets[conversationId].emit("send message", "asfsafasfs");
       } else {
         retrieveConversationById();
       }
@@ -228,15 +229,22 @@ const MessagesProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
+    console.log("***CONVERSATION ID***", conversationId);
     if (conversationId) {
-      setSocket(
-        socketIOClient(SOCKET_URL, {
+      console.log("NEW CONVERSATION ID:", conversationId);
+
+      const currentSockets = Object.assign({}, sockets);
+
+      if (!currentSockets[conversationId]) {
+        currentSockets[conversationId] = socketIOClient(SOCKET_URL, {
           path: SOCKET_IO_PATH,
           query: {
             conversationId
           }
-        })
-      );
+        });
+      }
+
+      setSockets(currentSockets);
     }
 
     retrieveConversationById();
@@ -244,18 +252,27 @@ const MessagesProviderWithContext = (props: {
   }, [conversationId]);
 
   useEffect(() => {
-    if (socket) {
-      socket.on("room joined", (data: any) => {
-        console.log("Room joined:", data);
-      });
+    if (sockets) {
+      const keys = Object.keys(sockets);
+      keys
+        .map(key => sockets[key])
+        .forEach((socket: any) => {
+          socket.off("room joined");
+          socket.off("message received");
 
-      socket.on("message received", () => {
-        console.log("Message received");
-        retrieveConversationById();
-      });
+          socket.on("room joined", (data: any) => {
+            console.log("Room joined:", data);
+          });
+
+          socket.on("message received", (data: any) => {
+            console.log("Message received:", data);
+            console.log(socket.query.conversationId);
+            retrieveConversationById();
+          });
+        });
     }
     // eslint-disable-next-line
-  }, [socket]);
+  }, [sockets]);
 
   const handleBackButtonClick = () => {
     setIsConversationModalOpen(false);

@@ -90,7 +90,7 @@ io.on("connection", (socket: any) => {
   socket.on("send message", (query: any) => {
     console.log("send message");
     console.log(query);
-    io.to(room).emit("message received");
+    io.to(room).emit("message received", room);
   });
 });
 
