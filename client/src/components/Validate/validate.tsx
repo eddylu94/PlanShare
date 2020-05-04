@@ -52,14 +52,62 @@ const ValidateWithContext = (props: {
   };
 
   const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    const target: any = event.target;
-    const name = target.name;
-
-    const index = parseInt(name.replace("validate", ""), 10);
-
-    setInputFields[index]("");
-
     event.target.select();
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    switch (event.key) {
+      case "ArrowLeft":
+        if (index > 0) {
+          inputRefs.current[index - 1].current.focus();
+          setInputFields[index - 1]("");
+        }
+        break;
+      case "ArrowRight":
+        if (index < NUMBER_OF_VALIDATION_TEXT_INPUTS - 1) {
+          inputRefs.current[index + 1].current.focus();
+          setInputFields[index + 1]("");
+        }
+        break;
+      case "Backspace":
+        if (index > 0) {
+          inputRefs.current[index - 1].current.focus();
+          setInputFields[index - 1]("");
+        }
+        break;
+      case "Delete":
+        event.preventDefault();
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handlePaste = (
+    event: React.ClipboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    event.clipboardData.items[0].getAsString(text => {
+      const length = Math.min(
+        text.length,
+        NUMBER_OF_VALIDATION_TEXT_INPUTS - index
+      );
+      const croppedString = text.substring(0, length);
+
+      for (let i = 0; i < croppedString.length; i++) {
+        setInputFields[index + i](croppedString[i]);
+      }
+
+      const focusIndex = Math.min(
+        index + croppedString.length,
+        NUMBER_OF_VALIDATION_TEXT_INPUTS - 1
+      );
+      inputRefs.current[focusIndex].current.focus();
+    });
+    event.preventDefault();
   };
 
   const validateInputField = (
@@ -79,6 +127,8 @@ const ValidateWithContext = (props: {
       maxLength={1}
       onChange={handleInputChange}
       onFocus={handleFocus}
+      onKeyDown={e => handleKeyDown(e, i)}
+      onPaste={e => handlePaste(e, i)}
     />
   );
 
