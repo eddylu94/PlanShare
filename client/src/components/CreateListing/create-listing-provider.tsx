@@ -104,8 +104,6 @@ const CreateListingProviderWithContext = (props: {
 
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
 
-  const [listingContact, setListingContact] = useState("");
-
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
   const [listingDescription, setListingDescription] = useState("");
@@ -153,9 +151,6 @@ const CreateListingProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
         setSubscriptionUrl(value);
-        break;
-      case FORM_INPUT_TYPE.LISTING_CONTACT:
-        setListingContact(value);
         break;
       case FORM_INPUT_TYPE.LISTING_DESCRIPTION:
         setListingDescription(value);
@@ -253,7 +248,6 @@ const CreateListingProviderWithContext = (props: {
         subscriptionCategory: subscriptionCategorySelection,
         subscriptionBrand: subscriptionBrandSelection,
         subscriptionUrl,
-        listingContact,
         listingDescription,
         numberOfPeople,
         price
@@ -343,7 +337,6 @@ const CreateListingProviderWithContext = (props: {
     );
     setIsFormDisabled(newIsFormDisabled);
   }, [
-    listingContact,
     listingDescription,
     numberOfPeople,
     price,
@@ -383,7 +376,6 @@ const CreateListingProviderWithContext = (props: {
       subscriptionUrl={subscriptionUrl}
       isOtherInputDisplayed={isOtherInputDisplayed}
       isDisplaySubscriptionUrlErrorLabel={isDisplaySubscriptionUrlErrorLabel}
-      listingContact={listingContact}
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
       price={price}

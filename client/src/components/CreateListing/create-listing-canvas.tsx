@@ -21,7 +21,6 @@ interface ICreateListingCanvasProps {
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
-  listingContact: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;

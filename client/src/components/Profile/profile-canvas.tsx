@@ -42,15 +42,15 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
 
   const renderOrganization = () => {
     return (
-      <div className="profile-organization-container">
-        <div className="profile-organization-header">Member of:</div>
+      <div className="profile-detail-container">
+        <div className="profile-detail-header">Member of:</div>
         <div className="profile-organization">
           <img
             alt="Organization logo"
             className="profile-organization-logo"
             src={organization.logo}
           />
-          <div className="profile-organization-name">{organization.name}</div>
+          <div className="profile-detail-name">{organization.name}</div>
         </div>
       </div>
     );
@@ -140,20 +140,6 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   return (
     <div className="page-container">
       <div className="profile-container">
-        {isDifferentUser ? (
-          <div>
-            <Link to={`messages?id=${otherUserId}`}>
-              <button className="profile-message-button">
-                Message
-                <img
-                  alt="Posted date"
-                  className="profile-message-icon"
-                  src="/send_icon_white.png"
-                />
-              </button>
-            </Link>
-          </div>
-        ) : null}
         <div className="profile-wrapper">
           <div className="profile-header">
             <img
@@ -163,15 +149,35 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
             />
             <div className="profile-name-and-joined-date">
               <div className="profile-first-name">{firstName}</div>
-              <div className="profile-joined-date">
-                Member since:
-                <span className="profile-joined-date-value">
-                  {new Date(joinedDate).toDateString()}
-                </span>
-              </div>
             </div>
           </div>
+          {isDifferentUser ? (
+            <div className="profile-detail-container">
+              <div className="profile-detail-header">Contact:</div>
+              <div className="profile-message-link-wrapper">
+                <Link to={`messages?id=${otherUserId}`}>
+                  <button className="profile-message-button">
+                    {`Message ${firstName}`}
+                    <img
+                      alt="Posted date"
+                      className="profile-message-icon"
+                      src="/send_icon_white.png"
+                    />
+                  </button>
+                </Link>
+              </div>
+            </div>
+          ) : null}
           {renderOrganization()}
+          <div className="profile-detail-container">
+            <div className="profile-detail-header">Member since:</div>
+            <div
+              className="profile-joined-date-value profile-detail-name"
+              style={{ marginLeft: 0 }}
+            >
+              {new Date(joinedDate).toDateString()}
+            </div>
+          </div>
         </div>
       </div>
       {profileSubscriptions}

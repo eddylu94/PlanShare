@@ -144,6 +144,10 @@ body {
   font-weight: 450;
 }
 
+.subscription-card-author a {
+  color: #6c5dbd;
+}
+
 .subscription-card-description-container {
   display: flex;
   flex-direction: row;
@@ -715,8 +719,11 @@ input[disabled] {
   max-width: 500px;
 }
 
+.profile-message-link-wrapper a {
+  text-decoration: none;
+}
+
 .profile-message-button {
-  position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -748,6 +755,7 @@ input[disabled] {
 .profile-authored-subscriptions {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   max-width: 540px;
 }
 

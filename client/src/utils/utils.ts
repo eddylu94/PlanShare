@@ -44,7 +44,6 @@ export interface ISubscriptionData {
   _id: string;
   subscriptionTypeSelection: string;
   subscriptionBrand: ISubscription;
-  listingContact: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;

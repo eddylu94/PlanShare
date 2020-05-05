@@ -660,7 +660,7 @@
   }
 
   .profile-name-and-joined-date {
-    margin-left: 20px;
+    margin-left: 15px;
     display: flex;
     flex-direction: column;
   }
@@ -678,18 +678,17 @@
 
   .profile-joined-date-value {
     font-weight: bold;
-    margin-left: 10px;
   }
 
-  .profile-organization-container {
-    margin-top: 30px;
+  .profile-detail-container {
+    margin-top: 20px;
   }
 
-  .profile-organization-header {
+  .profile-detail-header {
     font-size: 16px;
     font-weight: 500;
     color: #333333;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .profile-organization {
@@ -698,11 +697,11 @@
     align-items: center;
   }
 
-  .profile-organization-name {
+  .profile-detail-name {
     font-size: 16px;
-    font-weight: 500;
-    color: #333333;
-    margin-left: 20px;
+    font-weight: 350;
+    color: #686868;
+    margin-left: 10px;
   }
 
   .profile-organization-email {
