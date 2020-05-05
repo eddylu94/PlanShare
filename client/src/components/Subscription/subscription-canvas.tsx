@@ -8,10 +8,20 @@ import { ISubscriptionData } from "./../../utils/utils";
 interface ISubscriptionCanvasProps {
   subscriptionData: ISubscriptionData;
   currentUser: string;
+  isGuest?: boolean;
 }
 
 const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
-  const { subscriptionData, currentUser } = props;
+  const { subscriptionData, currentUser, isGuest } = props;
+
+  if (isGuest) {
+    return (
+      <div className="subscription-guest-login-message">
+        Please log in to view subscription details:
+        <Link to="/login">Login</Link>
+      </div>
+    );
+  }
 
   if (!subscriptionData) {
     return null;

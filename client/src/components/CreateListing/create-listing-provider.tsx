@@ -29,7 +29,7 @@ const CreateListingProviderWithContext = (props: {
   const { history, location } = props;
 
   if (!_userData.user?.auth) {
-    history.push("/signup");
+    history.push("/login");
   }
 
   var params = new URLSearchParams(location.search);

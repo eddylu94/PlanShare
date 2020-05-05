@@ -11,6 +11,8 @@ const NavBarWithContext = (props: {
 }) => {
   const { userData, history } = props;
 
+  console.log(history);
+
   const logoutHandler = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
@@ -33,21 +35,22 @@ const NavBarWithContext = (props: {
 
   const navBarLinks = [];
 
-  if (isUser) {
-    navBarLinks.push(
-      <Link to="/">
-        <img alt="Home" className="navbar-home-icon" src={"./icon.png"} />
-        <span className="navbar-title">{TITLE}</span>
-      </Link>
-    );
-    navBarLinks.push();
-  }
+  navBarLinks.push(
+    <Link to="/">
+      <img alt="Home" className="navbar-home-icon" src={"./icon.png"} />
+      <span className="navbar-title">{TITLE}</span>
+    </Link>
+  );
 
   const navBarListItems = navBarLinks.map((link, i) => (
     <li key={"nav-bar-item-" + i}>{link}</li>
   ));
 
-  return isUser ? (
+  const isSignUpLoginPage =
+    history.location.pathname === "/signup" ||
+    history.location.pathname === "/login";
+
+  return !isSignUpLoginPage ? (
     <nav className="navbar">
       <ul>{navBarListItems}</ul>
       <ul>

@@ -43,7 +43,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     price,
     numberOfPeople,
     userId,
-    otherSubscription
+    otherSubscription,
+    organization
   } = subscription;
 
   const renderSubscriptionLogo = () => (
@@ -56,22 +57,31 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
   const renderSubsciptionCardAuthor = () => (
     <div className="subscription-card-author">
-      <div>
-        {!isProfile ? (
-          <>
-            Posted by{" "}
+      {!isProfile ? (
+        <>
+          by{" "}
+          {userId ? (
             <Link to={`profile?id=${userId}`}>
               <span className="subscription-card-first-name">{firstName}</span>{" "}
             </Link>
-          </>
-        ) : null}
-        {/* at {organization.name} */}
-      </div>
-      {/* <img
-        alt="Organization logo"
-        className="subscription-card-organization-logo"
-        src={organization.logo}
-      /> */}
+          ) : (
+            <div className={"subscription-author-detail"}>
+              <span className="b" style={{ margin: "0 5px" }}>
+                {firstName}
+              </span>{" "}
+              at{" "}
+              <span className="b" style={{ marginLeft: 5 }}>
+                {organization.name}
+              </span>
+              <img
+                alt="Organization logo"
+                className="subscription-card-organization-logo"
+                src={organization.logo}
+              />
+            </div>
+          )}
+        </>
+      ) : null}
     </div>
   );
 

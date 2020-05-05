@@ -29,10 +29,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const { history } = props;
 
-  if (!_userData.user?.userId) {
-    history.push("/signup");
-  }
-
   const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
 
   const [subscriptionData, setSubscriptionData] = useState([]);
@@ -78,7 +74,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const retrieveSubscriptions = (query?: { [key: string]: any }[]) => {
     baseGetRequest(
-      "getsubscriptions",
+      _userData.user?.userId ? "getsubscriptions" : "getsubscriptionsasguest",
       query ?? [],
       retrieveSubscriptionsResponseHandler,
       retrieveSubscriptionsErrorHandler,
@@ -137,7 +133,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const handleSubscriptionCardClick = (subscriptionId: string) => {
-    setSelectedSubscription(subscriptionId);
+    setSelectedSubscription(subscriptionId ? subscriptionId : "guest");
   };
 
   const closeModal = () => {

@@ -22,6 +22,7 @@ import {
   getSubscriptionCategories,
   getSubscriptionBrands,
   getSubscriptions,
+  getSubscriptionsAsGuest,
   getProfile,
   getSubscription,
   getSubscriptionsByAuthor,
@@ -99,6 +100,7 @@ getRequestBuilder("/getvalidationemail", getValidationEmail);
 getRequestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
 getRequestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
 getRequestBuilder("/getsubscriptions", getSubscriptions);
+getRequestBuilder("/getsubscriptionsasguest", getSubscriptionsAsGuest);
 getRequestBuilder("/getprofile", getProfile);
 getRequestBuilder("/getsubscription", getSubscription);
 getRequestBuilder("/getsubscriptionsbyauthor", getSubscriptionsByAuthor);

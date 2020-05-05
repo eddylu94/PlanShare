@@ -39,12 +39,15 @@ const SubscriptionProviderWithContext = (props: {
   };
 
   useEffect(() => {
-    retrieveSubscription();
+    if (subscriptionId && subscriptionId !== "guest") {
+      retrieveSubscription();
+    }
     // eslint-disable-next-line
   }, [subscriptionId]);
 
   return (
     <SubscriptionCanvas
+      isGuest={!!(subscriptionId && subscriptionId === "guest")}
       subscriptionData={subscriptionData}
       currentUser={_userData.user?.userId as string}
     />

@@ -144,8 +144,29 @@ body {
   font-weight: 450;
 }
 
+.subscription-author-detail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .subscription-card-author a {
   color: #6c5dbd;
+}
+
+.subscription-guest-login-message {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  text-align: center;
+  font-weight: 450;
+  color: #686868;
+}
+
+.subscription-guest-login-message a {
+  margin-top: 10px;
+  font-weight: 500;
 }
 
 .subscription-card-description-container {
