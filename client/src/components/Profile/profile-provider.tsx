@@ -23,6 +23,8 @@ const ProfileProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const profileUserId = params.get("id");
 
+  const [selectedSubscription, setSelectedSubscription] = useState("");
+
   const [firstName, setFirstName] = useState("");
   const [organization, setOrganization] = useState({} as IOrganization);
   const [joinedDate, setJoinedDate] = useState(-1);
@@ -40,6 +42,14 @@ const ProfileProviderWithContext = (props: {
   }
 
   console.log(_userData);
+
+  const closeModal = () => {
+    setSelectedSubscription("");
+  };
+
+  const handleSubscriptionCardClick = (subscriptionId: string) => {
+    setSelectedSubscription(subscriptionId);
+  };
 
   const retrieveProfileResponseHandler = (data: any) => {
     if (
@@ -204,6 +214,9 @@ const ProfileProviderWithContext = (props: {
 
   return isRetrievedProfileDirty ? (
     <ProfileCanvas
+      selectedSubscription={selectedSubscription}
+      closeModal={closeModal}
+      handleSubscriptionCardClick={handleSubscriptionCardClick}
       currentUserId={_userData.user?.userId as string}
       archivedSubscriptions={archivedSubscriptions}
       archiveSubscription={archiveSubscription}

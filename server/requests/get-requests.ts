@@ -445,7 +445,7 @@ export const getSubscriptionsByAuthor = (
 
                     db.close();
                     postSuccess(postRes, {
-                      findRes
+                      subscriptions: findRes
                     });
                   })
                   .catch(findErr => {

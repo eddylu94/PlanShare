@@ -2,12 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "./../Search/search-subscription-card";
+import Subscription from "./../Subscription/subscription-provider";
 import { ISubscriptionData, IOrganization } from "./../../utils/utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface IProfileCanvasProps {
+  selectedSubscription: string;
   firstName: string;
   organization: IOrganization;
   joinedDate: number;
@@ -15,6 +17,8 @@ interface IProfileCanvasProps {
   isDifferentUser: boolean;
   currentUserId: string;
   otherUserId: string;
+  closeModal: () => void;
+  handleSubscriptionCardClick: (subscriptionId: string) => void;
   archiveSubscription: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
@@ -28,6 +32,7 @@ interface IProfileCanvasProps {
 
 const ProfileCanvas = (props: IProfileCanvasProps) => {
   const {
+    selectedSubscription,
     firstName,
     organization,
     joinedDate,
@@ -36,6 +41,8 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     isDifferentUser,
     currentUserId,
     otherUserId,
+    closeModal,
+    handleSubscriptionCardClick,
     archiveSubscription,
     deleteSubscription
   } = props;
@@ -71,7 +78,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   } else {
     deviceMode = DEVICE_MODE.LARGE_DESKTOP;
   }
-
+  debugger;
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (
       <SearchSubscriptionCard
@@ -82,6 +89,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
         isProfile={true}
         isDisplayButtons={!isDifferentUser}
+        handleSubscriptionCardClick={handleSubscriptionCardClick}
       />
     );
   });
@@ -99,6 +107,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
           isProfile={true}
           isDisplayButtons={!isDifferentUser}
           isArchived={true}
+          handleSubscriptionCardClick={handleSubscriptionCardClick}
         />
       );
     });
@@ -139,6 +148,19 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
 
   return (
     <div className="page-container">
+      {selectedSubscription ? (
+        <>
+          <div className="overlay" onClick={closeModal}></div>
+          <div className="search-modal-container">
+            <div className="search-modal">
+              <button className="close-button" onClick={closeModal}>
+                <img alt="Close" className="close-icon" src="/close_icon.png" />
+              </button>
+              <Subscription subscriptionId={selectedSubscription} />
+            </div>
+          </div>
+        </>
+      ) : null}
       <div className="profile-container">
         <div className="profile-wrapper">
           <div className="profile-header">
