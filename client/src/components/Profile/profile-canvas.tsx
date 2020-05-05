@@ -78,7 +78,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   } else {
     deviceMode = DEVICE_MODE.LARGE_DESKTOP;
   }
-  debugger;
+
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (
       <SearchSubscriptionCard

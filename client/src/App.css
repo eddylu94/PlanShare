@@ -159,15 +159,40 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  flex-shrink: 0;
   justify-content: center;
   text-align: center;
   font-weight: 450;
   color: #686868;
+  height: 100%;
 }
 
-.subscription-guest-login-message a {
-  margin-top: 10px;
+.subscription-guest-login-message-link-wrapper {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.subscription-guest-login-message-link-wrapper a {
+  text-decoration: none;
+}
+
+.subscription-guest-login-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  background-color: #6c5dbd;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 5px 15px;
   font-weight: 500;
+  color: #ffffff;
+  border-radius: 5px;
+  transition: all 0.1s ease-in-out;
 }
 
 .subscription-card-description-container {
@@ -213,8 +238,6 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  top: 20px;
-  right: 20px;
   cursor: pointer;
   background-color: #6c5dbd;
   border: none;

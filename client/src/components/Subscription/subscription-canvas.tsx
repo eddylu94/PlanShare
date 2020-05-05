@@ -17,8 +17,12 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
   if (isGuest) {
     return (
       <div className="subscription-guest-login-message">
-        Please log in to view subscription details:
-        <Link to="/login">Login</Link>
+        Please log in to view subscription details
+        <div className="subscription-guest-login-message-link-wrapper">
+          <Link to="/login">
+            <button className="subscription-guest-login-button">Login</button>
+          </Link>
+        </div>
       </div>
     );
   }
