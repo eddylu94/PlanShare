@@ -60,26 +60,30 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       {!isProfile ? (
         <>
           by{" "}
-          {userId ? (
-            <Link to={`profile?id=${userId}`}>
-              <span className="subscription-card-first-name">{firstName}</span>{" "}
-            </Link>
-          ) : (
-            <div className={"subscription-author-detail"}>
-              <span className="b" style={{ margin: "0 5px" }}>
-                {firstName}
-              </span>{" "}
-              at{" "}
-              <span className="b" style={{ marginLeft: 5 }}>
-                {organization.name}
-              </span>
-              <img
-                alt="Organization logo"
-                className="subscription-card-organization-logo"
-                src={organization.logo}
-              />
-            </div>
-          )}
+          <div className={"subscription-author-detail"}>
+            {userId ? (
+              <Link to={`profile?id=${userId}`}>
+                <span className="subscription-card-first-name">
+                  {firstName}
+                </span>{" "}
+              </Link>
+            ) : (
+              <>
+                <span className="b" style={{ marginRight: 5 }}>
+                  {firstName}
+                </span>{" "}
+                at{" "}
+                <span className="b" style={{ marginLeft: 5 }}>
+                  {organization.name}
+                </span>
+                <img
+                  alt="Organization logo"
+                  className="subscription-card-organization-logo"
+                  src={organization.logo}
+                />
+              </>
+            )}
+          </div>
         </>
       ) : null}
     </div>
