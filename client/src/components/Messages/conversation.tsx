@@ -113,7 +113,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           <input
             type="text"
             className="conversation-text-input"
-            placeholder="Search for a subscription"
+            placeholder="Send message"
             value={text}
             onChange={handleChange}
           />
