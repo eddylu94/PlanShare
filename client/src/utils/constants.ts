@@ -22,7 +22,8 @@ export const STATUS_MESSAGE = {
     "user_requires_access_for_subscription",
   PROFILE_NOT_FOUND: "profile_not_found",
   CANNOT_FIND_CONVERSATION: "cannot_find_conversation",
-  CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list"
+  CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list",
+  ACCOUNT_LOCKED: "account_locked"
 };
 
 export const DEVICE_MODE = {

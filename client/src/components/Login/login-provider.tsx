@@ -76,6 +76,12 @@ const LoginProviderWithContext = (props: {
             console.log(errorMessage);
             alert(errorMessage);
             break;
+          case STATUS_MESSAGE.ACCOUNT_LOCKED:
+            errorMessage =
+              "We're sorry, due to the number of recent login attempts, this account has been temporarily locked";
+            console.log(errorMessage);
+            alert(errorMessage);
+            break;
           case STATUS_MESSAGE.UNKNOWN_ERROR:
           default:
             errorMessage = "An unknown error has occured";
