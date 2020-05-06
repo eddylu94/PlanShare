@@ -18,50 +18,17 @@ import {
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
-    // filtersOrganizations,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
-    // toggleFiltersOrganization,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange,
     handleDaysActiveChange
   } = props;
-
-  // const organizationCheckboxes = filtersOrganizations.map(
-  //   (organization, index) => {
-  //     return (
-  //       <FormControlLabel
-  //         key={"filters-organization-" + index}
-  //         style={{ color: "#000000" }}
-  //         control={
-  //           <Checkbox
-  //             checked={organization.isSelected}
-  //             // TODO: Remove lambda expression
-  //             onChange={e =>
-  //               toggleFiltersOrganization(e, organization.organizationId)
-  //             }
-  //             name={organization.name}
-  //             style={{
-  //               padding: 0,
-  //               margin: "5px 5px 5px 20px",
-  //               color: "#6C5DBD"
-  //             }}
-  //           />
-  //         }
-  //         label={
-  //           <Typography style={{ fontSize: 15 }}>
-  //             {organization.name}
-  //           </Typography>
-  //         }
-  //       />
-  //     );
-  //   }
-  // );
 
   const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
     (category, index) => {
@@ -134,11 +101,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
 
   return (
     <div className={filterPaneClassName}>
-      {/* <FormControl component="fieldset" style={{ flexShrink: 0 }}>
-        <FiltersFormLabel label={"Organization"} />
-        <FormGroup>{organizationCheckboxes}</FormGroup>
-      </FormControl> */}
-
       <FormControl component="fieldset" style={{ flexShrink: 0 }}>
         <FiltersFormLabel label={"Category"} />
         <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>

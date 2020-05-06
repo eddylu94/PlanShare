@@ -8,6 +8,7 @@ import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import { IFiltersSubscriptionCategory } from "./../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
+import SearchCanvasPlaceholder from "./search-canvas-placeholder";
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
@@ -232,7 +233,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
           closeModal={closeModal}
           toggleFiltersDrawer={toggleFiltersDrawer}
         />
-      ) : null}
+      ) : (
+        <div className="animate-flicker">
+          <SearchCanvasPlaceholder />
+        </div>
+      )}
     </div>
   );
 };
