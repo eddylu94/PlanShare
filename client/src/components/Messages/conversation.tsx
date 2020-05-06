@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import { IMessageData } from "./../../utils/utils";
 
+import Scrollbars from "react-custom-scrollbars";
+
 interface IConversationCanvasProps {
   currentUserId: string;
   firstName: string;
@@ -101,10 +103,18 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           <span className="conversation-header-first-name">{firstName}</span>
         </Link>
       </div>
-      <div className="conversation-body">
-        {renderMessages(messages)}
-        <div ref={messagesEndRef} />
-      </div>
+      <Scrollbars
+        style={{
+          display: "flex",
+          flex: 1,
+          flexDirection: "column"
+        }}
+      >
+        <div className="conversation-body">
+          {renderMessages(messages)}
+          <div ref={messagesEndRef}></div>
+        </div>
+      </Scrollbars>
       <div className="conversation-footer">
         <div className="conversation-warning">
           Never share your bank account or debit/credit card information
