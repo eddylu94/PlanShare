@@ -390,7 +390,8 @@ export const getSubscription = (
 
           if (
             !(
-              findRes._id.toString() === subscriptionFindRes.userId ||
+              findRes._id.toString() ===
+                subscriptionFindRes.userId.toString() ||
               subscriptionFindRes.status === SUBSCRIPTION_STATUS.ACTIVE
             )
           ) {
