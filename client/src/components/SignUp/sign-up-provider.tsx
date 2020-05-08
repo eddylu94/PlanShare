@@ -80,9 +80,22 @@ const SignUpProviderWithContext = (props: {
   };
 
   const validateEmail = (email: string) => {
+    email = email.toLocaleLowerCase();
+
     // eslint-disable-next-line
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email.toLowerCase());
+
+    const validDomains = ["microsoft.com", "linkedin.com", "github.com"];
+
+    const isValidDomain = !!validDomains.filter(validDomain => {
+      const domain = "@" + validDomain;
+      return (
+        email.includes(domain) &&
+        email.indexOf(domain) === email.length - domain.length
+      );
+    }).length;
+
+    return re.test(email.toLowerCase()) && isValidDomain;
   };
 
   const validatePass1 = (pass1: string) => {

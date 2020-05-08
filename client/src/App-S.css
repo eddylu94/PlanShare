@@ -718,6 +718,18 @@
     margin: 30px 0 10px 0;
   }
 
+  .organizations-container {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .organizations-header {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    margin: 0 0 10px 0;
+  }
+
   .settings-container {
     padding: 20px;
     border-radius: 10px;

@@ -811,6 +811,40 @@ input[disabled] {
   border-radius: 50%;
 }
 
+.organizations-container {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 10px #d8d8d8;
+  max-width: 500px;
+}
+
+.organizations-subheader {
+  color: #333333;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.organizations-organization {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 5px;
+}
+
+.organization-logo {
+  width: 50px;
+  height: 50px;
+}
+
+.organizations-label {
+  font-size: 20px;
+  font-weight: 500;
+  color: #686868;
+  margin-left: 10px;
+}
+
 .settings-container {
   display: flex;
   flex-direction: column;

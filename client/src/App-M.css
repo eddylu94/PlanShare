@@ -128,7 +128,7 @@
     width: 600px;
     height: 510px;
     border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 
   .subscription-icons {
@@ -721,6 +721,18 @@
     font-weight: 500;
     color: #686868;
     margin: 30px 0 10px 0;
+  }
+
+  .organizations-container {
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .organizations-header {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333333;
+    margin: 0 0 10px 0;
   }
 
   .settings-container {
