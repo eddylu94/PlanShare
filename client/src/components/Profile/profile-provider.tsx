@@ -200,6 +200,9 @@ const ProfileProviderWithContext = (props: {
   };
 
   useEffect(() => {
+    retrieveProfile();
+    retrieveSubscriptionsByUser();
+
     if (!profileUserId || _userData.user?.userId === profileUserId) {
       retrieveArchivedSubscriptions();
     }
