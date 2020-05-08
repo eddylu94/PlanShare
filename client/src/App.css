@@ -122,10 +122,6 @@ body {
   font-size: 16px;
 }
 
-.intro-list {
-  margin-top: 15px;
-}
-
 .intro-logo-and-title {
   display: flex;
   flex-direction: row;
@@ -288,7 +284,7 @@ body {
   flex-direction: row;
   flex-grow: 1;
   border-top: 1px solid #cccccc;
-  margin: 0px 20px;
+  margin: 15px 30px;
 }
 
 .signup-form-container {
