@@ -18,8 +18,10 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     return (
       <div className="subscription-guest-login-message">
         <div className="subscription-guest-login-message-wrapper">
-          Please <Link to="/login">log in</Link> or{" "}
-          <Link to="/signup">sign up</Link> to view subscription details
+          <span>
+            Please <Link to="/login">log in</Link> or{" "}
+            <Link to="/signup">sign up</Link> to view subscription details
+          </span>
         </div>
       </div>
     );
