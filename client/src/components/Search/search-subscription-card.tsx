@@ -98,11 +98,13 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     return (
       <div className="subscription-card-info">
         <div className="subscription-card-info-name">{name}</div>
-        <div className="subscription-card-description-container">
-          <div className="subscription-card-description">
-            <span>{listingDescription}</span>
+        {listingDescription ? (
+          <div className="subscription-card-description-container">
+            <div className="subscription-card-description">
+              <span>{listingDescription}</span>
+            </div>
           </div>
-        </div>
+        ) : null}
         {!isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
       </div>
     );

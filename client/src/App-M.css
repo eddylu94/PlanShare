@@ -126,7 +126,7 @@
 
   .intro {
     width: 600px;
-    height: 510px;
+    height: 550px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
@@ -144,7 +144,7 @@
   .signup-form-container {
     width: 600px;
     max-width: 600px;
-    height: 510px;
+    height: 550px;
     padding: 24px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
