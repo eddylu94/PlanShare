@@ -80,6 +80,16 @@ export const KEYBOARD_CHAR_CODE = {
   SPACE: 32
 };
 
+export const log = (value: any, params?: any) => {
+  if (process.env.NODE_ENV === "development") {
+    if (params) {
+      console.log(value, params);
+    } else {
+      console.log(value);
+    }
+  }
+};
+
 export const getDomain = (emailAddress: string) => {
   const atSign = emailAddress.indexOf("@");
   return emailAddress.substring(atSign + 1);

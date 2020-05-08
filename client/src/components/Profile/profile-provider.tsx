@@ -5,7 +5,7 @@ import { History } from "history";
 import ProfileCanvas from "./profile-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
-import { ISubscriptionData, IOrganization } from "./../../utils/utils";
+import { log, ISubscriptionData, IOrganization } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 const ProfileProviderWithContext = (props: {
@@ -41,7 +41,7 @@ const ProfileProviderWithContext = (props: {
     history.push("/signup");
   }
 
-  console.log(_userData);
+  log(_userData);
 
   const closeModal = () => {
     setSelectedSubscription("");
@@ -56,13 +56,13 @@ const ProfileProviderWithContext = (props: {
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
     ) {
-      console.log("User not validated");
+      log("User not validated");
       history.push("/validate");
     }
 
     const profileData = data?.body?.profileData;
     if (profileData) {
-      console.log(profileData);
+      log(profileData);
 
       setFirstName(profileData.firstName);
       setOrganization(profileData.organization);
@@ -72,7 +72,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveProfileErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveProfile = () => {
@@ -93,25 +93,25 @@ const ProfileProviderWithContext = (props: {
   const retrieveSubscriptionsByUserResponseHandler = (data: any) => {
     const authoredSubscriptions = data?.body?.subscriptions;
     if (authoredSubscriptions) {
-      console.log(authoredSubscriptions);
+      log(authoredSubscriptions);
       setAuthoredSubscriptions(authoredSubscriptions);
     }
   };
 
   const retrieveSubscriptionsByUserErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveArchivedSubscriptionsResponseHandler = (data: any) => {
     const newArchivedSubscriptions = data?.body?.subscriptions;
     if (newArchivedSubscriptions) {
-      console.log(newArchivedSubscriptions);
+      log(newArchivedSubscriptions);
       setArchivedSubscriptions(newArchivedSubscriptions);
     }
   };
 
   const retrieveArchivedSubscriptionsErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscriptionsByUser = () => {
@@ -130,7 +130,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const handleArchiveSubscriptionResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       retrieveSubscriptionsByUser();
       retrieveArchivedSubscriptions();
@@ -141,7 +141,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const handleArchiveSubscriptionErrorHandler = (err: any) => {
-    console.log(err);
+    log(err);
   };
 
   const archiveSubscription = (
@@ -161,7 +161,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const handleDeleteSubscriptionResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       retrieveSubscriptionsByUser();
       retrieveArchivedSubscriptions();
@@ -170,7 +170,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const handleDeleteSubscriptionErrorHandler = (err: any) => {
-    console.log(err);
+    log(err);
   };
 
   const deleteSubscription = (

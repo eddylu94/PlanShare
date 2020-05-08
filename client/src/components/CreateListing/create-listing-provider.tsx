@@ -8,6 +8,7 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import {
+  log,
   ISubscriptionCategory,
   ISubscriptionBrand,
   isValidURL
@@ -43,14 +44,14 @@ const CreateListingProviderWithContext = (props: {
   const [isUserSelected, setIsUserSelected] = useState(false); // Whether the user has selected a subscription type
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
 
     const newSubscriptionData = data?.body?.subscriptionData;
     if (newSubscriptionData) {
       setIsRetrievedListingCreationDataDirty(true);
 
-      console.log(newSubscriptionData);
-      console.log(newSubscriptionData.subscriptionBrand.type);
+      log(newSubscriptionData);
+      log(newSubscriptionData.subscriptionBrand.type);
       setSubscriptionCategorySelection(
         newSubscriptionData.subscriptionCategory
       );
@@ -64,7 +65,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscription = () => {
@@ -171,7 +172,7 @@ const CreateListingProviderWithContext = (props: {
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
     ) {
-      console.log("User not validated");
+      log("User not validated");
       history.push("/validate");
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
@@ -189,7 +190,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscriptionCategories = () => {
@@ -217,7 +218,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionBrandsErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscriptionBrands = (selection: string) => {
@@ -231,7 +232,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmitResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
 
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       history.push("/search");
@@ -239,7 +240,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmitErrorHandler = (err: any) => {
-    console.log(err);
+    log(err);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -254,7 +255,7 @@ const CreateListingProviderWithContext = (props: {
       }
     };
 
-    console.log(subscriptionId);
+    log(subscriptionId);
     if (subscriptionId) {
       Object.assign(postRequestData.subscriptionData, { subscriptionId });
     }

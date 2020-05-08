@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import SubscriptionCanvas from "./subscription-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest } from "./../../base-requests";
+import { log } from "./../../utils/utils";
 
 const SubscriptionProviderWithContext = (props: {
   userData: IUserContext;
@@ -15,17 +16,17 @@ const SubscriptionProviderWithContext = (props: {
   const [subscriptionData, setSubscriptionData] = useState(null as any);
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
 
     const newSubscriptionData = data?.body?.subscriptionData;
     if (newSubscriptionData) {
-      console.log(newSubscriptionData);
+      log(newSubscriptionData);
       setSubscriptionData(newSubscriptionData);
     }
   };
 
   const retrieveSubscriptionErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscription = () => {

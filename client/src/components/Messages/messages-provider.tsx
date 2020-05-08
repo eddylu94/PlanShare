@@ -11,6 +11,7 @@ import {
   SOCKET_URL
 } from "./../../base-requests";
 import {
+  log,
   IConversationSummary,
   IConversationData,
   IMessageData
@@ -86,7 +87,7 @@ const MessagesProviderWithContext = (props: {
         retrieveConversation();
       }
 
-      console.log(newConversationsList);
+      log(newConversationsList);
       setConversationsList(newConversationsList);
     }
   };
@@ -108,14 +109,14 @@ const MessagesProviderWithContext = (props: {
           return bValue - aValue;
         });
 
-      console.log(newConversationsList);
+      log(newConversationsList);
       setConversationsList(newConversationsList);
     }
   };
 
   const retrieveConversationsListErrorHandler = (error: any) => {
     setIsRetrievedConversationsDirty(true);
-    console.log(error);
+    log(error);
   };
 
   const retrieveConversationsList = (isConversationsListOnly?: boolean) => {
@@ -133,7 +134,7 @@ const MessagesProviderWithContext = (props: {
   const retrieveConversationResponseHandler = (data: any) => {
     const conversation = data?.body?.conversation as IConversationData;
     if (conversation) {
-      console.log(conversation);
+      log(conversation);
       setConversationId(conversation.conversationId);
       setInitialConversationId(conversation.conversationId);
       setFirstName(conversation.firstName);
@@ -148,7 +149,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversationErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveConversation = () => {
@@ -170,7 +171,7 @@ const MessagesProviderWithContext = (props: {
     const conversation = data?.body?.conversation as IConversationData;
     if (conversation) {
       setIsRetrievedConversationsDirty(true);
-      console.log(conversation);
+      log(conversation);
 
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
@@ -181,7 +182,7 @@ const MessagesProviderWithContext = (props: {
 
   const retrieveConversationByIdErrorHandler = (error: any) => {
     setIsRetrievedConversationsDirty(true);
-    console.log(error);
+    log(error);
   };
 
   const retrieveConversationById = () => {
@@ -197,7 +198,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const handleSubmitResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
       retrieveConversationsList();
 
@@ -210,7 +211,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const handleSubmitErrorHandler = (err: any) => {
-    console.log(err);
+    log(err);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -232,7 +233,7 @@ const MessagesProviderWithContext = (props: {
       conversationId,
       message: text
     };
-    console.log(postRequestData);
+    log(postRequestData);
 
     basePostRequest(
       "sendmessage",
@@ -253,9 +254,8 @@ const MessagesProviderWithContext = (props: {
   }, []);
 
   useEffect(() => {
-    console.log("***CONVERSATION ID***", conversationId);
     if (conversationId) {
-      console.log("NEW CONVERSATION ID:", conversationId);
+      log("Conversation ID:", conversationId);
 
       const currentSockets = Object.assign({}, sockets);
 
@@ -290,12 +290,12 @@ const MessagesProviderWithContext = (props: {
           socket.off("message received");
 
           socket.on("room joined", (data: any) => {
-            console.log("Room joined:", data);
+            log("Room joined:", data);
           });
 
           socket.on("message received", (data: any) => {
-            console.log("Message received:", data);
-            console.log(socket.query.conversationId);
+            log("Message received:", data);
+            log(socket.query.conversationId);
             retrieveConversationById();
           });
         });

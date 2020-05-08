@@ -6,7 +6,7 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
-import { IFiltersSubscriptionCategory } from "./../../utils/utils";
+import { log, IFiltersSubscriptionCategory } from "./../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import SearchCanvasPlaceholder from "./search-canvas-placeholder";
 
@@ -60,17 +60,17 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
     ) {
-      console.log("User not validated");
+      log("User not validated");
       history.push("/validate");
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
-      console.log(data.body?.subscriptions);
+      log(data.body?.subscriptions);
       setSubscriptionData(data.body?.subscriptions);
       setIsRetrievedSubscriptionsDirty(true);
     }
   };
 
   const retrieveSubscriptionsErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscriptions = (query?: { [key: string]: any }[]) => {
@@ -154,7 +154,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveSubscriptionCategories = () => {

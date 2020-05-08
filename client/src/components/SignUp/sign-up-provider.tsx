@@ -5,7 +5,7 @@ import { History } from "history";
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import { basePostRequest } from "./../../base-requests";
-import { IResponse } from "./../../utils/utils";
+import { log, IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
@@ -105,7 +105,7 @@ const SignUpProviderWithContext = (props: {
   const handleSubmitResponseHandler = (res: IResponse) => {
     if (res) {
       if (res.statusCode === STATUS_CODE.SUCCESS) {
-        console.log("Log in success for:", email);
+        log("Log in success for:", email);
 
         const newUserData = res.body;
 
@@ -123,24 +123,24 @@ const SignUpProviderWithContext = (props: {
         switch (res.statusMessage) {
           case STATUS_MESSAGE.EMAIL_ALREADY_EXISTS:
             errorMessage = "Email address already exists";
-            console.log(errorMessage);
+            log(errorMessage);
             alert(errorMessage);
             break;
           case STATUS_MESSAGE.UNKNOWN_ERROR:
           default:
             errorMessage = "An unknown error has occured";
-            console.log(errorMessage);
+            log(errorMessage);
             alert(errorMessage);
             break;
         }
       }
     } else {
-      console.log("Error receiving response");
+      log("Error receiving response");
     }
   };
 
   const handleSubmitErrorHandler = (err: any) => {
-    console.log(err);
+    log(err);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

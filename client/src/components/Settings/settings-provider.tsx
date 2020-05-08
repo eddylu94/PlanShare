@@ -6,6 +6,7 @@ import SettingsCanvas from "./settings-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { log } from "./../../utils/utils";
 
 const SettingsProviderWithContext = (props: {
   userData: IUserContext;
@@ -25,7 +26,7 @@ const SettingsProviderWithContext = (props: {
     history.push("/signup");
   }
 
-  console.log(_userData);
+  log(_userData);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -33,7 +34,7 @@ const SettingsProviderWithContext = (props: {
   };
 
   const deleteUserResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
     if (
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.INCORRECT_CRED
@@ -57,7 +58,7 @@ const SettingsProviderWithContext = (props: {
   };
 
   const deleteUserErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const deleteUser = () => {
@@ -77,12 +78,12 @@ const SettingsProviderWithContext = (props: {
   };
 
   const retrieveEmailResponseHandler = (data: any) => {
-    console.log(data);
+    log(data);
     if (
       data.statusCode === STATUS_CODE.FAILURE &&
       data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
     ) {
-      console.log("User not validated");
+      log("User not validated");
       history.push("/validate");
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       setEmail(data?.body?.email);
@@ -91,7 +92,7 @@ const SettingsProviderWithContext = (props: {
   };
 
   const retrieveEmailErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveEmail = () => {

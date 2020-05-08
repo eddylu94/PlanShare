@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { log } from "./utils/utils";
+
 export type UserDataType = {
   userId: string | null;
   auth: string | null;
@@ -24,7 +26,7 @@ export const UserContextProvider = (props: { children: any }) => {
 
   const updateUser = (userData: UserDataType) => {
     setUser(userData);
-    console.log(userData);
+    log(userData);
   };
 
   return (

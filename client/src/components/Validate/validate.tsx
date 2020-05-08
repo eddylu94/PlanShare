@@ -5,6 +5,7 @@ import { History } from "history";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { log } from "./../../utils/utils";
 
 const NUMBER_OF_VALIDATION_TEXT_INPUTS = 5;
 
@@ -156,7 +157,7 @@ const ValidateWithContext = (props: {
   };
 
   const retrieveValidationEmailErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const retrieveValidationEmail = () => {
@@ -176,7 +177,7 @@ const ValidateWithContext = (props: {
     ) {
       setIsIncorrectValidationCode(true);
     } else if (res.statusCode === STATUS_CODE.SUCCESS) {
-      // console.log("Validation successful for:", email);
+      // log("Validation successful for:", email);
       setIsIncorrectValidationCode(false);
       alert("Your email is now verified");
       history.push("/");
@@ -184,7 +185,7 @@ const ValidateWithContext = (props: {
   };
 
   const handleSubmitErrorHandler = (error: any) => {
-    console.log(error);
+    log(error);
   };
 
   const handleSubmit = () => {
@@ -194,7 +195,7 @@ const ValidateWithContext = (props: {
       const postRequestData = {
         validationCode
       };
-      console.log(_userData.user?.auth);
+      log(_userData.user?.auth);
       basePostRequest(
         "verifyemail",
         postRequestData,
