@@ -135,15 +135,6 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           "---"
         )}
       </div>
-      {/* <div className="subscription-label">Organization</div>
-      <div className="subscription-detail">
-        <div>{organization.name}</div>
-        <img
-          alt="Organization logo"
-          className="subscription-card-organization-logo"
-          src={organization.logo}
-        />
-      </div> */}
     </div>
   );
 };

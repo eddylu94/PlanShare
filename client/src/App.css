@@ -122,6 +122,11 @@ body {
   font-size: 16px;
 }
 
+.intro-footer a {
+  color: #6c5dbd;
+  font-weight: 500;
+}
+
 .intro-logo-and-title {
   display: flex;
   flex-direction: row;
@@ -158,7 +163,6 @@ body {
   flex-shrink: 0;
   justify-content: center;
   text-align: center;
-  font-weight: 450;
   color: #686868;
   height: 100%;
 }
@@ -170,8 +174,8 @@ body {
 }
 
 .subscription-guest-login-message-wrapper a {
-  /* margin: 0 5px; */
   font-weight: 500;
+  color: #6c5dbd;
 }
 
 .subscription-guest-login-button {
@@ -432,6 +436,15 @@ input[disabled] {
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.create-listing-edit-footer {
+  font-style: italic;
+}
+
+.create-listing-edit-footer a {
+  font-weight: 500;
+  color: #6c5dbd;
 }
 
 .signup-toggle {

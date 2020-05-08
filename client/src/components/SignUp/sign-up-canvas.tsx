@@ -195,7 +195,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
 
               <div>
                 This platform is currently only available for{" "}
-                <Link to="/organizations">these companies</Link>.
+                <Link to="/organizations">these organizations</Link>.
               </div>
             </div>
           </div>

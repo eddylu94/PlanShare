@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
@@ -266,6 +267,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
               <span style={{ marginLeft: 10 }}>$</span>
             </div>
           </div>
+        </div>
+
+        <div className="create-listing-edit-footer">
+          You can later Edit, Archive, and Delete this listing from your{" "}
+          <Link to="/profile">posted listings</Link>
         </div>
 
         <input

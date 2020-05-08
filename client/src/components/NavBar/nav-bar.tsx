@@ -64,7 +64,7 @@ const NavBarWithContext = (props: {
                   className="navbar-icon"
                   src={"./search_icon_white.png"}
                 />
-                <span className="navbar-link-label">Search listings</span>
+                <span className="navbar-link-label">Search</span>
               </Link>
             </li>
             <li>
@@ -74,7 +74,7 @@ const NavBarWithContext = (props: {
                   className="navbar-icon"
                   src={"./create_icon_white.png"}
                 />
-                <span className="navbar-link-label">Create listing</span>
+                <span className="navbar-link-label">Post</span>
               </Link>
             </li>
             <li>
