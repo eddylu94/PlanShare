@@ -22,15 +22,21 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
     deviceMode = DEVICE_MODE.LARGE_DESKTOP;
   }
 
-  const subscriptionCards = new Array(2).fill(
-    <SearchSubscriptionCardPlaceholder />
-  );
+  const subscriptionCards = [
+    <SearchSubscriptionCardPlaceholder
+      key={"search-subscription-card-placeholder-0"}
+    />,
+    <SearchSubscriptionCardPlaceholder
+      key={"search-subscription-card-placeholder-1"}
+    />
+  ];
 
   return (
     <div className="search-panes">
       {deviceMode !== DEVICE_MODE.MOBILE ? (
         <div className="filter-pane search-pane">
           <div
+            key={"filter-placeholder-0"}
             className="placeholder-filters-header-shape placeholder-background"
             style={{ marginTop: 0 }}
           ></div>

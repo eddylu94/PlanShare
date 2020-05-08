@@ -91,16 +91,40 @@ const MessagesProviderWithContext = (props: {
     }
   };
 
+  const retrieveConversationsListOnlyResponseHandler = (data: any) => {
+    let newConversationsList = data?.body
+      ?.conversationsList as IConversationSummary[];
+    if (newConversationsList) {
+      setIsRetrievedConversationsDirty(true);
+
+      newConversationsList = newConversationsList
+        .filter(
+          conversation =>
+            !!conversation.lastMessage || conversation.userId === otherUserId
+        )
+        .sort((a, b) => {
+          const aValue = a.userId === otherUserId ? 1 : 0;
+          const bValue = b.userId === otherUserId ? 1 : 0;
+          return bValue - aValue;
+        });
+
+      console.log(newConversationsList);
+      setConversationsList(newConversationsList);
+    }
+  };
+
   const retrieveConversationsListErrorHandler = (error: any) => {
     setIsRetrievedConversationsDirty(true);
     console.log(error);
   };
 
-  const retrieveConversationsList = () => {
+  const retrieveConversationsList = (isConversationsListOnly?: boolean) => {
     baseGetRequest(
       "getconversationslist",
       [],
-      retrieveConversationsListResponseHandler,
+      isConversationsListOnly
+        ? retrieveConversationsListOnlyResponseHandler
+        : retrieveConversationsListResponseHandler,
       retrieveConversationsListErrorHandler,
       _userData.user?.auth
     );
@@ -250,6 +274,11 @@ const MessagesProviderWithContext = (props: {
     retrieveConversationById();
     // eslint-disable-next-line
   }, [conversationId]);
+
+  useEffect(() => {
+    retrieveConversationsList(true);
+    // eslint-disable-next-line
+  }, [messages]);
 
   useEffect(() => {
     if (sockets) {
