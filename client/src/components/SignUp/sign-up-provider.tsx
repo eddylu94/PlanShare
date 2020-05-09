@@ -4,7 +4,7 @@ import { History } from "history";
 
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
-import { basePostRequest } from "./../../base-requests";
+import { basePostRequest, slackPostRequest } from "./../../base-requests";
 import { log, IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
@@ -110,6 +110,15 @@ const SignUpProviderWithContext = (props: {
         log("Log in success for:", username);
 
         const newUserData = res.body;
+
+        const postRequestData = {
+          text: JSON.stringify({
+            type: "SIGN_UP",
+            userId: newUserData.userId
+          })
+        };
+
+        slackPostRequest(postRequestData);
 
         // Update user data for User Context
         _userData.updateUser(newUserData);

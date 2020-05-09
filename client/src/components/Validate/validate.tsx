@@ -3,7 +3,11 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { baseGetRequest, basePostRequest } from "./../../base-requests";
+import {
+  baseGetRequest,
+  basePostRequest,
+  slackPostRequest
+} from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { log } from "./../../utils/utils";
 
@@ -63,6 +67,16 @@ const ValidateWithContext = (props: {
       setIsIncorrectValidationCode(true);
     } else if (res.statusCode === STATUS_CODE.SUCCESS) {
       setIsIncorrectValidationCode(false);
+
+      const postRequestData = {
+        text: JSON.stringify({
+          type: "VALIDATE",
+          userId: _userData.user?.userId
+        })
+      };
+
+      slackPostRequest(postRequestData);
+
       alert("Your email is now verified");
       history.push("/");
     } else if (

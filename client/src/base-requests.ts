@@ -1,3 +1,5 @@
+import request from "request";
+
 export const BASE_URL = `https://planshare.io/backend`;
 
 export const SOCKET_URL = "https://planshare.io/";
@@ -57,4 +59,19 @@ export const basePostRequest = (
     .then(response => response.json())
     .then(responseHandler)
     .catch(errorHandler);
+};
+
+const SLACK_URL =
+  "https://hooks.slack.com/services/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";
+
+export const slackPostRequest = (data: any) => {
+  request.post(
+    {
+      url: SLACK_URL,
+      body: JSON.stringify(data)
+    },
+    function(err: any, data: any) {
+      console.log(data.body);
+    }
+  );
 };
