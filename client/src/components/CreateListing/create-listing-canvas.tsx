@@ -200,7 +200,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
             className="form-text-input form-input"
             name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
             type="text"
-            placeholder="https://tv.youtube.com/"
+            placeholder="https://example.com/"
             value={subscriptionUrl}
             onChange={handleInputChange}
             onBlur={handleOnBlurSubscriptionUrl}
@@ -272,6 +272,17 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
         <div className="create-listing-edit-footer">
           You can later Edit, Archive, and Delete this listing from your{" "}
           <Link to="/profile">posted listings</Link>
+        </div>
+
+        <div
+          className="create-listing-edit-footer"
+          style={{ fontStyle: "italic", margin: "20px 0 10px 0", fontSize: 14 }}
+        >
+          WARNING: Not all subscription providers allow sharing of its services.
+          It is the user's responsiblity to ensure that their subscription
+          listings do not violate their provider's terms of use. PlanShare is
+          not responsible for any users that violate agreements with their
+          subscription providers.
         </div>
 
         <input

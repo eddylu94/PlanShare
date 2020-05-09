@@ -494,10 +494,6 @@ input[disabled] {
   transform: rotate(45deg);
 }
 
-.create-listing-edit-footer {
-  font-style: italic;
-}
-
 .create-listing-edit-footer a {
   font-weight: 500;
   color: #6c5dbd;

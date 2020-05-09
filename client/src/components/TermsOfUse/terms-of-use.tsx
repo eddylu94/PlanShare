@@ -42,6 +42,14 @@ const TermsOfUseDialog = (
               conditions. This is why we urge you to read them carefully.
             </p>
 
+            <p>
+              Not all subscription providers allow sharing of its services. It
+              is the user's responsiblity to ensure that their subscription
+              listings do not violate their provider's terms of use. PlanShare
+              is not responsible for any users that violate agreements with
+              their subscription providers.
+            </p>
+
             <p className="b">Privacy Policy</p>
 
             <p>
