@@ -79,6 +79,18 @@ body {
   -moz-appearance: none;
 }
 
+.validate-resend-code {
+  color: #4735ad;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0;
+}
+
 /* Chrome, Safari, Edge, Opera */
 .validate-text-input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

@@ -37,6 +37,7 @@ import {
   login,
   addEmail,
   verifyEmail,
+  resendConfirmationCode,
   createSubscription,
   editSubscription,
   archiveSubscription,
@@ -116,6 +117,7 @@ postRequestBuilder("/signup", signUp);
 postRequestBuilder("/login", login);
 postRequestBuilder("/addemail", addEmail);
 postRequestBuilder("/verifyemail", verifyEmail);
+postRequestBuilder("/resendconfirmationcode", resendConfirmationCode);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/editsubscription", editSubscription);
 postRequestBuilder("/archivesubscription", archiveSubscription);

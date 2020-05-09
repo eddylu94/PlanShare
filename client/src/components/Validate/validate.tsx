@@ -197,7 +197,7 @@ const ValidateWithContext = (props: {
       const postRequestData = {
         validationCode
       };
-      log(_userData.user?.auth);
+
       basePostRequest(
         "verifyemail",
         postRequestData,
@@ -206,6 +206,26 @@ const ValidateWithContext = (props: {
         _userData.user?.auth
       );
     }
+  };
+
+  const resendCodeResponseHandler = (res: any) => {
+    if (res.statusCode === STATUS_CODE.SUCCESS) {
+      alert("Your new validation code has been sent");
+    }
+  };
+
+  const resendCodeErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const resendCode = () => {
+    basePostRequest(
+      "resendconfirmationcode",
+      [],
+      resendCodeResponseHandler,
+      resendCodeErrorHandler,
+      _userData.user?.auth
+    );
   };
 
   useEffect(() => {
@@ -226,9 +246,16 @@ const ValidateWithContext = (props: {
     >
       <form className="form-container">
         <label className="form-label">
-          Please enter the validation code sent to
+          Please enter the validation code sent to:
           <br />
-          <span style={{ fontWeight: "bold" }}>{validationEmail}</span>:
+          <span style={{ fontWeight: "bold" }}>{validationEmail}</span>
+        </label>
+        <label className="form-label">
+          Didn't receive an email?
+          <br />
+          <button className="validate-resend-code" onClick={resendCode}>
+            Send me a new confirmation code
+          </button>
         </label>
         <div className="validate-text-input-row">{inputs}</div>
         <div className="validate-incorrect-message">

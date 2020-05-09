@@ -228,6 +228,99 @@ export const addEmail = (
   });
 };
 
+export const resendConfirmationCode = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Sending new confirmation code...");
+
+  const obj = postReq.body;
+
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
+    if (connerErr) throw connerErr;
+
+    const headerAuthorization = postReq.headers.authorization;
+    const authKey = headerAuthorization.replace("Bearer ", "");
+
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+          throw findErr;
+        }
+
+        if (!findRes) {
+          console.log("Unable to find account for validation");
+          db.close();
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
+          return;
+        }
+
+        if (findRes.status === ACCOUNT_STATUS.LIVE) {
+          console.log("Email already validated");
+          db.close();
+          postSuccess(postRes, {});
+          return;
+        }
+
+        const email = findRes.email;
+
+        const confirmationCode = generateConfirmationCode();
+
+        const dbo = db.db(DATABASE_NAME);
+        dbo
+          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+          .updateOne({ _id: findRes._id }, { $set: { confirmationCode } })
+          .then(() => {
+            console.log("New confirmation code sent:", email);
+            db.close();
+            postSuccess(postRes, {});
+
+            const mailSubject = `Verify your email`;
+            const mailMessage = `Here is your new confirmation code:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
+
+            const mailOptions = {
+              from: EMAIL_SERVICE_EMAIL,
+              to: email,
+              subject: mailSubject,
+              html: mailMessage
+            };
+
+            let attempts = 0;
+            const SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS = 5;
+
+            const sendEmail = () => {
+              attempts++;
+              transporter.sendMail(mailOptions, function(sendErr, info) {
+                if (sendErr) {
+                  console.log("Error sending email");
+                  console.log(sendErr);
+                  if (attempts <= SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS) {
+                    sendEmail();
+                  }
+                } else {
+                  console.log("Email sent: " + info.response);
+                }
+              });
+            };
+
+            sendEmail();
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+      });
+  });
+};
+
 export const login = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,

@@ -4,7 +4,7 @@ import { History } from "history";
 
 import { basePostRequest } from "./../../base-requests";
 import { log, IResponse } from "./../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { STATUS_CODE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
 const EmailProviderWithContext = (props: {
@@ -14,7 +14,7 @@ const EmailProviderWithContext = (props: {
 }) => {
   const _userData = props.userData;
 
-  const { history, location } = props;
+  const { history } = props;
 
   // var params = new URLSearchParams(location.search);
   // const [orgSymbol, setOrgSymbol] = useState(params.get("org") as string);
