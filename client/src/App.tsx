@@ -8,6 +8,7 @@ import "./App-L.css";
 import "./App-XL.css";
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
+import Privacy from "./components/Privacy/privacy";
 import Validate from "./components/Validate/validate";
 import Email from "./components/Validate/email";
 import Search from "./components/Search/search-provider";
@@ -35,6 +36,9 @@ const App = () => (
             </Route>
             <Route path="/signup">
               <SignUp />
+            </Route>
+            <Route path="/privacy">
+              <Privacy />
             </Route>
             <Route path="/search">
               <Search />

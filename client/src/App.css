@@ -419,6 +419,14 @@ input[disabled] {
   cursor: not-allowed;
 }
 
+.terms-of-use-wrapper {
+  font-size: 15px;
+}
+
+.terms-of-use-wrapper p {
+  margin: 10px 0;
+}
+
 /* The container */
 .form-terms-container {
   display: block;
