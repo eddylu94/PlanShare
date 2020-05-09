@@ -290,7 +290,7 @@ export const login = (
           if (isPasswordMatch === false) {
             console.log("Incorrect password:", username);
 
-            let authAttempts = findRes.authAttempts;
+            let authAttempts = findRes.authAttempts ?? [];
 
             authAttempts.push(attemptDate);
             authAttempts = authAttempts.filter((attempt: any) => {
