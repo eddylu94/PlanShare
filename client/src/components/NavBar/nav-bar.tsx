@@ -28,7 +28,7 @@ const NavBarWithContext = (props: {
     localStorage.setItem("firstName", "");
 
     event.preventDefault();
-    history.push("/login");
+    history.push("/signup");
   };
 
   const user = userData?.user;
@@ -114,7 +114,7 @@ const NavBarWithContext = (props: {
         ) : (
           <>
             <li>
-              <Link to="/login">Log In</Link>
+              <Link to="/signup">Sign In</Link>
             </li>
           </>
         )}
