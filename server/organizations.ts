@@ -64,14 +64,6 @@ export const ORGANIZATION: IOrganization = {
     logo:
       "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/992px-Google_%22G%22_Logo.svg.png",
     domains: ["gmail.com"]
-  },
-  FAKE_YAHOO_COMPANY: {
-    organizationId: "FAKE_YAHOO_COMPANY",
-    type: ORGANIZATION_CATEGORY.COMPANY.name,
-    name: "Fake Yahoo",
-    logo:
-      "https://cdn.vox-cdn.com/thumbor/iMskq3UhvglRywsiicE_Tt6qAIQ=/0x0:2000x1333/920x613/filters:focal(840x507:1160x827):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/65300844/mb_yahoo_02.0.jpg",
-    domains: ["yahoo.com"]
   }
 };
 
@@ -79,8 +71,7 @@ const companyIds = [
   ORGANIZATION.MICROSOFT_COMPANY.organizationId,
   ORGANIZATION.LINKEDIN_COMPANY.organizationId,
   ORGANIZATION.GITHUB_COMPANY.organizationId,
-  ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId,
-  ORGANIZATION.FAKE_YAHOO_COMPANY.organizationId
+  ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId
 ];
 
 const univerityIds = [] as string[];

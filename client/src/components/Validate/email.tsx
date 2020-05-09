@@ -108,17 +108,19 @@ const EmailProviderWithContext = (props: {
             </p>
             <p>Please select one of the following organizations:</p>
 
-            <div
-              className="organizations-organization organizations-organization-card"
-              onClick={e => handleClick(e, "fake")}
-            >
-              <img
-                alt="Google"
-                src="goog_logo.png"
-                className="organization-logo"
-              />
-              <div className="organizations-label">Google (fake)</div>
-            </div>
+            {process.env.NODE_ENV === "development" ? (
+              <div
+                className="organizations-organization organizations-organization-card"
+                onClick={e => handleClick(e, "fake")}
+              >
+                <img
+                  alt="Google"
+                  src="goog_logo.png"
+                  className="organization-logo"
+                />
+                <div className="organizations-label">Google (fake)</div>
+              </div>
+            ) : null}
 
             <div
               className="organizations-organization organizations-organization-card"
