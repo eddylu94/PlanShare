@@ -327,7 +327,8 @@ export const getSubscriptionsAsGuest = (
             subscriptionBrand: subscription.subscriptionBrand,
             subscriptionBrandname: subscription.subscriptionBrandName,
             subscriptionCategory: subscription.subscriptionCategory,
-            subscriptionUrl: subscription.subscriptionUrl
+            subscriptionUrl: subscription.subscriptionUrl,
+            otherSubscription: subscription.otherSubscription
           };
         });
 
