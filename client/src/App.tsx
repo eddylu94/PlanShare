@@ -18,6 +18,7 @@ import Profile from "./components/Profile/profile-provider";
 import Settings from "./components/Settings/settings-provider";
 import Messages from "./components/Messages/messages-provider";
 import Organizations from "./components/Organizations/organizations";
+import Feedback from "./components/Feedback/feedback";
 import { UserContextProvider } from "./user-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
@@ -39,6 +40,9 @@ const App = () => (
             </Route>
             <Route path="/privacy">
               <Privacy />
+            </Route>
+            <Route path="/feedback">
+              <Feedback />
             </Route>
             <Route path="/search">
               <Search />

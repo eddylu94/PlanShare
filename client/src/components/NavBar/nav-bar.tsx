@@ -104,6 +104,9 @@ const NavBarWithContext = (props: {
                   <Link to="/settings">Settings</Link>
                 </li>
                 <li>
+                  <Link to="/feedback">Feedback</Link>
+                </li>
+                <li>
                   <Link to="/logout" onClick={logoutHandler}>
                     Logout
                   </Link>
