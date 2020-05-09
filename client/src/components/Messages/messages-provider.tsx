@@ -16,7 +16,7 @@ import {
   IConversationData,
   IMessageData
 } from "./../../utils/utils";
-import { STATUS_CODE } from "./../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 
 import socketIOClient from "socket.io-client";
 
@@ -61,6 +61,14 @@ const MessagesProviderWithContext = (props: {
   }
 
   const retrieveConversationsListResponseHandler = (data: any) => {
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
+    ) {
+      log("User not validated");
+      history.push("/validate");
+    }
+
     let newConversationsList = data?.body
       ?.conversationsList as IConversationSummary[];
     if (newConversationsList) {

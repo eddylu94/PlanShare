@@ -204,7 +204,13 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionBrandsResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.USER_NOT_VALIDATED
+    ) {
+      log("User not validated");
+      history.push("/validate");
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
       const subscriptionBrands = body.subscriptionBrands;
