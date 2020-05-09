@@ -22,6 +22,7 @@ const EmailProviderWithContext = (props: {
   var params = new URLSearchParams(location.search);
   const developmentParam = params.get("development") as string;
 
+  // eslint-disable-next-line
   const [isDevelopment, setIsDevelopment] = useState(
     developmentParam === "true"
   );

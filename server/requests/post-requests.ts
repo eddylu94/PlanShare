@@ -553,7 +553,7 @@ export const verifyEmail = (
                 postRes,
                 validateLockedDate
                   ? STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
-                  : STATUS_MESSAGE.INCORRECT_CRED
+                  : STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
               );
             });
 
