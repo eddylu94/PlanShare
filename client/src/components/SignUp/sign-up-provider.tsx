@@ -114,7 +114,8 @@ const SignUpProviderWithContext = (props: {
         const postRequestData = {
           text: JSON.stringify({
             type: "SIGN_UP",
-            userId: newUserData.userId
+            userId: newUserData.userId,
+            username
           })
         };
 
