@@ -14,10 +14,17 @@ const EmailProviderWithContext = (props: {
 }) => {
   const _userData = props.userData;
 
-  const { history } = props;
+  const { history, location } = props;
 
   // var params = new URLSearchParams(location.search);
   // const [orgSymbol, setOrgSymbol] = useState(params.get("org") as string);
+
+  var params = new URLSearchParams(location.search);
+  const developmentParam = params.get("development") as string;
+
+  const [isDevelopment, setIsDevelopment] = useState(
+    developmentParam === "true"
+  );
 
   const [orgSymbol, setOrgSymbol] = useState("");
 
@@ -117,7 +124,7 @@ const EmailProviderWithContext = (props: {
             </p>
             <p>Please select one of the following organizations:</p>
 
-            {process.env.NODE_ENV === "development" ? (
+            {process.env.NODE_ENV === "development" || isDevelopment ? (
               <div
                 className="organizations-organization organizations-organization-card"
                 onClick={e => handleClick(e, "fake")}
