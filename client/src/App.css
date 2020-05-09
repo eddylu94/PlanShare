@@ -427,6 +427,10 @@ input[disabled] {
   margin: 10px 0;
 }
 
+.terms-of-use-wrapper a {
+  color: #6c5dbd;
+}
+
 /* The container */
 .form-terms-container {
   display: block;

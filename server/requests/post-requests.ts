@@ -386,7 +386,7 @@ export const login = (
           if (isPasswordMatch === false) {
             console.log("Incorrect password:", username);
 
-            let authAttempts = findRes.authAttempts ?? [];
+            let authAttempts = findRes.authAttempts ? findRes.authAttempts : [];
 
             authAttempts.push(attemptDate);
             authAttempts = authAttempts.filter((attempt: any) => {
@@ -523,7 +523,9 @@ export const verifyEmail = (
         if (confirmationCode !== obj.validationCode) {
           console.log("Incorrect validation code");
 
-          let validateAttempts = findRes.validateAttempts ?? [];
+          let validateAttempts = findRes.validateAttempts
+            ? findRes.validateAttempts
+            : [];
 
           validateAttempts.push(attemptDate);
           validateAttempts = validateAttempts.filter((attempt: any) => {
