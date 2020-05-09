@@ -24,8 +24,11 @@ const SignUpProviderWithContext = (props: {
   const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setIsFirstNameValid] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  // const [email, setEmail] = useState("");
+  // const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const [username, setUsername] = useState("");
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
 
   const [pass1, setPass1] = useState("");
   const [isPass1Valid, setIsPass1Valid] = useState(false);
@@ -53,9 +56,9 @@ const SignUpProviderWithContext = (props: {
         setFirstName(value);
         setIsFirstNameValid(validateFirstName(value));
         break;
-      case FORM_INPUT_TYPE.EMAIL:
-        setEmail(value);
-        setIsEmailValid(validateEmail(value));
+      case FORM_INPUT_TYPE.USERNAME:
+        setUsername(value);
+        setIsUsernameValid(validateUsername(value));
         break;
       case FORM_INPUT_TYPE.PASS1:
         setPass1(value);
@@ -79,23 +82,9 @@ const SignUpProviderWithContext = (props: {
     return re.test(firstName) && !!firstName.trim();
   };
 
-  const validateEmail = (email: string) => {
-    email = email.toLocaleLowerCase();
-
-    // eslint-disable-next-line
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    const validDomains = ["microsoft.com", "linkedin.com", "github.com"];
-
-    const isValidDomain = !!validDomains.filter(validDomain => {
-      const domain = "@" + validDomain;
-      return (
-        email.includes(domain) &&
-        email.indexOf(domain) === email.length - domain.length
-      );
-    }).length;
-
-    return re.test(email.toLowerCase()) && isValidDomain;
+  const validateUsername = (username: string) => {
+    const re = /^[a-zA-Z0-9_.-]*$/;
+    return re.test(username) && !!username.trim();
   };
 
   const validatePass1 = (pass1: string) => {
@@ -109,7 +98,7 @@ const SignUpProviderWithContext = (props: {
 
   const isFormDisabled = !(
     isFirstNameValid &&
-    isEmailValid &&
+    isUsernameValid &&
     isPass1Valid &&
     isPass2Valid &&
     termsOfUseAcknowledged
@@ -118,7 +107,7 @@ const SignUpProviderWithContext = (props: {
   const handleSubmitResponseHandler = (res: IResponse) => {
     if (res) {
       if (res.statusCode === STATUS_CODE.SUCCESS) {
-        log("Log in success for:", email);
+        log("Log in success for:", username);
 
         const newUserData = res.body;
 
@@ -130,10 +119,15 @@ const SignUpProviderWithContext = (props: {
         localStorage.setItem("auth", newUserData.auth);
         localStorage.setItem("firstName", newUserData.firstName);
 
-        history.push("/validate");
+        history.push("/email");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
+          case STATUS_MESSAGE.USERNAME_ALREADY_EXISTS:
+            errorMessage = "Username already exists";
+            log(errorMessage);
+            alert(errorMessage);
+            break;
           case STATUS_MESSAGE.EMAIL_ALREADY_EXISTS:
             errorMessage = "Email address already exists";
             log(errorMessage);
@@ -160,7 +154,7 @@ const SignUpProviderWithContext = (props: {
     if (!isFormDisabled) {
       const postRequestData = {
         firstName,
-        email: email.toLocaleLowerCase(),
+        username: username.toLocaleLowerCase(),
         pass: pass1
       };
       basePostRequest(
@@ -188,8 +182,8 @@ const SignUpProviderWithContext = (props: {
       handleSubmit={handleSubmit}
       firstName={firstName}
       isFirstNameValid={isFirstNameValid}
-      email={email}
-      isEmailValid={isEmailValid}
+      username={username}
+      isUsernameValid={isUsernameValid}
       pass1={pass1}
       isPass1Valid={isPass1Valid}
       pass2={pass2}

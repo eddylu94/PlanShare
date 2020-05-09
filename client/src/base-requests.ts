@@ -1,11 +1,8 @@
 export const BASE_URL = `https://planshare.io/backend`;
-// export const BASE_URL = `http://localhost:36322`;
 
 export const SOCKET_URL = "https://planshare.io/";
-// export const SOCKET_URL = `http://localhost:36322`
 
 export const SOCKET_IO_PATH = "/socket";
-// export const SOCKET_IO_PATH = '/socket.io';
 
 type GetRequestParams = {
   [key: string]: string;

@@ -11,6 +11,7 @@ export const STATUS_CODE = {
 export const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
+  USERNAME_ALREADY_EXISTS: "username_already_exists",
   INCORRECT_CRED: "incorrect_cred",
   CANNOT_FIND_ACCOUNT_FOR_VALIDATION: "cannot_find_account_for_validation",
   EMAIL_ALREADY_VALIDATED: "email_already_validated",

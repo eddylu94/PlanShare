@@ -21,8 +21,8 @@ const LoginProviderWithContext = (props: {
     history.push("/search");
   }
 
-  const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [username, setUsername] = useState("");
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
 
   const [pass, setPass] = useState("");
   const [isPassValid, setIsPassValid] = useState(false);
@@ -33,9 +33,9 @@ const LoginProviderWithContext = (props: {
     const name = target.name;
 
     switch (name) {
-      case FORM_INPUT_TYPE.EMAIL:
-        setEmail(value);
-        setIsEmailValid(validateEmail(value));
+      case FORM_INPUT_TYPE.USERNAME:
+        setUsername(value);
+        setIsUsernameValid(validateUsername(value));
         break;
       case FORM_INPUT_TYPE.PASS:
         setPass(value);
@@ -46,16 +46,16 @@ const LoginProviderWithContext = (props: {
     }
   };
 
-  const validateEmail = (email: string) => !!email;
+  const validateUsername = (username: string) => !!username;
 
   const validatePass = (pass: string) => !!pass;
 
-  const isFormDisabled = !(isEmailValid && isPassValid);
+  const isFormDisabled = !(isUsernameValid && isPassValid);
 
   const handleSubmitResponseHandler = (res: IResponse) => {
     if (res) {
       if (res.statusCode === STATUS_CODE.SUCCESS) {
-        // log("Log in success for:", email);
+        // log("Log in success for:", user);
 
         const newUserData = res.body;
 
@@ -72,7 +72,7 @@ const LoginProviderWithContext = (props: {
         let errorMessage;
         switch (res.statusMessage) {
           case STATUS_MESSAGE.INCORRECT_CRED:
-            errorMessage = "Incorrect email and/or password";
+            errorMessage = "Incorrect username and/or password";
             log(errorMessage);
             alert(errorMessage);
             break;
@@ -102,7 +102,7 @@ const LoginProviderWithContext = (props: {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       const postRequestData = {
-        email: email.toLocaleLowerCase(),
+        username: username.toLocaleLowerCase(),
         pass
       };
       basePostRequest(
@@ -120,7 +120,7 @@ const LoginProviderWithContext = (props: {
     <LoginCanvas
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
-      email={email}
+      username={username}
       pass={pass}
       isFormDisabled={isFormDisabled}
     />

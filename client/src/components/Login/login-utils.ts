@@ -1,4 +1,4 @@
 export const FORM_INPUT_TYPE = {
-  EMAIL: "email",
+  USERNAME: "username",
   PASS: "pass"
 };

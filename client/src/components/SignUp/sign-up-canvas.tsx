@@ -15,8 +15,8 @@ interface ISignUpCanvasProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   firstName: string;
   isFirstNameValid: boolean;
-  email: string;
-  isEmailValid: boolean;
+  username: string;
+  isUsernameValid: boolean;
   pass1: string;
   isPass1Valid: boolean;
   pass2: string;
@@ -38,8 +38,8 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
     handleSubmit,
     firstName,
     isFirstNameValid,
-    email,
-    isEmailValid,
+    username,
+    isUsernameValid,
     pass1,
     isPass1Valid,
     pass2,
@@ -69,7 +69,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           "To verify your current company; your email address will not be shown to anyone but yourself";
         break;
       case "pass1":
-        tooltip = "Do not use your actual work password";
+        tooltip = "Do not use your password for work";
         break;
       default:
         break;
@@ -221,11 +221,11 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               isFirstNameValid
             )}
             {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.EMAIL,
-              "email",
-              "Work email address",
-              email,
-              isEmailValid
+              FORM_INPUT_TYPE.USERNAME,
+              "username",
+              "Username",
+              username,
+              isUsernameValid
             )}
             {renderTextInputWithValidation(
               FORM_INPUT_TYPE.PASS1,

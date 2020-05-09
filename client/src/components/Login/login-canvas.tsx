@@ -7,7 +7,7 @@ import { TITLE } from "./../../utils/constants";
 interface ILoginCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  email: string;
+  username: string;
   pass: string;
   isFormDisabled: boolean;
 }
@@ -16,7 +16,7 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
   const {
     handleInputChange,
     handleSubmit,
-    email,
+    username,
     pass,
     isFormDisabled
   } = props;
@@ -62,10 +62,10 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
             />
           </div>
           {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.EMAIL,
-            "email",
-            "Email address",
-            email
+            FORM_INPUT_TYPE.USERNAME,
+            "username",
+            "Username",
+            username
           )}
           {renderTextInputWithValidation(
             FORM_INPUT_TYPE.PASS,

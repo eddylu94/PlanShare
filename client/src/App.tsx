@@ -9,6 +9,7 @@ import "./App-XL.css";
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
 import Validate from "./components/Validate/validate";
+import Email from "./components/Validate/email";
 import Search from "./components/Search/search-provider";
 import CreateListing from "./components/CreateListing/create-listing-provider";
 import Login from "./components/Login/login-provider";
@@ -49,6 +50,9 @@ const App = () => (
             </Route>
             <Route path="/validate">
               <Validate />
+            </Route>
+            <Route path="/email">
+              <Email />
             </Route>
             <Route path="/profile">
               <Profile />

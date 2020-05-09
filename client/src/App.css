@@ -79,6 +79,18 @@ body {
   -moz-appearance: none;
 }
 
+/* Chrome, Safari, Edge, Opera */
+.validate-text-input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.validate-text-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .validate-incorrect-message {
   text-align: center;
   margin-top: 10px;
@@ -822,6 +834,65 @@ input[disabled] {
 .profile-profile-picture {
   background-color: #cccccc;
   border-radius: 50%;
+}
+
+.organizations-organization-card {
+  box-shadow: 0px 0px 10px #cccccc;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.organizations-organization-card:hover {
+  box-shadow: 0px 0px 10px #4735ad;
+}
+
+.organization-email-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 200px;
+  font-size: 16px;
+}
+
+.organization-email-text-input {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+}
+
+.organization-email-text-input:focus {
+  outline: none !important;
+  box-shadow: 0px 0px 5px #4735ad;
+}
+
+.organization-email-input-domain {
+  margin-top: 5px;
+  color: #686868;
+}
+
+.organization-email-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.email-submit-button {
+  background-color: #6c5dbdee;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border: none;
+  width: 100px;
+  padding: 5px;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.email-submit-button :disabled,
+input[disabled] {
+  background-color: #d8d8d8;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .organizations-container {

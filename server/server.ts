@@ -35,6 +35,7 @@ import {
 import {
   signUp,
   login,
+  addEmail,
   verifyEmail,
   createSubscription,
   editSubscription,
@@ -113,6 +114,7 @@ getRequestBuilder("/getconversationslist", getConversationsList);
 // POST requests
 postRequestBuilder("/signup", signUp);
 postRequestBuilder("/login", login);
+postRequestBuilder("/addemail", addEmail);
 postRequestBuilder("/verifyemail", verifyEmail);
 postRequestBuilder("/createsubscription", createSubscription);
 postRequestBuilder("/editsubscription", editSubscription);

@@ -54,10 +54,10 @@ export const signUp = (
     const dbo = db.db(DATABASE_NAME);
 
     // Verify if user already exists
-    const email = obj.email.toLocaleLowerCase();
+    const username = obj.username.toLocaleLowerCase();
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .findOne({ email }, (findErr, findRes) => {
+      .findOne({ username }, (findErr, findRes) => {
         if (findErr) {
           console.log("Error finding record");
           db.close();
@@ -66,20 +66,17 @@ export const signUp = (
         }
 
         if (!!findRes) {
-          console.log("Email address already exists:", email);
+          console.log("Username already exists:", username);
           db.close();
-          postFailure(postRes, STATUS_MESSAGE.EMAIL_ALREADY_EXISTS);
+          postFailure(postRes, STATUS_MESSAGE.USERNAME_ALREADY_EXISTS);
           return;
         }
-
-        const confirmationCode = generateConfirmationCode();
 
         const authToken = generateAuthToken();
         Object.assign(obj, {
           joinedDate: new Date().getTime(),
           authTokens: [authToken],
-          status: ACCOUNT_STATUS.PENDING_VERIFICATION,
-          confirmationCode
+          status: ACCOUNT_STATUS.PENDING_VERIFICATION
         });
 
         const plainPass = obj.pass;
@@ -108,7 +105,7 @@ export const signUp = (
                 throw insertErr;
               }
 
-              console.log("User created:", email);
+              console.log("User created:", username);
               db.close();
               postRes.json({
                 statusCode: STATUS_CODE.SUCCESS,
@@ -118,67 +115,115 @@ export const signUp = (
                   firstName: obj.firstName
                 }
               });
-
-              const mailSubject = `Welcome to ${TITLE}`;
-              const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
-
-              const mailOptions = {
-                from: EMAIL_SERVICE_EMAIL,
-                to: email,
-                subject: mailSubject,
-                html: mailMessage
-              };
-
-              let attempts = 0;
-              const SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS = 5;
-
-              const sendEmail = () => {
-                attempts++;
-                transporter.sendMail(mailOptions, function(sendErr, info) {
-                  if (sendErr) {
-                    console.log("Error sending email");
-                    console.log(sendErr);
-                    if (attempts <= SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS) {
-                      sendEmail();
-                    }
-                  } else {
-                    console.log("Email sent: " + info.response);
-                  }
-                });
-              };
-
-              transporter.sendMail(mailOptions, function(sendErr, info) {
-                if (sendErr) {
-                  console.log("Error sending email");
-                  console.log(sendErr);
-                  transporter.sendMail(mailOptions, function(sendErr, info) {
-                    if (sendErr) {
-                      console.log("Error sending email");
-                      console.log(sendErr);
-                      transporter.sendMail(mailOptions, function(
-                        sendErr,
-                        info
-                      ) {
-                        if (sendErr) {
-                          console.log("Error sending email");
-                          console.log(sendErr);
-                          throw sendErr;
-                        } else {
-                          console.log("Email sent: " + info.response);
-                        }
-                      });
-                    } else {
-                      console.log("Email sent: " + info.response);
-                    }
-                  });
-                } else {
-                  console.log("Email sent: " + info.response);
-                }
-              });
             });
         };
 
         encryptPassword(plainPass, addUser);
+      });
+  });
+};
+
+export const addEmail = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Verifying email...");
+
+  const obj = postReq.body;
+
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
+    if (connerErr) throw connerErr;
+
+    const headerAuthorization = postReq.headers.authorization;
+    const authKey = headerAuthorization.replace("Bearer ", "");
+
+    const dbo = db.db(DATABASE_NAME);
+    dbo
+      .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+      .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
+        if (findErr) {
+          console.log("Error finding record");
+          db.close();
+          postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+          throw findErr;
+        }
+
+        if (!findRes) {
+          console.log("Unable to find account for validation");
+          db.close();
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
+          return;
+        }
+
+        if (findRes.status === ACCOUNT_STATUS.LIVE) {
+          console.log("Email already validated");
+          db.close();
+          postSuccess(postRes, {});
+          return;
+        }
+
+        if (findRes.email) {
+          console.log("Email already added");
+          db.close();
+          postSuccess(postRes, {});
+          return;
+        }
+
+        const email = obj.email;
+
+        const confirmationCode = generateConfirmationCode();
+
+        const dbo = db.db(DATABASE_NAME);
+        dbo
+          .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+          .updateOne(
+            { _id: findRes._id },
+            { $set: { email, confirmationCode } }
+          )
+          .then(() => {
+            console.log("Email added:", email);
+            db.close();
+            postSuccess(postRes, {});
+
+            const username = findRes.username;
+
+            const mailSubject = `Welcome to ${TITLE}`;
+            const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your username is:<br /><span style="font-weight: bold;">${username}</span><br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
+
+            const mailOptions = {
+              from: EMAIL_SERVICE_EMAIL,
+              to: email,
+              subject: mailSubject,
+              html: mailMessage
+            };
+
+            let attempts = 0;
+            const SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS = 5;
+
+            const sendEmail = () => {
+              attempts++;
+              transporter.sendMail(mailOptions, function(sendErr, info) {
+                if (sendErr) {
+                  console.log("Error sending email");
+                  console.log(sendErr);
+                  if (attempts <= SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS) {
+                    sendEmail();
+                  }
+                } else {
+                  console.log("Email sent: " + info.response);
+                }
+              });
+            };
+
+            sendEmail();
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
       });
   });
 };
@@ -203,11 +248,11 @@ export const login = (
     const dbo = db.db(DATABASE_NAME);
 
     // Verify if user exists
-    const email = obj.email.toLocaleLowerCase();
+    const username = obj.username.toLocaleLowerCase();
     const { pass } = obj;
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .findOne({ email }, (findErr, findRes) => {
+      .findOne({ username }, (findErr, findRes) => {
         if (findErr) {
           console.log("Error finding record");
           db.close();
@@ -216,7 +261,7 @@ export const login = (
         }
 
         if (!findRes) {
-          console.log("Email address does not exist:", email);
+          console.log("Username does not exist:", username);
           db.close();
           postFailure(postRes, STATUS_MESSAGE.INCORRECT_CRED);
           return;
@@ -230,7 +275,7 @@ export const login = (
           new Date(attemptDate).getTime() - findResLockedDate.getTime() <
             ACCOUNT_LOCK_PERIOD
         ) {
-          console.log("Account is locked:", email);
+          console.log("Account is locked:", username);
           db.close();
           postFailure(postRes, STATUS_MESSAGE.ACCOUNT_LOCKED);
           return;
@@ -243,7 +288,7 @@ export const login = (
           }
 
           if (isPasswordMatch === false) {
-            console.log("Incorrect password:", email);
+            console.log("Incorrect password:", username);
 
             let authAttempts = findRes.authAttempts;
 
@@ -288,7 +333,7 @@ export const login = (
                 { $push: { authTokens: authToken } }
               )
               .then(() => {
-                console.log("User logged in:", email);
+                console.log("User logged in:", username);
                 db.close();
                 postSuccess(postRes, {
                   userId: userId.toString(),
