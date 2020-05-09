@@ -51,6 +51,8 @@ const MessagesProviderWithContext = (props: {
   const [conversationId, setConversationId] = useState("");
   const [initialConversationId, setInitialConversationId] = useState("");
 
+  let conversationByIdRetrieval = 0;
+
   var params = new URLSearchParams(location.search);
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
@@ -195,13 +197,16 @@ const MessagesProviderWithContext = (props: {
 
   const retrieveConversationById = () => {
     if (conversationId) {
-      baseGetRequest(
-        "getconversationbyid",
-        [{ conversationId }],
-        retrieveConversationByIdResponseHandler,
-        retrieveConversationByIdErrorHandler,
-        _userData.user?.auth
-      );
+      if (new Date().getTime() - conversationByIdRetrieval >= 500) {
+        conversationByIdRetrieval = new Date().getTime();
+        baseGetRequest(
+          "getconversationbyid",
+          [{ conversationId }],
+          retrieveConversationByIdResponseHandler,
+          retrieveConversationByIdErrorHandler,
+          _userData.user?.auth
+        );
+      }
     }
   };
 
