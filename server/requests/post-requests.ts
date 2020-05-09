@@ -656,13 +656,8 @@ export const editSubscription = (
 
       const { subscriptionId } = subscriptionData;
 
-      const organization = retrieveOrganizationById(
-        subscriptionData.organizationId
-      );
-
       Object.assign(subscriptionData, {
         firstName,
-        organization,
         editedDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
