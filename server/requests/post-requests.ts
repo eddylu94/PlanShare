@@ -29,7 +29,10 @@ import {
   ACCOUNT_STATUS,
   MAX_AUTH_ATTEMPTS,
   ALLOWABLE_TIME_FOR_AUTH_ATTEMPTS,
-  ACCOUNT_LOCK_PERIOD
+  ACCOUNT_LOCK_PERIOD,
+  ACCOUNT_VALIDATE_LOCK_PERIOD,
+  ALLOWABLE_TIME_FOR_VALIDATE_ATTEMPTS,
+  MAX_VALIDATE_ATTEMPTS
 } from "./../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -487,6 +490,24 @@ export const verifyEmail = (
           return;
         }
 
+        const attemptDate = new Date();
+
+        const findResValidationLockedDate = findRes.validationLockedDate;
+        if (
+          findResValidationLockedDate &&
+          new Date(attemptDate).getTime() -
+            findResValidationLockedDate.getTime() <
+            ACCOUNT_VALIDATE_LOCK_PERIOD
+        ) {
+          console.log("Account validation is locked");
+          db.close();
+          postFailure(
+            postRes,
+            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+          );
+          return;
+        }
+
         const confirmationCode = findRes.confirmationCode;
 
         if (!confirmationCode) {
@@ -501,8 +522,39 @@ export const verifyEmail = (
 
         if (confirmationCode !== obj.validationCode) {
           console.log("Incorrect validation code");
-          db.close();
-          postFailure(postRes, STATUS_MESSAGE.INCORRECT_VALIDATION_CODE);
+
+          let validateAttempts = findRes.validateAttempts ?? [];
+
+          validateAttempts.push(attemptDate);
+          validateAttempts = validateAttempts.filter((attempt: any) => {
+            return (
+              new Date(attemptDate).getTime() - attempt.getTime() <
+              ALLOWABLE_TIME_FOR_VALIDATE_ATTEMPTS
+            );
+          });
+
+          const validateLockedDate =
+            validateAttempts && validateAttempts.length >= MAX_VALIDATE_ATTEMPTS
+              ? attemptDate
+              : null;
+
+          const dbo = db.db(DATABASE_NAME);
+          dbo
+            .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+            .updateOne(
+              { _id: findRes._id },
+              { $set: { validateLockedDate, validateAttempts } }
+            )
+            .then(() => {
+              db.close();
+              postFailure(
+                postRes,
+                validateLockedDate
+                  ? STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
+                  : STATUS_MESSAGE.INCORRECT_CRED
+              );
+            });
+
           return;
         }
 

@@ -286,12 +286,11 @@
   }
 
   .validate-text-input {
-    width: 42px;
+    width: 200px;
     font-size: 16px;
     line-height: 42px;
     height: 42px;
     padding: 8px;
-    margin-right: 5px;
   }
 
   .validate-text-input-row {

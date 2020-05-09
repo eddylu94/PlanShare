@@ -31,7 +31,8 @@ export const STATUS_MESSAGE = {
   PROFILE_NOT_FOUND: "profile_not_found",
   CANNOT_FIND_CONVERSATION: "cannot_find_conversation",
   CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list",
-  ACCOUNT_LOCKED: "account_locked"
+  ACCOUNT_LOCKED: "account_locked",
+  ACCOUNT_VALIDATION_LOCKED: "account_validation_locked"
 };
 
 export const SUBSCRIPTION_STATUS = {
@@ -48,6 +49,11 @@ export const ACCOUNT_STATUS = {
 export const MAX_AUTH_ATTEMPTS = 10;
 export const ALLOWABLE_TIME_FOR_AUTH_ATTEMPTS = 60 * 60 * 1000; // 1 hour in milliseconds
 export const ACCOUNT_LOCK_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
+
+// Allow twenty validation attempts before locking account for an hour
+export const MAX_VALIDATE_ATTEMPTS = 10;
+export const ALLOWABLE_TIME_FOR_VALIDATE_ATTEMPTS = 60 * 60 * 1000; // 1 hour in milliseconds
+export const ACCOUNT_VALIDATE_LOCK_PERIOD = 60 * 60 * 1000; // 1 hour in milliseconds
 
 // MongoDB constants
 export const MONGO_URL = "mongodb://localhost:27017/";

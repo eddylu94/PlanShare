@@ -1,4 +1,4 @@
-import React, { createRef, useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
@@ -6,8 +6,6 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { log } from "./../../utils/utils";
-
-const NUMBER_OF_VALIDATION_TEXT_INPUTS = 5;
 
 const ValidateWithContext = (props: {
   userData: IUserContext;
@@ -19,130 +17,15 @@ const ValidateWithContext = (props: {
 
   const [validationEmail, setValidationEmail] = useState("");
 
-  const inputRefs: any = useRef(
-    [...Array(NUMBER_OF_VALIDATION_TEXT_INPUTS)].map(() => createRef())
-  );
-
   const [isIncorrectValidationCode, setIsIncorrectValidationCode] = useState(
     false
   );
 
-  const inputFields = new Array(NUMBER_OF_VALIDATION_TEXT_INPUTS);
-  const setInputFields = new Array(NUMBER_OF_VALIDATION_TEXT_INPUTS);
-
-  // Cannot refactor the following logic into for loop due to following error:
-  // "React Hook "useState" may be executed more than once."
-  [inputFields[0], setInputFields[0]] = useState("");
-  [inputFields[1], setInputFields[1]] = useState("");
-  [inputFields[2], setInputFields[2]] = useState("");
-  [inputFields[3], setInputFields[3]] = useState("");
-  [inputFields[4], setInputFields[4]] = useState("");
+  const [text, setText] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<any>) => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    const index = parseInt(name.replace("validate", ""), 10);
-
-    setInputFields[index](value);
-
-    if (index < NUMBER_OF_VALIDATION_TEXT_INPUTS - 1) {
-      inputRefs.current[index + 1].current.focus();
-    }
+    setText(event.target.value);
   };
-
-  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    event.target.select();
-  };
-
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    switch (event.key) {
-      case "ArrowLeft":
-        if (index > 0) {
-          inputRefs.current[index - 1].current.focus();
-          setInputFields[index - 1]("");
-        }
-        break;
-      case "ArrowRight":
-        if (index < NUMBER_OF_VALIDATION_TEXT_INPUTS - 1) {
-          inputRefs.current[index + 1].current.focus();
-          setInputFields[index + 1]("");
-        }
-        break;
-      case "Backspace":
-        if (index > 0) {
-          inputRefs.current[index - 1].current.focus();
-          setInputFields[index - 1]("");
-        }
-        break;
-      case "Delete":
-        event.preventDefault();
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handlePaste = (
-    event: React.ClipboardEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    event.clipboardData.items[0].getAsString(text => {
-      const length = Math.min(
-        text.length,
-        NUMBER_OF_VALIDATION_TEXT_INPUTS - index
-      );
-      const croppedString = text.substring(0, length);
-
-      for (let i = 0; i < croppedString.length; i++) {
-        setInputFields[index + i](croppedString[i]);
-      }
-
-      const focusIndex = Math.min(
-        index + croppedString.length,
-        NUMBER_OF_VALIDATION_TEXT_INPUTS - 1
-      );
-      inputRefs.current[focusIndex].current.focus();
-    });
-    event.preventDefault();
-  };
-
-  const validateInputField = (
-    ref: React.MutableRefObject<any>,
-    i: number,
-    value: string
-  ) => (
-    <input
-      key={"validate-text-input-" + i}
-      ref={ref}
-      className="validate-text-input"
-      name={"validate" + i}
-      type="number"
-      pattern="\d*"
-      autoComplete="off"
-      autoCapitalize="none"
-      value={value}
-      maxLength={1}
-      onChange={handleInputChange}
-      onFocus={handleFocus}
-      onKeyDown={e => handleKeyDown(e, i)}
-      onPaste={e => handlePaste(e, i)}
-    />
-  );
-
-  const inputs = inputFields.map((field, i) =>
-    validateInputField(inputRefs.current[i], i, field)
-  );
-
-  useEffect(() => {
-    if (!inputFields.reduce((acc, curr) => (acc = acc || !curr), false)) {
-      inputRefs.current[NUMBER_OF_VALIDATION_TEXT_INPUTS - 1].current.focus();
-    }
-  }, [inputFields]);
 
   useEffect(() => {
     retrieveValidationEmail();
@@ -179,10 +62,17 @@ const ValidateWithContext = (props: {
     ) {
       setIsIncorrectValidationCode(true);
     } else if (res.statusCode === STATUS_CODE.SUCCESS) {
-      // log("Validation successful for:", email);
       setIsIncorrectValidationCode(false);
       alert("Your email is now verified");
       history.push("/");
+    } else if (
+      res.statusCode === STATUS_CODE.FAILURE &&
+      res.statusMessage === STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
+    ) {
+      const errorMessage =
+        "We're sorry, due to the number of recent validation attempts, account validation has been temporarily locked";
+      log(errorMessage);
+      alert(errorMessage);
     }
   };
 
@@ -190,12 +80,12 @@ const ValidateWithContext = (props: {
     log(error);
   };
 
-  const handleSubmit = () => {
-    const validationCode = inputFields.reduce((acc, curr) => (acc += curr), "");
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (!inputFields.reduce((acc, curr) => (acc = acc || !curr), false)) {
+    if (text.length === 5) {
       const postRequestData = {
-        validationCode
+        validationCode: text
       };
 
       basePostRequest(
@@ -228,40 +118,57 @@ const ValidateWithContext = (props: {
     );
   };
 
-  useEffect(() => {
-    const isValid = !inputFields.reduce(
-      (acc, curr) => (acc = acc || !curr),
-      false
-    );
-    if (isValid) {
-      handleSubmit();
-    }
-    // eslint-disable-next-line
-  }, [inputFields]);
-
   return (
     <div
       className="page-container"
       style={{ alignItems: "center", justifyContent: "center" }}
     >
-      <form className="form-container">
+      <div className="form-container">
         <label className="form-label">
           Please enter the validation code sent to:
           <br />
           <span style={{ fontWeight: "bold" }}>{validationEmail}</span>
         </label>
-        <label className="form-label">
+        <label className="form-label" style={{ marginTop: 10 }}>
           Didn't receive an email?
           <br />
           <button className="validate-resend-code" onClick={resendCode}>
             Send me a new confirmation code
           </button>
         </label>
-        <div className="validate-text-input-row">{inputs}</div>
-        <div className="validate-incorrect-message">
-          {isIncorrectValidationCode ? "Incorrect validation code" : ""}
-        </div>
-      </form>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <input
+            key={"validate-text-input"}
+            className="validate-text-input"
+            name={"validate"}
+            type="number"
+            pattern="\d*"
+            autoComplete="off"
+            autoCapitalize="none"
+            value={text}
+            maxLength={1}
+            placeholder="5 digit code"
+            style={{ marginTop: 10 }}
+            onChange={handleInputChange}
+          />
+          <input
+            className="validate-submit-button"
+            type="submit"
+            value="Submit"
+            disabled={text.length !== 5}
+          />
+          <div className="validate-incorrect-message">
+            {isIncorrectValidationCode ? "Incorrect validation code" : ""}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

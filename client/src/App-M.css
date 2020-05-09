@@ -291,13 +291,12 @@
   }
 
   .validate-text-input {
-    width: 50px;
+    width: 200px;
     font-size: 18px;
     line-height: 50px;
     height: 50px;
     border-radius: 5px;
     padding: 10px;
-    margin-right: 10px;
   }
 
   .validate-text-input-row {

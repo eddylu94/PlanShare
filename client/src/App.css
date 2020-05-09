@@ -73,10 +73,30 @@ body {
 .validate-text-input {
   display: flex;
   border: 1px solid #cccccc;
+  border-radius: 5px;
   box-sizing: border-box;
   text-align: center;
   -webkit-appearance: none;
   -moz-appearance: none;
+}
+
+.validate-submit-button {
+  background-color: #6c5dbdee;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border: none;
+  width: 200px;
+  padding: 10px 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.validate-submit-button :disabled,
+input[disabled] {
+  background-color: #d8d8d8;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .validate-resend-code {
