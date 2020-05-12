@@ -198,6 +198,21 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
                 <Link to="/organizations">these organizations</Link>.
               </div>
             </div>
+
+            <div
+              className="create-listing-edit-footer"
+              style={{
+                fontStyle: "italic",
+                margin: "20px 0 10px 0",
+                fontSize: 14
+              }}
+            >
+              Not all subscription providers allow sharing of its services. It
+              is the user's responsiblity to ensure that their subscription
+              listings do not violate their provider's terms of use. PlanShare
+              is not responsible for any users that violate agreements with
+              their subscription providers.
+            </div>
           </div>
           {deviceMode === DEVICE_MODE.DESKTOP ||
           deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
