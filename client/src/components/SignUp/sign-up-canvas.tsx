@@ -207,11 +207,13 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
                 fontSize: 14
               }}
             >
-              Not all subscription providers allow sharing of its services. It
-              is the user's responsiblity to ensure that their subscription
-              listings do not violate their provider's terms of use. PlanShare
-              is not responsible for any users that violate agreements with
-              their subscription providers.
+              <Link to="/info" target="_blank" rel="noopener noreferrer">
+                Certain subscription providers
+              </Link>{" "}
+              restrict sharing of their services. It is the user's responsiblity
+              to ensure that their subscription listings do not violate their
+              provider's terms of use. PlanShare is not responsible for any
+              users that violate agreements with their subscription providers.
             </div>
           </div>
           {deviceMode === DEVICE_MODE.DESKTOP ||

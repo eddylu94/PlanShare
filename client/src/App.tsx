@@ -19,6 +19,7 @@ import Settings from "./components/Settings/settings-provider";
 import Messages from "./components/Messages/messages-provider";
 import Organizations from "./components/Organizations/organizations";
 import Feedback from "./components/Feedback/feedback";
+import Info from "./components/Info/info";
 import { UserContextProvider } from "./user-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
@@ -43,6 +44,9 @@ const App = () => (
             </Route>
             <Route path="/feedback">
               <Feedback />
+            </Route>
+            <Route path="/info">
+              <Info />
             </Route>
             <Route path="/search">
               <Search />
