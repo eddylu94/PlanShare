@@ -4,7 +4,7 @@ import { History } from "history";
 
 import { basePostRequest, slackPostRequest } from "./../../base-requests";
 import { log, IResponse } from "./../../utils/utils";
-import { STATUS_CODE } from "./../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
 const EmailProviderWithContext = (props: {
@@ -72,7 +72,14 @@ const EmailProviderWithContext = (props: {
 
         history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
-        log(res.statusMessage);
+        if (res.statusMessage === STATUS_MESSAGE.EMAIL_ALREADY_EXISTS) {
+          alert(
+            "Email address has already been validated for a different account"
+          );
+          log(res.statusMessage);
+        } else {
+          log(res.statusMessage);
+        }
       }
     } else {
       log("Error receiving response");
