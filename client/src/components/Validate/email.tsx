@@ -72,7 +72,7 @@ const EmailProviderWithContext = (props: {
 
         history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
-        if (res.statusMessage === STATUS_MESSAGE.EMAIL_ALREADY_EXISTS) {
+        if (res.statusMessage === STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED) {
           alert(
             "Email address has already been validated for a different account"
           );

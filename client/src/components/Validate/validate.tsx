@@ -79,14 +79,18 @@ const ValidateWithContext = (props: {
 
       alert("Your email is now verified");
       history.push("/");
-    } else if (
-      res.statusCode === STATUS_CODE.FAILURE &&
-      res.statusMessage === STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
-    ) {
-      const errorMessage =
-        "We're sorry, due to the number of recent validation attempts, account validation has been temporarily locked";
-      log(errorMessage);
-      alert(errorMessage);
+    } else if (res.statusCode === STATUS_CODE.FAILURE) {
+      if (res.statusMessage === STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED) {
+        const errorMessage =
+          "We're sorry, due to the number of recent validation attempts, account validation has been temporarily locked";
+        log(errorMessage);
+        alert(errorMessage);
+      } else if (res.statusMessage === STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED) {
+        alert(
+          "Email address has already been validated for a different account"
+        );
+        log(res.statusMessage);
+      }
     }
   };
 

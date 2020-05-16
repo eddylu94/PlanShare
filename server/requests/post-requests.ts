@@ -150,7 +150,7 @@ export const addEmail = (
           if (findRes) {
             console.log("Email already exists");
             db.close();
-            postFailure(postRes, STATUS_MESSAGE.EMAIL_ALREADY_EXISTS);
+            postFailure(postRes, STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED);
             return;
           }
 
@@ -505,91 +505,107 @@ export const verifyEmail = (
           return;
         }
 
-        const attemptDate = new Date();
-
-        const findResValidationLockedDate = findRes.validationLockedDate;
-        if (
-          findResValidationLockedDate &&
-          new Date(attemptDate).getTime() -
-            findResValidationLockedDate.getTime() <
-            ACCOUNT_VALIDATE_LOCK_PERIOD
-        ) {
-          console.log("Account validation is locked");
-          db.close();
-          postFailure(
-            postRes,
-            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          );
-          return;
-        }
-
-        const confirmationCode = findRes.confirmationCode;
-
-        if (!confirmationCode) {
-          console.log("Unable to find pending account for validation");
-          db.close();
-          postFailure(
-            postRes,
-            STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
-          );
-          return;
-        }
-
-        if (confirmationCode !== obj.validationCode) {
-          console.log("Incorrect validation code");
-
-          let validateAttempts = findRes.validateAttempts
-            ? findRes.validateAttempts
-            : [];
-
-          validateAttempts.push(attemptDate);
-          validateAttempts = validateAttempts.filter((attempt: any) => {
-            return (
-              new Date(attemptDate).getTime() - attempt.getTime() <
-              ALLOWABLE_TIME_FOR_VALIDATE_ATTEMPTS
-            );
-          });
-
-          const validateLockedDate =
-            validateAttempts && validateAttempts.length >= MAX_VALIDATE_ATTEMPTS
-              ? attemptDate
-              : null;
-
-          const dbo = db.db(DATABASE_NAME);
-          dbo
-            .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-            .updateOne(
-              { _id: findRes._id },
-              { $set: { validateLockedDate, validateAttempts } }
-            )
-            .then(() => {
-              db.close();
-              postFailure(
-                postRes,
-                validateLockedDate
-                  ? STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
-                  : STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
-              );
-            });
-
-          return;
-        }
-
         const dbo = db.db(DATABASE_NAME);
         dbo
           .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-          .updateOne(
-            { _id: findRes._id },
-            { $set: { status: ACCOUNT_STATUS.LIVE } }
-          )
-          .then(() => {
-            console.log("Email validated:", email);
-            db.close();
-            postSuccess(postRes, {});
-          })
-          .catch((error: any) => {
-            console.log(error);
-          });
+          .findOne(
+            { email, status: ACCOUNT_STATUS.LIVE },
+            (findExistingProfileErr, findExistingProfileRes) => {
+              if (findExistingProfileRes) {
+                console.log("Email already exists");
+                db.close();
+                postFailure(postRes, STATUS_MESSAGE.EMAIL_ALREADY_VALIDATED);
+                return;
+              }
+
+              const attemptDate = new Date();
+
+              const findResValidationLockedDate = findRes.validationLockedDate;
+              if (
+                findResValidationLockedDate &&
+                new Date(attemptDate).getTime() -
+                  findResValidationLockedDate.getTime() <
+                  ACCOUNT_VALIDATE_LOCK_PERIOD
+              ) {
+                console.log("Account validation is locked");
+                db.close();
+                postFailure(
+                  postRes,
+                  STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+                );
+                return;
+              }
+
+              const confirmationCode = findRes.confirmationCode;
+
+              if (!confirmationCode) {
+                console.log("Unable to find pending account for validation");
+                db.close();
+                postFailure(
+                  postRes,
+                  STATUS_MESSAGE.CANNOT_FIND_ACCOUNT_FOR_VALIDATION
+                );
+                return;
+              }
+
+              if (confirmationCode !== obj.validationCode) {
+                console.log("Incorrect validation code");
+
+                let validateAttempts = findRes.validateAttempts
+                  ? findRes.validateAttempts
+                  : [];
+
+                validateAttempts.push(attemptDate);
+                validateAttempts = validateAttempts.filter((attempt: any) => {
+                  return (
+                    new Date(attemptDate).getTime() - attempt.getTime() <
+                    ALLOWABLE_TIME_FOR_VALIDATE_ATTEMPTS
+                  );
+                });
+
+                const validateLockedDate =
+                  validateAttempts &&
+                  validateAttempts.length >= MAX_VALIDATE_ATTEMPTS
+                    ? attemptDate
+                    : null;
+
+                const dbo = db.db(DATABASE_NAME);
+                dbo
+                  .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+                  .updateOne(
+                    { _id: findRes._id },
+                    { $set: { validateLockedDate, validateAttempts } }
+                  )
+                  .then(() => {
+                    db.close();
+                    postFailure(
+                      postRes,
+                      validateLockedDate
+                        ? STATUS_MESSAGE.ACCOUNT_VALIDATION_LOCKED
+                        : STATUS_MESSAGE.INCORRECT_VALIDATION_CODE
+                    );
+                  });
+
+                return;
+              }
+
+              const dbo = db.db(DATABASE_NAME);
+              dbo
+                .collection(DATABASE_COLLECTION.USERS_COLLECTION)
+                .updateOne(
+                  { _id: findRes._id },
+                  { $set: { status: ACCOUNT_STATUS.LIVE } }
+                )
+                .then(() => {
+                  console.log("Email validated:", email);
+                  db.close();
+                  postSuccess(postRes, {});
+                })
+                .catch((error: any) => {
+                  console.log(error);
+                });
+            }
+          );
       });
   });
 };
