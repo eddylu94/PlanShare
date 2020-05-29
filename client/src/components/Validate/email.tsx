@@ -53,6 +53,8 @@ const EmailProviderWithContext = (props: {
         return "fb.com";
       case "aapl":
         return "apple.com";
+      case "goog":
+        return "google.com";
       default:
         return "";
     }

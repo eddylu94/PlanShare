@@ -51,6 +51,11 @@ const Organizations = () => {
           <img alt="Apple" src="aapl_logo.png" className="organization-logo" />
           <div className="organizations-label">Apple</div>
         </div>
+
+        <div className="organizations-organization">
+          <img alt="Google" src="goog_logo.png" className="organization-logo" />
+          <div className="organizations-label">Google</div>
+        </div>
       </div>
     </div>
   );

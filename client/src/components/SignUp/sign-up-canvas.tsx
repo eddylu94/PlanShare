@@ -204,7 +204,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
               style={{
                 fontStyle: "italic",
                 margin: "20px 0 10px 0",
-                fontSize: 14
+                color: "#686868"
               }}
             >
               <Link to="/info" target="_blank" rel="noopener noreferrer">
