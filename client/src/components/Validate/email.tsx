@@ -47,6 +47,12 @@ const EmailProviderWithContext = (props: {
         return "linkedin.com";
       case "github":
         return "github.com";
+      case "amzn":
+        return "amazon.com";
+      case "fb":
+        return "fb.com";
+      case "aapl":
+        return "apple.com";
       default:
         return "";
     }
@@ -180,6 +186,42 @@ const EmailProviderWithContext = (props: {
                 className="organization-logo"
               />
               <div className="organizations-label">GitHub</div>
+            </div>
+
+            <div
+              className="organizations-organization organizations-organization-card"
+              onClick={e => handleClick(e, "amzn")}
+            >
+              <img
+                alt="Amazon"
+                src="amzn_logo.png"
+                className="organization-logo"
+              />
+              <div className="organizations-label">Amazon</div>
+            </div>
+
+            <div
+              className="organizations-organization organizations-organization-card"
+              onClick={e => handleClick(e, "fb")}
+            >
+              <img
+                alt="Facebook"
+                src="fb_logo.png"
+                className="organization-logo"
+              />
+              <div className="organizations-label">Facebook</div>
+            </div>
+
+            <div
+              className="organizations-organization organizations-organization-card"
+              onClick={e => handleClick(e, "aapl")}
+            >
+              <img
+                alt="Apple"
+                src="aapl_logo.png"
+                className="organization-logo"
+              />
+              <div className="organizations-label">Apple</div>
             </div>
           </>
         ) : (

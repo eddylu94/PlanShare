@@ -57,6 +57,27 @@ export const ORGANIZATION: IOrganization = {
     logo: "https://planshare.io/github_logo.png",
     domains: ["github.com"]
   },
+  AMAZON_COMPANY: {
+    organizationId: "AMAZON_COMPANY",
+    type: ORGANIZATION_CATEGORY.COMPANY.name,
+    name: "GitHub",
+    logo: "https://planshare.io/amzn_logo.png",
+    domains: ["amazon.com"]
+  },
+  FACEBOOK_COMPANY: {
+    organizationId: "FACEBOOK_COMPANY",
+    type: ORGANIZATION_CATEGORY.COMPANY.name,
+    name: "Facebook",
+    logo: "https://planshare.io/fb_logo.png",
+    domains: ["fb.com"]
+  },
+  APPLE_COMPANY: {
+    organizationId: "APPLE_COMPANY",
+    type: ORGANIZATION_CATEGORY.COMPANY.name,
+    name: "Apple",
+    logo: "https://planshare.io/aapl_logo.png",
+    domains: ["apple.com"]
+  },
   FAKE_GOOGLE_COMPANY: {
     organizationId: "FAKE_GOOGLE_COMPANY",
     type: ORGANIZATION_CATEGORY.COMPANY.name,
@@ -71,6 +92,9 @@ const companyIds = [
   ORGANIZATION.MICROSOFT_COMPANY.organizationId,
   ORGANIZATION.LINKEDIN_COMPANY.organizationId,
   ORGANIZATION.GITHUB_COMPANY.organizationId,
+  ORGANIZATION.AMAZON_COMPANY.organizationId,
+  ORGANIZATION.FACEBOOK_COMPANY.organizationId,
+  ORGANIZATION.APPLE_COMPANY.organizationId,
   ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId
 ];
 
