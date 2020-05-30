@@ -5,7 +5,11 @@ import { History } from "history";
 import CreateListingCanvas from "./create-listing-canvas";
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { baseGetRequest, basePostRequest } from "./../../base-requests";
+import {
+  baseGetRequest,
+  basePostRequest,
+  slackPostRequest
+} from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import {
   log,
@@ -241,6 +245,18 @@ const CreateListingProviderWithContext = (props: {
     log(data);
 
     if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const postRequestData = {
+        text: JSON.stringify({
+          type: "NEW_POST",
+          userId: _userData.user?.userId,
+          subscriptionCategoryId:
+            subscriptionCategorySelection.subscriptionCategoryId,
+          subscriptionBrandId: subscriptionBrandSelection.subscriptionBrandId
+        })
+      };
+
+      slackPostRequest(postRequestData);
+
       history.push("/search");
     }
   };
