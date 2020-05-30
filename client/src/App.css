@@ -652,7 +652,7 @@ input[disabled] {
   flex-direction: row;
   flex-grow: 1;
   background-color: #efefef;
-  overflow-y: auto;
+  overflow-y: hidden;
 }
 
 .search-modal-container {
