@@ -306,6 +306,23 @@ input::-webkit-inner-spin-button {
   margin-left: 5px;
 }
 
+.subscription-card-name {
+  margin: auto 0 auto 15px;
+}
+
+.subscription-detail-cropped {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subscription-detail a {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .subscription-detail-date {
   font-style: italic;
   color: #686868;

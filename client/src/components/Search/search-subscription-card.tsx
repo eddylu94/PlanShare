@@ -97,7 +97,9 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
     return (
       <div className="subscription-card-info">
-        <div className="subscription-card-info-name">{name}</div>
+        <div className="subscription-card-info-name subscription-detail-cropped">
+          {name}
+        </div>
         {listingDescription ? (
           <div className="subscription-card-description-container">
             <div className="subscription-card-description">

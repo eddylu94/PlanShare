@@ -552,7 +552,6 @@
   }
 
   .subscription-card-info-name {
-    display: flex;
     font-size: 18px;
     font-weight: 600;
   }

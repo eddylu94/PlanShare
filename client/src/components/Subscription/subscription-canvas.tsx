@@ -57,13 +57,10 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           src={subscriptionBrand.logo}
         />
         <div
+          className="subscription-card-name subscription-detail-cropped"
           style={{
-            display: "flex",
-            flexDirection: "row",
-            marginLeft: 20,
             fontSize: 18,
-            fontWeight: 600,
-            alignItems: "center"
+            fontWeight: 600
           }}
         >
           {name}
