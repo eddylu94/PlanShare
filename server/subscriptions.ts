@@ -106,13 +106,6 @@ export const SUBSCRIPTION: ISubscription = {
     name: "YouTube TV",
     logo: "https://miro.medium.com/fit/c/256/256/0*nxGz8OFtprDXvGjI.jpg"
   },
-  SLING_TV: {
-    subscriptionBrandId: "SLING_TV",
-    type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
-    name: "Sling TV",
-    logo:
-      "https://is1-ssl.mzstatic.com/image/thumb/Purple114/v4/aa/5c/41/aa5c41e2-e131-abfa-c3f6-9649b426a561/source/256x256bb.jpg"
-  },
   HULU_TV: {
     subscriptionBrandId: "HULU_TV",
     type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
@@ -250,7 +243,6 @@ const onlineStreamingBrandIds = [
 
 const liveTvSubscriptionBrandIds = [
   SUBSCRIPTION.YOUTUBE_TV.subscriptionBrandId,
-  SUBSCRIPTION.SLING_TV.subscriptionBrandId,
   SUBSCRIPTION.HULU_TV.subscriptionBrandId,
   SUBSCRIPTION.ATT_TV.subscriptionBrandId,
   SUBSCRIPTION.OTHER.subscriptionBrandId

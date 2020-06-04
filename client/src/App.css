@@ -1243,6 +1243,9 @@ input[disabled] {
 
 .info-url {
   margin-top: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .info-url a {

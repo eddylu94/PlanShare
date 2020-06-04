@@ -17,7 +17,7 @@ const restrictions: IRestriction[] = [
     logo:
       "https://developer.spotify.com/assets/branding-guidelines/icon4@2x.png",
     lastKnownUpdate: new Date("March 30, 2020"),
-    lastChecked: new Date("May 12, 2020"),
+    lastChecked: new Date("June 3, 2020"),
     limitations: [
       "Must be members of same family",
       "Must reside at same mailing address"
@@ -30,10 +30,43 @@ const restrictions: IRestriction[] = [
     url: "https://www.costco.com/member-privileges-conditions.html",
     logo: "https://cdn.iconscout.com/icon/free/png-256/costco-282448.png",
     lastKnownUpdate: new Date("September 23, 2019"),
-    lastChecked: new Date("May 12, 2020"),
+    lastChecked: new Date("June 3, 2020"),
     limitations: ["Must reside at same mailing address"],
     quote:
       "Primary and Affiliate Members receive one free Household Card for anyone over the age of 18 and living at the same address. Household Cardholders will be asked to present proof that they live at the same address as either the Primary or Affiliate Member."
+  },
+  {
+    title: "Hulu",
+    url: "https://www.hulu.com/terms",
+    logo:
+      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/bk8cux6dapq8qjzylfaj",
+    lastKnownUpdate: new Date("September 27, 2019"),
+    lastChecked: new Date("June 3, 2020"),
+    limitations: ["N/A"],
+    quote:
+      "Hulu offers the option to personalize use of the Services through the creation of one or more profiles under one account."
+  },
+  {
+    title: "Netflix",
+    url: "https://help.netflix.com/legal/termsofuse",
+    logo:
+      "https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1474467529/zlaaxu2whczitkpkxxk9.jpg",
+    lastKnownUpdate: new Date("April 24, 2019"),
+    lastChecked: new Date("June 3, 2020"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "The Netflix service and any content viewed through our service are for your personal and non-commercial use only and may not be shared with individuals beyond your household."
+  },
+  {
+    title: "Sling TV",
+    url: "https://www.sling.com/offer-details/disclaimers/terms-of-use",
+    logo:
+      "https://is1-ssl.mzstatic.com/image/thumb/Purple114/v4/aa/5c/41/aa5c41e2-e131-abfa-c3f6-9649b426a561/source/256x256bb.jpg",
+    lastKnownUpdate: new Date("May 11, 2020"),
+    lastChecked: new Date("June 3, 2020"),
+    limitations: ["Sharing is not allowed"],
+    quote:
+      "Please be aware that to maintain exclusive control and ensure compliance with these Terms of Use, you may not reveal or share your Login Credentials with anyone."
   }
 ];
 
@@ -71,7 +104,7 @@ const Feedback = () => {
         </div>
         <div className="info-required-terms">Required terms:</div>
         <ul>{limitationItems}</ul>
-        <div className="info-quote">"{quote}"</div>
+        {quote ? <div className="info-quote">"{quote}"</div> : null}
       </div>
     );
   };
@@ -83,7 +116,6 @@ const Feedback = () => {
   return (
     <div className="page-container" style={{ backgroundColor: "#FFFFFF" }}>
       <h2 className="info-page-header">Subscription Information</h2>
-      <h3 className="info-subheader">Restrictions</h3>
       The following are known restrictions to group plans:
       {list}
     </div>
