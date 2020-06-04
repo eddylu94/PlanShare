@@ -157,9 +157,9 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           aria-labelledby="discrete-slider-custom"
           step={1}
           valueLabelDisplay="auto"
-          marks={createMarks([0, 30])}
+          marks={createMarks([0, 90])}
           min={0}
-          max={30}
+          max={90}
         />
       </FormControl>
 
