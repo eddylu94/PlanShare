@@ -7,6 +7,8 @@ import SearchFiltersPane from "./search-filters";
 import SearchSubscriptionCard from "./search-subscription-card";
 import Subscription from "./../Subscription/subscription-provider";
 
+import Scrollbars from "react-custom-scrollbars";
+
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISearchCanvasProps {
@@ -60,6 +62,24 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       />
     );
   });
+
+  const scrollBarsStyle: React.CSSProperties = {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    borderRadius: 10,
+    height: "calc(100% - 40px)"
+  };
+
+  if (deviceMode === DEVICE_MODE.MOBILE) {
+    Object.assign(scrollBarsStyle, {
+      marginTop: 5
+    });
+  } else {
+    Object.assign(scrollBarsStyle, {
+      margin: "10px 0 20px 0"
+    });
+  }
 
   return (
     <div className="search-panes">
@@ -130,9 +150,11 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             No results found for <span className="b">{filtersText}</span>
           </div>
         ) : (
-          <div className="search-subscription-cards-container">
-            {subscriptionCards}
-          </div>
+          <Scrollbars autoHide style={scrollBarsStyle}>
+            <div className="search-subscription-cards-container">
+              {subscriptionCards}
+            </div>
+          </Scrollbars>
         )}
       </div>
       {selectedSubscription &&
