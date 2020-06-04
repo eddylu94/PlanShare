@@ -110,7 +110,8 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     flexDirection: "column",
     margin: "20px 10px 20px 20px",
     borderRadius: 10,
-    height: "calc(100% - 40px)"
+    height: "calc(100% - 40px)",
+    backgroundColor: "#FFFFFF"
   };
 
   const small = useMediaQuery("(max-width:768px)");
@@ -137,13 +138,14 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     Object.assign(scrollBarsStyle, {
       width: 250,
       minWidth: 250,
-      maxWidth: 250
+      maxWidth: 250,
+      boxShadow: "0px 0px 10px #d8d8d8"
     });
   }
 
   return (
     <Scrollbars autoHide style={scrollBarsStyle}>
-      <div className={filterPaneClassName}>
+      <div className={filterPaneClassName} style={{ boxShadow: "none" }}>
         <FormControl component="fieldset" style={{ flexShrink: 0 }}>
           <FiltersFormLabel label={"Category"} />
           <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>

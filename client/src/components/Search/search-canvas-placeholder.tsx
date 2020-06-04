@@ -34,7 +34,10 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
   return (
     <div className="search-panes">
       {deviceMode !== DEVICE_MODE.MOBILE ? (
-        <div className="filter-pane search-pane">
+        <div
+          className="filter-pane search-pane"
+          style={{ margin: "20px 10px 20px 20px" }}
+        >
           <div
             key={"filter-placeholder-0"}
             className="placeholder-filters-header-shape placeholder-background"
