@@ -118,7 +118,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
         {getDaysAgoString(new Date(createdDate))}
       </div>
       <div className="subscription-card-basic-info-detail">
-        ${price.toFixed(2)}
+        ${price.toFixed(2)} each
       </div>
       <div className="subscription-card-basic-info-detail">
         <img
