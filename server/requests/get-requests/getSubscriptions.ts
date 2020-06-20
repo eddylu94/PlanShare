@@ -1,0 +1,129 @@
+import mongodb from "mongodb";
+
+import {
+  authenticate,
+  getDomain,
+  postSuccess,
+  postFailure
+} from "./../../utils";
+import { retrieveOrganizationByDomain } from "./../../organizations";
+import {
+  DATABASE_NAME,
+  DATABASE_COLLECTION,
+  STATUS_MESSAGE,
+  SORT_BY,
+  SUBSCRIPTION_STATUS
+} from "./../../constants";
+
+export const getSubscriptions = (
+  mongoClient: typeof mongodb.MongoClient,
+  postReq: any,
+  postRes: any
+) => {
+  console.log("Retrieving subscriptions...");
+  authenticate(mongoClient, postReq, postRes)
+    .then(res => {
+      const [db, findRes] = res;
+
+      const email = findRes.email;
+
+      const { t, sc, gs, sb, da, p } = postReq.query;
+
+      const subscriptionCategories = sc.split(",");
+
+      let [minGroupSize, maxGroupSize] = gs
+        ? gs.split(",").map((val: string) => parseInt(val))
+        : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
+
+      let [minPrice, maxPrice] = p
+        ? p.split(",").map((val: string) => parseInt(val))
+        : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
+
+      let sort: any;
+      switch (sb) {
+        case SORT_BY.DATE_DES:
+          sort = { createdDate: -1 };
+          break;
+        case SORT_BY.DATE_ASC:
+          sort = { createdDate: 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+          sort = { "subscriptionBrand.name": 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_DES:
+          sort = { "subscriptionBrand.name": -1 };
+          break;
+        default:
+          sort = { createdDate: -1 };
+          break;
+      }
+
+      const dbo = db.db(DATABASE_NAME);
+
+      const currentDate = new Date();
+      const oldestDate = new Date(
+        new Date().setDate(new Date().getDate() - parseInt(da) - 1)
+      );
+
+      const domain = getDomain(email);
+      const organization = retrieveOrganizationByDomain(domain);
+      const organizationId = organization && organization.organizationId;
+
+      const findQuery = {
+        "organization.organizationId": organizationId,
+        "subscriptionBrand.type": { $in: subscriptionCategories },
+        numberOfPeople: {
+          $gte: minGroupSize,
+          $lte: maxGroupSize
+        },
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice
+        },
+        createdDate: {
+          $lte: new Date(currentDate),
+          $gte: new Date(oldestDate)
+        },
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      };
+
+      if (t.length) {
+        Object.assign(findQuery, {
+          $text: { $search: t }
+        });
+      }
+
+      console.log("asfasfsa");
+      console.log(findQuery);
+
+      return dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .find(findQuery)
+        .sort(sort)
+        .toArray()
+        .then(findRes => {
+          if (!findRes) {
+            console.log("Unable to find subscriptions");
+            db.close();
+            postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
+            return;
+          }
+
+          db.close();
+          postSuccess(postRes, {
+            subscriptions: findRes
+          });
+        })
+        .catch(findErr => {
+          if (findErr) {
+            console.log("Error finding record");
+            console.log(findErr);
+            db.close();
+            postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+          }
+        });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+};

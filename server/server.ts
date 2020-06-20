@@ -17,34 +17,8 @@ app.get("/", (req, res) => {
 });
 
 // Import requests
-import {
-  getValidationEmail,
-  getSubscriptionCategories,
-  getSubscriptionBrands,
-  getSubscriptions,
-  getSubscriptionsAsGuest,
-  getProfile,
-  getSubscription,
-  getSubscriptionsByAuthor,
-  getArchivedSubscriptions,
-  getEmailAddress,
-  getConversation,
-  getConversationById,
-  getConversationsList
-} from "./requests/get-requests";
-import {
-  signUp,
-  login,
-  addEmail,
-  verifyEmail,
-  resendConfirmationCode,
-  createSubscription,
-  editSubscription,
-  archiveSubscription,
-  deleteSubscription,
-  deleteUser,
-  sendMessage
-} from "./requests/post-requests";
+import GetRequests from "./requests/get-requests";
+import PostRequests from "./requests/post-requests";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -98,29 +72,44 @@ io.on("connection", (socket: any) => {
 });
 
 // GET requests
-getRequestBuilder("/getvalidationemail", getValidationEmail);
-getRequestBuilder("/getsubscriptioncategories", getSubscriptionCategories);
-getRequestBuilder("/getsubscriptionbrands", getSubscriptionBrands);
-getRequestBuilder("/getsubscriptions", getSubscriptions);
-getRequestBuilder("/getsubscriptionsasguest", getSubscriptionsAsGuest);
-getRequestBuilder("/getprofile", getProfile);
-getRequestBuilder("/getsubscription", getSubscription);
-getRequestBuilder("/getsubscriptionsbyauthor", getSubscriptionsByAuthor);
-getRequestBuilder("/getarchivedsubscriptions", getArchivedSubscriptions);
-getRequestBuilder("/getemailaddress", getEmailAddress);
-getRequestBuilder("/getconversation", getConversation);
-getRequestBuilder("/getconversationbyid", getConversationById);
-getRequestBuilder("/getconversationslist", getConversationsList);
+getRequestBuilder("/getvalidationemail", GetRequests.getValidationEmail);
+getRequestBuilder(
+  "/getsubscriptioncategories",
+  GetRequests.getSubscriptionCategories
+);
+getRequestBuilder("/getsubscriptionbrands", GetRequests.getSubscriptionBrands);
+getRequestBuilder("/getsubscriptions", GetRequests.getSubscriptions);
+getRequestBuilder(
+  "/getsubscriptionsasguest",
+  GetRequests.getSubscriptionsAsGuest
+);
+getRequestBuilder("/getprofile", GetRequests.getProfile);
+getRequestBuilder("/getsubscription", GetRequests.getSubscription);
+getRequestBuilder(
+  "/getsubscriptionsbyauthor",
+  GetRequests.getSubscriptionsByAuthor
+);
+getRequestBuilder(
+  "/getarchivedsubscriptions",
+  GetRequests.getArchivedSubscriptions
+);
+getRequestBuilder("/getemailaddress", GetRequests.getEmailAddress);
+getRequestBuilder("/getconversation", GetRequests.getConversation);
+getRequestBuilder("/getconversationbyid", GetRequests.getConversationById);
+getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
 
 // POST requests
-postRequestBuilder("/signup", signUp);
-postRequestBuilder("/login", login);
-postRequestBuilder("/addemail", addEmail);
-postRequestBuilder("/verifyemail", verifyEmail);
-postRequestBuilder("/resendconfirmationcode", resendConfirmationCode);
-postRequestBuilder("/createsubscription", createSubscription);
-postRequestBuilder("/editsubscription", editSubscription);
-postRequestBuilder("/archivesubscription", archiveSubscription);
-postRequestBuilder("/deletesubscription", deleteSubscription);
-postRequestBuilder("/deleteuser", deleteUser);
-postRequestBuilder("/sendmessage", sendMessage, io);
+postRequestBuilder("/signup", PostRequests.signUp);
+postRequestBuilder("/login", PostRequests.login);
+postRequestBuilder("/addemail", PostRequests.addEmail);
+postRequestBuilder("/verifyemail", PostRequests.verifyEmail);
+postRequestBuilder(
+  "/resendconfirmationcode",
+  PostRequests.resendConfirmationCode
+);
+postRequestBuilder("/createsubscription", PostRequests.createSubscription);
+postRequestBuilder("/editsubscription", PostRequests.editSubscription);
+postRequestBuilder("/archivesubscription", PostRequests.archiveSubscription);
+postRequestBuilder("/deletesubscription", PostRequests.deleteSubscription);
+postRequestBuilder("/deleteuser", PostRequests.deleteUser);
+postRequestBuilder("/sendmessage", PostRequests.sendMessage, io);
