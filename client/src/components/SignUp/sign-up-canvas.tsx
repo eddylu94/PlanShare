@@ -165,7 +165,11 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           <div className="intro">
             <div className="intro-header">
               <div className="intro-logo-and-title">
-                <img alt={TITLE} className="intro-icon" src={"./icon.png"} />
+                <img
+                  alt={TITLE}
+                  className="intro-icon"
+                  src={"./icon_transparent.png"}
+                />
                 <span className="intro-title">{TITLE}</span>
               </div>
             </div>

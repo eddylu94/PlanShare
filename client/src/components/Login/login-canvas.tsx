@@ -48,7 +48,11 @@ const LoginCanvas = (props: ILoginCanvasProps) => {
       <div className="login-container">
         <form className="login-form-container" onSubmit={handleSubmit}>
           <div className="intro-logo-and-title" style={{ marginBottom: 20 }}>
-            <img alt={TITLE} className="intro-icon" src={"./icon.png"} />
+            <img
+              alt={TITLE}
+              className="intro-icon"
+              src={"./icon_transparent.png"}
+            />
             <span className="intro-title">{TITLE}</span>
           </div>
           <div
