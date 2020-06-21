@@ -183,16 +183,16 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             <div className="intro-footer">
               <div>
                 <span className="b">{TITLE}</span> is a classifieds website that
-                helps you find colleagues to split costs on group plans.
+                helps you find colleagues to buy, sell, trade, and share.
               </div>
 
               <br />
 
               <div>
                 After signing up and verifying your email address, you can
-                either search for existing plans or post your own. Once you find
-                the right plan, you can message the author of the listing and
-                discuss how to split the costs.
+                either search through listings or post your own. Once you find a
+                listing of interest, you can message the listing author and
+                discuss how you want to complete the transaction.
               </div>
 
               <br />

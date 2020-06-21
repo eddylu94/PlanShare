@@ -1,5 +1,5 @@
 export const TITLE = "PlanShare";
-export const SLOGAN = "Find colleagues to split costs on group plans";
+export const SLOGAN = "Buy, Sell, Trade, and Share with your colleagues";
 
 // Status codes
 export const STATUS_CODE = {
