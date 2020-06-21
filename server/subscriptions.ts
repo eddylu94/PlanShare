@@ -31,10 +31,6 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
     subscriptionCategoryId: "MUSIC_SERVICE",
     name: "Music"
   },
-  GYM_MEMBERSHIPS: {
-    subscriptionCategoryId: "GYM_MEMBERSHIPS",
-    name: "Gym Memberships"
-  },
   INTERVIEW_PREP: {
     subscriptionCategoryId: "INTERVIEW_PREP",
     name: "Interview Prep"
@@ -54,7 +50,6 @@ const subscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId
@@ -88,6 +83,12 @@ export const SUBSCRIPTION: ISubscription = {
     type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "Disney Plus",
     logo: "https://planshare.io/plans/disney_online_streaming.png"
+  },
+  HOTSTAR_ONLINE_STREAMING: {
+    subscriptionBrandId: "HOTSTAR_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
+    name: "Hotstar",
+    logo: "https://planshare.io/plans/hotstar_online_streaming.png"
   },
   ESPN_ONLINE_STREAMING: {
     subscriptionBrandId: "ESPN_ONLINE_STREAMING",
@@ -179,17 +180,11 @@ export const SUBSCRIPTION: ISubscription = {
     name: "YouTube Music",
     logo: "https://planshare.io/plans/youtube_music.png"
   },
-  TWENTY_FOUR_HOUR_FITNESS: {
-    subscriptionBrandId: "TWENTY_FOUR_HOUR_FITNESS",
-    type: SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
-    name: "24 Hour Fitness",
-    logo: "https://planshare.io/plans/twenty_hour_hour_fitness.png"
-  },
-  LA_FITNESS: {
-    subscriptionBrandId: "LA_FITNESS",
-    type: SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId,
-    name: "LA Fitness",
-    logo: "https://planshare.io/plans/la_fitness.png"
+  PANDORA_MUSIC: {
+    subscriptionBrandId: "PANDORA_MUSIC",
+    type: SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
+    name: "Pandora Music",
+    logo: "https://planshare.io/plans/pandora_music.png"
   },
   LEETCODE: {
     subscriptionBrandId: "LEETCODE",
@@ -202,6 +197,30 @@ export const SUBSCRIPTION: ISubscription = {
     type: SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
     name: "Groceries",
     logo: "https://planshare.io/plans/groceries.png"
+  },
+  AUTONOMOUS_AI: {
+    subscriptionBrandId: "AUTONOMOUS_AI",
+    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
+    name: "Autonomous AI",
+    logo: "https://planshare.io/plans/autonomous_ai.png"
+  },
+  NINTENDO_ONLINE: {
+    subscriptionBrandId: "NINTENDO_ONLINE",
+    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
+    name: "Nintendo Online",
+    logo: "https://planshare.io/plans/nintendo_online.png"
+  },
+  TWENTY_FOUR_HOUR_FITNESS: {
+    subscriptionBrandId: "TWENTY_FOUR_HOUR_FITNESS",
+    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
+    name: "24 Hour Fitness",
+    logo: "https://planshare.io/plans/twenty_hour_hour_fitness.png"
+  },
+  LA_FITNESS: {
+    subscriptionBrandId: "LA_FITNESS",
+    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
+    name: "LA Fitness",
+    logo: "https://planshare.io/plans/la_fitness.png"
   },
   OTHER: {
     subscriptionBrandId: "OTHER",
@@ -216,6 +235,7 @@ const onlineStreamingBrandIds = [
   SUBSCRIPTION.PRIME_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.HULU_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.DISNEY_ONLINE_STREAMING.subscriptionBrandId,
+  SUBSCRIPTION.HOTSTAR_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
@@ -243,12 +263,7 @@ const musicSubscriptionBrandIds = [
   SUBSCRIPTION.TIDAL_MUSIC.subscriptionBrandId,
   SUBSCRIPTION.AMAZON_MUSIC.subscriptionBrandId,
   SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId,
-  SUBSCRIPTION.OTHER.subscriptionBrandId
-];
-
-const gymMembershipBrandIds = [
-  SUBSCRIPTION.TWENTY_FOUR_HOUR_FITNESS.subscriptionBrandId,
-  SUBSCRIPTION.LA_FITNESS.subscriptionBrandId,
+  SUBSCRIPTION.PANDORA_MUSIC.subscriptionBrandId,
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
@@ -262,7 +277,13 @@ const deliveryBrandIds = [
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
-const otherBrandIds = [SUBSCRIPTION.OTHER.subscriptionBrandId];
+const otherBrandIds = [
+  SUBSCRIPTION.AUTONOMOUS_AI.subscriptionBrandId,
+  SUBSCRIPTION.NINTENDO_ONLINE.subscriptionBrandId,
+  SUBSCRIPTION.TWENTY_FOUR_HOUR_FITNESS.subscriptionBrandId,
+  SUBSCRIPTION.LA_FITNESS.subscriptionBrandId,
+  SUBSCRIPTION.OTHER.subscriptionBrandId
+];
 
 export const retrieveSubscriptionBrands = (type: string) => {
   let ids;
@@ -278,9 +299,6 @@ export const retrieveSubscriptionBrands = (type: string) => {
       break;
     case SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId:
       ids = musicSubscriptionBrandIds;
-      break;
-    case SUBSCRIPTION_CATEGORY.GYM_MEMBERSHIPS.subscriptionCategoryId:
-      ids = gymMembershipBrandIds;
       break;
     case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
       ids = interviewPrepBrandIds;
