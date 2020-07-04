@@ -53,6 +53,8 @@ export interface ISubscriptionData {
   createdDate: string;
   subscriptionUrl?: string;
   otherSubscription?: string;
+  contactFb?: string;
+  contactEmail?: string;
 }
 
 export interface IMessageData {

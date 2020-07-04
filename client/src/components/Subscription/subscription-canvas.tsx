@@ -40,7 +40,9 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     price,
     subscriptionUrl,
     userId,
-    otherSubscription
+    otherSubscription,
+    contactFb,
+    contactEmail
   } = subscriptionData;
 
   const name =
@@ -93,6 +95,33 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
             </Link>
           </div>
         </>
+      ) : null}
+
+      {contactFb || contactEmail ? (
+        <div style={{ marginTop: 20 }}>
+          {contactFb ? (
+            <div className="subscription-detail subscription-subscription-detail">
+              <img
+                alt="Facebook"
+                className="subscription-detail-icon"
+                style={{ opacity: 1 }}
+                src="/fb_logo.png"
+              />
+              {contactFb}
+            </div>
+          ) : null}
+
+          {contactEmail ? (
+            <div className="subscription-detail subscription-subscription-detail">
+              <img
+                alt="Email"
+                className="subscription-detail-icon"
+                src="/email_icon.png"
+              />
+              {contactEmail}
+            </div>
+          ) : null}
+        </div>
       ) : null}
 
       <div className="subscription-label">Subscription</div>

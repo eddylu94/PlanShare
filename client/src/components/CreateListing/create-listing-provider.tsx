@@ -116,6 +116,12 @@ const CreateListingProviderWithContext = (props: {
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [price, setPrice] = useState(0);
 
+  const [isContactFb, setIsContactFb] = useState(false);
+  const [contactFb, setContactFb] = useState("");
+
+  const [isContactEmail, setIsContactEmail] = useState(false);
+  const [contactEmail, setContactEmail] = useState("");
+
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
   const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
@@ -165,6 +171,12 @@ const CreateListingProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.PRICE:
         setPrice(value);
+        break;
+      case FORM_INPUT_TYPE.CONTACT_FB:
+        setContactFb(value);
+        break;
+      case FORM_INPUT_TYPE.CONTACT_EMAIL:
+        setContactEmail(value);
         break;
       default:
         break;
@@ -286,6 +298,14 @@ const CreateListingProviderWithContext = (props: {
       Object.assign(postRequestData.subscriptionData, { otherSubscription });
     }
 
+    if (isContactFb && contactFb) {
+      Object.assign(postRequestData.subscriptionData, { contactFb });
+    }
+
+    if (isContactEmail && contactEmail) {
+      Object.assign(postRequestData.subscriptionData, { contactEmail });
+    }
+
     if (!isFormDisabled) {
       if (subscriptionId) {
         basePostRequest(
@@ -402,6 +422,12 @@ const CreateListingProviderWithContext = (props: {
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
       price={price}
+      isContactFb={isContactFb}
+      setIsContactFb={setIsContactFb}
+      contactFb={contactFb}
+      isContactEmail={isContactEmail}
+      setIsContactEmail={setIsContactEmail}
+      contactEmail={contactEmail}
       isFormDisabled={isFormDisabled}
       handleSubmit={handleSubmit}
       isDescriptionFocused={isDescriptionFocused}

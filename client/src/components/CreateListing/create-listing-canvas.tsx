@@ -5,6 +5,7 @@ import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 import Tooltip from "@material-ui/core/Tooltip";
+import { FormControlLabel, Checkbox, Typography } from "@material-ui/core";
 
 interface ICreateListingCanvasProps {
   subscriptionId: string;
@@ -25,6 +26,14 @@ interface ICreateListingCanvasProps {
   listingDescription: string;
   numberOfPeople: number;
   price: number;
+
+  isContactFb: boolean;
+  setIsContactFb: (value: boolean) => void;
+  contactFb: string;
+
+  isContactEmail: boolean;
+  setIsContactEmail: (value: boolean) => void;
+  contactEmail: string;
 
   isFormDisabled: boolean;
 
@@ -56,6 +65,12 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     listingDescription,
     numberOfPeople,
     price,
+    isContactFb,
+    setIsContactFb,
+    contactFb,
+    isContactEmail,
+    setIsContactEmail,
+    contactEmail,
     isFormDisabled,
     handleSubmit,
     isDescriptionFocused,
@@ -267,6 +282,86 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
               <span style={{ marginLeft: 10 }}>$</span>
             </div>
           </div>
+        </div>
+
+        <div className="create-listing-contact">
+          <FormLabel
+            label={
+              "Users may also reach out to me about this listing by (optional):"
+            }
+          />
+
+          <FormControlLabel
+            key={"filters-category-fb"}
+            style={{ color: "#000000", marginTop: 10 }}
+            control={
+              <Checkbox
+                checked={isContactFb}
+                // TODO: Remove lambda expression
+                onChange={e => setIsContactFb(!isContactFb)}
+                name={"contact-fb"}
+                style={{
+                  padding: 0,
+                  margin: "5px 5px 5px 20px",
+                  color: "#6C5DBD"
+                }}
+              />
+            }
+            label={
+              <div className="flex-horizontal-centered">
+                <Typography
+                  style={{ fontSize: 15, marginRight: 10, minWidth: 80 }}
+                >
+                  Facebook
+                </Typography>
+                <input
+                  className="form-text-input form-input"
+                  name={FORM_INPUT_TYPE.CONTACT_FB}
+                  type="text"
+                  placeholder="Username"
+                  value={contactFb}
+                  onChange={handleInputChange}
+                  onBlur={handleOnBlurSubscriptionUrl}
+                />
+              </div>
+            }
+          />
+
+          <FormControlLabel
+            key={"filters-category-email"}
+            style={{ color: "#000000", marginTop: 10 }}
+            control={
+              <Checkbox
+                checked={isContactEmail}
+                // TODO: Remove lambda expression
+                onChange={e => setIsContactEmail(!isContactEmail)}
+                name={"contact-email"}
+                style={{
+                  padding: 0,
+                  margin: "5px 5px 5px 20px",
+                  color: "#6C5DBD"
+                }}
+              />
+            }
+            label={
+              <div className="flex-horizontal-centered">
+                <Typography
+                  style={{ fontSize: 15, marginRight: 10, minWidth: 80 }}
+                >
+                  Email
+                </Typography>
+                <input
+                  className="form-text-input form-input"
+                  name={FORM_INPUT_TYPE.CONTACT_EMAIL}
+                  type="text"
+                  placeholder="Email address"
+                  value={contactEmail}
+                  onChange={handleInputChange}
+                  onBlur={handleOnBlurSubscriptionUrl}
+                />
+              </div>
+            }
+          />
         </div>
 
         <div className="create-listing-edit-footer">

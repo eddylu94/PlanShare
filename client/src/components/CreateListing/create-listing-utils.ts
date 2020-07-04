@@ -5,5 +5,7 @@ export const FORM_INPUT_TYPE = {
   SUBSCRIPTION_URL: "subscription_url",
   LISTING_DESCRIPTION: "listing_description",
   NUMBER_OF_PEOPLE: "number_of_people",
-  PRICE: "price"
+  PRICE: "price",
+  CONTACT_FB: "contact_fb",
+  CONTACT_EMAIL: "contact_email"
 };
