@@ -91,6 +91,41 @@ export const ORGANIZATION: IOrganization = {
     name: "Fake Google",
     logo: "https://planshare.io/goog_logo.png",
     domains: ["gmail.com"]
+  },
+  MCGILL_UNIVERSITY: {
+    organizationId: "MCGILL_UNIVERSITY",
+    type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
+    name: "McGill University",
+    logo: "https://planshare.io/mcgill_u_logo.png",
+    domains: ["mail.mcgill.ca", "mcgill.ca"]
+  },
+  UNIVERSITY_OF_TORONTO: {
+    organizationId: "UNIVERSITY_OF_TORONTO",
+    type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
+    name: "University of Toronto",
+    logo: "https://planshare.io/u_of_toronto_logo.png",
+    domains: ["utoronto.ca"]
+  },
+  QUEENS_UNIVERSITY: {
+    organizationId: "QUEENS_UNIVERSITY",
+    type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
+    name: "Queen's University",
+    logo: "https://planshare.io/queensu_logo.png",
+    domains: ["queensu.ca"]
+  },
+  WASHU_ST_LOUIS: {
+    organizationId: "WASHU_ST_LOUIS",
+    type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
+    name: "Washington University, St. Louis",
+    logo: "https://planshare.io/washu_stl_logo.png",
+    domains: ["wustl.edu"]
+  },
+  UNIVERSITY_OF_WASHINGTON: {
+    organizationId: "UNIVERSITY_OF_WASHINGTON",
+    type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
+    name: "University of Washington",
+    logo: "https://planshare.io/u_of_wa_logo.png",
+    domains: ["uw.edu"]
   }
 };
 
@@ -105,7 +140,13 @@ const companyIds = [
   ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId
 ];
 
-const univerityIds = [] as string[];
+const univerityIds = [
+  ORGANIZATION.MCGILL_UNIVERSITY.organizationId,
+  ORGANIZATION.UNIVERSITY_OF_TORONTO.organizationId,
+  ORGANIZATION.QUEENS_UNIVERSITY.organizationId,
+  ORGANIZATION.WASHU_ST_LOUIS.organizationId,
+  ORGANIZATION.UNIVERSITY_OF_WASHINGTON.organizationId
+] as string[];
 
 export const retrieveOrganizations = (type: string) => {
   let ids;
