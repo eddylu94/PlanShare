@@ -65,6 +65,15 @@ const CreateListingProviderWithContext = (props: {
       setSubscriptionUrl(newSubscriptionData.subscriptionUrl);
       setNumberOfPeople(newSubscriptionData.numberOfPeople);
       setPrice(newSubscriptionData.price);
+
+      if (newSubscriptionData.contactFb) {
+        setIsContactFb(true);
+        setContactFb(newSubscriptionData.contactFb);
+      }
+      if (newSubscriptionData.contactEmail) {
+        setIsContactEmail(true);
+        setContactEmail(newSubscriptionData.contactEmail);
+      }
     }
   };
 
@@ -259,7 +268,7 @@ const CreateListingProviderWithContext = (props: {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const postRequestData = {
         text: JSON.stringify({
-          type: "NEW_POST",
+          type: subscriptionId ? "EDIT_POST" : "NEW_POST",
           userId: _userData.user?.userId,
           subscriptionCategoryId:
             subscriptionCategorySelection.subscriptionCategoryId,
