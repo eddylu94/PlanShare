@@ -369,18 +369,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <Link to="/profile">posted listings</Link>
         </div>
 
-        <div
-          className="create-listing-edit-footer"
-          style={{ fontStyle: "italic", margin: "20px 0 10px 0", fontSize: 14 }}
-        >
+        <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
           WARNING:{" "}
           <Link to="/info" target="_blank" rel="noopener noreferrer">
             Certain subscription providers
           </Link>{" "}
           restrict sharing of their services. It is the user's responsiblity to
           ensure that their subscription listings do not violate their
-          provider's terms of use. PlanShare is not responsible for any users
-          that violate agreements with their subscription providers.
+          provider's terms of use.
         </div>
 
         <input

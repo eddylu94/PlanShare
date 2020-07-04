@@ -523,6 +523,19 @@ input[disabled] {
   color: #6c5dbd;
 }
 
+.create-listing-edit-footer-disclaimer {
+  background-color: #6c5dbdff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px 0 10px 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.create-listing-edit-footer-disclaimer a {
+  color: #ffffff;
+}
+
 .signup-toggle {
   text-align: center;
   text-decoration: underline;
