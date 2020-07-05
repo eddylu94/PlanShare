@@ -10,6 +10,7 @@ export const STATUS_CODE = {
 // Status messages
 export const STATUS_MESSAGE = {
   UNKNOWN_ERROR: "unknown_error",
+  NO_EMAIL_EXISTS: "no_email_exists",
   EMAIL_ALREADY_EXISTS: "email_already_exists",
   USERNAME_ALREADY_EXISTS: "username_already_exists",
   INCORRECT_CRED: "incorrect_cred",

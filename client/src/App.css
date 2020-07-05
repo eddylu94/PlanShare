@@ -758,6 +758,10 @@ input[disabled] {
   cursor: pointer;
 }
 
+.search-number-of-results {
+  color: #686868;
+}
+
 .search-subscription-cards-container {
   display: flex;
   flex-direction: column;

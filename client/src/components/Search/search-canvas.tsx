@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ISubscriptionData } from "../../utils/utils";
+import { ISubscriptionData, IOrganization } from "../../utils/utils";
 import { ISearchFiltersProps } from "./search-utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 import SearchFiltersPane from "./search-filters";
@@ -12,6 +12,7 @@ import Scrollbars from "react-custom-scrollbars";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISearchCanvasProps {
+  organization: IOrganization;
   isFiltersDrawerOpen: boolean;
   subscriptionData: ISubscriptionData[];
   filtersText: string;
@@ -25,6 +26,7 @@ interface ISearchCanvasProps {
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
   const {
+    organization,
     isFiltersDrawerOpen,
     subscriptionData,
     filtersText,
@@ -145,17 +147,32 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             </div>
           </div>
         </div>
-        {filtersText && !subscriptionData.length ? (
-          <div className="subscription-pane search-no-results">
-            No results found for <span className="b">{filtersText}</span>
+        <div
+          className="search-number-of-results flex-horizontal-centered"
+          style={{ maxHeight: 30, height: 30 }}
+        >
+          {organization.name ? (
+            <>
+              {subscriptionData.length}{" "}
+              {subscriptionData.length === 1 ? "result" : "results"} found for{" "}
+              <span className="b" style={{ marginLeft: 5 }}>
+                {organization.name}
+              </span>
+              <img
+                alt="Organization logo"
+                className="subscription-card-organization-logo"
+                src={organization.logo}
+              />
+            </>
+          ) : (
+            <>{subscriptionData.length} results found</>
+          )}
+        </div>
+        <Scrollbars autoHide style={scrollBarsStyle}>
+          <div className="search-subscription-cards-container">
+            {subscriptionCards}
           </div>
-        ) : (
-          <Scrollbars autoHide style={scrollBarsStyle}>
-            <div className="search-subscription-cards-container">
-              {subscriptionCards}
-            </div>
-          </Scrollbars>
-        )}
+        </Scrollbars>
       </div>
       {selectedSubscription &&
       (deviceMode === DEVICE_MODE.DESKTOP ||

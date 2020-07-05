@@ -459,12 +459,12 @@
     opacity: 0.7;
   }
 
-  .search-subscription-cards-container {
-    padding: 0 10px;
+  .search-number-of-results {
+    margin: 0 10px 0 20px;
   }
 
-  .search-no-results {
-    color: #686868;
+  .search-subscription-cards-container {
+    padding: 0 10px;
   }
 
   .create-listing-form {

@@ -6,7 +6,11 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
-import { log, IFiltersSubscriptionCategory } from "./../../utils/utils";
+import {
+  log,
+  IFiltersSubscriptionCategory,
+  IOrganization
+} from "./../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import SearchCanvasPlaceholder from "./search-canvas-placeholder";
 
@@ -29,6 +33,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   let _throttle = useRef(null as any);
 
   const { history } = props;
+
+  const [organization, setOrganization] = useState({} as IOrganization);
 
   const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
 
@@ -167,6 +173,27 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     );
   };
 
+  const retrieveOrganizationResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      console.log(data.body.organization);
+      setOrganization(data.body.organization);
+    }
+  };
+
+  const retrieveOrganizationErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const retrieveOrganization = () => {
+    baseGetRequest(
+      "getorganization",
+      [],
+      retrieveOrganizationResponseHandler,
+      retrieveOrganizationErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     if (_throttle.current) {
       clearTimeout(_throttle.current);
@@ -203,6 +230,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   useEffect(() => {
     // retrieveSubscriptions();
     retrieveSubscriptionCategories();
+    retrieveOrganization();
     // eslint-disable-next-line
   }, []);
 
@@ -223,6 +251,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     <div className="search-panes">
       {isRetrievedSubscriptionsDirty ? (
         <SearchCanvas
+          organization={organization}
           isFiltersDrawerOpen={isFiltersDrawerOpen}
           subscriptionData={subscriptionData}
           filtersText={filtersText}
