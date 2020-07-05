@@ -83,6 +83,12 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     });
   }
 
+  const organizationsMap = subscriptionData.reduce((map, subscription) => {
+    const organization = subscription.organization.name;
+    return Object.assign(map, { [organization]: 1 });
+  }, {});
+  const numberOfOrganizations = Object.keys(organizationsMap).length;
+
   return (
     <div className="search-panes">
       {isFiltersDrawerOpen && deviceMode === DEVICE_MODE.MOBILE ? (
@@ -153,8 +159,11 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
         >
           {organization.name ? (
             <>
-              {subscriptionData.length}{" "}
-              {subscriptionData.length === 1 ? "result" : "results"} found for{" "}
+              <span className="b" style={{ marginRight: 5 }}>
+                {subscriptionData.length}{" "}
+                {subscriptionData.length === 1 ? "result" : "results"}
+              </span>{" "}
+              found for{" "}
               <span className="b" style={{ marginLeft: 5 }}>
                 {organization.name}
               </span>
@@ -165,7 +174,16 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               />
             </>
           ) : (
-            <>{subscriptionData.length} results found</>
+            <>
+              <span className="b" style={{ marginRight: 5 }}>
+                {subscriptionData.length} results
+              </span>{" "}
+              found across{" "}
+              <span className="b" style={{ marginLeft: 5 }}>
+                {numberOfOrganizations}{" "}
+                {numberOfOrganizations === 1 ? "organization" : "organizations"}
+              </span>
+            </>
           )}
         </div>
         <Scrollbars autoHide style={scrollBarsStyle}>

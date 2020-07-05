@@ -67,6 +67,10 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
             </div>
           </div>
         </div>
+        <div
+          className="search-number-of-results flex-horizontal-centered"
+          style={{ maxHeight: 30, height: 30, marginBottom: 5 }}
+        ></div>
         <div className="search-subscription-cards-container">
           {subscriptionCards}
         </div>
