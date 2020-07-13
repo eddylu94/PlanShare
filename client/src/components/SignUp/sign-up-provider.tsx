@@ -5,7 +5,7 @@ import { History } from "history";
 import SignUpCanvas from "./sign-up-canvas";
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import { basePostRequest, slackPostRequest } from "./../../base-requests";
-import { log, IResponse } from "./../../utils/utils";
+import { log, IResponse, validatePass } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 
@@ -62,7 +62,7 @@ const SignUpProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.PASS1:
         setPass1(value);
-        setIsPass1Valid(validatePass1(value));
+        setIsPass1Valid(validatePass(value));
         setIsPass2Valid(validatePass2(value, pass2));
         break;
       case FORM_INPUT_TYPE.PASS2:
@@ -85,12 +85,6 @@ const SignUpProviderWithContext = (props: {
   const validateUsername = (username: string) => {
     const re = /^[a-zA-Z0-9_.-]*$/;
     return re.test(username) && !!username.trim();
-  };
-
-  const validatePass1 = (pass1: string) => {
-    // Minimum eight characters, at least one letter and one number
-    const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/;
-    return re.test(pass1);
   };
 
   const validatePass2 = (pass1: string, pass2: string) =>

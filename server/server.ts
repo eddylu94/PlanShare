@@ -102,6 +102,7 @@ getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
 // POST requests
 postRequestBuilder("/signup", PostRequests.signUp);
 postRequestBuilder("/login", PostRequests.login);
+postRequestBuilder("/changepass", PostRequests.changePass);
 postRequestBuilder("/addemail", PostRequests.addEmail);
 postRequestBuilder("/verifyemail", PostRequests.verifyEmail);
 postRequestBuilder(

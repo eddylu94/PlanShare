@@ -2,6 +2,7 @@ import { signUp } from "./post-requests/signUp";
 import { addEmail } from "./post-requests/addEmail";
 import { resendConfirmationCode } from "./post-requests/resendConfirmationCode";
 import { login } from "./post-requests/login";
+import { changePass } from "./post-requests/changePass";
 import { verifyEmail } from "./post-requests/verifyEmail";
 import { createSubscription } from "./post-requests/createSubscription";
 import { editSubscription } from "./post-requests/editSubscription";
@@ -15,6 +16,7 @@ const postRequests = {
   addEmail,
   resendConfirmationCode,
   login,
+  changePass,
   verifyEmail,
   createSubscription,
   editSubscription,

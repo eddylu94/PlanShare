@@ -33,7 +33,8 @@ export const STATUS_MESSAGE = {
   CANNOT_FIND_CONVERSATION: "cannot_find_conversation",
   CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list",
   ACCOUNT_LOCKED: "account_locked",
-  ACCOUNT_VALIDATION_LOCKED: "account_validation_locked"
+  ACCOUNT_VALIDATION_LOCKED: "account_validation_locked",
+  PASSWORDS_NOT_SAME: "passwords_not_match"
 };
 
 export const SUBSCRIPTION_STATUS = {

@@ -30,35 +30,27 @@ interface IFindResult {
   authTokens: IAuthToken[];
   pendingEmails: IPendingEmail[];
   status: string;
+  authAttempts: Date[];
 }
-
-// interface IUniversity {
-//   web_pages: string[];
-//   name: string;
-//   alpha_two_code: string;
-//   "state-province": string;
-//   domains: string[];
-//   country: string;
-// }
 
 const SALT_ROUNDS = 10;
 
-export const encryptPassword = function(password: any, callback: any) {
-  bcrypt.genSalt(SALT_ROUNDS, function(err: any, salt: any) {
+export const encryptPassword = (password: any, callback: any) => {
+  bcrypt.genSalt(SALT_ROUNDS, (err: any, salt: any) => {
     if (err) return callback(err);
 
-    bcrypt.hash(password, salt, function(err: any, hash: any) {
+    bcrypt.hash(password, salt, (err: any, hash: any) => {
       return callback(err, hash);
     });
   });
 };
 
-export const comparePassword = function(
+export const comparePassword = (
   plainPass: string,
   hashword: string,
   callback: any
-) {
-  bcrypt.compare(plainPass, hashword, function(err: any, isPasswordMatch: any) {
+) => {
+  bcrypt.compare(plainPass, hashword, (err: any, isPasswordMatch: any) => {
     return err == null ? callback(null, isPasswordMatch) : callback(err);
   });
 };

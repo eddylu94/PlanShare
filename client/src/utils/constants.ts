@@ -26,7 +26,8 @@ export const STATUS_MESSAGE = {
   CANNOT_FIND_CONVERSATION: "cannot_find_conversation",
   CANNOT_FIND_CONVERSATIONS_LIST: "cannot_find_conversations_list",
   ACCOUNT_LOCKED: "account_locked",
-  ACCOUNT_VALIDATION_LOCKED: "account_validation_locked"
+  ACCOUNT_VALIDATION_LOCKED: "account_validation_locked",
+  PASSWORDS_NOT_SAME: "passwords_not_match"
 };
 
 export const DEVICE_MODE = {
@@ -34,4 +35,11 @@ export const DEVICE_MODE = {
   TABLET: "TABLET", // width between 768px and 992px
   DESKTOP: "DESKTOP", // width between 992px and 1200 px
   LARGE_DESKTOP: "LARGE_DESKTOP" // width greater than 1200px
+};
+
+export const SETTINGS_INPUT_NAME = {
+  DELETE_ACCOUNT_PASS: "DELETE_ACCOUNT_PASS",
+  CHANGE_PASS_CURRENT: "CHANGE_PASS_CURRENT",
+  CHANGE_PASS_NEW_1: "CHANGE_PASS_NEW_1",
+  CHANGE_PASS_NEW_2: "CHANGE_PASS_NEW_2"
 };

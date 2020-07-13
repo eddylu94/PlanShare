@@ -5,7 +5,11 @@ import { History } from "history";
 import SettingsCanvas from "./settings-canvas";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "./../../base-requests";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import {
+  STATUS_CODE,
+  STATUS_MESSAGE,
+  SETTINGS_INPUT_NAME
+} from "./../../utils/constants";
 import { log } from "./../../utils/utils";
 
 const SettingsProviderWithContext = (props: {
@@ -22,6 +26,10 @@ const SettingsProviderWithContext = (props: {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
+  const [changePassCurrent, setChangePassCurrent] = useState("");
+  const [changePassNew1, setChangePassNew1] = useState("");
+  const [changePassNew2, setChangePassNew2] = useState("");
+
   if (!_userData.user?.auth) {
     history.push("/signup");
   }
@@ -29,8 +37,24 @@ const SettingsProviderWithContext = (props: {
   log(_userData);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setPass(value);
+    const { value, name } = event.target;
+
+    switch (name) {
+      case SETTINGS_INPUT_NAME.DELETE_ACCOUNT_PASS:
+        setPass(value);
+        break;
+      case SETTINGS_INPUT_NAME.CHANGE_PASS_CURRENT:
+        setChangePassCurrent(value);
+        break;
+      case SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_1:
+        setChangePassNew1(value);
+        break;
+      case SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_2:
+        setChangePassNew2(value);
+        break;
+      default:
+        break;
+    }
   };
 
   const deleteUserResponseHandler = (data: any) => {
@@ -77,6 +101,47 @@ const SettingsProviderWithContext = (props: {
     );
   };
 
+  const changePassResponseHandler = (data: any) => {
+    log(data);
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.INCORRECT_CRED
+    ) {
+      alert("Incorrect password");
+    } else if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.PASSWORDS_NOT_SAME
+    ) {
+      alert("Passwords do not match");
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
+      alert("Password has been udpated");
+
+      setChangePassCurrent("");
+      setChangePassNew1("");
+      setChangePassNew2("");
+    }
+  };
+
+  const changePassErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const changePass = () => {
+    const postRequestData = {
+      currPass: changePassCurrent,
+      newPass1: changePassNew1,
+      newPass2: changePassNew2
+    };
+
+    basePostRequest(
+      "changepass",
+      postRequestData,
+      changePassResponseHandler,
+      changePassErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   const retrieveEmailResponseHandler = (data: any) => {
     log(data);
     if (
@@ -114,8 +179,12 @@ const SettingsProviderWithContext = (props: {
     <SettingsCanvas
       email={email}
       pass={pass}
+      changePassCurrent={changePassCurrent}
+      changePassNew1={changePassNew1}
+      changePassNew2={changePassNew2}
       handleInputChange={handleInputChange}
       handleSubmit={deleteUser}
+      handleSubmitChangePass={changePass}
     />
   ) : null;
 };

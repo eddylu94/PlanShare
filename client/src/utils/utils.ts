@@ -137,3 +137,9 @@ export const isValidURL = (str: string) => {
   ); // fragment locator
   return !!pattern.test(str);
 };
+
+export const validatePass = (pass1: string) => {
+  // Minimum eight characters, at least one letter and one number
+  const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/;
+  return re.test(pass1);
+};
