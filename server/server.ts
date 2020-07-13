@@ -95,6 +95,10 @@ getRequestBuilder(
   GetRequests.getArchivedSubscriptions
 );
 getRequestBuilder("/getemailaddress", GetRequests.getEmailAddress);
+getRequestBuilder(
+  "/getsettingemailnotifications",
+  GetRequests.getSettingEmailNotifications
+);
 getRequestBuilder("/getconversation", GetRequests.getConversation);
 getRequestBuilder("/getconversationbyid", GetRequests.getConversationById);
 getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
@@ -115,3 +119,7 @@ postRequestBuilder("/archivesubscription", PostRequests.archiveSubscription);
 postRequestBuilder("/deletesubscription", PostRequests.deleteSubscription);
 postRequestBuilder("/deleteuser", PostRequests.deleteUser);
 postRequestBuilder("/sendmessage", PostRequests.sendMessage, io);
+postRequestBuilder(
+  "/changesettingemailnotifications",
+  PostRequests.changeSettingEmailNotifications
+);

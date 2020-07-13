@@ -10,7 +10,7 @@ import {
   STATUS_MESSAGE,
   SETTINGS_INPUT_NAME
 } from "./../../utils/constants";
-import { log } from "./../../utils/utils";
+import { log, SETTINGS_EMAIL_NOTIFICATIONS } from "./../../utils/utils";
 
 const SettingsProviderWithContext = (props: {
   userData: IUserContext;
@@ -29,6 +29,10 @@ const SettingsProviderWithContext = (props: {
   const [changePassCurrent, setChangePassCurrent] = useState("");
   const [changePassNew1, setChangePassNew1] = useState("");
   const [changePassNew2, setChangePassNew2] = useState("");
+
+  const [settingEmailNotifications, setSettingEmailNotifications] = useState(
+    ""
+  );
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -55,6 +59,56 @@ const SettingsProviderWithContext = (props: {
       default:
         break;
     }
+  };
+
+  const handleChangeEmailNotifications = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newSetting = (event.target as HTMLInputElement).value;
+
+    setSettingEmailNotifications(newSetting);
+    changeSettingEmailNotifications(newSetting);
+  };
+
+  const changeSettingEmailNotificationsResponseHandler = (data: any) => {
+    log(data);
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.UNKNOWN_ERROR
+    ) {
+      alert(
+        "Unknown error occurred when changing setting. Please try again later."
+      );
+    } else if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.PASSWORDS_NOT_SAME
+    ) {
+      alert("Passwords do not match");
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
+      alert("Setting has been udpated");
+
+      setChangePassCurrent("");
+      setChangePassNew1("");
+      setChangePassNew2("");
+    }
+  };
+
+  const changeSettingEmailNotificationsErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const changeSettingEmailNotifications = (newSetting: string) => {
+    const postRequestData = {
+      settingEmailNotifications: newSetting
+    };
+
+    basePostRequest(
+      "changesettingemailnotifications",
+      postRequestData,
+      changeSettingEmailNotificationsResponseHandler,
+      changeSettingEmailNotificationsErrorHandler,
+      _userData.user?.auth
+    );
   };
 
   const deleteUserResponseHandler = (data: any) => {
@@ -170,8 +224,38 @@ const SettingsProviderWithContext = (props: {
     );
   };
 
+  const retrieveSettingEmailNotificationsResponseHandler = (data: any) => {
+    log(data);
+    if (
+      data.statusCode === STATUS_CODE.FAILURE &&
+      data.statusMessage === STATUS_MESSAGE.UNKNOWN_ERROR
+    ) {
+      log("Cannot retrieve email notifications setting");
+    } else if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const settingEmailNotifications = data?.body?.settingEmailNotifications;
+      setSettingEmailNotifications(
+        settingEmailNotifications ?? SETTINGS_EMAIL_NOTIFICATIONS.WEEKLY
+      );
+    }
+  };
+
+  const retrieveSettingEmailNotificationsErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const retrieveSettingEmailNotifications = () => {
+    baseGetRequest(
+      "getsettingemailnotifications",
+      [],
+      retrieveSettingEmailNotificationsResponseHandler,
+      retrieveSettingEmailNotificationsErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     retrieveEmail();
+    retrieveSettingEmailNotifications();
     // eslint-disable-next-line
   }, []);
 
@@ -182,9 +266,11 @@ const SettingsProviderWithContext = (props: {
       changePassCurrent={changePassCurrent}
       changePassNew1={changePassNew1}
       changePassNew2={changePassNew2}
+      settingEmailNotifications={settingEmailNotifications}
       handleInputChange={handleInputChange}
       handleSubmit={deleteUser}
       handleSubmitChangePass={changePass}
+      handleChangeEmailNotifications={handleChangeEmailNotifications}
     />
   ) : null;
 };

@@ -69,7 +69,7 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
           "To verify your current company; your email address will not be shown to anyone but yourself";
         break;
       case "pass1":
-        tooltip = "8+ chracters with letters and numbers";
+        tooltip = "Do not use your password for work";
         break;
       default:
         break;

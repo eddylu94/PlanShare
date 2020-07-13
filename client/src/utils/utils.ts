@@ -143,3 +143,10 @@ export const validatePass = (pass1: string) => {
   const re = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$/;
   return re.test(pass1);
 };
+
+export const SETTINGS_EMAIL_NOTIFICATIONS = {
+  DAILY: "DAILY",
+  WEEKLY: "WEEKLY",
+  MONTHLY: "MONTHLY",
+  NEVER: "NEVER"
+};

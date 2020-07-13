@@ -31,6 +31,7 @@ interface IFindResult {
   pendingEmails: IPendingEmail[];
   status: string;
   authAttempts: Date[];
+  settingEmailNotifications: string;
 }
 
 const SALT_ROUNDS = 10;

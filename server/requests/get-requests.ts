@@ -9,6 +9,7 @@ import { getOrganization } from "./get-requests/getOrganization";
 import { getSubscriptionsByAuthor } from "./get-requests/getSubscriptionsByAuthor";
 import { getArchivedSubscriptions } from "./get-requests/getArchivedSubscriptions";
 import { getEmailAddress } from "./get-requests/getEmailAddress";
+import { getSettingEmailNotifications } from "./get-requests/getSettingEmailNotifications";
 import { getConversation } from "./get-requests/getConversation";
 import { getConversationById } from "./get-requests/getConversationById";
 import { getConversationsList } from "./get-requests/getConversationsList";
@@ -25,6 +26,7 @@ const getRequests = {
   getSubscriptionsByAuthor,
   getArchivedSubscriptions,
   getEmailAddress,
+  getSettingEmailNotifications,
   getConversation,
   getConversationById,
   getConversationsList

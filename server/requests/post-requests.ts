@@ -10,6 +10,7 @@ import { archiveSubscription } from "./post-requests/archiveSubscription";
 import { deleteSubscription } from "./post-requests/deleteSubscription";
 import { deleteUser } from "./post-requests/deleteUser";
 import { sendMessage } from "./post-requests/sendMessage";
+import { changeSettingEmailNotifications } from "./post-requests/changeSettingEmailNotifications";
 
 const postRequests = {
   signUp,
@@ -23,7 +24,8 @@ const postRequests = {
   archiveSubscription,
   deleteSubscription,
   deleteUser,
-  sendMessage
+  sendMessage,
+  changeSettingEmailNotifications
 };
 
 export default postRequests;
