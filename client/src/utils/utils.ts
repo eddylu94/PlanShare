@@ -22,6 +22,12 @@ export interface IOrganization {
   logo: string;
 }
 
+export interface IListingType {
+  type: string;
+  name: string;
+  isSelected: boolean;
+}
+
 export interface IFiltersOrganization {
   organizationId: string;
   name: string;

@@ -1,6 +1,13 @@
 export const TITLE = "PlanShare";
 export const SLOGAN = "Buy, Sell, Trade, and Share with your colleagues";
 
+export const LISTING_TYPE = {
+  ALL: "ALL",
+  SUBSCRIPTION: "SUBSCRIPTION",
+  FOR_SALE: "FOR_SALE",
+  HOUSING: "HOUSING"
+};
+
 // Status codes
 export const STATUS_CODE = {
   SUCCESS: 1,
