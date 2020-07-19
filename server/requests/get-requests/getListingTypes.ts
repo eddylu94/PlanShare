@@ -17,9 +17,21 @@ export const getListingTypes = (
 
     const listingTypes = [
       // { type: LISTING_TYPE.ALL, name: "All" },
-      { type: LISTING_TYPE.SUBSCRIPTION, name: "Subscriptions" },
-      { type: LISTING_TYPE.FOR_SALE, name: "For Sale" },
-      { type: LISTING_TYPE.HOUSING, name: "Housing" }
+      {
+        type: LISTING_TYPE.SUBSCRIPTION,
+        name: "Subscriptions",
+        icon: "https://planshare.io/subscriptions_icon.png"
+      },
+      {
+        type: LISTING_TYPE.FOR_SALE,
+        name: "For Sale",
+        icon: "https://planshare.io/for_sale_icon.png"
+      },
+      {
+        type: LISTING_TYPE.HOUSING,
+        name: "Housing",
+        icon: "https://planshare.io/housing_icon.png"
+      }
     ];
 
     db.close();

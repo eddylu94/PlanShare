@@ -25,6 +25,7 @@ export interface IOrganization {
 export interface IListingType {
   type: string;
   name: string;
+  icon: string;
   isSelected: boolean;
 }
 

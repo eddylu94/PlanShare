@@ -741,6 +741,10 @@ input[disabled] {
   outline: none !important;
 }
 
+.listing-type-icon {
+  margin: 0 8px 0 3px;
+}
+
 .filter-icon {
   width: 24px;
   min-width: 24px;

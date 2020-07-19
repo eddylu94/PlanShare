@@ -59,7 +59,16 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             />
           }
           label={
-            <Typography style={{ fontSize: 15 }}>{listingType.name}</Typography>
+            <div className="flex-horizontal-centered">
+              <img
+                alt="Subscriptions"
+                className="filter-icon listing-type-icon"
+                src={listingType.icon}
+              />
+              <Typography style={{ fontSize: 15 }}>
+                {listingType.name}
+              </Typography>
+            </div>
           }
         />
       );
