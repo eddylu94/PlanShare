@@ -133,10 +133,7 @@ const EmailProviderWithContext = (props: {
   };
 
   return (
-    <div
-      className="page-container"
-      style={{ alignItems: "center", justifyContent: "center" }}
-    >
+    <div className="page-container" style={{ alignItems: "center" }}>
       <div className="organizations-container">
         {!orgSymbol ? (
           <>
