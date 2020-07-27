@@ -104,7 +104,7 @@ export const ORGANIZATION: IOrganization = {
     type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
     name: "University of Toronto",
     logo: "https://planshare.io/u_of_toronto_logo.png",
-    domains: ["utoronto.ca"]
+    domains: ["mail.utoronto.ca"]
   },
   QUEENS_UNIVERSITY: {
     organizationId: "QUEENS_UNIVERSITY",

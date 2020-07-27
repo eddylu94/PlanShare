@@ -58,7 +58,7 @@ const EmailProviderWithContext = (props: {
       case "mcgill_u":
         return "mail.mcgill.ca";
       case "u_of_toronto":
-        return "utoronto.ca";
+        return "mail.utoronto.ca";
       case "queensu":
         return "queensu.ca";
       case "washu_stl":
