@@ -93,7 +93,6 @@ export const getSubscriptions = (
         });
       }
 
-      console.log("asfasfsa");
       console.log(findQuery);
 
       return dbo
