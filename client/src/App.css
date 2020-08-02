@@ -741,8 +741,12 @@ input[disabled] {
   outline: none !important;
 }
 
-.listing-type-icon {
+.search-filters-listing-type-icon {
   margin: 0 8px 0 3px;
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  opacity: 0.7;
 }
 
 .filter-icon {
@@ -1004,6 +1008,36 @@ input[disabled] {
   font-weight: 500;
   color: #686868;
   margin-left: 10px;
+}
+
+.listing-type-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.listing-type-label {
+  font-size: 20px;
+  font-weight: 500;
+  color: #686868;
+  margin-left: 10px;
+}
+
+.listing-type {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 5px;
+}
+
+.listing-type-card {
+  box-shadow: 0px 0px 10px #cccccc;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.listing-type-card:hover {
+  box-shadow: 0px 0px 10px #4735ad;
 }
 
 .settings-container {

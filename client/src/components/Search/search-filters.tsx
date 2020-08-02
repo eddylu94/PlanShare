@@ -62,7 +62,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             <div className="flex-horizontal-centered">
               <img
                 alt="Subscriptions"
-                className="filter-icon listing-type-icon"
+                className="search-filters-listing-type-icon"
                 src={listingType.icon}
               />
               <Typography style={{ fontSize: 15 }}>
