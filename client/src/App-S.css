@@ -203,21 +203,6 @@
     color: #cccccc;
   }
 
-  .validate-text-input {
-    width: 200px;
-    font-size: 16px;
-    line-height: 42px;
-    height: 42px;
-    padding: 8px;
-  }
-
-  .validate-text-input-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 20px;
-  }
-
   .terms-of-use-container {
     padding: 10px;
   }

@@ -1,0 +1,88 @@
+.validate-text-input {
+  display: flex;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.validate-submit-button {
+  background-color: #6c5dbdee;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+  border: none;
+  width: 200px;
+  padding: 10px 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.validate-submit-button :disabled,
+input[disabled] {
+  background-color: #d8d8d8;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.validate-resend-code {
+  color: #4735ad;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.validate-text-input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.validate-text-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.validate-incorrect-message {
+  text-align: center;
+  margin-top: 10px;
+  color: #800000;
+  font-style: italic;
+}
+
+.validate-text-input {
+  width: 200px;
+}
+@media only screen and (min-width: 1200px) {
+  /* Small */
+  .validate-text-input {
+    font-size: 16px;
+    line-height: 42px;
+    height: 42px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  /* Medium, Large, Extra-large */
+  .validate-text-input {
+    font-size: 18px;
+    line-height: 50px;
+    height: 50px;
+    border-radius: 5px;
+    padding: 10px;
+  }
+}
+
+.validate-text-input-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 20px;
+}

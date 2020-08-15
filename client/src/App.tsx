@@ -8,6 +8,7 @@ import "./App-L.css";
 import "./App-XL.css";
 
 import "./components/NavBar/nav-bar.css";
+import "./components/Validate/validate.css";
 
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
