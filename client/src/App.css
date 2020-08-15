@@ -17,51 +17,6 @@ body {
   height: 100%;
 }
 
-.navbar {
-  z-index: 300;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: #6c5dbd;
-  flex-shrink: 0;
-}
-
-.navbar li a {
-  display: flex;
-  align-items: center;
-  color: white;
-  text-align: center;
-  height: 50px;
-  min-height: 50px;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-}
-
-.nav-bar-profile {
-  display: flex;
-  align-items: center;
-  color: white;
-  text-align: center;
-  height: 50px;
-  min-height: 50px;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
-}
-
-.nav-bar-profile:hover {
-  background-color: #4735ad;
-}
-
-.nav-bar-profile:focus {
-  background-color: #4735ad;
-  outline: none !important;
-}
-
-.nav-bar-profile-picture {
-  background-color: #cccccc;
-}
-
 .page-container {
   display: flex;
   flex-direction: column;

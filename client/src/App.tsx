@@ -6,6 +6,9 @@ import "./App-S.css";
 import "./App-M.css";
 import "./App-L.css";
 import "./App-XL.css";
+
+import "./components/NavBar/nav-bar.css";
+
 import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
 import Privacy from "./components/Privacy/privacy";
