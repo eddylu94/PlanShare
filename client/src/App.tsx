@@ -5,6 +5,7 @@ import "./App.css";
 import "./form.css";
 import "./intro.css";
 import "./organizations.css";
+import "./placeholder.css";
 import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
