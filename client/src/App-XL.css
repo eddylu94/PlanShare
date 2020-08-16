@@ -3,63 +3,8 @@
     padding: 20px;
   }
 
-  .sign-up-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 0;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .form-submit-button {
-    margin-top: 10px;
-    font-size: 18px;
-    line-height: 50px;
-    height: 50px;
-    min-height: 50px;
-    border-radius: 25px;
-  }
-
   .subscription-field {
     margin-left: 30px;
-  }
-
-  .search-filters-button:hover {
-    box-shadow: 0px 0px 10px #888888;
-  }
-
-  .search-filters-button:focus {
-    box-shadow: 0px 0px 10px #6c5dbdee;
-    outline: none !important;
-  }
-
-  .create-listing-form {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    max-width: 800px;
-  }
-
-  .create-listing-subscription-logo {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    align-self: flex-end;
-    margin: 0 0 15px 15px;
-  }
-
-  .create-listing-organization-field {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .create-listing-organization-logo {
-    width: 60px;
-    height: 60px;
-    align-self: flex-end;
-    margin: 0 0 15px 15px;
   }
 
   .profile-profile-picture {

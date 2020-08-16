@@ -3,55 +3,8 @@
     padding: 10px;
   }
 
-  .sign-up-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 0;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-  }
-
-  .form-submit-button {
-    margin-top: 5px;
-    font-size: 16px;
-    line-height: 32px;
-    height: 38px;
-    min-height: 38px;
-    border-radius: 16px;
-  }
-
   .subscription-field {
     margin-left: 0;
-  }
-
-  .create-listing-form {
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-    max-width: 800px;
-  }
-
-  .create-listing-subscription-logo {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    align-self: flex-end;
-    margin: 0 0 15px 15px;
-  }
-
-  .create-listing-organization-field {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .create-listing-organization-logo {
-    width: 36px;
-    height: 36px;
-    align-self: flex-end;
-    margin: 0 0 15px 15px;
   }
 
   .profile-profile-picture {

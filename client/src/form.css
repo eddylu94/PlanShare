@@ -107,6 +107,59 @@
 
 .form-field {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.required-field:after {
+  content: "*";
+  margin-left: 5px;
+  color: #ff0000;
+  font-weight: 500;
+}
+
+.form-error-label {
+  color: #ff0000;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+.form-submit-button {
+  background-color: #6c5dbdee;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .form-submit-button {
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 32px;
+    height: 38px;
+    min-height: 38px;
+    border-radius: 16px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .form-submit-button {
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 50px;
+    height: 50px;
+    height: 50px;
+    min-height: 50px;
+    border-radius: 25px;
+  }
+}
+
+.form-submit-button :disabled,
+input[disabled] {
+  background-color: #d8d8d8;
+  color: #666666;
+  cursor: not-allowed;
 }
 
 .form-label {
@@ -247,4 +300,36 @@
   cursor: pointer;
   padding: 0 20px;
   max-height: 50px;
+}
+
+/* Hide the browser's default checkbox */
+.form-terms-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.form-terms-checkmark:focus {
+  border: 2px solid #6c5dbdee;
+  outline: none !important;
+}
+
+/* On mouse-over, add a grey background color */
+.form-terms-container:hover input ~ .form-terms-checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.form-terms-container input:checked ~ .form-terms-checkmark {
+  background-color: #555555;
+  display: block;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.form-terms-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
 }

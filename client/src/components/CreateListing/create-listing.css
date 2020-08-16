@@ -1,0 +1,75 @@
+.create-listing-contact {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-listing-edit-footer a {
+  font-weight: 500;
+  color: #6c5dbd;
+}
+
+.create-listing-edit-footer-disclaimer {
+  background-color: #6c5dbdff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px 0 10px 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.create-listing-edit-footer-disclaimer a {
+  color: #ffffff;
+}
+
+.create-listing-form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-width: 800px;
+}
+
+.create-listing-subscription-logo {
+  border-radius: 50%;
+  align-self: flex-end;
+  margin: 0 0 15px 15px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .create-listing-subscription-logo {
+    width: 36px;
+    height: 36px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .create-listing-subscription-logo {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.create-listing-organization-field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.create-listing-organization-logo {
+  align-self: flex-end;
+  margin: 0 0 15px 15px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .create-listing-organization-logo {
+    width: 36px;
+    height: 36px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .create-listing-organization-logo {
+    width: 60px;
+    height: 60px;
+  }
+}

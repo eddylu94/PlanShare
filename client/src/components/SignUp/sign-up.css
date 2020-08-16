@@ -1,3 +1,19 @@
+.sign-up-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .sign-up-container {
+    margin: 20px 0;
+  }
+}
+
 .intro-and-signup {
   display: flex;
   flex-shrink: 0;
@@ -155,4 +171,9 @@
     margin: 0 0 20px 0;
     font-size: 28px;
   }
+}
+
+.terms-label {
+  text-decoration: underline;
+  color: #6c5dbd;
 }

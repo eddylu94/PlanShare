@@ -9,6 +9,7 @@ import "./App-XL.css";
 
 import "./form.css";
 import "./intro.css";
+import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
 import "./components/Login/login.css";
