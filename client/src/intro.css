@@ -15,3 +15,25 @@
   font-size: 24px;
   font-weight: 450;
 }
+
+.signup-toggle {
+  text-align: center;
+  text-decoration: underline;
+  color: #6c5dbd;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-icons {
+    width: 80%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-icons {
+    width: 290px;
+    height: 150px;
+  }
+}

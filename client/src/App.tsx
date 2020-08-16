@@ -7,6 +7,7 @@ import "./App-M.css";
 import "./App-L.css";
 import "./App-XL.css";
 
+import "./form.css";
 import "./intro.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
