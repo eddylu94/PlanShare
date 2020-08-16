@@ -2,10 +2,10 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
-import "./form.css";
-import "./intro.css";
-import "./organizations.css";
-import "./placeholder.css";
+import "./shared-styles/form.css";
+import "./shared-styles/intro.css";
+import "./shared-styles/organizations.css";
+import "./shared-styles/placeholder.css";
 import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
