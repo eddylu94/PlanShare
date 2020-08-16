@@ -8,6 +8,7 @@ import "./App-L.css";
 import "./App-XL.css";
 
 import "./components/NavBar/nav-bar.css";
+import "./components/Search/search.css";
 import "./components/Validate/validate.css";
 import "./components/TermsOfUse/terms-of-use.css";
 
