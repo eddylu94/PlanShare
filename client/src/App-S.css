@@ -191,48 +191,6 @@
     max-height: 50px;
   }
 
-  .valid-icon {
-    background-color: #555555;
-    border: 3px solid #555555;
-    color: #ffffff;
-  }
-
-  .invalid-icon {
-    background-color: #ffffff;
-    border: 3px solid #cccccc;
-    color: #cccccc;
-  }
-
-  .terms-of-use-container {
-    padding: 10px;
-  }
-
-  .terms-of-use-dialog {
-    width: 100%;
-  }
-
-  .terms-of-use-header {
-    margin: 15px;
-  }
-
-  .terms-of-use-content {
-    padding: 8px 15px;
-  }
-
-  .terms-of-use-buttons {
-    margin: 15px;
-  }
-
-  .terms-of-use-button {
-    font-size: 16px;
-    line-height: 36px;
-    height: 36px;
-    border-radius: 8px;
-    margin-left: 15px;
-    padding: 0 10px;
-    width: 100px;
-  }
-
   .search-pane {
     z-index: 200;
     display: flex;

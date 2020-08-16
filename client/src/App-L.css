@@ -194,49 +194,6 @@
     max-height: 50px;
   }
 
-  .valid-icon {
-    background-color: #555555;
-    border: 3px solid #555555;
-    color: #ffffff;
-  }
-
-  .invalid-icon {
-    background-color: #ffffff;
-    border: 3px solid #cccccc;
-    color: #cccccc;
-  }
-
-  .terms-of-use-container {
-    padding: 20px;
-  }
-
-  .terms-of-use-dialog {
-    width: 50%;
-    min-width: 600px;
-  }
-
-  .terms-of-use-header {
-    margin: 20px;
-  }
-
-  .terms-of-use-content {
-    padding: 10px 20px;
-  }
-
-  .terms-of-use-buttons {
-    margin: 20px;
-  }
-
-  .terms-of-use-button {
-    font-size: 18px;
-    line-height: 50px;
-    height: 50px;
-    border-radius: 8px;
-    margin-left: 20px;
-    padding: 0 20px;
-    width: 120px;
-  }
-
   .search-pane {
     z-index: 200;
     display: flex;

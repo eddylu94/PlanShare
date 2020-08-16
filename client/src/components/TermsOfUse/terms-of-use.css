@@ -1,0 +1,140 @@
+.terms-of-use-container {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-container {
+    padding: 10px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-container {
+    padding: 20px;
+  }
+}
+
+.terms-of-use-dialog {
+  height: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  z-index: 500;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-dialog {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-dialog {
+    width: 50%;
+    min-width: 600px;
+  }
+}
+
+.terms-of-use-header {
+  text-align: center;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-header {
+    margin: 15px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-header {
+    margin: 20px;
+  }
+}
+
+.terms-of-use-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-content {
+    padding: 8px 15px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-content {
+    padding: 10px 20px;
+  }
+}
+
+.terms-of-use-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.terms-of-use-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-buttons {
+    margin: 15px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-buttons {
+    margin: 20px;
+  }
+}
+
+.terms-of-use-button {
+  border: none;
+  cursor: pointer;
+  background-color: #cccccc;
+  border-radius: 8px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .terms-of-use-button {
+    font-size: 16px;
+    line-height: 36px;
+    height: 36px;
+    margin-left: 15px;
+    padding: 0 10px;
+    width: 100px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .terms-of-use-button {
+    font-size: 18px;
+    line-height: 50px;
+    height: 50px;
+    margin-left: 20px;
+    padding: 0 20px;
+    width: 120px;
+  }
+}
