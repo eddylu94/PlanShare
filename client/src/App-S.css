@@ -41,51 +41,13 @@
     font-size: 16px;
   }
 
-  .intro-and-signup {
-    flex-direction: column;
-    max-width: 600px;
-  }
-
-  .intro {
-    width: 100%;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-  }
-
   .subscription-icons {
     width: 80%;
-  }
-
-  .signup-form-container {
-    width: 100%;
-    height: 410px;
-    padding: 16px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-
-  .login-form-container {
-    width: 100%;
-    padding: 16px;
-    border-radius: 10px;
-  }
-
-  .signup-form-header {
-    margin: 0 0 15px 0;
-    font-size: 22px;
   }
 
   .form-header {
     margin: 10px 0 10px 0;
     font-size: 22px;
-  }
-
-  .login-container {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
   }
 
   .form-container {

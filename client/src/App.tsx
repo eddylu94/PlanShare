@@ -7,11 +7,14 @@ import "./App-M.css";
 import "./App-L.css";
 import "./App-XL.css";
 
+import "./intro.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
+import "./components/Login/login.css";
 import "./components/Messages/messages.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Search/search.css";
+import "./components/SignUp/sign-up.css";
 import "./components/Subscription/subscription.css";
 import "./components/Validate/validate.css";
 import "./components/TermsOfUse/terms-of-use.css";
