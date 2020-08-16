@@ -7,75 +7,6 @@
     margin-left: 30px;
   }
 
-  .profile-profile-picture {
-    width: 80px;
-    height: 80px;
-  }
-
-  .profile-organization-logo {
-    width: 36px;
-    height: 36px;
-  }
-
-  .profile-name-and-joined-date {
-    margin-left: 20px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .profile-first-name {
-    font-size: 28px;
-    font-weight: 600;
-    color: #333333;
-  }
-
-  .profile-joined-date {
-    margin-top: 5px;
-    color: #686868;
-  }
-
-  .profile-joined-date-value {
-    font-weight: bold;
-  }
-
-  .profile-detail-container {
-    margin-top: 30px;
-  }
-
-  .profile-detail-header {
-    font-size: 18px;
-    font-weight: 500;
-    color: #686868;
-    margin-bottom: 15px;
-  }
-
-  .profile-organization {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .profile-detail-name {
-    font-size: 18px;
-    font-weight: 450;
-    color: #333333;
-    margin-left: 12px;
-  }
-
-  .profile-organization-email {
-    font-size: 16px;
-    font-weight: 500;
-    color: #686868;
-    margin-left: 20px;
-  }
-
-  .profile-authored-subscriptions-header {
-    font-size: 18px;
-    font-weight: 500;
-    color: #686868;
-    margin: 30px 0 10px 0;
-  }
-
   .organizations-container {
     padding: 20px;
     border-radius: 10px;
@@ -107,8 +38,4 @@
   .b {
     font-weight: 500;
   }
-}
-
-/* Extra large devices (large laptops and desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
 }

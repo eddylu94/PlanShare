@@ -52,67 +52,6 @@ body {
   z-index: 400;
 }
 
-.profile-container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-shrink: 0;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px #d8d8d8;
-  max-width: 500px;
-}
-
-.profile-message-link-wrapper a {
-  text-decoration: none;
-}
-
-.profile-message-button {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  background-color: #6c5dbd;
-  border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding: 5px 8px;
-  font-weight: 500;
-  color: #ffffff;
-  border-radius: 5px;
-  transition: all 0.1s ease-in-out;
-}
-
-.profile-message-button:hover {
-  opacity: 0.8;
-}
-
-.profile-message-icon {
-  width: 20px;
-  height: 20px;
-  margin-left: 5px;
-}
-
-.profile-authored-subscriptions {
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  max-width: 540px;
-}
-
-.profile-wrapper {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.profile-profile-picture {
-  background-color: #cccccc;
-  border-radius: 50%;
-}
-
 .organizations-organization-card {
   box-shadow: 0px 0px 10px #cccccc;
   padding: 10px;

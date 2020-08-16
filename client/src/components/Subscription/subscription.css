@@ -128,11 +128,6 @@
   margin-bottom: 5px;
 }
 
-.profile-container {
-  padding: 20px;
-  border-radius: 10px;
-}
-
 .profile-header {
   display: flex;
   flex-direction: row;
