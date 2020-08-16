@@ -9,6 +9,7 @@ import "./App-XL.css";
 
 import "./form.css";
 import "./intro.css";
+import "./organizations.css";
 import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
@@ -19,6 +20,7 @@ import "./components/Profile/profile.css";
 import "./components/Search/search.css";
 import "./components/SignUp/sign-up.css";
 import "./components/Subscription/subscription.css";
+import "./components/Validate/email.css";
 import "./components/Validate/validate.css";
 import "./components/TermsOfUse/terms-of-use.css";
 
