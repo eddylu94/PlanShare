@@ -110,10 +110,6 @@
     align-items: center;
   }
 
-  .subscription-fields {
-    flex-direction: row;
-  }
-
   .form-field {
     margin-bottom: 15px;
   }
@@ -191,13 +187,6 @@
     outline: none !important;
   }
 
-  .subscription-pane {
-    min-width: 235px;
-    max-width: 235px;
-    width: 235px;
-    margin: 20px 20px 20px 10px;
-  }
-
   .search-bar-container {
     display: flex;
     flex-direction: row;
@@ -247,69 +236,6 @@
     height: 60px;
     align-self: flex-end;
     margin: 0 0 15px 15px;
-  }
-
-  .subscription-header {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-  }
-
-  .subscription-label {
-    color: #6c5dbdee;
-    margin: 20px 0 10px 0;
-  }
-
-  .subscription-detail {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 14px;
-    line-height: 20px;
-    color: #000000;
-  }
-
-  .subscription-card-people-icon {
-    width: 20px;
-    height: 20px;
-    opacity: 0.5;
-    margin-right: 5px;
-  }
-
-  .subscription-detail-icon {
-    width: 20px;
-    height: 20px;
-    opacity: 0.5;
-    margin-right: 8px;
-  }
-
-  .subscription-detail-bold {
-    font-weight: 500;
-    margin-right: 5px;
-  }
-
-  .subscription-first-name {
-    margin-left: 5px;
-    font-weight: 500;
-  }
-
-  .subscription-subscription-detail {
-    margin-bottom: 5px;
-  }
-
-  .subscription-detail a {
-    color: #6c5dbd;
-  }
-
-  .profile-container {
-    padding: 20px;
-    border-radius: 10px;
-  }
-
-  .profile-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
   }
 
   .profile-profile-picture {

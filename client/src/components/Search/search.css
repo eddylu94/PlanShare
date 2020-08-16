@@ -149,7 +149,13 @@
   flex-direction: row;
   flex-shrink: 0;
   padding: 0px;
-  margin: 0 10px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .search-bar-and-filter {
+    margin: 0 10px;
+  }
 }
 
 .search-text-input {
@@ -491,6 +497,10 @@
   }
 }
 
+.subscription-card-author a {
+  color: #6c5dbd;
+}
+
 .subscription-card-info-name {
   font-size: 18px;
   font-weight: 600;
@@ -504,4 +514,53 @@
   width: 20px;
   height: 20px;
   margin-left: 10px;
+}
+
+.subscription-pane {
+  display: block;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto;
+  box-sizing: border-box;
+  max-height: 100%;
+  margin: 20px 20px 20px 10px;
+}
+@media only screen and (min-width: 768px) {
+  /* Medium */
+  .subscription-pane {
+    min-width: 300px;
+    max-width: 300px;
+    width: 300px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  /* Large */
+  .subscription-pane {
+    min-width: 235px;
+    max-width: 235px;
+    width: 235px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  /* Extra-large */
+  .subscription-pane {
+    min-width: 300px;
+    max-width: 300px;
+    width: 300px;
+    margin: 20px 20px 20px 10px;
+  }
+}
+
+.subscription-card-people-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+  margin-right: 5px;
+}
+
+.subscription-author-detail {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5px;
 }
