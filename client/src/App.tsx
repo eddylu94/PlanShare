@@ -9,6 +9,7 @@ import "./App-XL.css";
 
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
+import "./components/Messages/messages.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Search/search.css";
 import "./components/Subscription/subscription.css";
