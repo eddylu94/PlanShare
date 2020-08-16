@@ -7,6 +7,7 @@ import "./App-M.css";
 import "./App-L.css";
 import "./App-XL.css";
 
+import "./components/Info/info.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Search/search.css";
 import "./components/Subscription/subscription.css";
