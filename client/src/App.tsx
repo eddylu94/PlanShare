@@ -2,11 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
-import "./App-S.css";
-import "./App-M.css";
-import "./App-L.css";
-import "./App-XL.css";
-
 import "./form.css";
 import "./intro.css";
 import "./organizations.css";
@@ -18,6 +13,7 @@ import "./components/Messages/messages.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Profile/profile.css";
 import "./components/Search/search.css";
+import "./components/Settings/settings.css";
 import "./components/SignUp/sign-up.css";
 import "./components/Subscription/subscription.css";
 import "./components/Validate/email.css";
