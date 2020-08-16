@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import { basePostRequest, slackPostRequest } from "./../../base-requests";
+import {
+  basePostRequest,
+  slackPostRequest,
+  ERROR_TYPE,
+  SLACK_HOOK
+} from "./../../base-requests";
 import { log, IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
@@ -81,12 +86,13 @@ const EmailProviderWithContext = (props: {
 
         const postRequestData = {
           text: JSON.stringify({
+            errorType: ERROR_TYPE.CLIENT,
             type: "ADD_EMAIL",
             userId: _userData.user?.userId
           })
         };
 
-        slackPostRequest(postRequestData);
+        slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
 
         history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {

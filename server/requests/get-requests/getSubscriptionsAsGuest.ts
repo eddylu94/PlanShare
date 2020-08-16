@@ -1,6 +1,12 @@
 import mongodb from "mongodb";
 
-import { postSuccess, postFailure } from "./../../utils";
+import {
+  postSuccess,
+  postFailure,
+  ERROR_TYPE,
+  SLACK_HOOK,
+  slackPostRequest
+} from "./../../utils";
 import {
   MONGO_URL,
   DATABASE_NAME,
@@ -17,8 +23,23 @@ export const getSubscriptionsAsGuest = (
   postRes: any
 ) => {
   console.log("Retrieving subscriptions as guest...");
-  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
-    if (connerErr) throw connerErr;
+  mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
+    if (connectErr) {
+      const errorMessage = "Connection error";
+      console.log(errorMessage);
+
+      const postRequestData = {
+        text: JSON.stringify({
+          request: "getSubscriptionsAsGuest",
+          errorType: ERROR_TYPE.SERVER,
+          errorMessage,
+          error: connectErr
+        })
+      };
+      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+      return;
+    }
 
     const { t, sc, gs, sb, da, p } = postReq.query;
 

@@ -1,6 +1,13 @@
 import mongodb from "mongodb";
 
-import { encryptPassword, generateAuthToken, postFailure } from "./../../utils";
+import {
+  encryptPassword,
+  generateAuthToken,
+  postFailure,
+  ERROR_TYPE,
+  SLACK_HOOK,
+  slackPostRequest
+} from "./../../utils";
 import {
   MONGO_URL,
   DATABASE_NAME,
@@ -22,10 +29,22 @@ export const signUp = (
 
   mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
     if (connectErr) {
-      console.log("Connection error");
+      const errorMessage = "Connection error";
+      console.log(errorMessage);
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-      throw connectErr;
+
+      const postRequestData = {
+        text: JSON.stringify({
+          request: "signUp",
+          errorType: ERROR_TYPE.SERVER,
+          errorMessage,
+          error: connectErr
+        })
+      };
+      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+      return;
     }
 
     const dbo = db.db(DATABASE_NAME);
@@ -36,10 +55,22 @@ export const signUp = (
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ username }, (findErr, findRes) => {
         if (findErr) {
-          console.log("Error finding record");
+          const errorMessage = "Error finding record";
+          console.log(errorMessage);
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-          throw findErr;
+
+          const postRequestData = {
+            text: JSON.stringify({
+              request: "signUp",
+              errorType: ERROR_TYPE.SERVER,
+              errorMessage,
+              error: findErr
+            })
+          };
+          slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+          return;
         }
 
         if (!!findRes) {
@@ -76,10 +107,22 @@ export const signUp = (
             .collection(DATABASE_COLLECTION.USERS_COLLECTION)
             .insertOne(obj, (insertErr, insertRes) => {
               if (insertErr) {
-                console.log("Error inserting record");
+                const errorMessage = "Error inserting record";
+                console.log(errorMessage);
                 db.close();
                 postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-                throw insertErr;
+
+                const postRequestData = {
+                  text: JSON.stringify({
+                    request: "signUp",
+                    errorType: ERROR_TYPE.SERVER,
+                    errorMessage,
+                    error: insertErr
+                  })
+                };
+                slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+                return;
               }
 
               console.log("User created:", username);

@@ -4,7 +4,10 @@ import {
   authenticate,
   getDomain,
   postSuccess,
-  postFailure
+  postFailure,
+  ERROR_TYPE,
+  SLACK_HOOK,
+  slackPostRequest
 } from "./../../utils";
 import {
   DATABASE_NAME,
@@ -83,13 +86,28 @@ export const getConversation = (
                             conversationData,
                             (insertErr, insertRes) => {
                               if (insertErr) {
-                                console.log("Error inserting record");
+                                const errorMessage = "Error inserting record";
+                                console.log(errorMessage);
                                 db.close();
                                 postFailure(
                                   postRes,
                                   STATUS_MESSAGE.UNKNOWN_ERROR
                                 );
-                                throw insertErr;
+
+                                const postRequestData = {
+                                  text: JSON.stringify({
+                                    request: "getConversation",
+                                    errorType: ERROR_TYPE.SERVER,
+                                    errorMessage,
+                                    error: insertErr
+                                  })
+                                };
+                                slackPostRequest(
+                                  SLACK_HOOK.ERRORS,
+                                  postRequestData
+                                );
+
+                                return;
                               }
 
                               console.log("Conversation created");

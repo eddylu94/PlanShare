@@ -1,6 +1,13 @@
 import mongodb from "mongodb";
 
-import { comparePassword, postSuccess, postFailure } from "./../../utils";
+import {
+  comparePassword,
+  postSuccess,
+  postFailure,
+  ERROR_TYPE,
+  SLACK_HOOK,
+  slackPostRequest
+} from "./../../utils";
 import {
   MONGO_URL,
   DATABASE_NAME,
@@ -22,10 +29,22 @@ export const deleteUser = (
 
   mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
     if (connectErr) {
-      console.log("Connection error");
+      const errorMessage = "Connection error";
+      console.log(errorMessage);
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-      throw connectErr;
+
+      const postRequestData = {
+        text: JSON.stringify({
+          request: "deleteUser",
+          errorType: ERROR_TYPE.SERVER,
+          errorMessage,
+          error: connectErr
+        })
+      };
+      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+      return;
     }
 
     const dbo = db.db(DATABASE_NAME);
@@ -37,10 +56,22 @@ export const deleteUser = (
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ email }, (findErr, findRes) => {
         if (findErr) {
-          console.log("Error finding record");
+          const errorMessage = "Error finding record";
+          console.log(errorMessage);
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-          throw findErr;
+
+          const postRequestData = {
+            text: JSON.stringify({
+              request: "deleteUser",
+              errorType: ERROR_TYPE.SERVER,
+              errorMessage,
+              error: findErr
+            })
+          };
+          slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+          return;
         }
 
         if (!findRes) {

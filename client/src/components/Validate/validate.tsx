@@ -6,7 +6,9 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import {
   baseGetRequest,
   basePostRequest,
-  slackPostRequest
+  slackPostRequest,
+  SLACK_HOOK,
+  ERROR_TYPE
 } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { log } from "./../../utils/utils";
@@ -70,12 +72,13 @@ const ValidateWithContext = (props: {
 
       const postRequestData = {
         text: JSON.stringify({
+          errorType: ERROR_TYPE.CLIENT,
           type: "VALIDATE",
           userId: _userData.user?.userId
         })
       };
 
-      slackPostRequest(postRequestData);
+      slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
 
       alert("Your email is now verified");
       history.push("/");

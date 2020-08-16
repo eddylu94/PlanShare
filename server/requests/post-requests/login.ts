@@ -4,7 +4,10 @@ import {
   comparePassword,
   generateAuthToken,
   postSuccess,
-  postFailure
+  postFailure,
+  ERROR_TYPE,
+  SLACK_HOOK,
+  slackPostRequest
 } from "./../../utils";
 import {
   MONGO_URL,
@@ -28,10 +31,22 @@ export const login = (
 
   mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
     if (connectErr) {
-      console.log("Connection error");
+      const errorMessage = "Connection error";
+      console.log(errorMessage);
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-      throw connectErr;
+
+      const postRequestData = {
+        text: JSON.stringify({
+          request: "login",
+          errorType: ERROR_TYPE.SERVER,
+          errorMessage,
+          error: connectErr
+        })
+      };
+      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+      return;
     }
 
     const dbo = db.db(DATABASE_NAME);
@@ -43,10 +58,22 @@ export const login = (
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
       .findOne({ username }, (findErr, findRes) => {
         if (findErr) {
-          console.log("Error finding record");
+          const errorMessage = "Error finding record";
+          console.log(errorMessage);
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-          throw findErr;
+
+          const postRequestData = {
+            text: JSON.stringify({
+              request: "login",
+              errorType: ERROR_TYPE.SERVER,
+              errorMessage,
+              error: findErr
+            })
+          };
+          slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+          return;
         }
 
         if (!findRes) {

@@ -8,7 +8,9 @@ import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import {
   baseGetRequest,
   basePostRequest,
-  slackPostRequest
+  slackPostRequest,
+  SLACK_HOOK,
+  ERROR_TYPE
 } from "./../../base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import {
@@ -268,6 +270,7 @@ const CreateListingProviderWithContext = (props: {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const postRequestData = {
         text: JSON.stringify({
+          errorType: ERROR_TYPE.CLIENT,
           type: subscriptionId ? "EDIT_POST" : "NEW_POST",
           userId: _userData.user?.userId,
           subscriptionCategoryId:
@@ -276,7 +279,7 @@ const CreateListingProviderWithContext = (props: {
         })
       };
 
-      slackPostRequest(postRequestData);
+      slackPostRequest(SLACK_HOOK.POSTS, postRequestData);
 
       history.push("/search");
     }

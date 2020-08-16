@@ -1,5 +1,6 @@
 import mongodb from "mongodb";
 import bcrypt from "bcryptjs";
+import request from "request";
 
 import {
   MONGO_URL,
@@ -34,6 +35,34 @@ interface IFindResult {
   settingEmailNotifications: string;
 }
 
+export const ERROR_TYPE = {
+  CLIENT: "CLIENT",
+  SERVER: "SERVER"
+};
+
+export const SLACK_HOOK = {
+  SIGNUPS:
+    "https://hooks.slack.com/services/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",
+  ERRORS:
+    "https://hooks.slack.com/services/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",
+  POSTS:
+    "https://hooks.slack.com/services/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",
+  MESSAGES:
+    "https://hooks.slack.com/services/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"
+};
+
+export const slackPostRequest = (slackHook: string, data: any) => {
+  request.post(
+    {
+      url: slackHook,
+      body: JSON.stringify(data)
+    },
+    function(err: any, data: any) {
+      console.log(data.body);
+    }
+  );
+};
+
 const SALT_ROUNDS = 10;
 
 export const encryptPassword = (password: any, callback: any) => {
@@ -62,8 +91,23 @@ export const authenticate = (
   postRes: any
 ): Promise<[mongodb.MongoClient, IFindResult]> => {
   return new Promise((resolve, reject) => {
-    mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connerErr, db) => {
-      if (connerErr) throw connerErr;
+    mongoClient.connect(MONGO_URL, MONGO_PREREQUISITIES, (connectErr, db) => {
+      if (connectErr) {
+        const errorMessage = "Connection error";
+        console.log(errorMessage);
+
+        const postRequestData = {
+          text: JSON.stringify({
+            request: "authenticate",
+            errorType: ERROR_TYPE.SERVER,
+            errorMessage,
+            error: connectErr
+          })
+        };
+        slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+        return;
+      }
 
       const headerAuthorization = postReq.headers.authorization;
       const authKey = headerAuthorization.replace("Bearer ", "");
@@ -73,13 +117,25 @@ export const authenticate = (
         .collection(DATABASE_COLLECTION.USERS_COLLECTION)
         .findOne({ "authTokens.key": authKey }, (findErr, findRes) => {
           if (findErr) {
-            console.log("Error finding record");
+            const errorMessage = "Error finding record";
+            console.log(errorMessage);
             db.close();
             postRes.json({
               statusCode: STATUS_CODE.FAILURE,
               statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
             });
-            throw findErr;
+
+            const postRequestData = {
+              text: JSON.stringify({
+                request: "authenticate",
+                errorType: ERROR_TYPE.SERVER,
+                errorMessage,
+                error: findErr
+              })
+            };
+            slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+
+            return;
           }
 
           if (!findRes) {

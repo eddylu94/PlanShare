@@ -8,7 +8,10 @@ import {
   SOCKET_IO_PATH,
   baseGetRequest,
   basePostRequest,
-  SOCKET_URL
+  SOCKET_URL,
+  ERROR_TYPE,
+  slackPostRequest,
+  SLACK_HOOK
 } from "./../../base-requests";
 import {
   log,
@@ -215,8 +218,21 @@ const MessagesProviderWithContext = (props: {
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
       retrieveConversationsList();
 
+      const postRequestData = {
+        text: JSON.stringify({
+          errorType: ERROR_TYPE.CLIENT,
+          type: "SENT_MESSAGE",
+          userId: _userData.user?.userId
+        })
+      };
+
+      slackPostRequest(SLACK_HOOK.MESSAGES, postRequestData);
+
       if (sockets[conversationId]) {
-        sockets[conversationId].emit("send message", "asfsafasfs");
+        sockets[conversationId].emit(
+          "send message",
+          "Sending message from client..."
+        );
       } else {
         retrieveConversationById();
       }
