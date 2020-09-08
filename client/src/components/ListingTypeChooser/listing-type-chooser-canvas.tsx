@@ -15,7 +15,11 @@ const ListingTypeChooserCanvas = (props: IListingTypeChooserProps) => {
   const { listingTypes, handleListingTypeSelection } = props;
 
   const cards = listingTypes
-    .filter(listingType => listingType.type === LISTING_TYPE.SUBSCRIPTION)
+    .filter(
+      listingType =>
+        listingType.type === LISTING_TYPE.SUBSCRIPTION ||
+        listingType.type === LISTING_TYPE.FOR_SALE
+    )
     .map((listingType, i) => (
       <div
         key={"listing-card-" + i}

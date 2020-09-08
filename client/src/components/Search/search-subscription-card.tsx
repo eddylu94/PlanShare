@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 
 import Tooltip from "@material-ui/core/Tooltip";
+import { LISTING_TYPE } from "../../utils/constants";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
@@ -36,6 +37,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
   const {
     _id,
+    listingType,
     subscriptionBrand,
     listingDescription,
     firstName,
@@ -47,13 +49,27 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     organization
   } = subscription;
 
-  const renderSubscriptionLogo = () => (
-    <img
-      alt="Subscription logo"
-      className="subscription-card-subscription-logo"
-      src={subscriptionBrand.logo}
-    />
-  );
+  const renderSubscriptionLogo = () => {
+    let logo;
+
+    switch (listingType) {
+      case LISTING_TYPE.FOR_SALE:
+        logo = "./icon.png";
+        break;
+      case LISTING_TYPE.SUBSCRIPTION:
+      default:
+        logo = subscriptionBrand.logo;
+        break;
+    }
+
+    return (
+      <img
+        alt="Subscription logo"
+        className="subscription-card-subscription-logo"
+        src={logo}
+      />
+    );
+  };
 
   const renderSubsciptionCardAuthor = () => (
     <div className="subscription-card-author">
@@ -90,10 +106,20 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   );
 
   const renderSubscriptionInfo = () => {
-    const name =
-      subscriptionBrand.type === "OTHER"
-        ? otherSubscription
-        : subscriptionBrand.name;
+    let name;
+
+    switch (listingType) {
+      case LISTING_TYPE.FOR_SALE:
+        name = subscription.listingTitle;
+        break;
+      case LISTING_TYPE.SUBSCRIPTION:
+      default:
+        name =
+          subscriptionBrand.type === "OTHER"
+            ? otherSubscription
+            : subscriptionBrand.name;
+        break;
+    }
 
     return (
       <div className="subscription-card-info">

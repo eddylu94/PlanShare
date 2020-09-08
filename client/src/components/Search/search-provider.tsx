@@ -50,6 +50,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const [listingTypes, setListingTypes] = useState([] as IListingType[]);
 
   const [isSubscriptionsType, setIsSubscriptionsType] = useState(true);
+  const [isForSaleType, setIsForSaleType] = useState(true);
 
   const [
     filtersSubscriptionCategories,
@@ -254,23 +255,23 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       : "";
 
     _throttle.current = setTimeout(() => {
-      if (isSubscriptionsType) {
-        retrieveSubscriptions([
-          { t: filtersText },
-          { sc }, // Subscription category
-          { gs: filtersGroupSize }, // Group size
-          { p: filtersPrice }, // Price
-          { sb: filtersSortBy }, // Sort by
-          { da: filtersDaysActive } // Days active
-        ]);
-      } else {
-        setSubscriptionData([]);
-      }
+      retrieveSubscriptions([
+        { isSubscriptionsType }, // Subscription type selected
+        { isForSaleType }, // For Sale type selected
+        { t: filtersText },
+        { sc }, // Subscription category
+        { gs: filtersGroupSize }, // Group size
+        { p: filtersPrice }, // Price
+        { sb: filtersSortBy }, // Sort by
+        { da: filtersDaysActive } // Days active
+      ]);
     }, THROTTLE_TIMEOUT);
     // eslint-disable-next-line
   }, [
     _throttle,
     isSubscriptionsType,
+    isForSaleType,
+    isForSaleType,
     filtersText,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -284,6 +285,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       listingType => listingType.type === LISTING_TYPE.SUBSCRIPTION
     );
     setIsSubscriptionsType(!!subscriptionsType?.isSelected);
+
+    const forSaleType = listingTypes.find(
+      listingType => listingType.type === LISTING_TYPE.FOR_SALE
+    );
+    setIsForSaleType(!!forSaleType?.isSelected);
   }, [listingTypes]);
 
   useEffect(() => {
@@ -297,6 +303,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   const searchFilters = {
     listingTypes,
     isSubscriptionsType,
+    isForSaleType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,

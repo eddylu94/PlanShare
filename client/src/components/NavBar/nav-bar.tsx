@@ -72,7 +72,7 @@ const NavBarWithContext = (props: {
               </Link>
             </li>
             <li>
-              <Link to="/create">
+              <Link to="/list">
                 <img
                   alt="Create new listing"
                   className="navbar-icon"

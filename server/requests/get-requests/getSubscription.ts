@@ -30,6 +30,8 @@ export const getSubscription = (
 
     const { subscriptionId } = postReq.query;
 
+    console.log(postReq.query);
+
     console.log(subscriptionId);
 
     const dbo = db.db(DATABASE_NAME);
@@ -39,8 +41,6 @@ export const getSubscription = (
       .findOne(
         { _id: new ObjectId(subscriptionId) },
         (findErr, subscriptionFindRes) => {
-          console.log(subscriptionFindRes.subscriptionBrand.name);
-
           const organization = retrieveOrganizationByDomain(domain);
           const organizationId = organization && organization.organizationId;
 

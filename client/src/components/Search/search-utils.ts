@@ -15,6 +15,7 @@ export interface ISearchFiltersProps {
   isDrawer?: boolean;
   listingTypes: IListingType[];
   isSubscriptionsType: boolean;
+  isForSaleType: boolean;
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];

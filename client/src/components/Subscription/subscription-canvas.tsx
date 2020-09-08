@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 import { ISubscriptionData } from "./../../utils/utils";
+import { LISTING_TYPE } from "../../utils/constants";
 
 interface ISubscriptionCanvasProps {
   subscriptionData: ISubscriptionData;
@@ -32,6 +33,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
   }
 
   const {
+    listingType,
     subscriptionBrand,
     listingDescription,
     firstName,
@@ -45,10 +47,32 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     contactEmail
   } = subscriptionData;
 
-  const name =
-    subscriptionBrand.type === "OTHER"
-      ? otherSubscription
-      : subscriptionBrand.name;
+  let name;
+
+  switch (listingType) {
+    case LISTING_TYPE.FOR_SALE:
+      name = subscriptionData.listingTitle;
+      break;
+    case LISTING_TYPE.SUBSCRIPTION:
+    default:
+      name =
+        subscriptionBrand.type === "OTHER"
+          ? otherSubscription
+          : subscriptionBrand.name;
+      break;
+  }
+
+  let logo;
+
+  switch (listingType) {
+    case LISTING_TYPE.FOR_SALE:
+      logo = "./icon.png";
+      break;
+    case LISTING_TYPE.SUBSCRIPTION:
+    default:
+      logo = subscriptionBrand.logo;
+      break;
+  }
 
   return (
     <div className="subscription-wrapper">
@@ -56,7 +80,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <img
           alt="Subscription logo"
           className="subscription-card-subscription-logo"
-          src={subscriptionBrand.logo}
+          src={logo}
         />
         <div
           className="subscription-card-name subscription-detail-cropped"
@@ -124,26 +148,34 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         </div>
       ) : null}
 
-      <div className="subscription-label">Subscription</div>
+      <div className="subscription-label">Details</div>
+      {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+        <div className="subscription-detail subscription-subscription-detail">
+          <img
+            alt="Number of people"
+            className="subscription-detail-icon"
+            src="/people_icon.png"
+          />
+          <span className="subscription-detail-bold">
+            {`${numberOfPeople} ${numberOfPeople === 1 ? "person" : "people"}`}
+          </span>
+          needed
+        </div>
+      ) : null}
       <div className="subscription-detail subscription-subscription-detail">
         <img
-          alt="Number of people"
-          className="subscription-detail-icon"
-          src="/people_icon.png"
-        />
-        <span className="subscription-detail-bold">
-          {`${numberOfPeople} ${numberOfPeople === 1 ? "person" : "people"}`}
-        </span>
-        needed
-      </div>
-      <div className="subscription-detail subscription-subscription-detail">
-        <img
-          alt="Price per person"
+          alt={
+            listingType === LISTING_TYPE.SUBSCRIPTION
+              ? "Price per person"
+              : "Price"
+          }
           className="subscription-detail-icon"
           src="/exchange_icon.png"
         />
         <span className="subscription-detail-bold">${price.toFixed(2)}</span>{" "}
-        per person
+        {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+          <span>per person</span>
+        ) : null}
       </div>
       <div className="subscription-label">Description</div>
       <div className="subscription-detail">
@@ -151,16 +183,24 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           {listingDescription}
         </div>
       </div>
-      <div className="subscription-label">Link to subscription</div>
-      <div className="subscription-detail">
-        {subscriptionUrl ? (
-          <a href={subscriptionUrl} target="_blank" rel="noopener noreferrer">
-            {subscriptionUrl}
-          </a>
-        ) : (
-          "---"
-        )}
-      </div>
+      {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+        <>
+          <div className="subscription-label">Link to subscription</div>
+          <div className="subscription-detail">
+            {subscriptionUrl ? (
+              <a
+                href={subscriptionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {subscriptionUrl}
+              </a>
+            ) : (
+              "---"
+            )}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

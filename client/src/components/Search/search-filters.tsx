@@ -25,6 +25,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     isDrawer,
     listingTypes,
     isSubscriptionsType,
+    // isForSaleType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
@@ -39,7 +40,11 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   } = props;
 
   const listingTypeCheckboxes = listingTypes
-    .filter(listingType => listingType.type === LISTING_TYPE.SUBSCRIPTION)
+    .filter(
+      listingType =>
+        listingType.type === LISTING_TYPE.FOR_SALE ||
+        listingType.type === LISTING_TYPE.SUBSCRIPTION
+    )
     .map((listingType, index) => {
       return (
         <FormControlLabel

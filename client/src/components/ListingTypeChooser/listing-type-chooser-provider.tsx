@@ -32,7 +32,7 @@ const ListingTypeChooserProviderWithContext = (props: {
         history.push("/create?type=subscription");
         break;
       case LISTING_TYPE.FOR_SALE:
-        history.push("/create?type=forsale");
+        history.push("/create?type=for_sale");
         break;
       case LISTING_TYPE.HOUSING:
         history.push("/create?type=housing");

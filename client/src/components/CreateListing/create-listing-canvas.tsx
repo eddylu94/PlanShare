@@ -6,8 +6,12 @@ import { ISubscriptionCategory, ISubscriptionBrand } from "./../../utils/utils";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import { FormControlLabel, Checkbox, Typography } from "@material-ui/core";
+import { LISTING_TYPE } from "../../utils/constants";
 
 interface ICreateListingCanvasProps {
+  listingType: string;
+  setListingType: (value: string) => void;
+
   subscriptionId: string;
 
   subscriptionCategories: ISubscriptionCategory[];
@@ -23,6 +27,7 @@ interface ICreateListingCanvasProps {
 
   handleInputChange: (event: React.ChangeEvent<any>) => void;
 
+  listingTitle: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;
@@ -51,6 +56,7 @@ interface ICreateListingCanvasProps {
 
 const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
   const {
+    listingType,
     subscriptionId,
     subscriptionCategories,
     subscriptionCategorySelection,
@@ -62,6 +68,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     isDisplaySubscriptionUrlErrorLabel,
     isOtherInputDisplayed,
     handleInputChange,
+    listingTitle,
     listingDescription,
     numberOfPeople,
     price,
@@ -151,25 +158,45 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           {subscriptionId ? "Edit Listing" : "Create Listing"}
         </h2>
 
-        <div className="subscription-fields">
-          <div className="form-field">
-            <FormLabel label={"Subscription type:"} isRequired={true} />
-            {renderSubscriptionCategoryDropdown()}
-          </div>
-
-          <div className="subscription-field-and-logo">
-            <div className="form-field subscription-field">
-              <FormLabel label={"Subscription:"} isRequired={true} />
-              {renderSubscriptionBrandDropdown()}
+        {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+          <div className="subscription-fields">
+            <div className="form-field">
+              <FormLabel label={"Subscription type:"} isRequired={true} />
+              {renderSubscriptionCategoryDropdown()}
             </div>
 
-            <img
-              alt="Subscription logo"
-              className="create-listing-subscription-logo"
-              src={subscriptionBrandLogo}
-            />
+            <div className="subscription-field-and-logo">
+              <div className="form-field subscription-field">
+                <FormLabel label={"Subscription:"} isRequired={true} />
+                {renderSubscriptionBrandDropdown()}
+              </div>
+
+              <img
+                alt="Subscription logo"
+                className="create-listing-subscription-logo"
+                src={subscriptionBrandLogo}
+              />
+            </div>
           </div>
-        </div>
+        ) : null}
+
+        {listingType === LISTING_TYPE.FOR_SALE ? (
+          <div className="subscription-fields">
+            <div className="form-field">
+              <FormLabel label={"Listing title:"} isRequired={true} />
+              <input
+                className="form-text-input form-input"
+                name={FORM_INPUT_TYPE.LISTING_TITLE}
+                type="text"
+                placeholder="Hand sanitizer"
+                value={listingTitle}
+                onChange={handleInputChange}
+                onBlur={handleOnBlurSubscriptionUrl}
+                style={{ width: 300 }}
+              />
+            </div>
+          </div>
+        ) : null}
 
         {isOtherInputDisplayed ? (
           <div className="form-field">
@@ -209,54 +236,65 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </Tooltip>
         </div>
 
-        <div className="form-field">
-          <FormLabel label={"Link to subscription (optional):"} />
-          <input
-            className="form-text-input form-input"
-            name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
-            type="text"
-            placeholder="https://example.com/"
-            value={subscriptionUrl}
-            onChange={handleInputChange}
-            onBlur={handleOnBlurSubscriptionUrl}
-          />
-          {isDisplaySubscriptionUrlErrorLabel ? (
-            <div className="form-error-label">
-              Link must be a valid URL or blank
-            </div>
-          ) : null}
-        </div>
+        {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+          <div className="form-field">
+            <FormLabel label={"Link to subscription (optional):"} />
+            <input
+              className="form-text-input form-input"
+              name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
+              type="text"
+              placeholder="https://example.com/"
+              value={subscriptionUrl}
+              onChange={handleInputChange}
+              onBlur={handleOnBlurSubscriptionUrl}
+            />
+            {isDisplaySubscriptionUrlErrorLabel ? (
+              <div className="form-error-label">
+                Link must be a valid URL or blank
+              </div>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="form-row">
-          <div className="form-field">
-            <FormLabel label={"Looking for:"} isRequired={true} />
-            <div className="form-number-input-with-label">
-              <Tooltip
-                title={"Between 1 to 50 people per group"}
-                aria-label="add"
-                placement="bottom-start"
-                open={isNumberOfPeopleFocused}
-              >
-                <input
-                  className="form-text-input form-input form-number-input"
-                  name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
-                  type="number"
-                  min="1"
-                  max="50"
-                  placeholder="0"
-                  value={numberOfPeople || ""}
-                  onChange={handleInputChange}
-                  style={{ width: 100 }}
-                  onFocus={() => toggleNumberOfPeopleFocused(true)}
-                  onBlur={() => toggleNumberOfPeopleFocused(false)}
-                />
-              </Tooltip>
-              <span style={{ marginLeft: 10 }}>people</span>
+          {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+            <div className="form-field" style={{ marginRight: 50 }}>
+              <FormLabel label={"Looking for:"} isRequired={true} />
+              <div className="form-number-input-with-label">
+                <Tooltip
+                  title={"Between 1 to 50 people per group"}
+                  aria-label="add"
+                  placement="bottom-start"
+                  open={isNumberOfPeopleFocused}
+                >
+                  <input
+                    className="form-text-input form-input form-number-input"
+                    name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
+                    type="number"
+                    min="1"
+                    max="50"
+                    placeholder="0"
+                    value={numberOfPeople || ""}
+                    onChange={handleInputChange}
+                    style={{ width: 100 }}
+                    onFocus={() => toggleNumberOfPeopleFocused(true)}
+                    onBlur={() => toggleNumberOfPeopleFocused(false)}
+                  />
+                </Tooltip>
+                <span style={{ marginLeft: 10 }}>people</span>
+              </div>
             </div>
-          </div>
+          ) : null}
 
-          <div className="form-field" style={{ marginLeft: 50 }}>
-            <FormLabel label={"Price per person:"} isRequired={true} />
+          <div className="form-field">
+            <FormLabel
+              label={
+                listingType === LISTING_TYPE.SUBSCRIPTION
+                  ? "Price per person:"
+                  : "Price:"
+              }
+              isRequired={true}
+            />
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between $0.01 to $100"}
@@ -369,15 +407,17 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           <Link to="/profile">posted listings</Link>
         </div>
 
-        <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
-          WARNING:{" "}
-          <Link to="/info" target="_blank" rel="noopener noreferrer">
-            Certain subscription providers
-          </Link>{" "}
-          restrict sharing of their services. It is the user's responsiblity to
-          ensure that their subscription listings do not violate their
-          provider's terms of use.
-        </div>
+        {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+          <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
+            WARNING:{" "}
+            <Link to="/info" target="_blank" rel="noopener noreferrer">
+              Certain subscription providers
+            </Link>{" "}
+            restrict sharing of their services. It is the user's responsiblity
+            to ensure that their subscription listings do not violate their
+            provider's terms of use.
+          </div>
+        ) : null}
 
         <input
           className="form-submit-button"

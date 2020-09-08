@@ -49,8 +49,10 @@ export interface ISubscription {
 
 export interface ISubscriptionData {
   _id: string;
+  listingType: string;
   subscriptionTypeSelection: string;
   subscriptionBrand: ISubscription;
+  listingTitle: string;
   listingDescription: string;
   numberOfPeople: number;
   price: number;

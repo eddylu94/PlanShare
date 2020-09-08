@@ -10,6 +10,7 @@ import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
 import "./components/Login/login.css";
+import "./components/ListingTypeChooser/listing-type-chooser.css";
 import "./components/Messages/messages.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Profile/profile.css";

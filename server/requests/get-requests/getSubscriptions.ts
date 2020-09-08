@@ -12,7 +12,8 @@ import {
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
   SORT_BY,
-  SUBSCRIPTION_STATUS
+  SUBSCRIPTION_STATUS,
+  LISTING_TYPE
 } from "./../../constants";
 
 export const getSubscriptions = (
@@ -27,7 +28,16 @@ export const getSubscriptions = (
 
       const email = findRes.email;
 
-      const { t, sc, gs, sb, da, p } = postReq.query;
+      const {
+        isSubscriptionsType,
+        isForSaleType,
+        t,
+        sc,
+        gs,
+        sb,
+        da,
+        p
+      } = postReq.query;
 
       const subscriptionCategories = sc.split(",");
 
@@ -38,25 +48,6 @@ export const getSubscriptions = (
       let [minPrice, maxPrice] = p
         ? p.split(",").map((val: string) => parseInt(val))
         : [Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER];
-
-      let sort: any;
-      switch (sb) {
-        case SORT_BY.DATE_DES:
-          sort = { createdDate: -1 };
-          break;
-        case SORT_BY.DATE_ASC:
-          sort = { createdDate: 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-          sort = { "subscriptionBrand.name": 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_DES:
-          sort = { "subscriptionBrand.name": -1 };
-          break;
-        default:
-          sort = { createdDate: -1 };
-          break;
-      }
 
       const dbo = db.db(DATABASE_NAME);
 
@@ -69,48 +60,130 @@ export const getSubscriptions = (
       const organization = retrieveOrganizationByDomain(domain);
       const organizationId = organization && organization.organizationId;
 
-      const findQuery = {
-        "organization.organizationId": organizationId,
-        "subscriptionBrand.type": { $in: subscriptionCategories },
-        numberOfPeople: {
-          $gte: minGroupSize,
-          $lte: maxGroupSize
-        },
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice
-        },
-        createdDate: {
-          $lte: new Date(currentDate),
-          $gte: new Date(oldestDate)
-        },
-        status: SUBSCRIPTION_STATUS.ACTIVE
-      };
+      const promises = [];
 
-      if (t.length) {
-        Object.assign(findQuery, {
-          $text: { $search: t }
-        });
+      if (isSubscriptionsType === "true") {
+        let sort: any;
+        switch (sb) {
+          case SORT_BY.DATE_DES:
+            sort = { createdDate: -1 };
+            break;
+          case SORT_BY.DATE_ASC:
+            sort = { createdDate: 1 };
+            break;
+          case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+            sort = { "subscriptionBrand.name": 1 };
+            break;
+          case SORT_BY.SUBSCRIPTION_BRAND_DES:
+            sort = { "subscriptionBrand.name": -1 };
+            break;
+          default:
+            sort = { createdDate: -1 };
+            break;
+        }
+
+        const findQuery = {
+          "organization.organizationId": organizationId,
+          "subscriptionBrand.type": { $in: subscriptionCategories },
+          numberOfPeople: {
+            $gte: minGroupSize,
+            $lte: maxGroupSize
+          },
+          price: {
+            $gte: minPrice,
+            $lte: maxPrice
+          },
+          createdDate: {
+            $lte: new Date(currentDate),
+            $gte: new Date(oldestDate)
+          },
+          listingType: LISTING_TYPE.SUBSCRIPTION,
+          status: SUBSCRIPTION_STATUS.ACTIVE
+        };
+
+        if (t.length) {
+          Object.assign(findQuery, {
+            $text: { $search: t }
+          });
+        }
+
+        const subscriptionsPromise = dbo
+          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+          .find(findQuery)
+          .sort(sort)
+          .toArray();
+
+        promises.push(subscriptionsPromise);
       }
 
-      console.log(findQuery);
+      if (isForSaleType === "true") {
+        let sort: any;
+        switch (sb) {
+          case SORT_BY.DATE_DES:
+            sort = { createdDate: -1 };
+            break;
+          case SORT_BY.DATE_ASC:
+            sort = { createdDate: 1 };
+            break;
+          case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+            sort = { listingTitle: 1 };
+            break;
+          case SORT_BY.SUBSCRIPTION_BRAND_DES:
+            sort = { listingTitle: -1 };
+            break;
+          default:
+            sort = { createdDate: -1 };
+            break;
+        }
 
-      return dbo
-        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-        .find(findQuery)
-        .sort(sort)
-        .toArray()
-        .then(findRes => {
-          if (!findRes) {
+        const findQuery = {
+          price: {
+            $gte: minPrice,
+            $lte: maxPrice
+          },
+          createdDate: {
+            $lte: new Date(currentDate),
+            $gte: new Date(oldestDate)
+          },
+          listingType: LISTING_TYPE.FOR_SALE,
+          status: SUBSCRIPTION_STATUS.ACTIVE
+        };
+
+        if (t.length) {
+          Object.assign(findQuery, {
+            $text: { $search: t }
+          });
+        }
+
+        const forSalePromise = dbo
+          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+          .find(findQuery)
+          .sort(sort)
+          .toArray();
+
+        promises.push(forSalePromise);
+      }
+
+      return Promise.all(promises)
+        .then(results => {
+          // console.log(results)
+
+          if (!results.length) {
             console.log("Unable to find subscriptions");
             db.close();
             postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
             return;
           }
 
+          const data = results
+            .reduce((acc, curr) => {
+              return acc.concat(curr);
+            }, [])
+            .sort((a, b) => b.createdDate - a.createdDate);
+
           db.close();
           postSuccess(postRes, {
-            subscriptions: findRes
+            subscriptions: data
           });
         })
         .catch(findErr => {
