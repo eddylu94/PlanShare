@@ -31,6 +31,8 @@ interface ICreateListingCanvasProps {
   listingDescription: string;
   numberOfPeople: number;
   price: number;
+  numBedrooms: number;
+  numBathrooms: number;
 
   isContactFb: boolean;
   setIsContactFb: (value: boolean) => void;
@@ -72,6 +74,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     listingDescription,
     numberOfPeople,
     price,
+    numBedrooms,
+    numBathrooms,
     isContactFb,
     setIsContactFb,
     contactFb,
@@ -151,6 +155,21 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
     return <label className={className}>{label}</label>;
   };
 
+  let priceLabel;
+
+  switch (listingType) {
+    case LISTING_TYPE.SUBSCRIPTION:
+      priceLabel = "Price per person:";
+      break;
+    case LISTING_TYPE.HOUSING:
+      priceLabel = "Monthly rent:";
+      break;
+    case LISTING_TYPE.FOR_SALE:
+    default:
+      priceLabel = "Price:";
+      break;
+  }
+
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
       <form className="form-container" onSubmit={handleSubmit} noValidate>
@@ -180,7 +199,7 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
         ) : null}
 
-        {listingType === LISTING_TYPE.FOR_SALE ? (
+        {listingType === LISTING_TYPE.FOR_SALE || LISTING_TYPE.HOUSING ? (
           <div className="subscription-fields">
             <div className="form-field">
               <FormLabel label={"Listing title:"} isRequired={true} />
@@ -188,7 +207,11 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                 className="form-text-input form-input"
                 name={FORM_INPUT_TYPE.LISTING_TITLE}
                 type="text"
-                placeholder="Hand sanitizer"
+                placeholder={
+                  listingType === LISTING_TYPE.FOR_SALE
+                    ? "Hand sanitizer"
+                    : "Room for rent"
+                }
                 value={listingTitle}
                 onChange={handleInputChange}
                 onBlur={handleOnBlurSubscriptionUrl}
@@ -256,6 +279,50 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
         ) : null}
 
+        {listingType === LISTING_TYPE.HOUSING ? (
+          <div className="form-row">
+            <div className="form-field" style={{ marginRight: 20 }}>
+              <FormLabel label={"Bedrooms:"} isRequired={true} />
+              <div className="form-number-input-with-label">
+                <input
+                  className="form-text-input form-input form-number-input"
+                  name={FORM_INPUT_TYPE.NUM_BEDROOMS}
+                  type="number"
+                  min={"0"}
+                  step={"1"}
+                  max={"10"}
+                  placeholder="0"
+                  value={numBedrooms || ""}
+                  onChange={handleInputChange}
+                  style={{ width: 100 }}
+                  onFocus={() => togglePriceFocused(true)}
+                  onBlur={() => togglePriceFocused(false)}
+                />
+              </div>
+            </div>
+
+            <div className="form-field">
+              <FormLabel label={"Bathrooms:"} isRequired={true} />
+              <div className="form-number-input-with-label">
+                <input
+                  className="form-text-input form-input form-number-input"
+                  name={FORM_INPUT_TYPE.NUM_BATHROOMS}
+                  type="number"
+                  min={"1"}
+                  step={"1"}
+                  max={"10"}
+                  placeholder="0"
+                  value={numBathrooms || ""}
+                  onChange={handleInputChange}
+                  style={{ width: 100 }}
+                  onFocus={() => togglePriceFocused(true)}
+                  onBlur={() => togglePriceFocused(false)}
+                />
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="form-row">
           {listingType === LISTING_TYPE.SUBSCRIPTION ? (
             <div className="form-field" style={{ marginRight: 50 }}>
@@ -287,17 +354,14 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           ) : null}
 
           <div className="form-field">
-            <FormLabel
-              label={
-                listingType === LISTING_TYPE.SUBSCRIPTION
-                  ? "Price per person:"
-                  : "Price:"
-              }
-              isRequired={true}
-            />
+            <FormLabel label={priceLabel} isRequired={true} />
             <div className="form-number-input-with-label">
               <Tooltip
-                title={"Between $0.01 to $100"}
+                title={
+                  listingType === LISTING_TYPE.HOUSING
+                    ? "Between $1 to $5000"
+                    : "Between $0.01 to $100"
+                }
                 aria-label="add"
                 placement="bottom-start"
                 open={isPriceFocused}
@@ -306,10 +370,10 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
                   className="form-text-input form-input form-number-input"
                   name={FORM_INPUT_TYPE.PRICE}
                   type="number"
-                  min="0.01"
-                  step="0.01"
-                  max="100"
-                  placeholder="0.00"
+                  min={listingType === LISTING_TYPE.HOUSING ? "1" : "0.01"}
+                  step={listingType === LISTING_TYPE.HOUSING ? "1" : "0.01"}
+                  max={listingType === LISTING_TYPE.HOUSING ? "5000" : "100"}
+                  placeholder="0"
                   value={price || ""}
                   onChange={handleInputChange}
                   style={{ width: 100 }}

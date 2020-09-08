@@ -45,6 +45,7 @@ export const getSubscriptionsAsGuest = (
     const {
       isSubscriptionsType,
       isForSaleType,
+      isHousingType,
       t,
       sc,
       gs,
@@ -118,6 +119,54 @@ export const getSubscriptionsAsGuest = (
         .toArray();
 
       promises.push(forSalePromise);
+    }
+
+    if (isHousingType === "true") {
+      let sort: any;
+      switch (sb) {
+        case SORT_BY.DATE_DES:
+          sort = { createdDate: -1 };
+          break;
+        case SORT_BY.DATE_ASC:
+          sort = { createdDate: 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+          sort = { listingTitle: 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_DES:
+          sort = { listingTitle: -1 };
+          break;
+        default:
+          sort = { createdDate: -1 };
+          break;
+      }
+
+      const findQuery = {
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice
+        },
+        createdDate: {
+          $lte: new Date(currentDate),
+          $gte: new Date(oldestDate)
+        },
+        listingType: LISTING_TYPE.HOUSING,
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      };
+
+      if (t.length) {
+        Object.assign(findQuery, {
+          $text: { $search: t }
+        });
+      }
+
+      const housingPromise = dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .find(findQuery)
+        .sort(sort)
+        .toArray();
+
+      promises.push(housingPromise);
     }
 
     if (isSubscriptionsType === "true") {

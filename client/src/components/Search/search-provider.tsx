@@ -51,6 +51,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [isSubscriptionsType, setIsSubscriptionsType] = useState(true);
   const [isForSaleType, setIsForSaleType] = useState(true);
+  const [isHousingType, setIsHousingType] = useState(true);
 
   const [
     filtersSubscriptionCategories,
@@ -258,6 +259,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       retrieveSubscriptions([
         { isSubscriptionsType }, // Subscription type selected
         { isForSaleType }, // For Sale type selected
+        { isHousingType }, // Housing type selected
         { t: filtersText },
         { sc }, // Subscription category
         { gs: filtersGroupSize }, // Group size
@@ -271,7 +273,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     _throttle,
     isSubscriptionsType,
     isForSaleType,
-    isForSaleType,
+    isHousingType,
     filtersText,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -290,6 +292,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       listingType => listingType.type === LISTING_TYPE.FOR_SALE
     );
     setIsForSaleType(!!forSaleType?.isSelected);
+
+    const housingType = listingTypes.find(
+      listingType => listingType.type === LISTING_TYPE.HOUSING
+    );
+    setIsHousingType(!!housingType?.isSelected);
   }, [listingTypes]);
 
   useEffect(() => {
@@ -304,6 +311,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     listingTypes,
     isSubscriptionsType,
     isForSaleType,
+    isHousingType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,

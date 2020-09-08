@@ -2,7 +2,7 @@ import React from "react";
 
 import { SORT_BY } from "./search-utils";
 import { ISearchFiltersProps } from "./search-utils";
-import { DEVICE_MODE, LISTING_TYPE } from "./../../utils/constants";
+import { DEVICE_MODE } from "./../../utils/constants";
 
 import Scrollbars from "react-custom-scrollbars";
 
@@ -26,6 +26,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     listingTypes,
     isSubscriptionsType,
     // isForSaleType,
+    // isHousingType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
@@ -39,45 +40,37 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     handleDaysActiveChange
   } = props;
 
-  const listingTypeCheckboxes = listingTypes
-    .filter(
-      listingType =>
-        listingType.type === LISTING_TYPE.FOR_SALE ||
-        listingType.type === LISTING_TYPE.SUBSCRIPTION
-    )
-    .map((listingType, index) => {
-      return (
-        <FormControlLabel
-          key={"filters-category-" + index}
-          style={{ color: "#000000" }}
-          control={
-            <Checkbox
-              checked={listingType.isSelected}
-              // TODO: Remove lambda expression
-              onChange={e => toggleListingType(e, listingType.type)}
-              name={listingType.name}
-              style={{
-                padding: 0,
-                margin: "5px 5px 5px 20px",
-                color: "#6C5DBD"
-              }}
+  const listingTypeCheckboxes = listingTypes.map((listingType, index) => {
+    return (
+      <FormControlLabel
+        key={"filters-category-" + index}
+        style={{ color: "#000000" }}
+        control={
+          <Checkbox
+            checked={listingType.isSelected}
+            // TODO: Remove lambda expression
+            onChange={e => toggleListingType(e, listingType.type)}
+            name={listingType.name}
+            style={{
+              padding: 0,
+              margin: "5px 5px 5px 20px",
+              color: "#6C5DBD"
+            }}
+          />
+        }
+        label={
+          <div className="flex-horizontal-centered">
+            <img
+              alt="Subscriptions"
+              className="search-filters-listing-type-icon"
+              src={listingType.icon}
             />
-          }
-          label={
-            <div className="flex-horizontal-centered">
-              <img
-                alt="Subscriptions"
-                className="search-filters-listing-type-icon"
-                src={listingType.icon}
-              />
-              <Typography style={{ fontSize: 15 }}>
-                {listingType.name}
-              </Typography>
-            </div>
-          }
-        />
-      );
-    });
+            <Typography style={{ fontSize: 15 }}>{listingType.name}</Typography>
+          </div>
+        }
+      />
+    );
+  });
 
   const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
     (category, index) => {

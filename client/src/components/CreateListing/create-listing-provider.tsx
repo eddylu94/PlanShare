@@ -51,12 +51,15 @@ const CreateListingProviderWithContext = (props: {
     subscriptionIdParam ?? ""
   );
 
-  const getListingType = (param: string) =>
-    param?.toLocaleUpperCase() === LISTING_TYPE.FOR_SALE ||
-    param === LISTING_TYPE.HOUSING ||
-    param === LISTING_TYPE.SUBSCRIPTION
-      ? param.toLocaleUpperCase()
+  const getListingType = (param: string) => {
+    param = param?.toLocaleUpperCase();
+
+    return param === LISTING_TYPE.FOR_SALE ||
+      param === LISTING_TYPE.HOUSING ||
+      param === LISTING_TYPE.SUBSCRIPTION
+      ? param
       : LISTING_TYPE.SUBSCRIPTION;
+  };
 
   const listingTypeParam = params.get("type") as string;
   // eslint-disable-next-line
@@ -85,6 +88,8 @@ const CreateListingProviderWithContext = (props: {
       setSubscriptionUrl(newSubscriptionData.subscriptionUrl);
       setNumberOfPeople(newSubscriptionData.numberOfPeople);
       setPrice(newSubscriptionData.price);
+      setNumBedrooms(newSubscriptionData.numBedrooms);
+      setNumBathrooms(newSubscriptionData.numBathrooms);
 
       if (newSubscriptionData.contactFb) {
         setIsContactFb(true);
@@ -146,6 +151,9 @@ const CreateListingProviderWithContext = (props: {
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [price, setPrice] = useState(0);
 
+  const [numBedrooms, setNumBedrooms] = useState(0);
+  const [numBathrooms, setNumBathrooms] = useState(0);
+
   const [isContactFb, setIsContactFb] = useState(false);
   const [contactFb, setContactFb] = useState("");
 
@@ -165,9 +173,8 @@ const CreateListingProviderWithContext = (props: {
   ] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<any>) => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+    const { target } = event;
+    const { value, name } = target;
 
     switch (name) {
       case FORM_INPUT_TYPE.SUBSCRIPTION_TYPE:
@@ -204,6 +211,12 @@ const CreateListingProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.PRICE:
         setPrice(value);
+        break;
+      case FORM_INPUT_TYPE.NUM_BEDROOMS:
+        setNumBedrooms(value);
+        break;
+      case FORM_INPUT_TYPE.NUM_BATHROOMS:
+        setNumBathrooms(value);
         break;
       case FORM_INPUT_TYPE.CONTACT_FB:
         setContactFb(value);
@@ -323,6 +336,16 @@ const CreateListingProviderWithContext = (props: {
           price
         };
         break;
+      case LISTING_TYPE.HOUSING:
+        subscriptionData = {
+          listingType: LISTING_TYPE.HOUSING,
+          listingTitle,
+          listingDescription,
+          numBedrooms,
+          numBathrooms,
+          price
+        };
+        break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         subscriptionData = {
@@ -428,6 +451,14 @@ const CreateListingProviderWithContext = (props: {
       case LISTING_TYPE.FOR_SALE:
         newIsFormDisabled = !(listingTitle && listingDescription && price);
         break;
+      case LISTING_TYPE.HOUSING:
+        newIsFormDisabled = !(
+          listingTitle &&
+          listingDescription &&
+          price &&
+          numBathrooms
+        );
+        break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         newIsFormDisabled = !(
@@ -447,6 +478,7 @@ const CreateListingProviderWithContext = (props: {
     listingDescription,
     numberOfPeople,
     price,
+    numBathrooms,
     isSubscriptionUrlValid,
     otherSubscription,
     isOtherInputDisplayed
@@ -489,6 +521,8 @@ const CreateListingProviderWithContext = (props: {
       listingDescription={listingDescription}
       numberOfPeople={numberOfPeople}
       price={price}
+      numBedrooms={numBedrooms}
+      numBathrooms={numBathrooms}
       isContactFb={isContactFb}
       setIsContactFb={setIsContactFb}
       contactFb={contactFb}

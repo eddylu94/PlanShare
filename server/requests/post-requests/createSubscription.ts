@@ -51,6 +51,18 @@ export const createSubscription = (
             status: SUBSCRIPTION_STATUS.ACTIVE
           };
           break;
+        case LISTING_TYPE.HOUSING:
+          newSubscriptionData = {
+            userId: findRes._id,
+            firstName,
+            organization,
+            createdDate: new Date(),
+            price: parseFloat(subscriptionData.price),
+            numBedrooms: parseInt(subscriptionData.numBedrooms),
+            numBathrooms: parseInt(subscriptionData.numBathrooms),
+            status: SUBSCRIPTION_STATUS.ACTIVE
+          };
+          break;
         case LISTING_TYPE.SUBSCRIPTION:
         default:
           newSubscriptionData = {

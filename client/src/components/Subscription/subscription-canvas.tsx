@@ -53,6 +53,9 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     case LISTING_TYPE.FOR_SALE:
       name = subscriptionData.listingTitle;
       break;
+    case LISTING_TYPE.HOUSING:
+      name = subscriptionData.listingTitle;
+      break;
     case LISTING_TYPE.SUBSCRIPTION:
     default:
       name =
@@ -66,6 +69,9 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
 
   switch (listingType) {
     case LISTING_TYPE.FOR_SALE:
+      logo = "./icon.png";
+      break;
+    case LISTING_TYPE.HOUSING:
       logo = "./icon.png";
       break;
     case LISTING_TYPE.SUBSCRIPTION:
