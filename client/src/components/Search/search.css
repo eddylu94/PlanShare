@@ -300,7 +300,6 @@
 
 .subscription-card-basic-info {
   display: flex;
-  justify-content: center;
   color: #686868;
   font-size: 14px;
   min-width: 110px;
