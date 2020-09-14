@@ -248,6 +248,16 @@ export const getSubscriptionsAsGuest = (
                   status: subscription.status,
                   listingTitle: subscription.listingTitle
                 };
+              case LISTING_TYPE.HOUSING:
+                return {
+                  listingType: subscription.listingType,
+                  createdDate: subscription.createdDate,
+                  firstName: subscription.firstName.substring(0, 1),
+                  organization: subscription.organization,
+                  price: subscription.price,
+                  status: subscription.status,
+                  listingTitle: subscription.listingTitle
+                };
               case LISTING_TYPE.SUBSCRIPTION:
               default:
                 return {
