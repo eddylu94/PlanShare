@@ -59,134 +59,136 @@ const SettingsCanvas = (props: ISettingsProps) => {
   };
 
   return (
-    <div className="page-container">
-      <div className="settings-container">
-        <h3 className="settings-header">Email notifications</h3>
-        <div>
-          <div className="settings-delete-description">
-            How often would you like to receive notifications for new messages
-            that you have received for your listings?
+    <div className="page-container" style={{ alignItems: "center" }}>
+      <div className="page-wrapper">
+        <div className="settings-container">
+          <h3 className="settings-header">Email notifications</h3>
+          <div>
+            <div className="settings-delete-description">
+              How often would you like to receive notifications for new messages
+              that you have received for your listings?
+            </div>
+
+            <RadioGroup
+              aria-label="Sort results by"
+              name="sort-by"
+              value={settingEmailNotifications}
+              onChange={handleChangeEmailNotifications}
+            >
+              <FormControlLabel
+                value={SETTINGS_EMAIL_NOTIFICATIONS.DAILY}
+                control={<Radio style={emailNotificationsStyles} />}
+                label={
+                  <Typography style={{ fontSize: 15 }}>
+                    {"At most once a day"}
+                  </Typography>
+                }
+              />
+
+              <FormControlLabel
+                value={SETTINGS_EMAIL_NOTIFICATIONS.WEEKLY}
+                control={<Radio style={emailNotificationsStyles} />}
+                label={
+                  <Typography style={{ fontSize: 15 }}>
+                    {"At most once a week"}
+                  </Typography>
+                }
+              />
+
+              <FormControlLabel
+                value={SETTINGS_EMAIL_NOTIFICATIONS.MONTHLY}
+                control={<Radio style={emailNotificationsStyles} />}
+                label={
+                  <Typography style={{ fontSize: 15 }}>
+                    {"At most once a month"}
+                  </Typography>
+                }
+              />
+
+              <FormControlLabel
+                value={SETTINGS_EMAIL_NOTIFICATIONS.NEVER}
+                control={<Radio style={emailNotificationsStyles} />}
+                label={
+                  <Typography style={{ fontSize: 15 }}>{"Never"}</Typography>
+                }
+              />
+            </RadioGroup>
           </div>
-
-          <RadioGroup
-            aria-label="Sort results by"
-            name="sort-by"
-            value={settingEmailNotifications}
-            onChange={handleChangeEmailNotifications}
-          >
-            <FormControlLabel
-              value={SETTINGS_EMAIL_NOTIFICATIONS.DAILY}
-              control={<Radio style={emailNotificationsStyles} />}
-              label={
-                <Typography style={{ fontSize: 15 }}>
-                  {"At most once a day"}
-                </Typography>
-              }
-            />
-
-            <FormControlLabel
-              value={SETTINGS_EMAIL_NOTIFICATIONS.WEEKLY}
-              control={<Radio style={emailNotificationsStyles} />}
-              label={
-                <Typography style={{ fontSize: 15 }}>
-                  {"At most once a week"}
-                </Typography>
-              }
-            />
-
-            <FormControlLabel
-              value={SETTINGS_EMAIL_NOTIFICATIONS.MONTHLY}
-              control={<Radio style={emailNotificationsStyles} />}
-              label={
-                <Typography style={{ fontSize: 15 }}>
-                  {"At most once a month"}
-                </Typography>
-              }
-            />
-
-            <FormControlLabel
-              value={SETTINGS_EMAIL_NOTIFICATIONS.NEVER}
-              control={<Radio style={emailNotificationsStyles} />}
-              label={
-                <Typography style={{ fontSize: 15 }}>{"Never"}</Typography>
-              }
-            />
-          </RadioGroup>
         </div>
-      </div>
 
-      <div className="settings-container" style={{ marginTop: 20 }}>
-        <h3 className="settings-header">Change password</h3>
-        <div>
-          <div className="settings-delete-description">
-            Please enter your current password:
-          </div>
-          <input
-            className="settings-delete-text-input"
-            name={SETTINGS_INPUT_NAME.CHANGE_PASS_CURRENT}
-            type="password"
-            placeholder="Current password"
-            value={changePassCurrent}
-            onChange={handleInputChange}
-            style={{ width: "100%" }}
-          />
-          <div className="settings-delete-description">
-            Please enter your new password (8+ chracters with letters and
-            numbers):
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
+        <div className="settings-container" style={{ marginTop: 20 }}>
+          <h3 className="settings-header">Change password</h3>
+          <div>
+            <div className="settings-delete-description">
+              Please enter your current password:
+            </div>
             <input
               className="settings-delete-text-input"
-              name={SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_1}
+              name={SETTINGS_INPUT_NAME.CHANGE_PASS_CURRENT}
               type="password"
-              placeholder="New password"
-              value={changePassNew1}
+              placeholder="Current password"
+              value={changePassCurrent}
               onChange={handleInputChange}
+              style={{ width: "100%" }}
             />
+            <div className="settings-delete-description">
+              Please enter your new password (8+ chracters with letters and
+              numbers):
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <input
+                className="settings-delete-text-input"
+                name={SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_1}
+                type="password"
+                placeholder="New password"
+                value={changePassNew1}
+                onChange={handleInputChange}
+              />
+              <input
+                className="settings-delete-text-input"
+                name={SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_2}
+                type="password"
+                placeholder="Confirm new password"
+                value={changePassNew2}
+                onChange={handleInputChange}
+              />
+            </div>
+            <button
+              className="settings-delete-button"
+              onClick={handleSubmitChangePass}
+              style={{ marginTop: 20 }}
+              disabled={isSubmitChangePassDisabled}
+            >
+              Change password
+            </button>
+          </div>
+        </div>
+
+        <div className="settings-container" style={{ marginTop: 20 }}>
+          <h3 className="settings-header">Delete account</h3>
+          <div>
+            <div className="settings-delete-description">
+              This action cannot be undone. This will permanently delete the{" "}
+              <span className="b">{email}</span> account, and remove all
+              associated subscription listings. Please type your password to
+              confirm.
+            </div>
             <input
               className="settings-delete-text-input"
-              name={SETTINGS_INPUT_NAME.CHANGE_PASS_NEW_2}
+              name={SETTINGS_INPUT_NAME.DELETE_ACCOUNT_PASS}
               type="password"
-              placeholder="Confirm new password"
-              value={changePassNew2}
+              placeholder="Password"
+              value={pass}
               onChange={handleInputChange}
             />
+            <button
+              className="settings-delete-button"
+              onClick={handleSubmit}
+              disabled={!pass}
+            >
+              Delete Account
+            </button>
           </div>
-          <button
-            className="settings-delete-button"
-            onClick={handleSubmitChangePass}
-            style={{ marginTop: 20 }}
-            disabled={isSubmitChangePassDisabled}
-          >
-            Change password
-          </button>
-        </div>
-      </div>
-
-      <div className="settings-container" style={{ marginTop: 20 }}>
-        <h3 className="settings-header">Delete account</h3>
-        <div>
-          <div className="settings-delete-description">
-            This action cannot be undone. This will permanently delete the{" "}
-            <span className="b">{email}</span> account, and remove all
-            associated subscription listings. Please type your password to
-            confirm.
-          </div>
-          <input
-            className="settings-delete-text-input"
-            name={SETTINGS_INPUT_NAME.DELETE_ACCOUNT_PASS}
-            type="password"
-            placeholder="Password"
-            value={pass}
-            onChange={handleInputChange}
-          />
-          <button
-            className="settings-delete-button"
-            onClick={handleSubmit}
-            disabled={!pass}
-          >
-            Delete Account
-          </button>
         </div>
       </div>
     </div>

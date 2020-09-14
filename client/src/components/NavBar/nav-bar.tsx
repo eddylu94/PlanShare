@@ -57,75 +57,77 @@ const NavBarWithContext = (props: {
 
   return !isSignUpLoginPage ? (
     <nav className="navbar">
-      <ul>{navBarListItems}</ul>
-      <ul>
-        {isUser ? (
-          <>
-            <li>
-              <Link to="/search">
-                <img
-                  alt="Search listings"
-                  className="navbar-icon"
-                  src={"./search_icon_white.png"}
-                />
-                <span className="navbar-link-label">Search</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/list">
-                <img
-                  alt="Create new listing"
-                  className="navbar-icon"
-                  src={"./create_icon_white.png"}
-                />
-                <span className="navbar-link-label">Post</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/messages">
-                <img
-                  alt="Messages"
-                  className="navbar-icon"
-                  src={"./message_icon_white.png"}
-                />
-                <span className="navbar-link-label">Messages</span>
-              </Link>
-            </li>
-            <li>
-              <div className="nav-bar-profile">
-                <img
-                  alt="Profile"
-                  className="nav-bar-profile-picture"
-                  src="/profile_picture_placeholder.png"
-                />
-                <span className="navbar-first-name">{user?.firstName}</span>
-              </div>
-              <ul className="navbar-profile-menu">
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                  <Link to="/settings">Settings</Link>
-                </li>
-                <li>
-                  <Link to="/feedback">Feedback</Link>
-                </li>
-                <li>
-                  <Link to="/logout" onClick={logoutHandler}>
-                    Logout
-                  </Link>
-                </li>
-              </ul>
-            </li>
-          </>
-        ) : (
-          <>
-            <li>
-              <Link to="/signup">Sign In</Link>
-            </li>
-          </>
-        )}
-      </ul>
+      <div className="navbar_wrapper">
+        <ul>{navBarListItems}</ul>
+        <ul>
+          {isUser ? (
+            <>
+              <li>
+                <Link to="/search">
+                  <img
+                    alt="Search listings"
+                    className="navbar-icon"
+                    src={"./search_icon_white.png"}
+                  />
+                  <span className="navbar-link-label">Search</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/list">
+                  <img
+                    alt="Create new listing"
+                    className="navbar-icon"
+                    src={"./create_icon_white.png"}
+                  />
+                  <span className="navbar-link-label">Post</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/messages">
+                  <img
+                    alt="Messages"
+                    className="navbar-icon"
+                    src={"./message_icon_white.png"}
+                  />
+                  <span className="navbar-link-label">Messages</span>
+                </Link>
+              </li>
+              <li>
+                <div className="nav-bar-profile">
+                  <img
+                    alt="Profile"
+                    className="nav-bar-profile-picture"
+                    src="/profile_picture_placeholder.png"
+                  />
+                  <span className="navbar-first-name">{user?.firstName}</span>
+                </div>
+                <ul className="navbar-profile-menu">
+                  <li>
+                    <Link to="/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <Link to="/settings">Settings</Link>
+                  </li>
+                  <li>
+                    <Link to="/feedback">Feedback</Link>
+                  </li>
+                  <li>
+                    <Link to="/logout" onClick={logoutHandler}>
+                      Logout
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to="/signup">Sign In</Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
     </nav>
   ) : null;
 };

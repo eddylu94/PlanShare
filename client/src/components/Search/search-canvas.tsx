@@ -91,7 +91,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
   const numberOfOrganizations = Object.keys(organizationsMap).length;
 
   return (
-    <div className="search-panes">
+    <div className="search-panes" style={{ justifyContent: "center" }}>
       {isFiltersDrawerOpen && deviceMode === DEVICE_MODE.MOBILE ? (
         <>
           <div className="overlay" onClick={toggleFiltersDrawer}></div>

@@ -32,7 +32,7 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
   ];
 
   return (
-    <div className="search-panes">
+    <div className="search-panes" style={{ justifyContent: "center" }}>
       {deviceMode !== DEVICE_MODE.MOBILE ? (
         <div
           className="filter-pane search-pane"
@@ -71,10 +71,16 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
           className="search-number-of-results flex-horizontal-centered"
           style={{ maxHeight: 30, height: 30, marginBottom: 5 }}
         ></div>
-        <div className="search-subscription-cards-container">
-          {subscriptionCards}
-        </div>
       </div>
+      {deviceMode === DEVICE_MODE.DESKTOP ||
+      deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
+        <div
+          className="subscription-pane search-pane"
+          style={{ backgroundColor: "#efefef" }}
+        >
+          {/* <Subscription subscriptionId={selectedSubscription} /> */}
+        </div>
+      ) : null}
     </div>
   );
 };

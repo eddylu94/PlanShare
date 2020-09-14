@@ -118,13 +118,31 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     deviceMode = DEVICE_MODE.LARGE_DESKTOP;
   }
 
-  return (conversationListComponent && conversationListComponent.length) ||
+  const messagesPanes =
+    (conversationListComponent && conversationListComponent.length) ||
     conversationId ? (
-    <div className="messages-container">
-      {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (
-        <div className="conversation-modal">
+      <div className="messages-container">
+        {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (
+          <div className="conversation-modal">
+            <Conversation
+              isConversationModalOpen={isConversationModalOpen}
+              currentUserId={currentUserId}
+              firstName={firstName}
+              userId={userId}
+              messages={messages}
+              text={text}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleConversationSelection={handleConversationSelection}
+              handleBackButtonClick={handleBackButtonClick}
+            />
+          </div>
+        ) : null}
+        <div className="message-summaries-pane">
+          {conversationListComponent}
+        </div>
+        {deviceMode !== DEVICE_MODE.MOBILE ? (
           <Conversation
-            isConversationModalOpen={isConversationModalOpen}
             currentUserId={currentUserId}
             firstName={firstName}
             userId={userId}
@@ -133,27 +151,23 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleConversationSelection={handleConversationSelection}
-            handleBackButtonClick={handleBackButtonClick}
           />
+        ) : null}
+      </div>
+    ) : (
+      <div className="messages-container">
+        <div className="messages-no-messages">
+          You currently have no messages
         </div>
-      ) : null}
-      <div className="message-summaries-pane">{conversationListComponent}</div>
-      {deviceMode !== DEVICE_MODE.MOBILE ? (
-        <Conversation
-          currentUserId={currentUserId}
-          firstName={firstName}
-          userId={userId}
-          messages={messages}
-          text={text}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          handleConversationSelection={handleConversationSelection}
-        />
-      ) : null}
-    </div>
-  ) : (
-    <div className="messages-container">
-      <div className="messages-no-messages">You currently have no messages</div>
+      </div>
+    );
+
+  return (
+    <div
+      className="page-container"
+      style={{ alignItems: "center", padding: 0 }}
+    >
+      <div className="page-wrapper">{messagesPanes}</div>
     </div>
   );
 };

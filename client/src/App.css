@@ -37,6 +37,14 @@ body {
   }
 }
 
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 1350px;
+}
+
 .vertical-divider {
   display: flex;
   flex-direction: column;
