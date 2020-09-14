@@ -138,6 +138,7 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
+          "organization.organizationId": organizationId,
           price: {
             $gte: minPrice,
             $lte: maxPrice
@@ -186,6 +187,7 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
+          "organization.organizationId": organizationId,
           price: {
             $gte: minPrice,
             $lte: maxPrice
