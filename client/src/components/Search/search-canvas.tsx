@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import { ISubscriptionData, IOrganization } from "../../utils/utils";
 import { ISearchFiltersProps } from "./search-utils";
@@ -192,12 +193,33 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         </Scrollbars>
       </div>
-      {selectedSubscription &&
-      (deviceMode === DEVICE_MODE.DESKTOP ||
-        deviceMode === DEVICE_MODE.LARGE_DESKTOP) ? (
-        <div className="subscription-pane search-pane">
-          <Subscription subscriptionId={selectedSubscription} />
-        </div>
+      {deviceMode === DEVICE_MODE.DESKTOP ||
+      deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
+        selectedSubscription ? (
+          <div className="subscription-pane search-pane">
+            <Subscription subscriptionId={selectedSubscription} />
+          </div>
+        ) : (
+          <div
+            className="subscription-pane subscription-pane-placeholder"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "center"
+            }}
+          >
+            <span style={{ fontWeight: 500 }}>
+              Select a listing to view its details
+            </span>
+            <br />
+            <span>
+              Please <Link to="/login">log in</Link> or{" "}
+              <Link to="/signup">sign up</Link> to view listing details within
+              an organization
+            </span>
+          </div>
+        )
       ) : null}
     </div>
   );

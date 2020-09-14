@@ -16,6 +16,22 @@
   box-shadow: 0px 0px 10px #888888;
 }
 
+.subscription-pane-placeholder {
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-items: center;
+  border: 2px dashed #a8a8a8;
+  color: #888888;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  transition: all 0.2s ease-in-out;
+}
+
 .search-modal {
   position: relative;
   min-height: 500px;
