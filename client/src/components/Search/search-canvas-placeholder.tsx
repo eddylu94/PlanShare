@@ -68,9 +68,11 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
           </div>
         </div>
         <div
-          className="search-number-of-results flex-horizontal-centered"
+          className="search-number-of-results flex-vertical-centered"
           style={{ maxHeight: 30, height: 30, marginBottom: 5 }}
-        ></div>
+        >
+          {subscriptionCards}
+        </div>
       </div>
       {deviceMode === DEVICE_MODE.DESKTOP ||
       deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
