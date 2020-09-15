@@ -23,6 +23,7 @@ interface ISearchCanvasProps {
   handleSubscriptionCardClick: (subscriptionId: string) => void;
   closeModal: () => void;
   toggleFiltersDrawer: () => void;
+  isUser: boolean;
 }
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
@@ -36,7 +37,8 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
     handleTextChange,
     handleSubscriptionCardClick,
     closeModal,
-    toggleFiltersDrawer
+    toggleFiltersDrawer,
+    isUser
   } = props;
 
   const small = useMediaQuery("(max-width:768px)");
@@ -212,12 +214,16 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
             <span style={{ fontWeight: 500 }}>
               Select a listing to view its details
             </span>
-            <br />
-            <span>
-              Please <Link to="/login">log in</Link> or{" "}
-              <Link to="/signup">sign up</Link> to view listing details within
-              an organization
-            </span>
+            {!isUser ? (
+              <>
+                <br />
+                <span>
+                  Please <Link to="/login">log in</Link> or{" "}
+                  <Link to="/signup">sign up</Link> to view listing details
+                  within an organization
+                </span>
+              </>
+            ) : null}
           </div>
         )
       ) : null}

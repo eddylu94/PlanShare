@@ -339,6 +339,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
           handleSubscriptionCardClick={handleSubscriptionCardClick}
           closeModal={closeModal}
           toggleFiltersDrawer={toggleFiltersDrawer}
+          isUser={!!_userData.user?.userId}
         />
       ) : (
         <div className="animate-flicker">
