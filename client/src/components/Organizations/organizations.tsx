@@ -59,7 +59,7 @@ const Organizations = () => {
           <div className="organizations-label">Google</div>
         </div>
 
-        <h4>Universities</h4>
+        {/* <h4>Universities</h4>
 
         <div className="organizations-organization">
           <img
@@ -106,7 +106,7 @@ const Organizations = () => {
             className="organization-logo"
           />
           <div className="organizations-label">University of Washington</div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

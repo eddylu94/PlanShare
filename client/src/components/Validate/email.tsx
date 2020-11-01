@@ -239,7 +239,7 @@ const EmailProviderWithContext = (props: {
               <div className="organizations-label">Apple</div>
             </div>
 
-            <div
+            {/* <div
               className="organizations-organization organizations-organization-card"
               onClick={e => handleClick(e, "mcgill_u")}
             >
@@ -301,7 +301,7 @@ const EmailProviderWithContext = (props: {
               <div className="organizations-label">
                 University of Washington
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <>
