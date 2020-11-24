@@ -237,6 +237,10 @@ export const getSubscriptionsAsGuest = (
             return acc.concat(curr);
           }, [])
           .map((subscription: any) => {
+            if (!subscription.organization) {
+              return subscription;
+            }
+
             switch (subscription.listingType) {
               case LISTING_TYPE.FOR_SALE:
                 return {

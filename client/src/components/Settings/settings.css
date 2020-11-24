@@ -10,12 +10,14 @@
 }
 
 .settings-delete-text-input {
-  height: 30px;
+  height: 36px;
+  margin: 3px 0;
   padding: 5px 10px;
   font-size: 16px;
   line-height: 16px;
   border: 1px solid #a8a8a8;
   box-sizing: border-box;
+  border-radius: 10px;
 }
 @media only screen and (max-width: 768px) {
   /* Small */
@@ -25,13 +27,14 @@
 }
 
 .settings-delete-button {
-  height: 30px;
+  height: 36px;
   padding: 5px 10px;
   font-size: 16px;
   line-height: 16px;
   border: 1px solid #a8a8a8;
   box-sizing: border-box;
   cursor: pointer;
+  border-radius: 10px;
 }
 @media only screen and (max-width: 768px) {
   /* Small */

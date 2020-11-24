@@ -81,11 +81,24 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           by{" "}
           <div className={"subscription-author-detail"}>
             {userId ? (
-              <Link to={`profile?id=${userId}`}>
-                <span className="subscription-card-first-name">
-                  {firstName}
-                </span>{" "}
-              </Link>
+              <>
+                <Link to={`profile?id=${userId}`} style={{ marginRight: 5 }}>
+                  <span className="subscription-card-first-name">
+                    {firstName}
+                  </span>{" "}
+                </Link>
+                <>
+                  at{" "}
+                  <span className="b" style={{ marginLeft: 5 }}>
+                    {organization ? organization.name : "Public"}
+                  </span>
+                  <img
+                    alt="Organization logo"
+                    className="subscription-card-organization-logo"
+                    src={organization ? organization.logo : "/public_icon.png"}
+                  />
+                </>
+              </>
             ) : (
               <>
                 <span className="b" style={{ marginRight: 5 }}>
@@ -93,12 +106,12 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
                 </span>{" "}
                 at{" "}
                 <span className="b" style={{ marginLeft: 5 }}>
-                  {organization.name}
+                  {organization ? organization.name : "Public"}
                 </span>
                 <img
                   alt="Organization logo"
                   className="subscription-card-organization-logo"
-                  src={organization.logo}
+                  src={organization ? organization.logo : "/public_icon.png"}
                 />
               </>
             )}

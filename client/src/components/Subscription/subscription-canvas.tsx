@@ -49,7 +49,8 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     userId,
     otherSubscription,
     contactFb,
-    contactEmail
+    contactEmail,
+    organization
   } = subscriptionData;
 
   let name;
@@ -108,6 +109,14 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <Link to={`profile?id=${userId}`}>
           <span className="subscription-first-name">{firstName}</span>
         </Link>
+      </div>
+      <div className="subscription-detail subscription-subscription-author-detail">
+        <span className="b">{organization ? organization.name : "Public"}</span>
+        <img
+          alt="Organization logo"
+          className="subscription-card-organization-logo"
+          src={organization ? organization.logo : "/public_icon.png"}
+        />
       </div>
       <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-date">

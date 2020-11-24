@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
@@ -35,6 +35,8 @@ const EmailProviderWithContext = (props: {
   const [orgSymbol, setOrgSymbol] = useState("");
 
   const [text, setText] = useState("");
+
+  const [isValidAlias, setIsValidAlias] = useState(false);
 
   const handleClick = (event: any, organizationSymbol: string) => {
     event.preventDefault();
@@ -117,10 +119,14 @@ const EmailProviderWithContext = (props: {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (validateAlias(text)) {
-      const postRequestData = {
-        email: `${text}@${getOrganizationDomain(orgSymbol)}`
-      };
+    if (isValidAlias) {
+      const email =
+        orgSymbol === "public"
+          ? text
+          : `${text}@${getOrganizationDomain(orgSymbol)}`;
+
+      const postRequestData = { email };
+
       basePostRequest(
         "addemail",
         postRequestData,
@@ -131,12 +137,22 @@ const EmailProviderWithContext = (props: {
     }
   };
 
-  const validateAlias = (alias: string) => {
+  useEffect(() => {
+    const alias = text;
+
+    if (orgSymbol === "public") {
+      const isValid = !!alias.trim() && alias.length > 0 && alias.length < 30;
+      setIsValidAlias(isValid);
+      return;
+    }
+
     const re = /^[a-zA-Z0-9_.-]*$/;
-    return (
-      re.test(alias) && !!alias.trim() && alias.length > 0 && alias.length < 30
-    );
-  };
+
+    const isValid =
+      re.test(alias) && !!alias.trim() && alias.length > 0 && alias.length < 30;
+    setIsValidAlias(isValid);
+    // eslint-disable-next-line
+  }, [text]);
 
   return (
     <div className="page-container" style={{ alignItems: "center" }}>
@@ -147,11 +163,38 @@ const EmailProviderWithContext = (props: {
               Please verify your organization
             </h3>
             <p>
-              To provide the safest experience for our members, we only allow
-              users to view listing details from those that work at the same
-              organizations.
+              By signing up with your work/university email address, you will be
+              able to view{" "}
+              <span className="b">
+                both listings posted by users in the same organization as well
+                as public listings
+              </span>
+              .
             </p>
-            <p>Please select one of the following organizations:</p>
+            <p>
+              However, we understand that not everyone wants feels safe using
+              their work/university emails. Therefore, we provide the option to
+              create public accounts where users may use any email address.
+              Public users can{" "}
+              <span className="b">only view public listings</span>.
+            </p>
+
+            <p>Please either choose a public account:</p>
+
+            <div
+              className="organizations-organization organizations-organization-card"
+              onClick={e => handleClick(e, "public")}
+            >
+              <img
+                alt="Public"
+                src="public_icon.png"
+                className="organization-logo"
+                style={{ opacity: 0.7 }}
+              />
+              <div className="organizations-label">Public</div>
+            </div>
+
+            <p>or an organizational account:</p>
 
             {process.env.NODE_ENV === "development" || isDevelopment ? (
               <div
@@ -321,16 +364,18 @@ const EmailProviderWithContext = (props: {
                   value={text}
                   placeholder="Email alias"
                 />
-                <span className="organization-email-input-domain">
-                  <span className="b">{text}</span>
-                  {`@${getOrganizationDomain(orgSymbol)}`}
-                </span>
+                {orgSymbol !== "public" ? (
+                  <span className="organization-email-input-domain">
+                    <span className="b">{text}</span>
+                    {`@${getOrganizationDomain(orgSymbol)}`}
+                  </span>
+                ) : null}
               </div>
               <input
                 className="email-submit-button"
                 type="submit"
                 value="Submit"
-                disabled={!validateAlias(text)}
+                disabled={!isValidAlias}
               />
             </form>
           </>

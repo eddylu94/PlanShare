@@ -84,22 +84,44 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
-          "organization.organizationId": organizationId,
-          "subscriptionBrand.type": { $in: subscriptionCategories },
-          numberOfPeople: {
-            $gte: minGroupSize,
-            $lte: maxGroupSize
-          },
-          price: {
-            $gte: minPrice,
-            $lte: maxPrice
-          },
-          createdDate: {
-            $lte: new Date(currentDate),
-            $gte: new Date(oldestDate)
-          },
-          listingType: LISTING_TYPE.SUBSCRIPTION,
-          status: SUBSCRIPTION_STATUS.ACTIVE
+          $or: [
+            {
+              organization: null,
+              "subscriptionBrand.type": { $in: subscriptionCategories },
+              numberOfPeople: {
+                $gte: minGroupSize,
+                $lte: maxGroupSize
+              },
+              price: {
+                $gte: minPrice,
+                $lte: maxPrice
+              },
+              createdDate: {
+                $lte: new Date(currentDate),
+                $gte: new Date(oldestDate)
+              },
+              listingType: LISTING_TYPE.SUBSCRIPTION,
+              status: SUBSCRIPTION_STATUS.ACTIVE
+            },
+            {
+              "organization.organizationId": organizationId,
+              "subscriptionBrand.type": { $in: subscriptionCategories },
+              numberOfPeople: {
+                $gte: minGroupSize,
+                $lte: maxGroupSize
+              },
+              price: {
+                $gte: minPrice,
+                $lte: maxPrice
+              },
+              createdDate: {
+                $lte: new Date(currentDate),
+                $gte: new Date(oldestDate)
+              },
+              listingType: LISTING_TYPE.SUBSCRIPTION,
+              status: SUBSCRIPTION_STATUS.ACTIVE
+            }
+          ]
         };
 
         if (t.length) {

@@ -87,7 +87,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
   }
 
   const organizationsMap = subscriptionData.reduce((map, subscription) => {
-    const organization = subscription.organization.name;
+    const organization = subscription.organization?.name;
     return Object.assign(map, { [organization]: 1 });
   }, {});
   const numberOfOrganizations = Object.keys(organizationsMap).length;
@@ -160,7 +160,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           className="search-number-of-results flex-horizontal-centered"
           style={{ maxHeight: 30, height: 30 }}
         >
-          {organization.name ? (
+          {organization?.name ? (
             <>
               <span className="b" style={{ marginRight: 5 }}>
                 {subscriptionData.length}{" "}

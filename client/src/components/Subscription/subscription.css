@@ -125,7 +125,13 @@
 }
 
 .subscription-subscription-detail {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
+}
+
+.subscription-subscription-author-detail {
+  margin-bottom: 15px;
+  color: #686868;
+  font-weight: 300;
 }
 
 .profile-header {

@@ -14,6 +14,7 @@ import {
   DATABASE_COLLECTION,
   STATUS_MESSAGE
 } from "./../../constants";
+import { retrieveOrganizationByDomain } from "../../organizations";
 
 const ObjectId = mongodb.ObjectID;
 
@@ -57,7 +58,10 @@ export const getConversation = (
 
               const currentUserDomain = getDomain(currentUserEmail);
 
-              if (currentUserDomain === userDomain) {
+              if (
+                currentUserDomain === userDomain ||
+                !retrieveOrganizationByDomain(userDomain)
+              ) {
                 dbo
                   .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
                   .findOne(

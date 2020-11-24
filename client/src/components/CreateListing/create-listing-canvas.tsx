@@ -199,7 +199,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </div>
         ) : null}
 
-        {listingType === LISTING_TYPE.FOR_SALE || LISTING_TYPE.HOUSING ? (
+        {listingType === LISTING_TYPE.FOR_SALE ||
+        listingType === LISTING_TYPE.HOUSING ? (
           <div className="subscription-fields">
             <div className="form-field">
               <FormLabel label={"Listing title:"} isRequired={true} />
