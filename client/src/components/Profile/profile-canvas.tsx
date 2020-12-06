@@ -195,7 +195,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
                 </div>
               </div>
             ) : null}
-            {renderOrganization()}
+            {organization ? renderOrganization() : null}
             <div className="profile-detail-container">
               <div className="profile-detail-header">Member since:</div>
               <div
