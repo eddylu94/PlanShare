@@ -31,13 +31,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
-    filtersDaysActive,
+    // filtersDaysActive,
     toggleListingType,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,
-    handleSortByChange,
-    handleDaysActiveChange
+    handleSortByChange
+    // handleDaysActiveChange
   } = props;
 
   const listingTypeCheckboxes = listingTypes.map((listingType, index) => {
@@ -261,7 +261,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           component="fieldset"
           style={{ flexShrink: 0, marginTop: 20 }}
         >
-          <FiltersFormLabel label={"Sort Results by"} />
+          <FiltersFormLabel label={"Sort Results"} />
           <RadioGroup
             aria-label="Sort results by"
             name="sort-by"
@@ -286,7 +286,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                 </Typography>
               }
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
               control={<Radio style={filtersRadioStyles} />}
               label={
@@ -303,7 +303,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                   {"Title (Z to A)"}
                 </Typography>
               }
-            />
+            /> */}
           </RadioGroup>
         </FormControl>
       </div>

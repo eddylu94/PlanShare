@@ -252,7 +252,20 @@ export const getSubscriptions = (
             .reduce((acc, curr) => {
               return acc.concat(curr);
             }, [])
-            .sort((a, b) => b.createdDate - a.createdDate);
+            .sort((a, b) => {
+              switch (sb) {
+                case SORT_BY.DATE_DES:
+                  return b.createdDate - a.createdDate;
+                case SORT_BY.DATE_ASC:
+                  return a.createdDate - b.createdDate;
+                case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+                  return b.listingTitle < a.listingTitle ? -1 : 1;
+                case SORT_BY.SUBSCRIPTION_BRAND_DES:
+                  return b.listingTitle < a.listingTitle ? 1 : -1;
+                default:
+                  return b.createdDate - a.createdDate;
+              }
+            });
 
           db.close();
           postSuccess(postRes, {
