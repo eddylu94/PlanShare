@@ -210,7 +210,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       {isDisplayButtons ? (
         <div className="subscription-card-buttons">
           {!isArchived ? (
-            <Link to={`edit?id=${_id}`}>
+            <Link to={`edit?id=${_id}&type=${listingType.toLocaleLowerCase()}`}>
               <button className="subscription-card-button">
                 <img
                   alt="Edit"
