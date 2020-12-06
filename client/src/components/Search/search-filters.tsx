@@ -238,7 +238,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           </>
         ) : null}
 
-        <FormControl
+        {/* <FormControl
           component="fieldset"
           style={{ flexShrink: 0, marginTop: 20 }}
         >
@@ -255,7 +255,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             min={0}
             max={180}
           />
-        </FormControl>
+        </FormControl> */}
 
         <FormControl
           component="fieldset"
