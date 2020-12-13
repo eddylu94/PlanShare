@@ -260,7 +260,8 @@ const CreateListingCanvas = (props: ICreateListingCanvasProps) => {
           </Tooltip>
         </div>
 
-        {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+        {listingType === LISTING_TYPE.SUBSCRIPTION ||
+        listingType === LISTING_TYPE.FOR_SALE ? (
           <div className="form-field">
             <FormLabel label={"Link to subscription (optional):"} />
             <input

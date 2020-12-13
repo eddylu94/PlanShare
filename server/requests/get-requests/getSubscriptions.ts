@@ -160,17 +160,34 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
-          "organization.organizationId": organizationId,
-          price: {
-            $gte: minPrice,
-            $lte: maxPrice
-          },
-          createdDate: {
-            $lte: new Date(currentDate),
-            $gte: new Date(oldestDate)
-          },
-          listingType: LISTING_TYPE.FOR_SALE,
-          status: SUBSCRIPTION_STATUS.ACTIVE
+          $or: [
+            {
+              organization: null,
+              price: {
+                $gte: minPrice,
+                $lte: maxPrice
+              },
+              createdDate: {
+                $lte: new Date(currentDate),
+                $gte: new Date(oldestDate)
+              },
+              listingType: LISTING_TYPE.FOR_SALE,
+              status: SUBSCRIPTION_STATUS.ACTIVE
+            },
+            {
+              "organization.organizationId": organizationId,
+              price: {
+                $gte: minPrice,
+                $lte: maxPrice
+              },
+              createdDate: {
+                $lte: new Date(currentDate),
+                $gte: new Date(oldestDate)
+              },
+              listingType: LISTING_TYPE.FOR_SALE,
+              status: SUBSCRIPTION_STATUS.ACTIVE
+            }
+          ]
         };
 
         if (t.length) {
