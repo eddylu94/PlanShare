@@ -1,5 +1,5 @@
 export const TITLE = "PlanShare";
-export const SLOGAN = "Find people to split costs";
+export const SLOGAN = "Split costs on subscriptions, group orders, and more!";
 
 // Database collections
 export const DATABASE_COLLECTION = {
