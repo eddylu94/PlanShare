@@ -44,14 +44,14 @@ export const getListingTypes = (
       },
       {
         type: LISTING_TYPE.FOR_SALE,
-        name: "For Sale",
+        name: "Group Orders",
         icon: "https://planshare.io/for_sale_icon.png"
-      },
-      {
-        type: LISTING_TYPE.HOUSING,
-        name: "Housing",
-        icon: "https://planshare.io/housing_icon.png"
       }
+      // {
+      //   type: LISTING_TYPE.HOUSING,
+      //   name: "Housing",
+      //   icon: "https://planshare.io/housing_icon.png"
+      // }
     ];
 
     db.close();
