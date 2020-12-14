@@ -207,9 +207,14 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
           {listingDescription}
         </div>
       </div>
-      {listingType === LISTING_TYPE.SUBSCRIPTION ? (
+      {listingType === LISTING_TYPE.SUBSCRIPTION ||
+      listingType === LISTING_TYPE.FOR_SALE ? (
         <>
-          <div className="subscription-label">Link to subscription</div>
+          <div className="subscription-label">
+            {listingType === LISTING_TYPE.SUBSCRIPTION
+              ? "Link to subscription"
+              : "Link to item"}
+          </div>
           <div className="subscription-detail">
             {subscriptionUrl ? (
               <a

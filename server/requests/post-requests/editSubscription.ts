@@ -29,7 +29,9 @@ export const editSubscription = (
         editedDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
-        subscriptionBrandName: subscriptionData.subscriptionBrand.name
+        subscriptionBrandName:
+          subscriptionData.subscriptionBrand &&
+          subscriptionData.subscriptionBrand.name
       });
 
       const dbo = db.db(DATABASE_NAME);

@@ -77,15 +77,15 @@ const CreateListingProviderWithContext = (props: {
       setIsRetrievedListingCreationDataDirty(true);
 
       log(newSubscriptionData);
-      log(newSubscriptionData.subscriptionBrand.type);
+      // log(newSubscriptionData.subscriptionBrand.type);
       setSubscriptionCategorySelection(
         newSubscriptionData.subscriptionCategory
       );
       setSubscriptionBrandSelection(newSubscriptionData.subscriptionBrand);
       setOtherSubscription(newSubscriptionData.otherSubscription);
-      setListingTitle(newSubscriptionData.setListingTitle);
-      setListingDescription(newSubscriptionData.listingDescription);
-      setSubscriptionUrl(newSubscriptionData.subscriptionUrl);
+      setListingTitle(newSubscriptionData.listingTitle ?? "");
+      setListingDescription(newSubscriptionData.listingDescription ?? "");
+      setSubscriptionUrl(newSubscriptionData.subscriptionUrl ?? "");
       setNumberOfPeople(newSubscriptionData.numberOfPeople);
       setPrice(newSubscriptionData.price);
       setNumBedrooms(newSubscriptionData.numBedrooms);
@@ -309,8 +309,8 @@ const CreateListingProviderWithContext = (props: {
           type: subscriptionId ? "EDIT_POST" : "NEW_POST",
           userId: _userData.user?.userId,
           subscriptionCategoryId:
-            subscriptionCategorySelection.subscriptionCategoryId,
-          subscriptionBrandId: subscriptionBrandSelection.subscriptionBrandId
+            subscriptionCategorySelection?.subscriptionCategoryId,
+          subscriptionBrandId: subscriptionBrandSelection?.subscriptionBrandId
         })
       };
 
@@ -424,7 +424,7 @@ const CreateListingProviderWithContext = (props: {
     const subscriptionIdParam = params.get("id") as string;
 
     if (subscriptionIdParam) {
-      setSubscriptionBrandLogo(subscriptionBrandSelection.logo);
+      setSubscriptionBrandLogo(subscriptionBrandSelection?.logo);
     } else if (Object.keys(subscriptionBrandSelection).length) {
       const brand = subscriptionBrands.find(
         (brand: any) =>
@@ -435,7 +435,7 @@ const CreateListingProviderWithContext = (props: {
     }
 
     setIsOtherInputDisplayed(
-      subscriptionBrandSelection.subscriptionBrandId === "OTHER"
+      subscriptionBrandSelection?.subscriptionBrandId === "OTHER"
     );
     // eslint-disable-next-line
   }, [subscriptionBrandSelection]);
