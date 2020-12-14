@@ -31,7 +31,7 @@ const SubscriptionProviderWithContext = (props: {
 
   const retrieveSubscription = () => {
     baseGetRequest(
-      "getsubscription",
+      _userData.user?.auth ? "getsubscription" : "getsubscriptionasguest",
       [{ subscriptionId }],
       retrieveSubscriptionResponseHandler,
       retrieveSubscriptionErrorHandler,
@@ -48,6 +48,7 @@ const SubscriptionProviderWithContext = (props: {
 
   return (
     <SubscriptionCanvas
+      userData={_userData}
       isGuest={!!(subscriptionId && subscriptionId === "guest")}
       subscriptionData={subscriptionData}
       currentUser={_userData.user?.userId as string}

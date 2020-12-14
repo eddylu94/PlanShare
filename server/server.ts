@@ -88,6 +88,10 @@ getRequestBuilder("/getprofile", GetRequests.getProfile);
 getRequestBuilder("/getorganization", GetRequests.getOrganization);
 getRequestBuilder("/getsubscription", GetRequests.getSubscription);
 getRequestBuilder(
+  "/getsubscriptionasguest",
+  GetRequests.getSubscriptionAsGuest
+);
+getRequestBuilder(
   "/getsubscriptionsbyauthor",
   GetRequests.getSubscriptionsByAuthor
 );

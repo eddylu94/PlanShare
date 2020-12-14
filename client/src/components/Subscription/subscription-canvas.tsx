@@ -5,15 +5,17 @@ import moment from "moment";
 
 import { ISubscriptionData } from "./../../utils/utils";
 import { LISTING_TYPE } from "../../utils/constants";
+import { IUserContext } from "../../user-context-provider";
 
 interface ISubscriptionCanvasProps {
+  userData: IUserContext;
   subscriptionData: ISubscriptionData;
   currentUser: string;
   isGuest?: boolean;
 }
 
 const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
-  const { subscriptionData, currentUser, isGuest } = props;
+  const { userData, subscriptionData, currentUser, isGuest } = props;
 
   if (isGuest) {
     return (
@@ -127,7 +129,9 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
       {userId && userId !== currentUser ? (
         <>
           <div className="subscription-detail" style={{ marginTop: 15 }}>
-            <Link to={`messages?id=${userId}`}>
+            <Link
+              to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
+            >
               <button className="subscription-message-button">
                 <span className="b subscription-message-label">{`Message ${firstName}`}</span>
                 <img

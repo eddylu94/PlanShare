@@ -85,13 +85,13 @@ export const ORGANIZATION: IOrganization = {
     logo: "https://planshare.io/goog_logo.png",
     domains: ["google.com"]
   },
-  FAKE_GOOGLE_COMPANY: {
-    organizationId: "FAKE_GOOGLE_COMPANY",
-    type: ORGANIZATION_CATEGORY.COMPANY.name,
-    name: "Fake Google",
-    logo: "https://planshare.io/goog_logo.png",
-    domains: ["gmail.com"]
-  },
+  // FAKE_GOOGLE_COMPANY: {
+  //   organizationId: "FAKE_GOOGLE_COMPANY",
+  //   type: ORGANIZATION_CATEGORY.COMPANY.name,
+  //   name: "Fake Google",
+  //   logo: "https://planshare.io/goog_logo.png",
+  //   domains: ["gmail.com"]
+  // },
   MCGILL_UNIVERSITY: {
     organizationId: "MCGILL_UNIVERSITY",
     type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
@@ -136,8 +136,8 @@ const companyIds = [
   ORGANIZATION.AMAZON_COMPANY.organizationId,
   ORGANIZATION.FACEBOOK_COMPANY.organizationId,
   ORGANIZATION.APPLE_COMPANY.organizationId,
-  ORGANIZATION.GOOGLE_COMPANY.organizationId,
-  ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId
+  ORGANIZATION.GOOGLE_COMPANY.organizationId
+  // ORGANIZATION.FAKE_GOOGLE_COMPANY.organizationId
 ];
 
 const univerityIds = [
