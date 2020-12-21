@@ -77,7 +77,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
 
   switch (listingType) {
     case LISTING_TYPE.FOR_SALE:
-      logo = "./icon.png";
+      logo = "https://planshare.io/for_sale_icon.png";
       break;
     case LISTING_TYPE.HOUSING:
       logo = "./icon.png";
@@ -117,7 +117,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
         <img
           alt="Organization logo"
           className="subscription-card-organization-logo"
-          src={organization ? organization.logo : "/public_icon.png"}
+          src={organization ? organization.logo : "/icon.png"}
         />
       </div>
       <div className="subscription-detail subscription-subscription-detail">
