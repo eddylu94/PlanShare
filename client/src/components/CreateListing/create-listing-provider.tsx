@@ -333,6 +333,7 @@ const CreateListingProviderWithContext = (props: {
           listingType: LISTING_TYPE.FOR_SALE,
           listingTitle,
           listingDescription,
+          subscriptionUrl,
           price
         };
         break;

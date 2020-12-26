@@ -29,6 +29,7 @@ export const editSubscription = (
         editedDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
+        subscriptionUrl: subscriptionData.subscriptionUrl,
         subscriptionBrandName:
           subscriptionData.subscriptionBrand &&
           subscriptionData.subscriptionBrand.name
