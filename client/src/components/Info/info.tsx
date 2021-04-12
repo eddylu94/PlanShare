@@ -4,7 +4,7 @@ interface IRestriction {
   title: string;
   url: string;
   logo: string;
-  lastKnownUpdate: Date;
+  lastKnownUpdate?: Date;
   lastChecked: Date;
   limitations: string[];
   quote: string;
@@ -67,6 +67,73 @@ const restrictions: IRestriction[] = [
     limitations: ["Sharing is not allowed"],
     quote:
       "Please be aware that to maintain exclusive control and ensure compliance with these Terms of Use, you may not reveal or share your Login Credentials with anyone."
+  },
+  {
+    title: "Prime TV",
+    url:
+      "https://www.amazon.com/gp/help/customer/display.html?nodeId=GWZ7QXD2X8WL8YE8",
+    logo: "/plans/prime_online_streaming.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "Prime members can share certain benefits with another adult in their Amazon Household."
+  },
+  {
+    title: "YouTube TV",
+    url: "https://support.google.com/youtubetv/answer/7251139",
+    logo: "/plans/youtube_tv.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must be members of same family"],
+    quote:
+      "As the family manager, you can invite family members (13 or older) to join your family group. ... Live in the same household as the family manager"
+  },
+  {
+    title: "AT&T TV",
+    url: "https://www.att.com/support/article/att-tv/KM1354360/",
+    logo: "/plans/att_tv.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "You can stream AT&T TVSM on up to 20 compatible devices connected to your home network at the same time. And, use up to three of those streams on the go."
+  },
+  {
+    title: "Apple Music",
+    url: "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
+    logo: "/plans/apple_music.png",
+    lastKnownUpdate: new Date("September 16, 2020"),
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must be members of same family"],
+    quote:
+      "Family Sharing’s Purchase Sharing feature allows you to share eligible Content among up to six members of a Family."
+  },
+  {
+    title: "Tidal Music",
+    url: "https://support.tidal.com/hc/en-us/articles/360004405337-Family",
+    logo: "/plans/tidal_music.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must be members of same family"],
+    quote:
+      "You can add up to 5 additional family members to your Family subscription."
+  },
+  {
+    title: "Amazon Music",
+    url:
+      "https://www.amazon.com/gp/help/customer/display.html?nodeId=GWGVV6VBWBXHMHQB",
+    logo: "/plans/amazon_music.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must be members of same family"],
+    quote:
+      "This plan allows up to six members of your family to receive all the benefits of Amazon Music Unlimited with a monthly subscription."
+  },
+  {
+    title: "Nintendo Online",
+    url:
+      "https://en-americas-support.nintendo.com/app/answers/detail/a_id/22521/~/nintendo-switch-online-service-faq",
+    logo: "/plans/nintendo_online.png",
+    lastChecked: new Date("April 11, 2021"),
+    limitations: ["Must be members of same family"],
+    quote:
+      "A family membership provides the Nintendo Switch Online service to everyone in the purchaser's family group (up to 8 people)."
   }
 ];
 
@@ -95,10 +162,12 @@ const Feedback = () => {
         <div className="info-url">
           <a href={`${url}`}>{url}</a>
         </div>
-        <div className="info-last-known-update">
-          Last known update:{" "}
-          <span className="b">{lastKnownUpdate.toDateString()}</span>
-        </div>
+        {lastKnownUpdate ? (
+          <div className="info-last-known-update">
+            Last known update:{" "}
+            <span className="b">{lastKnownUpdate.toDateString()}</span>
+          </div>
+        ) : null}
         <div>
           Last checked: <span className="b">{lastChecked.toDateString()}</span>
         </div>
@@ -114,10 +183,15 @@ const Feedback = () => {
   );
 
   return (
-    <div className="page-container" style={{ backgroundColor: "#FFFFFF" }}>
-      <h2 className="info-page-header">Subscription Information</h2>
-      The following are known restrictions to group plans:
-      {list}
+    <div
+      className="page-container"
+      style={{ backgroundColor: "#FFFFFF", alignItems: "center" }}
+    >
+      <div className="info-page-container">
+        <h2 className="info-page-header">Subscription Information</h2>
+        The following are known restrictions to group plans:
+        {list}
+      </div>
     </div>
   );
 };

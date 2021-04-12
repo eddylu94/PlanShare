@@ -22,6 +22,12 @@
   font-weight: 500;
 }
 
+.info-page-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+}
+
 .info-page-header {
   color: #333333;
   font-size: 24px;
