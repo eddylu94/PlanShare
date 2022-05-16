@@ -1,12 +1,6 @@
 import mongodb from "mongodb";
 
-import {
-  authenticate,
-  getDomain,
-  postSuccess,
-  postFailure
-} from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
+import { authenticate, postSuccess, postFailure } from "./../../utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -25,9 +19,6 @@ export const getSubscription = (
   authenticate(mongoClient, postReq, postRes).then(res => {
     const [db, findRes] = res;
 
-    const email = findRes.email;
-    const domain = getDomain(email);
-
     const { subscriptionId } = postReq.query;
 
     console.log(postReq.query);
@@ -41,21 +32,6 @@ export const getSubscription = (
       .findOne(
         { _id: new ObjectId(subscriptionId) },
         (findErr, subscriptionFindRes) => {
-          const organization = retrieveOrganizationByDomain(domain);
-          const organizationId = organization && organization.organizationId;
-
-          if (!organizationId === subscriptionFindRes.organizationId) {
-            console.log(
-              "User does not belong in organization of selected subscription"
-            );
-            db.close();
-            postFailure(
-              postRes,
-              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
-            );
-            return;
-          }
-
           if (
             !(
               findRes._id.toString() ===

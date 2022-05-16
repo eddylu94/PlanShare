@@ -7,7 +7,6 @@ import { getSubscriptionsAsGuest } from "./get-requests/getSubscriptionsAsGuest"
 import { getSubscription } from "./get-requests/getSubscription";
 import { getSubscriptionAsGuest } from "./get-requests/getSubscriptionAsGuest";
 import { getProfile } from "./get-requests/getProfile";
-import { getOrganization } from "./get-requests/getOrganization";
 import { getSubscriptionsByAuthor } from "./get-requests/getSubscriptionsByAuthor";
 import { getArchivedSubscriptions } from "./get-requests/getArchivedSubscriptions";
 import { getEmailAddress } from "./get-requests/getEmailAddress";
@@ -26,7 +25,6 @@ const getRequests = {
   getSubscription,
   getSubscriptionAsGuest,
   getProfile,
-  getOrganization,
   getSubscriptionsByAuthor,
   getArchivedSubscriptions,
   getEmailAddress,

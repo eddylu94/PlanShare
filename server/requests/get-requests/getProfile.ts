@@ -6,7 +6,6 @@ import {
   postSuccess,
   postFailure
 } from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -30,12 +29,8 @@ export const getProfile = (
       const { profileUserId } = postReq.query;
 
       if (!profileUserId) {
-        const domain = getDomain(email);
-        const organization = retrieveOrganizationByDomain(domain);
-
         const profileData = {
           username,
-          organization,
           joinedDate
         };
 
@@ -55,22 +50,8 @@ export const getProfile = (
               if (findProfileRes) {
                 const { username, joinedDate } = findProfileRes;
 
-                const otherUserEmail = findProfileRes.email;
-
-                const currentUserDomain = getDomain(findRes.email);
-
-                const otherUserDomain = getDomain(otherUserEmail);
-
-                let otherUserOrganization;
-                if (currentUserDomain === otherUserDomain) {
-                  otherUserOrganization = retrieveOrganizationByDomain(
-                    otherUserDomain
-                  );
-                }
-
                 const profileData = {
                   username,
-                  organization: otherUserOrganization,
                   joinedDate
                 };
 

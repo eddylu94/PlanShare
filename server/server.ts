@@ -85,7 +85,6 @@ getRequestBuilder(
   GetRequests.getSubscriptionsAsGuest
 );
 getRequestBuilder("/getprofile", GetRequests.getProfile);
-getRequestBuilder("/getorganization", GetRequests.getOrganization);
 getRequestBuilder("/getsubscription", GetRequests.getSubscription);
 getRequestBuilder(
   "/getsubscriptionasguest",
@@ -112,7 +111,6 @@ getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
 postRequestBuilder("/signup", PostRequests.signUp);
 postRequestBuilder("/login", PostRequests.login);
 postRequestBuilder("/changepass", PostRequests.changePass);
-postRequestBuilder("/addemail", PostRequests.addEmail);
 postRequestBuilder("/verifyemail", PostRequests.verifyEmail);
 postRequestBuilder(
   "/resendconfirmationcode",

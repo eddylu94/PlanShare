@@ -32,7 +32,6 @@ import Login from "./components/Login/login-provider";
 import Profile from "./components/Profile/profile-provider";
 import Settings from "./components/Settings/settings-provider";
 import Messages from "./components/Messages/messages-provider";
-import Organizations from "./components/Organizations/organizations";
 import Feedback from "./components/Feedback/feedback";
 import Info from "./components/Info/info";
 import { UserContextProvider } from "./user-context-provider";
@@ -89,9 +88,6 @@ const App = () => (
             </Route>
             <Route path="/messages">
               <Messages />
-            </Route>
-            <Route path="/organizations">
-              <Organizations />
             </Route>
           </Switch>
         </div>

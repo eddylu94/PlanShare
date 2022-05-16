@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "./../Search/search-subscription-card";
 import Subscription from "./../Subscription/subscription-provider";
-import { ISubscriptionData, IOrganization } from "./../../utils/utils";
+import { ISubscriptionData } from "./../../utils/utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -11,7 +11,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 interface IProfileCanvasProps {
   selectedSubscription: string;
   username: string;
-  organization: IOrganization;
   joinedDate: number;
   authoredSubscriptions: ISubscriptionData[];
   isDifferentUser: boolean;
@@ -34,7 +33,6 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
   const {
     selectedSubscription,
     username,
-    organization,
     joinedDate,
     authoredSubscriptions,
     archivedSubscriptions,
@@ -46,22 +44,6 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
     archiveSubscription,
     deleteSubscription
   } = props;
-
-  const renderOrganization = () => {
-    return (
-      <div className="profile-detail-container">
-        <div className="profile-detail-header">Member of:</div>
-        <div className="profile-organization">
-          <img
-            alt="Organization logo"
-            className="profile-organization-logo"
-            src={organization.logo}
-          />
-          <div className="profile-detail-name">{organization.name}</div>
-        </div>
-      </div>
-    );
-  };
 
   const small = useMediaQuery("(max-width:768px)");
   const medium = useMediaQuery("(min-width:768px)");
@@ -195,7 +177,6 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
                 </div>
               </div>
             ) : null}
-            {organization ? renderOrganization() : null}
             <div className="profile-detail-container">
               <div className="profile-detail-header">Member since:</div>
               <div

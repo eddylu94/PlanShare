@@ -16,22 +16,10 @@ export interface ISubscriptionBrand {
   logo: string;
 }
 
-export interface IOrganization {
-  domains: string[];
-  name: string;
-  logo: string;
-}
-
 export interface IListingType {
   type: string;
   name: string;
   icon: string;
-  isSelected: boolean;
-}
-
-export interface IFiltersOrganization {
-  organizationId: string;
-  name: string;
   isSelected: boolean;
 }
 
@@ -58,7 +46,6 @@ export interface ISubscriptionData {
   price: number;
   userId: string;
   username: string;
-  organization: IOrganization;
   createdDate: string;
   subscriptionUrl?: string;
   otherSubscription?: string;

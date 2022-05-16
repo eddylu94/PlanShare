@@ -11,29 +11,10 @@ interface ISubscriptionCanvasProps {
   userData: IUserContext;
   subscriptionData: ISubscriptionData;
   currentUser: string;
-  isGuest?: boolean;
 }
 
 const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
-  const { userData, subscriptionData, currentUser, isGuest } = props;
-
-  if (isGuest) {
-    return (
-      <div className="subscription-guest-login-message">
-        <div className="subscription-guest-login-message-wrapper">
-          <span>
-            The selected listing is only visible for members of the same
-            organization.
-            <br />
-            <br />
-            Please <Link to="/login">log in</Link> or{" "}
-            <Link to="/signup">sign up</Link> to view listing details within an
-            organization
-          </span>
-        </div>
-      </div>
-    );
-  }
+  const { userData, subscriptionData, currentUser } = props;
 
   if (!subscriptionData) {
     return null;

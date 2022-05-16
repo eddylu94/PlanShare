@@ -6,7 +6,6 @@ import {
   postSuccess,
   postFailure
 } from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -57,10 +56,6 @@ export const getSubscriptions = (
         new Date().setDate(new Date().getDate() - parseInt(da) - 1)
       );
 
-      const domain = getDomain(email);
-      const organization = retrieveOrganizationByDomain(domain);
-      const organizationId = organization && organization.organizationId;
-
       const promises = [];
 
       if (isSubscriptionsType === "true") {
@@ -84,44 +79,21 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
-          $or: [
-            {
-              organization: null,
-              "subscriptionBrand.type": { $in: subscriptionCategories },
-              numberOfPeople: {
-                $gte: minGroupSize,
-                $lte: maxGroupSize
-              },
-              price: {
-                $gte: minPrice,
-                $lte: maxPrice
-              },
-              createdDate: {
-                $lte: new Date(currentDate),
-                $gte: new Date(oldestDate)
-              },
-              listingType: LISTING_TYPE.SUBSCRIPTION,
-              status: SUBSCRIPTION_STATUS.ACTIVE
-            },
-            {
-              "organization.organizationId": organizationId,
-              "subscriptionBrand.type": { $in: subscriptionCategories },
-              numberOfPeople: {
-                $gte: minGroupSize,
-                $lte: maxGroupSize
-              },
-              price: {
-                $gte: minPrice,
-                $lte: maxPrice
-              },
-              createdDate: {
-                $lte: new Date(currentDate),
-                $gte: new Date(oldestDate)
-              },
-              listingType: LISTING_TYPE.SUBSCRIPTION,
-              status: SUBSCRIPTION_STATUS.ACTIVE
-            }
-          ]
+          "subscriptionBrand.type": { $in: subscriptionCategories },
+          numberOfPeople: {
+            $gte: minGroupSize,
+            $lte: maxGroupSize
+          },
+          price: {
+            $gte: minPrice,
+            $lte: maxPrice
+          },
+          createdDate: {
+            $lte: new Date(currentDate),
+            $gte: new Date(oldestDate)
+          },
+          listingType: LISTING_TYPE.SUBSCRIPTION,
+          status: SUBSCRIPTION_STATUS.ACTIVE
         };
 
         if (t.length) {
@@ -160,34 +132,16 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
-          $or: [
-            {
-              organization: null,
-              price: {
-                $gte: minPrice,
-                $lte: maxPrice
-              },
-              createdDate: {
-                $lte: new Date(currentDate),
-                $gte: new Date(oldestDate)
-              },
-              listingType: LISTING_TYPE.FOR_SALE,
-              status: SUBSCRIPTION_STATUS.ACTIVE
-            },
-            {
-              "organization.organizationId": organizationId,
-              price: {
-                $gte: minPrice,
-                $lte: maxPrice
-              },
-              createdDate: {
-                $lte: new Date(currentDate),
-                $gte: new Date(oldestDate)
-              },
-              listingType: LISTING_TYPE.FOR_SALE,
-              status: SUBSCRIPTION_STATUS.ACTIVE
-            }
-          ]
+          price: {
+            $gte: minPrice,
+            $lte: maxPrice
+          },
+          createdDate: {
+            $lte: new Date(currentDate),
+            $gte: new Date(oldestDate)
+          },
+          listingType: LISTING_TYPE.FOR_SALE,
+          status: SUBSCRIPTION_STATUS.ACTIVE
         };
 
         if (t.length) {
@@ -226,7 +180,6 @@ export const getSubscriptions = (
         }
 
         const findQuery = {
-          "organization.organizationId": organizationId,
           price: {
             $gte: minPrice,
             $lte: maxPrice

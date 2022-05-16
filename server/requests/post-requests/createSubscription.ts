@@ -1,6 +1,5 @@
 import mongodb from "mongodb";
 
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   authenticate,
   getDomain,
@@ -31,10 +30,7 @@ export const createSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { username, email } = findRes;
-
-      const domain = getDomain(email);
-      const organization = retrieveOrganizationByDomain(domain);
+      const { username } = findRes;
 
       const { subscriptionData } = obj;
 
@@ -45,7 +41,6 @@ export const createSubscription = (
           newSubscriptionData = {
             userId: findRes._id,
             username,
-            organization,
             createdDate: new Date(),
             price: parseFloat(subscriptionData.price),
             status: SUBSCRIPTION_STATUS.ACTIVE
@@ -55,7 +50,6 @@ export const createSubscription = (
           newSubscriptionData = {
             userId: findRes._id,
             username,
-            organization,
             createdDate: new Date(),
             price: parseFloat(subscriptionData.price),
             numBedrooms: parseInt(subscriptionData.numBedrooms),
@@ -68,7 +62,6 @@ export const createSubscription = (
           newSubscriptionData = {
             userId: findRes._id,
             username,
-            organization,
             createdDate: new Date(),
             numberOfPeople: parseInt(subscriptionData.numberOfPeople),
             price: parseFloat(subscriptionData.price),

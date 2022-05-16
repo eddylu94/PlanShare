@@ -6,7 +6,6 @@ import {
   postSuccess,
   postFailure
 } from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -61,16 +60,10 @@ export const getSubscriptionsByAuthor = (
                   return;
                 }
 
-                const domain = getDomain(email);
-                const organization = retrieveOrganizationByDomain(domain);
-                const organizationId =
-                  organization && organization.organizationId;
-
                 dbo
                   .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
                   .find({
                     userId: new ObjectId(profileUserId),
-                    "organization.organizationId": organizationId,
                     status: SUBSCRIPTION_STATUS.ACTIVE
                   })
                   .toArray()
@@ -103,15 +96,10 @@ export const getSubscriptionsByAuthor = (
       } else {
         const dbo = db.db(DATABASE_NAME);
 
-        const domain = getDomain(findResEmail);
-        const organization = retrieveOrganizationByDomain(domain);
-        const organizationId = organization && organization.organizationId;
-
         dbo
           .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
           .find({
             userId: new ObjectId(userId),
-            "organization.organizationId": organizationId,
             status: SUBSCRIPTION_STATUS.ACTIVE
           })
           .toArray()

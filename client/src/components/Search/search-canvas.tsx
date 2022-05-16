@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { ISubscriptionData, IOrganization } from "../../utils/utils";
+import { ISubscriptionData } from "../../utils/utils";
 import { ISearchFiltersProps } from "./search-utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 import SearchFiltersPane from "./search-filters";
@@ -13,7 +13,6 @@ import Scrollbars from "react-custom-scrollbars";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface ISearchCanvasProps {
-  organization: IOrganization;
   isFiltersDrawerOpen: boolean;
   subscriptionData: ISubscriptionData[];
   filtersText: string;
@@ -28,7 +27,6 @@ interface ISearchCanvasProps {
 
 const SearchCanvas = (props: ISearchCanvasProps) => {
   const {
-    organization,
     isFiltersDrawerOpen,
     subscriptionData,
     filtersText,
@@ -85,12 +83,6 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
       margin: "10px 0 20px 0"
     });
   }
-
-  const organizationsMap = subscriptionData.reduce((map, subscription) => {
-    const organization = subscription.organization?.name;
-    return Object.assign(map, { [organization]: 1 });
-  }, {});
-  const numberOfOrganizations = Object.keys(organizationsMap).length;
 
   return (
     <div className="search-panes" style={{ justifyContent: "center" }}>
@@ -157,37 +149,10 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
           </div>
         </div>
         <div
-          className="search-number-of-results flex-horizontal-centered"
+          className="search-number-of-results flex-horizontal-centered b"
           style={{ maxHeight: 30, height: 30 }}
         >
-          {organization?.name ? (
-            <>
-              <span className="b" style={{ marginRight: 5 }}>
-                {subscriptionData.length}{" "}
-                {subscriptionData.length === 1 ? "result" : "results"}
-              </span>{" "}
-              found for{" "}
-              <span className="b" style={{ marginLeft: 5 }}>
-                {organization.name}
-              </span>
-              <img
-                alt="Organization logo"
-                className="subscription-card-organization-logo"
-                src={organization.logo}
-              />
-            </>
-          ) : (
-            <>
-              <span className="b" style={{ marginRight: 5 }}>
-                {subscriptionData.length} results
-              </span>{" "}
-              found across{" "}
-              <span className="b" style={{ marginLeft: 5 }}>
-                {numberOfOrganizations}{" "}
-                {numberOfOrganizations === 1 ? "organization" : "organizations"}
-              </span>
-            </>
-          )}
+          {subscriptionData.length} results
         </div>
         <Scrollbars autoHide style={scrollBarsStyle}>
           <div className="search-subscription-cards-container">
@@ -220,7 +185,6 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
                 <span>
                   Please <Link to="/login">log in</Link> or{" "}
                   <Link to="/signup">sign up</Link> to view listing details
-                  within an organization
                 </span>
               </>
             ) : null}

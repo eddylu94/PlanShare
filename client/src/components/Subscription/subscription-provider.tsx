@@ -49,7 +49,6 @@ const SubscriptionProviderWithContext = (props: {
   return (
     <SubscriptionCanvas
       userData={_userData}
-      isGuest={!!(subscriptionId && subscriptionId === "guest")}
       subscriptionData={subscriptionData}
       currentUser={_userData.user?.userId as string}
     />

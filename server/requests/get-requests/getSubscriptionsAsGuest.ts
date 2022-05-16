@@ -236,50 +236,6 @@ export const getSubscriptionsAsGuest = (
           .reduce((acc, curr) => {
             return acc.concat(curr);
           }, [])
-          .map((subscription: any) => {
-            if (!subscription.organization) {
-              return subscription;
-            }
-
-            switch (subscription.listingType) {
-              case LISTING_TYPE.FOR_SALE:
-                return {
-                  listingType: subscription.listingType,
-                  createdDate: subscription.createdDate,
-                  username: subscription.username.substring(0, 1),
-                  organization: subscription.organization,
-                  price: subscription.price,
-                  status: subscription.status,
-                  listingTitle: subscription.listingTitle
-                };
-              case LISTING_TYPE.HOUSING:
-                return {
-                  listingType: subscription.listingType,
-                  createdDate: subscription.createdDate,
-                  username: subscription.username.substring(0, 1),
-                  organization: subscription.organization,
-                  price: subscription.price,
-                  status: subscription.status,
-                  listingTitle: subscription.listingTitle
-                };
-              case LISTING_TYPE.SUBSCRIPTION:
-              default:
-                return {
-                  listingType: subscription.listingType,
-                  createdDate: subscription.createdDate,
-                  username: subscription.username.substring(0, 1),
-                  numberOfPeople: subscription.numberOfPeople,
-                  organization: subscription.organization,
-                  price: subscription.price,
-                  status: subscription.status,
-                  subscriptionBrand: subscription.subscriptionBrand,
-                  subscriptionBrandname: subscription.subscriptionBrandName,
-                  subscriptionCategory: subscription.subscriptionCategory,
-                  subscriptionUrl: subscription.subscriptionUrl,
-                  otherSubscription: subscription.otherSubscription
-                };
-            }
-          })
           .sort((a, b) => {
             switch (sb) {
               case SORT_BY.DATE_DES:

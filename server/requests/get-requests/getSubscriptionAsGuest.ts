@@ -9,7 +9,6 @@ import {
   SLACK_HOOK,
   slackPostRequest
 } from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   MONGO_URL,
   MONGO_PREREQUISITIES,
@@ -59,18 +58,6 @@ export const getSubscriptionAsGuest = (
       .findOne(
         { _id: new ObjectId(subscriptionId) },
         (findErr, subscriptionFindRes) => {
-          if (subscriptionFindRes.organization) {
-            console.log(
-              "User does not belong in organization of selected subscription"
-            );
-            db.close();
-            postFailure(
-              postRes,
-              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
-            );
-            return;
-          }
-
           db.close();
           postSuccess(postRes, {
             subscriptionData: subscriptionFindRes
