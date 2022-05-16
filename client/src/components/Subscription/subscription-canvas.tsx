@@ -43,7 +43,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     listingType,
     subscriptionBrand,
     listingDescription,
-    firstName,
+    username,
     numberOfPeople,
     createdDate,
     price,
@@ -51,8 +51,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
     userId,
     otherSubscription,
     contactFb,
-    contactEmail,
-    organization
+    contactEmail
   } = subscriptionData;
 
   let name;
@@ -109,16 +108,8 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
       <div className="subscription-detail subscription-subscription-detail">
         Posted by{" "}
         <Link to={`profile?id=${userId}`}>
-          <span className="subscription-first-name">{firstName}</span>
+          <span className="subscription-first-name">{username}</span>
         </Link>
-      </div>
-      <div className="subscription-detail subscription-subscription-author-detail">
-        <span className="b">{organization ? organization.name : "Public"}</span>
-        <img
-          alt="Organization logo"
-          className="subscription-card-organization-logo"
-          src={organization ? organization.logo : "/icon.png"}
-        />
       </div>
       <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-date">
@@ -133,7 +124,7 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
               to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
             >
               <button className="subscription-message-button">
-                <span className="b subscription-message-label">{`Message ${firstName}`}</span>
+                <span className="b subscription-message-label">{`Message ${username}`}</span>
                 <img
                   alt="Posted date"
                   className="subscription-message-icon"

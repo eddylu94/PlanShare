@@ -31,7 +31,7 @@ export const createSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName, email } = findRes;
+      const { username, email } = findRes;
 
       const domain = getDomain(email);
       const organization = retrieveOrganizationByDomain(domain);
@@ -44,7 +44,7 @@ export const createSubscription = (
         case LISTING_TYPE.FOR_SALE:
           newSubscriptionData = {
             userId: findRes._id,
-            firstName,
+            username,
             organization,
             createdDate: new Date(),
             price: parseFloat(subscriptionData.price),
@@ -54,7 +54,7 @@ export const createSubscription = (
         case LISTING_TYPE.HOUSING:
           newSubscriptionData = {
             userId: findRes._id,
-            firstName,
+            username,
             organization,
             createdDate: new Date(),
             price: parseFloat(subscriptionData.price),
@@ -67,7 +67,7 @@ export const createSubscription = (
         default:
           newSubscriptionData = {
             userId: findRes._id,
-            firstName,
+            username,
             organization,
             createdDate: new Date(),
             numberOfPeople: parseInt(subscriptionData.numberOfPeople),

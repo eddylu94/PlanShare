@@ -10,7 +10,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface IProfileCanvasProps {
   selectedSubscription: string;
-  firstName: string;
+  username: string;
   organization: IOrganization;
   joinedDate: number;
   authoredSubscriptions: ISubscriptionData[];
@@ -33,7 +33,7 @@ interface IProfileCanvasProps {
 const ProfileCanvas = (props: IProfileCanvasProps) => {
   const {
     selectedSubscription,
-    firstName,
+    username,
     organization,
     joinedDate,
     authoredSubscriptions,
@@ -175,7 +175,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
                 src="/profile_picture_placeholder.png"
               />
               <div className="profile-name-and-joined-date">
-                <div className="profile-first-name">{firstName}</div>
+                <div className="profile-first-name">{username}</div>
               </div>
             </div>
             {isDifferentUser ? (
@@ -184,7 +184,7 @@ const ProfileCanvas = (props: IProfileCanvasProps) => {
                 <div className="profile-message-link-wrapper">
                   <Link to={`messages?id=${otherUserId}`}>
                     <button className="profile-message-button">
-                      {`Message ${firstName}`}
+                      {`Message ${username}`}
                       <img
                         alt="Posted date"
                         className="profile-message-icon"

@@ -40,13 +40,12 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     listingType,
     subscriptionBrand,
     listingDescription,
-    firstName,
+    username,
     createdDate,
     price,
     numberOfPeople,
     userId,
-    otherSubscription,
-    organization
+    otherSubscription
   } = subscription;
 
   const renderSubscriptionLogo = () => {
@@ -84,35 +83,15 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
               <>
                 <Link to={`profile?id=${userId}`} style={{ marginRight: 5 }}>
                   <span className="subscription-card-first-name">
-                    {firstName}
+                    {username}
                   </span>{" "}
                 </Link>
-                <>
-                  at{" "}
-                  <span className="b" style={{ marginLeft: 5 }}>
-                    {organization ? organization.name : "Public"}
-                  </span>
-                  <img
-                    alt="Organization logo"
-                    className="subscription-card-organization-logo"
-                    src={organization ? organization.logo : "/icon.png"}
-                  />
-                </>
               </>
             ) : (
               <>
                 <span className="b" style={{ marginRight: 5 }}>
-                  {firstName}
+                  {username}
                 </span>{" "}
-                at{" "}
-                <span className="b" style={{ marginLeft: 5 }}>
-                  {organization ? organization.name : "Public"}
-                </span>
-                <img
-                  alt="Organization logo"
-                  className="subscription-card-organization-logo"
-                  src={organization ? organization.logo : "/icon.png"}
-                />
               </>
             )}
           </div>

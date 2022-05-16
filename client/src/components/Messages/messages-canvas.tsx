@@ -14,7 +14,7 @@ interface IMessagesCanvasProps {
   conversationId: string | null;
   conversationsList: IConversationSummary[];
   currentUserId: string;
-  firstName: string;
+  username: string;
   userId: string;
   messages: IMessageData[];
   text: string;
@@ -31,7 +31,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     conversationId,
     conversationsList,
     currentUserId,
-    firstName,
+    username,
     userId,
     messages,
     text,
@@ -45,15 +45,15 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
     conversation: IConversationSummary,
     index: number
   ) => {
-    const { firstName, lastMessage } = conversation;
+    const { username, lastMessage } = conversation;
     const conversationSummaryConversationId = conversation.conversationId;
 
     let lastMessageComponent: any;
     if (lastMessage) {
-      const { date, message, firstName } = lastMessage;
+      const { date, message, username } = lastMessage;
       lastMessageComponent = (
         <>
-          <div className="message-summary-message">{`${firstName}: ${message}`}</div>
+          <div className="message-summary-message">{`${username}: ${message}`}</div>
           <div className="message-summary-date">
             {moment(date).format("lll")}
           </div>
@@ -89,7 +89,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
             className="conversation-header-profile-picture"
             src="/profile_picture_placeholder.png"
           />
-          <span className="conversation-header-first-name">{firstName}</span>
+          <span className="conversation-header-first-name">{username}</span>
         </div>
         {lastMessageComponent}
       </div>
@@ -127,7 +127,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
             <Conversation
               isConversationModalOpen={isConversationModalOpen}
               currentUserId={currentUserId}
-              firstName={firstName}
+              username={username}
               userId={userId}
               messages={messages}
               text={text}
@@ -144,7 +144,7 @@ const MessagesCanvas = (props: IMessagesCanvasProps) => {
         {deviceMode !== DEVICE_MODE.MOBILE ? (
           <Conversation
             currentUserId={currentUserId}
-            firstName={firstName}
+            username={username}
             userId={userId}
             messages={messages}
             text={text}

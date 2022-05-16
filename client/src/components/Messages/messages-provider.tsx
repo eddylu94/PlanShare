@@ -47,7 +47,7 @@ const MessagesProviderWithContext = (props: {
 
   const [isConversationModalOpen, setIsConversationModalOpen] = useState(false);
 
-  const [firstName, setFirstName] = useState("");
+  const [username, setUsername] = useState("");
   const [messages, setMessages] = useState([] as IMessageData[]);
   const [text, setText] = useState("");
 
@@ -150,7 +150,7 @@ const MessagesProviderWithContext = (props: {
       log(conversation);
       setConversationId(conversation.conversationId);
       setInitialConversationId(conversation.conversationId);
-      setFirstName(conversation.firstName);
+      setUsername(conversation.username);
       setOtherUserId(conversation.userId);
       setMessages(conversation.messages);
 
@@ -188,7 +188,7 @@ const MessagesProviderWithContext = (props: {
 
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
-      setFirstName(conversation.firstName);
+      setUsername(conversation.username);
       setOtherUserId(conversation.userId);
     }
   };
@@ -343,7 +343,7 @@ const MessagesProviderWithContext = (props: {
       conversationId={conversationId}
       conversationsList={conversationsList}
       currentUserId={currentUserId}
-      firstName={firstName}
+      username={username}
       userId={otherUserId as string}
       messages={messages}
       text={text}

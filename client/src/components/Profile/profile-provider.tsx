@@ -25,7 +25,7 @@ const ProfileProviderWithContext = (props: {
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
 
-  const [firstName, setFirstName] = useState("");
+  const [username, setUsername] = useState("");
   const [organization, setOrganization] = useState({} as IOrganization);
   const [joinedDate, setJoinedDate] = useState(-1);
 
@@ -64,7 +64,7 @@ const ProfileProviderWithContext = (props: {
     if (profileData) {
       log(profileData);
 
-      setFirstName(profileData.firstName);
+      setUsername(profileData.username);
       setOrganization(profileData.organization);
       setJoinedDate(profileData.joinedDate);
       setIsRetrievedProfileDirty(true);
@@ -224,7 +224,7 @@ const ProfileProviderWithContext = (props: {
       archivedSubscriptions={archivedSubscriptions}
       archiveSubscription={archiveSubscription}
       deleteSubscription={deleteSubscription}
-      firstName={firstName}
+      username={username}
       organization={organization}
       joinedDate={joinedDate}
       authoredSubscriptions={authoredSubscriptions}

@@ -13,8 +13,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 interface ISignUpCanvasProps {
   handleInputChange: (event: React.ChangeEvent<any>) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  firstName: string;
-  isFirstNameValid: boolean;
+  email: string;
+  isEmailValid: boolean;
   username: string;
   isUsernameValid: boolean;
   pass1: string;
@@ -36,8 +36,8 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   const {
     handleInputChange,
     handleSubmit,
-    firstName,
-    isFirstNameValid,
+    email,
+    isEmailValid,
     username,
     isUsernameValid,
     pass1,
@@ -67,9 +67,6 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
       case "email":
         tooltip =
           "To verify your current company; your email address will not be shown to anyone but yourself";
-        break;
-      case "pass1":
-        tooltip = "Do not use your password for work";
         break;
       default:
         break;
@@ -195,14 +192,6 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
                 listing of interest, you can message the listing author and
                 discuss how you want to complete the transaction.
               </div>
-
-              <br />
-
-              <div>
-                Users can either post and browse publicly or privately with
-                colleagues from{" "}
-                <Link to="/organizations">these organizations</Link>.
-              </div>
             </div>
           </div>
           {deviceMode === DEVICE_MODE.DESKTOP ||
@@ -220,18 +209,18 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
             ) : null}
             <h2 className="signup-form-header">Sign Up</h2>
             {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.FIRST_NAME,
-              "text",
-              "First name",
-              firstName,
-              isFirstNameValid
-            )}
-            {renderTextInputWithValidation(
               FORM_INPUT_TYPE.USERNAME,
               "username",
               "Username",
               username,
               isUsernameValid
+            )}
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.EMAIL,
+              "email",
+              "Email address",
+              email,
+              isEmailValid
             )}
             {renderTextInputWithValidation(
               FORM_INPUT_TYPE.PASS1,

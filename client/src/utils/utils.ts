@@ -57,7 +57,7 @@ export interface ISubscriptionData {
   numberOfPeople: number;
   price: number;
   userId: string;
-  firstName: string;
+  username: string;
   organization: IOrganization;
   createdDate: string;
   subscriptionUrl?: string;
@@ -70,19 +70,19 @@ export interface IMessageData {
   userId: string;
   date: Date;
   message: string;
-  firstName: string;
+  username: string;
 }
 
 export interface IConversationData {
   conversationId: string;
-  firstName: string;
+  username: string;
   userId: string;
   messages: IMessageData[];
 }
 
 export interface IConversationSummary {
   conversationId: string;
-  firstName: string;
+  username: string;
   userId: string;
   lastMessage: IMessageData;
 }

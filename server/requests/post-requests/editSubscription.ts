@@ -18,14 +18,14 @@ export const editSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName } = findRes;
+      const { username } = findRes;
 
       const { subscriptionData } = obj;
 
       const { subscriptionId } = subscriptionData;
 
       Object.assign(subscriptionData, {
-        firstName,
+        username,
         editedDate: new Date(),
         numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),

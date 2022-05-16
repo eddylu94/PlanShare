@@ -74,7 +74,7 @@ export const getConversationById = (
                     postSuccess(postRes, {
                       conversation: {
                         conversationId: findConversationRes._id,
-                        firstName: findOtherUserRes.firstName.toString(),
+                        username: findOtherUserRes.username.toString(),
                         userId: findOtherUserRes._id.toString(),
                         messages: findConversationRes.messages
                       }

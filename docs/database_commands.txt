@@ -11,7 +11,7 @@ db.createCollection("Conversations");
 
 // CREATE USERS
 db.Users.insertOne({
-	firstName: 'eddy',
+	username: 'eddy',
 	email: 'eddy',
 	pass: 'eddy'
 });

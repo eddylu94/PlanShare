@@ -26,11 +26,8 @@ const SignUpProviderWithContext = (props: {
     history.push("/search");
   }
 
-  const [firstName, setFirstName] = useState("");
-  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
-
-  // const [email, setEmail] = useState("");
-  // const [isEmailValid, setIsEmailValid] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
   const [username, setUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(false);
@@ -57,9 +54,9 @@ const SignUpProviderWithContext = (props: {
     const name = target.name;
 
     switch (name) {
-      case FORM_INPUT_TYPE.FIRST_NAME:
-        setFirstName(value);
-        setIsFirstNameValid(validateFirstName(value));
+      case FORM_INPUT_TYPE.EMAIL:
+        setEmail(value);
+        setIsEmailValid(validateEmail(value));
         break;
       case FORM_INPUT_TYPE.USERNAME:
         setUsername(value);
@@ -82,9 +79,10 @@ const SignUpProviderWithContext = (props: {
     }
   };
 
-  const validateFirstName = (firstName: string) => {
-    const re = /^[a-zA-Z ]+$/;
-    return re.test(firstName) && !!firstName.trim();
+  const validateEmail = (email: string) => {
+    // const re = /^[a-zA-Z ]+$/;
+    return !!email.trim() && email.length > 0 && email.length < 30;
+    // return re.test(firstName) && !!email.trim();
   };
 
   const validateUsername = (username: string) => {
@@ -96,7 +94,7 @@ const SignUpProviderWithContext = (props: {
     !!pass2 && pass1 === pass2;
 
   const isFormDisabled = !(
-    isFirstNameValid &&
+    isEmailValid &&
     isUsernameValid &&
     isPass1Valid &&
     isPass2Valid &&
@@ -127,9 +125,9 @@ const SignUpProviderWithContext = (props: {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
-        localStorage.setItem("firstName", newUserData.firstName);
+        localStorage.setItem("username", newUserData.username);
 
-        history.push("/email");
+        history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
@@ -163,7 +161,7 @@ const SignUpProviderWithContext = (props: {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       const postRequestData = {
-        firstName,
+        email,
         username: username.toLocaleLowerCase(),
         pass: pass1
       };
@@ -190,8 +188,8 @@ const SignUpProviderWithContext = (props: {
     <SignUpCanvas
       handleInputChange={handleInputChange}
       handleSubmit={handleSubmit}
-      firstName={firstName}
-      isFirstNameValid={isFirstNameValid}
+      email={email}
+      isEmailValid={isEmailValid}
       username={username}
       isUsernameValid={isUsernameValid}
       pass1={pass1}

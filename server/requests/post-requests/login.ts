@@ -138,7 +138,7 @@ export const login = (
               });
           } else if (isPasswordMatch === true) {
             const userId = findRes._id;
-            const { firstName } = findRes;
+            const { username } = findRes;
 
             const authToken = generateAuthToken();
 
@@ -154,7 +154,7 @@ export const login = (
                 postSuccess(postRes, {
                   userId: userId.toString(),
                   auth: authToken.key,
-                  firstName
+                  username
                 });
               });
           }

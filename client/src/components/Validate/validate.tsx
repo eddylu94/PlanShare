@@ -40,9 +40,7 @@ const ValidateWithContext = (props: {
 
   const retrieveValidationEmailResponseHandler = (data: any) => {
     const email = data.body.email;
-    if (!email) {
-      history.push("/email");
-    } else {
+    if (email) {
       setValidationEmail(email);
     }
   };

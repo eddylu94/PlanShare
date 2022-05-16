@@ -18,7 +18,6 @@ import "./components/Search/search.css";
 import "./components/Settings/settings.css";
 import "./components/SignUp/sign-up.css";
 import "./components/Subscription/subscription.css";
-import "./components/Validate/email.css";
 import "./components/Validate/validate.css";
 import "./components/TermsOfUse/terms-of-use.css";
 
@@ -26,7 +25,6 @@ import NavBar from "./components/NavBar/nav-bar";
 import SignUp from "./components/SignUp/sign-up-provider";
 import Privacy from "./components/Privacy/privacy";
 import Validate from "./components/Validate/validate";
-import Email from "./components/Validate/email";
 import Search from "./components/Search/search-provider";
 import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-chooser-provider";
 import CreateListing from "./components/CreateListing/create-listing-provider";
@@ -82,9 +80,6 @@ const App = () => (
             </Route>
             <Route path="/validate">
               <Validate />
-            </Route>
-            <Route path="/email">
-              <Email />
             </Route>
             <Route path="/profile">
               <Profile />

@@ -1,5 +1,4 @@
 export const FORM_INPUT_TYPE = {
-  FIRST_NAME: "firstName",
   USERNAME: "username",
   EMAIL: "email",
   PASS1: "pass1",

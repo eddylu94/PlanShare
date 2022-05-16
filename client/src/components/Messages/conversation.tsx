@@ -7,7 +7,7 @@ import Scrollbars from "react-custom-scrollbars";
 
 interface IConversationCanvasProps {
   currentUserId: string;
-  firstName: string;
+  username: string;
   userId: string;
   messages: IMessageData[];
   text: string;
@@ -21,7 +21,7 @@ interface IConversationCanvasProps {
 const ConversationCanvas = (props: IConversationCanvasProps) => {
   const {
     currentUserId,
-    firstName,
+    username,
     userId,
     messages,
     text,
@@ -100,7 +100,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           src="/profile_picture_placeholder.png"
         />
         <Link to={`profile?id=${userId}`}>
-          <span className="conversation-header-first-name">{firstName}</span>
+          <span className="conversation-header-first-name">{username}</span>
         </Link>
       </div>
       <Scrollbars
