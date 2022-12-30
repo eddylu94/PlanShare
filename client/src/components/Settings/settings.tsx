@@ -100,10 +100,6 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const changeSettingEmailNotificationsErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const changeSettingEmailNotifications = (newSetting: string) => {
     const postRequestData = {
       settingEmailNotifications: newSetting
@@ -113,7 +109,7 @@ const SettingsProviderWithContext = (props: {
       "changesettingemailnotifications",
       postRequestData,
       changeSettingEmailNotificationsResponseHandler,
-      changeSettingEmailNotificationsErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -142,10 +138,6 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const deleteUserErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const deleteUser = () => {
     const postRequestData = {
       userId: _userData.user?.userId as string,
@@ -157,7 +149,7 @@ const SettingsProviderWithContext = (props: {
       "deleteuser",
       postRequestData,
       deleteUserResponseHandler,
-      deleteUserErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -183,10 +175,6 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const changePassErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const changePass = () => {
     const postRequestData = {
       currPass: changePassCurrent,
@@ -198,7 +186,7 @@ const SettingsProviderWithContext = (props: {
       "changepass",
       postRequestData,
       changePassResponseHandler,
-      changePassErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -217,16 +205,12 @@ const SettingsProviderWithContext = (props: {
     setIsRetrievedProfileDirty(true);
   };
 
-  const retrieveEmailErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveEmail = () => {
     baseGetRequest(
       "getemailaddress",
       [],
       retrieveEmailResponseHandler,
-      retrieveEmailErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -246,16 +230,12 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const retrieveSettingEmailNotificationsErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSettingEmailNotifications = () => {
     baseGetRequest(
       "getsettingemailnotifications",
       [],
       retrieveSettingEmailNotificationsResponseHandler,
-      retrieveSettingEmailNotificationsErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

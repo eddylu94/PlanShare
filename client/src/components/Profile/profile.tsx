@@ -79,10 +79,6 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const retrieveProfileErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveProfile = () => {
     const query = [] as any[];
     if (profileUserId) {
@@ -93,7 +89,7 @@ const ProfileProviderWithContext = (props: {
       "getprofile",
       query,
       retrieveProfileResponseHandler,
-      retrieveProfileErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -106,20 +102,12 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const retrieveSubscriptionsByUserErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveArchivedSubscriptionsResponseHandler = (data: any) => {
     const newArchivedSubscriptions = data?.body?.subscriptions;
     if (newArchivedSubscriptions) {
       log(newArchivedSubscriptions);
       setArchivedSubscriptions(newArchivedSubscriptions);
     }
-  };
-
-  const retrieveArchivedSubscriptionsErrorHandler = (error: any) => {
-    log(error);
   };
 
   const retrieveSubscriptionsByUser = () => {
@@ -132,7 +120,7 @@ const ProfileProviderWithContext = (props: {
       "getsubscriptionsbyauthor",
       query,
       retrieveSubscriptionsByUserResponseHandler,
-      retrieveSubscriptionsByUserErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -148,10 +136,6 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const handleArchiveSubscriptionErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const archiveSubscription = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
@@ -163,7 +147,7 @@ const ProfileProviderWithContext = (props: {
       "archivesubscription",
       postRequestData,
       handleArchiveSubscriptionResponseHandler,
-      handleArchiveSubscriptionErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -177,10 +161,6 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const handleDeleteSubscriptionErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const deleteSubscription = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     id: string
@@ -192,7 +172,7 @@ const ProfileProviderWithContext = (props: {
       "deletesubscription",
       postRequestData,
       handleDeleteSubscriptionResponseHandler,
-      handleDeleteSubscriptionErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -202,7 +182,7 @@ const ProfileProviderWithContext = (props: {
       "getarchivedsubscriptions",
       [],
       retrieveArchivedSubscriptionsResponseHandler,
-      retrieveArchivedSubscriptionsErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

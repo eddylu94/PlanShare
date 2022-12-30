@@ -53,16 +53,12 @@ const ListingTypeChooserProviderWithContext = (props: {
     }
   };
 
-  const retrieveListingTypesErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveListingTypes = () => {
     baseGetRequest(
       "getlistingtypes",
       [],
       retrieveListingTypesResponseHandler,
-      retrieveListingTypesErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

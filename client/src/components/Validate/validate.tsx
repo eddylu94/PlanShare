@@ -47,16 +47,12 @@ const ValidateWithContext = (props: {
     }
   };
 
-  const retrieveValidationEmailErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveValidationEmail = () => {
     baseGetRequest(
       "getvalidationemail",
       [],
       retrieveValidationEmailResponseHandler,
-      retrieveValidationEmailErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -97,10 +93,6 @@ const ValidateWithContext = (props: {
     }
   };
 
-  const handleSubmitErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -113,7 +105,7 @@ const ValidateWithContext = (props: {
         "verifyemail",
         postRequestData,
         handleSubmitResponseHandler,
-        handleSubmitErrorHandler,
+        log,
         _userData.user?.auth
       );
     }
@@ -125,16 +117,12 @@ const ValidateWithContext = (props: {
     }
   };
 
-  const resendCodeErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const resendCode = () => {
     basePostRequest(
       "resendconfirmationcode",
       [],
       resendCodeResponseHandler,
-      resendCodeErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

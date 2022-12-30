@@ -96,16 +96,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const retrieveSubscriptionsErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscriptions = (query?: { [key: string]: any }[]) => {
     baseGetRequest(
       _userData.user?.userId ? "getsubscriptions" : "getsubscriptionsasguest",
       query ?? [],
       retrieveSubscriptionsResponseHandler,
-      retrieveSubscriptionsErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -192,16 +188,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscriptionCategories = () => {
     baseGetRequest(
       "getsubscriptioncategories",
       [],
       retrieveSubscriptionCategoriesResponseHandler,
-      retrieveSubscriptionCategoriesErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -218,16 +210,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const retrieveListingTypesErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveListingTypes = () => {
     baseGetRequest(
       "getlistingtypes",
       [],
       retrieveListingTypesResponseHandler,
-      retrieveListingTypesErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -239,16 +227,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const retrieveOrganizationErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveOrganization = () => {
     baseGetRequest(
       "getorganization",
       [],
       retrieveOrganizationResponseHandler,
-      retrieveOrganizationErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

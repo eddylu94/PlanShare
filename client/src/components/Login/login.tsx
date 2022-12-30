@@ -95,10 +95,6 @@ const LoginProviderWithContext = (props: {
     }
   };
 
-  const handleSubmitErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       const postRequestData = {
@@ -109,7 +105,7 @@ const LoginProviderWithContext = (props: {
         "login",
         postRequestData,
         handleSubmitResponseHandler,
-        handleSubmitErrorHandler
+        log
       );
     }
 

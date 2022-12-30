@@ -166,10 +166,6 @@ const MessagesProviderWithContext = (props: {
     }
   };
 
-  const retrieveConversationErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveConversation = () => {
     if (!otherUserId && !_firstConversationRetrieval) {
       retrieveConversationsList();
@@ -179,7 +175,7 @@ const MessagesProviderWithContext = (props: {
         "getconversation",
         [{ userId: otherUserId }],
         retrieveConversationResponseHandler,
-        retrieveConversationErrorHandler,
+        log,
         _userData.user?.auth
       );
     }
@@ -244,10 +240,6 @@ const MessagesProviderWithContext = (props: {
     }
   };
 
-  const handleSubmitErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
@@ -273,7 +265,7 @@ const MessagesProviderWithContext = (props: {
       "sendmessage",
       postRequestData,
       handleSubmitResponseHandler,
-      handleSubmitErrorHandler,
+      log,
       _userData.user?.auth
     );
 

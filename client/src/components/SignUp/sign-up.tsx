@@ -164,10 +164,6 @@ const SignUpProviderWithContext = (props: {
     }
   };
 
-  const handleSubmitErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       const postRequestData = {
@@ -179,7 +175,7 @@ const SignUpProviderWithContext = (props: {
         "signup",
         postRequestData,
         handleSubmitResponseHandler,
-        handleSubmitErrorHandler
+        log
       );
     }
 

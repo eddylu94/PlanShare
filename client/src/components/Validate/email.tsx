@@ -112,10 +112,6 @@ const EmailProviderWithContext = (props: {
     }
   };
 
-  const handleSubmitErrorHandler = (err: any) => {
-    log(err);
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -131,7 +127,7 @@ const EmailProviderWithContext = (props: {
         "addemail",
         postRequestData,
         handleSubmitResponseHandler,
-        handleSubmitErrorHandler,
+        log,
         _userData.user?.auth
       );
     }

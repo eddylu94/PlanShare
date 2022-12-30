@@ -27,16 +27,12 @@ const SubscriptionProviderWithContext = (props: {
     }
   };
 
-  const retrieveSubscriptionErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscription = () => {
     baseGetRequest(
       _userData.user?.auth ? "getsubscription" : "getsubscriptionasguest",
       [{ subscriptionId }],
       retrieveSubscriptionResponseHandler,
-      retrieveSubscriptionErrorHandler,
+      log,
       _userData.user?.auth
     );
   };

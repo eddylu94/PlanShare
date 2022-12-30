@@ -104,16 +104,12 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const retrieveSubscriptionErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscription = () => {
     baseGetRequest(
       "getsubscription",
       [{ subscriptionId }],
       retrieveSubscriptionResponseHandler,
-      retrieveSubscriptionErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -253,16 +249,12 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const retrieveSubscriptionCategoriesErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscriptionCategories = () => {
     baseGetRequest(
       "getsubscriptioncategories",
       [],
       retrieveSubscriptionCategoriesResponseHandler,
-      retrieveSubscriptionCategoriesErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -287,16 +279,12 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const retrieveSubscriptionBrandsErrorHandler = (error: any) => {
-    log(error);
-  };
-
   const retrieveSubscriptionBrands = (selection: string) => {
     baseGetRequest(
       "getsubscriptionbrands",
       [{ subscriptionCategory: selection }],
       retrieveSubscriptionBrandsResponseHandler,
-      retrieveSubscriptionBrandsErrorHandler,
+      log,
       _userData.user?.auth
     );
   };
@@ -320,10 +308,6 @@ const CreateListingProviderWithContext = (props: {
 
       history.push("/search");
     }
-  };
-
-  const handleSubmitErrorHandler = (err: any) => {
-    log(err);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -389,7 +373,7 @@ const CreateListingProviderWithContext = (props: {
           "editsubscription",
           postRequestData,
           handleSubmitResponseHandler,
-          handleSubmitErrorHandler,
+          log,
           _userData.user?.auth
         );
       } else {
@@ -397,7 +381,7 @@ const CreateListingProviderWithContext = (props: {
           "createsubscription",
           postRequestData,
           handleSubmitResponseHandler,
-          handleSubmitErrorHandler,
+          log,
           _userData.user?.auth
         );
       }
