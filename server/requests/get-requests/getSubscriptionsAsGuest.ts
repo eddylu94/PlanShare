@@ -196,6 +196,7 @@ export const getSubscriptionsAsGuest = (
               case LISTING_TYPE.FOR_SALE:
                 return {
                   listingType: subscription.listingType,
+                  listingDescription: subscription.listingDescription,
                   createdDate: subscription.createdDate,
                   firstName: subscription.firstName,
                   organization: subscription.organization,
@@ -207,6 +208,7 @@ export const getSubscriptionsAsGuest = (
               default:
                 return {
                   listingType: subscription.listingType,
+                  listingDescription: subscription.listingDescription,
                   createdDate: subscription.createdDate,
                   firstName: subscription.firstName,
                   numberOfPeople: subscription.numberOfPeople,
