@@ -73,7 +73,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
 
-  const [filtersDaysActive, setFiltersDaysActive] = useState(730);
+  const [filtersDaysActive, setFiltersDaysActive] = useState(3 * 365);
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
 
