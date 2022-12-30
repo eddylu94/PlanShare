@@ -197,7 +197,7 @@ export const getSubscriptionsAsGuest = (
                 return {
                   listingType: subscription.listingType,
                   createdDate: subscription.createdDate,
-                  firstName: subscription.firstName.substring(0, 1),
+                  firstName: subscription.firstName,
                   organization: subscription.organization,
                   price: subscription.price,
                   status: subscription.status,
@@ -208,7 +208,7 @@ export const getSubscriptionsAsGuest = (
                 return {
                   listingType: subscription.listingType,
                   createdDate: subscription.createdDate,
-                  firstName: subscription.firstName.substring(0, 1),
+                  firstName: subscription.firstName,
                   numberOfPeople: subscription.numberOfPeople,
                   organization: subscription.organization,
                   price: subscription.price,
