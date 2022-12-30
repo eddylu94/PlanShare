@@ -30,7 +30,7 @@ import Email from "./components/Validate/email";
 import Search from "./components/Search/search-provider";
 import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-chooser";
 import CreateListing from "./components/CreateListing/create-listing";
-import Login from "./components/Login/login-provider";
+import Login from "./components/Login/login";
 import Profile from "./components/Profile/profile-provider";
 import Settings from "./components/Settings/settings-provider";
 import Messages from "./components/Messages/messages-provider";

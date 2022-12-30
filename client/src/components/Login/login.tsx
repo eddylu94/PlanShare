@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import LoginCanvas from "./login-canvas";
 import { FORM_INPUT_TYPE } from "./login-utils";
-import { basePostRequest } from "./../../base-requests";
-import { log, IResponse } from "./../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
+import { basePostRequest } from "../../base-requests";
+import { log, IResponse } from "../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE, TITLE } from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { Link } from "react-router-dom";
 
 const LoginProviderWithContext = (props: {
   userData: IUserContext;
@@ -116,14 +116,74 @@ const LoginProviderWithContext = (props: {
     event.preventDefault();
   };
 
+  const renderTextInputWithValidation = (
+    name: string,
+    type: string,
+    placeholder: string,
+    value: string
+  ) => (
+    <div
+      key={"form-input-with-validation-" + name}
+      className="form-text-input-with-validation"
+    >
+      <input
+        key={"form-input-" + name}
+        className={"form-text-input"}
+        name={name}
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={handleInputChange}
+      />
+    </div>
+  );
+
   return (
-    <LoginCanvas
-      handleInputChange={handleInputChange}
-      handleSubmit={handleSubmit}
-      username={username}
-      pass={pass}
-      isFormDisabled={isFormDisabled}
-    />
+    <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
+      <div className="login-container">
+        <form className="login-form-container" onSubmit={handleSubmit}>
+          <div className="intro-logo-and-title" style={{ marginBottom: 20 }}>
+            <img
+              alt={TITLE}
+              className="intro-icon"
+              src={"./icon_transparent.png"}
+            />
+            <span className="intro-title">{TITLE}</span>
+          </div>
+          <div
+            className="subscription-icons-container"
+            style={{ marginBottom: 20 }}
+          >
+            <img
+              alt="Subscriptions"
+              className="subscription-icons"
+              src={"./subscription_icons.png"}
+            />
+          </div>
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.USERNAME,
+            "username",
+            "Username",
+            username
+          )}
+          {renderTextInputWithValidation(
+            FORM_INPUT_TYPE.PASS,
+            "password",
+            "Password",
+            pass
+          )}
+          <input
+            className="form-submit-button"
+            type="submit"
+            value="Submit"
+            disabled={isFormDisabled}
+          />
+          <Link className="signup-toggle" to="/signup">
+            Need to create an account? Sign up here
+          </Link>
+        </form>
+      </div>
+    </div>
   );
 };
 
