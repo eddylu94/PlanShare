@@ -8,12 +8,6 @@ export const DATABASE_COLLECTION = {
   CONVERSATIONS_COLLECTION: "Conversations"
 };
 
-export const LISTING_TYPE = {
-  ALL: "ALL",
-  SUBSCRIPTION: "SUBSCRIPTION",
-  FOR_SALE: "FOR_SALE"
-};
-
 // Status codes
 export const STATUS_CODE = {
   SUCCESS: 1,

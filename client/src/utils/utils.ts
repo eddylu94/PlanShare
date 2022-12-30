@@ -25,13 +25,6 @@ export interface IOrganization {
   logo: string;
 }
 
-export interface IListingType {
-  type: string;
-  name: string;
-  icon: string;
-  isSelected: boolean;
-}
-
 export interface IFiltersOrganization {
   organizationId: string;
   name: string;
@@ -52,7 +45,6 @@ export interface ISubscription {
 
 export interface ISubscriptionData {
   _id: string;
-  listingType: string;
   subscriptionTypeSelection: string;
   subscriptionBrand: ISubscription;
   listingTitle: string;

@@ -22,15 +22,11 @@ import { useDeviceMode } from "../../utils/utils";
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
-    listingTypes,
-    isSubscriptionsType,
-    // isForSaleType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     // filtersDaysActive,
-    toggleListingType,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,
@@ -39,38 +35,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   } = props;
 
   const deviceMode = useDeviceMode();
-
-  const listingTypeCheckboxes = listingTypes.map((listingType, index) => {
-    return (
-      <FormControlLabel
-        key={"filters-category-" + index}
-        style={{ color: "#000000" }}
-        control={
-          <Checkbox
-            checked={listingType.isSelected}
-            // TODO: Remove lambda expression
-            onChange={e => toggleListingType(e, listingType.type)}
-            name={listingType.name}
-            style={{
-              padding: 0,
-              margin: "5px 5px 5px 20px",
-              color: "#6C5DBD"
-            }}
-          />
-        }
-        label={
-          <div className="flex-horizontal-centered">
-            <img
-              alt="Subscriptions"
-              className="search-filters-listing-type-icon"
-              src={listingType.icon}
-            />
-            <Typography style={{ fontSize: 15 }}>{listingType.name}</Typography>
-          </div>
-        }
-      />
-    );
-  });
 
   const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
     (category, index) => {
@@ -168,59 +132,47 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     <Scrollbars autoHide style={scrollBarsStyle}>
       <div className={filterPaneClassName} style={{ boxShadow: "none" }}>
         <FormControl component="fieldset" style={{ flexShrink: 0 }}>
-          <FiltersFormLabel label={"Listing Type"} />
-          <FormGroup>{listingTypeCheckboxes}</FormGroup>
+          <FiltersFormLabel label={"Subscription Category"} />
+          <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
         </FormControl>
 
-        {isSubscriptionsType ? (
-          <>
-            <FormControl
-              component="fieldset"
-              style={{ flexShrink: 0, marginTop: 20 }}
-            >
-              <FiltersFormLabel label={"Subscription Category"} />
-              <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
-            </FormControl>
+        <FormControl
+          component="fieldset"
+          style={{ flexShrink: 0, marginTop: 20 }}
+        >
+          <FiltersFormLabel label={"Subscription Price"} />
+          <Slider
+            style={sliderStyles}
+            getAriaValueText={valuetext}
+            aria-labelledby="range-slider"
+            step={1}
+            valueLabelDisplay="auto"
+            value={filtersPrice}
+            onChange={handlePriceChange}
+            marks={createMarks([0, 100], true)}
+            min={0}
+            max={100}
+          />
+        </FormControl>
 
-            <FormControl
-              component="fieldset"
-              style={{ flexShrink: 0, marginTop: 20 }}
-            >
-              <FiltersFormLabel label={"Subscription Price"} />
-              <Slider
-                style={sliderStyles}
-                getAriaValueText={valuetext}
-                aria-labelledby="range-slider"
-                step={1}
-                valueLabelDisplay="auto"
-                value={filtersPrice}
-                onChange={handlePriceChange}
-                marks={createMarks([0, 100], true)}
-                min={0}
-                max={100}
-              />
-            </FormControl>
-
-            <FormControl
-              component="fieldset"
-              style={{ flexShrink: 0, marginTop: 20 }}
-            >
-              <FiltersFormLabel label={"Subscription Group Size"} />
-              <Slider
-                style={sliderStyles}
-                getAriaValueText={valuetext}
-                aria-labelledby="range-slider"
-                step={1}
-                valueLabelDisplay="auto"
-                value={filtersGroupSize}
-                onChange={handleGroupSizeChange}
-                marks={createMarks([1, 50])}
-                min={1}
-                max={50}
-              />
-            </FormControl>
-          </>
-        ) : null}
+        <FormControl
+          component="fieldset"
+          style={{ flexShrink: 0, marginTop: 20 }}
+        >
+          <FiltersFormLabel label={"Subscription Group Size"} />
+          <Slider
+            style={sliderStyles}
+            getAriaValueText={valuetext}
+            aria-labelledby="range-slider"
+            step={1}
+            valueLabelDisplay="auto"
+            value={filtersGroupSize}
+            onChange={handleGroupSizeChange}
+            marks={createMarks([1, 50])}
+            min={1}
+            max={50}
+          />
+        </FormControl>
 
         {/* <FormControl
           component="fieldset"

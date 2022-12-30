@@ -14,8 +14,7 @@ import {
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
   SORT_BY,
-  SUBSCRIPTION_STATUS,
-  LISTING_TYPE
+  SUBSCRIPTION_STATUS
 } from "./../../constants";
 
 export const getSubscriptionsAsGuest = (
@@ -42,16 +41,7 @@ export const getSubscriptionsAsGuest = (
       return;
     }
 
-    const {
-      isSubscriptionsType,
-      isForSaleType,
-      t,
-      sc,
-      gs,
-      sb,
-      da,
-      p
-    } = postReq.query;
+    const { t, sc, gs, sb, da, p } = postReq.query;
 
     const subscriptionCategories = sc.split(",");
 
@@ -70,108 +60,57 @@ export const getSubscriptionsAsGuest = (
       new Date().setDate(new Date().getDate() - parseInt(da) - 1)
     );
 
-    const promises = [];
+    const promises = [] as any[];
 
-    if (isForSaleType === "true") {
-      let sort: any;
-      switch (sb) {
-        case SORT_BY.DATE_DES:
-          sort = { createdDate: -1 };
-          break;
-        case SORT_BY.DATE_ASC:
-          sort = { createdDate: 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-          sort = { listingTitle: 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_DES:
-          sort = { listingTitle: -1 };
-          break;
-        default:
-          sort = { createdDate: -1 };
-          break;
-      }
-
-      const findQuery = {
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice
-        },
-        createdDate: {
-          $lte: new Date(currentDate),
-          $gte: new Date(oldestDate)
-        },
-        listingType: LISTING_TYPE.FOR_SALE,
-        status: SUBSCRIPTION_STATUS.ACTIVE
-      };
-
-      if (t.length) {
-        Object.assign(findQuery, {
-          $text: { $search: t }
-        });
-      }
-
-      const forSalePromise = dbo
-        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-        .find(findQuery)
-        .sort(sort)
-        .toArray();
-
-      promises.push(forSalePromise);
+    let sort: any;
+    switch (sb) {
+      case SORT_BY.DATE_DES:
+        sort = { createdDate: -1 };
+        break;
+      case SORT_BY.DATE_ASC:
+        sort = { createdDate: 1 };
+        break;
+      case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+        sort = { "subscriptionBrand.name": 1 };
+        break;
+      case SORT_BY.SUBSCRIPTION_BRAND_DES:
+        sort = { "subscriptionBrand.name": -1 };
+        break;
+      default:
+        sort = { createdDate: -1 };
+        break;
     }
 
-    if (isSubscriptionsType === "true") {
-      let sort: any;
-      switch (sb) {
-        case SORT_BY.DATE_DES:
-          sort = { createdDate: -1 };
-          break;
-        case SORT_BY.DATE_ASC:
-          sort = { createdDate: 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-          sort = { "subscriptionBrand.name": 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_DES:
-          sort = { "subscriptionBrand.name": -1 };
-          break;
-        default:
-          sort = { createdDate: -1 };
-          break;
-      }
+    const findQuery = {
+      "subscriptionBrand.type": { $in: subscriptionCategories },
+      numberOfPeople: {
+        $gte: minGroupSize,
+        $lte: maxGroupSize
+      },
+      price: {
+        $gte: minPrice,
+        $lte: maxPrice
+      },
+      createdDate: {
+        $lte: new Date(currentDate),
+        $gte: new Date(oldestDate)
+      },
+      status: SUBSCRIPTION_STATUS.ACTIVE
+    };
 
-      const findQuery = {
-        "subscriptionBrand.type": { $in: subscriptionCategories },
-        numberOfPeople: {
-          $gte: minGroupSize,
-          $lte: maxGroupSize
-        },
-        price: {
-          $gte: minPrice,
-          $lte: maxPrice
-        },
-        createdDate: {
-          $lte: new Date(currentDate),
-          $gte: new Date(oldestDate)
-        },
-        listingType: LISTING_TYPE.SUBSCRIPTION,
-        status: SUBSCRIPTION_STATUS.ACTIVE
-      };
-
-      if (t.length) {
-        Object.assign(findQuery, {
-          $text: { $search: t }
-        });
-      }
-
-      const subscriptionsPromise = dbo
-        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-        .find(findQuery)
-        .sort(sort)
-        .toArray();
-
-      promises.push(subscriptionsPromise);
+    if (t.length) {
+      Object.assign(findQuery, {
+        $text: { $search: t }
+      });
     }
+
+    const subscriptionsPromise = dbo
+      .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+      .find(findQuery)
+      .sort(sort)
+      .toArray();
+
+    promises.push(subscriptionsPromise);
 
     return Promise.all(promises)
       .then(results => {
@@ -192,38 +131,22 @@ export const getSubscriptionsAsGuest = (
               return subscription;
             }
 
-            switch (subscription.listingType) {
-              case LISTING_TYPE.FOR_SALE:
-                return {
-                  listingType: subscription.listingType,
-                  listingDescription: subscription.listingDescription,
-                  createdDate: subscription.createdDate,
-                  firstName: subscription.firstName,
-                  organization: subscription.organization,
-                  price: subscription.price,
-                  status: subscription.status,
-                  listingTitle: subscription.listingTitle
-                };
-              case LISTING_TYPE.SUBSCRIPTION:
-              default:
-                return {
-                  listingType: subscription.listingType,
-                  listingDescription: subscription.listingDescription,
-                  createdDate: subscription.createdDate,
-                  firstName: subscription.firstName,
-                  numberOfPeople: subscription.numberOfPeople,
-                  organization: subscription.organization,
-                  price: subscription.price,
-                  status: subscription.status,
-                  subscriptionBrand: subscription.subscriptionBrand,
-                  subscriptionBrandname: subscription.subscriptionBrandName,
-                  subscriptionCategory: subscription.subscriptionCategory,
-                  subscriptionUrl: subscription.subscriptionUrl,
-                  otherSubscription: subscription.otherSubscription
-                };
-            }
+            return {
+              listingDescription: subscription.listingDescription,
+              createdDate: subscription.createdDate,
+              firstName: subscription.firstName,
+              numberOfPeople: subscription.numberOfPeople,
+              organization: subscription.organization,
+              price: subscription.price,
+              status: subscription.status,
+              subscriptionBrand: subscription.subscriptionBrand,
+              subscriptionBrandname: subscription.subscriptionBrandName,
+              subscriptionCategory: subscription.subscriptionCategory,
+              subscriptionUrl: subscription.subscriptionUrl,
+              otherSubscription: subscription.otherSubscription
+            };
           })
-          .sort((a, b) => {
+          .sort((a: any, b: any) => {
             switch (sb) {
               case SORT_BY.DATE_DES:
                 return b.createdDate - a.createdDate;

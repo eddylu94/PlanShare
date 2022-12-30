@@ -4,16 +4,11 @@ import { History } from "history";
 
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { baseGetRequest } from "../../base-requests";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  LISTING_TYPE
-} from "../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import {
   log,
   IFiltersSubscriptionCategory,
   IOrganization,
-  IListingType,
   ISubscriptionData,
   useDeviceMode
 } from "../../utils/utils";
@@ -57,11 +52,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersText, setFiltersText] = useState("");
 
-  const [listingTypes, setListingTypes] = useState([] as IListingType[]);
-
-  const [isSubscriptionsType, setIsSubscriptionsType] = useState(true);
-  const [isForSaleType, setIsForSaleType] = useState(true);
-
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
@@ -103,18 +93,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       log,
       _userData.user?.auth
     );
-  };
-
-  const toggleListingType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    type: string
-  ) => {
-    const list = listingTypes.slice(0);
-    let listingType = listingTypes.find(
-      currentListingType => currentListingType.type === type
-    ) as IListingType;
-    Object.assign(listingType, { isSelected: !listingType.isSelected });
-    setListingTypes(list);
   };
 
   const toggleFiltersSubscriptionCategory = (
@@ -197,28 +175,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     );
   };
 
-  const retrieveListingTypesResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-
-      const types = body.listingTypes as IListingType[];
-      const typesData = types.map(listingType =>
-        Object.assign(listingType, { isSelected: true })
-      );
-      setListingTypes(typesData);
-    }
-  };
-
-  const retrieveListingTypes = () => {
-    baseGetRequest(
-      "getlistingtypes",
-      [],
-      retrieveListingTypesResponseHandler,
-      log,
-      _userData.user?.auth
-    );
-  };
-
   const retrieveOrganizationResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       console.log(data.body.organization);
@@ -250,8 +206,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
-        { isSubscriptionsType }, // Subscription type selected
-        { isForSaleType }, // For Sale type selected
         { t: filtersText },
         { sc }, // Subscription category
         { gs: filtersGroupSize }, // Group size
@@ -263,8 +217,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     // eslint-disable-next-line
   }, [
     _throttle,
-    isSubscriptionsType,
-    isForSaleType,
     filtersText,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -274,35 +226,18 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   ]);
 
   useEffect(() => {
-    const subscriptionsType = listingTypes.find(
-      listingType => listingType.type === LISTING_TYPE.SUBSCRIPTION
-    );
-    setIsSubscriptionsType(!!subscriptionsType?.isSelected);
-
-    const forSaleType = listingTypes.find(
-      listingType => listingType.type === LISTING_TYPE.FOR_SALE
-    );
-    setIsForSaleType(!!forSaleType?.isSelected);
-  }, [listingTypes]);
-
-  useEffect(() => {
     // retrieveSubscriptions();
-    retrieveListingTypes();
     retrieveSubscriptionCategories();
     retrieveOrganization();
     // eslint-disable-next-line
   }, []);
 
   const searchFilters = {
-    listingTypes,
-    isSubscriptionsType,
-    isForSaleType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
-    toggleListingType,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,

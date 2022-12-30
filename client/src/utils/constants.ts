@@ -1,12 +1,6 @@
 export const TITLE = "PlanShare";
 export const SLOGAN = "Split costs on subscriptions, group orders, and more!";
 
-export const LISTING_TYPE = {
-  ALL: "ALL",
-  SUBSCRIPTION: "SUBSCRIPTION",
-  FOR_SALE: "FOR_SALE"
-};
-
 // Status codes
 export const STATUS_CODE = {
   SUCCESS: 1,

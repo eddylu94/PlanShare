@@ -14,8 +14,7 @@ import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
-  SUBSCRIPTION_STATUS,
-  LISTING_TYPE
+  SUBSCRIPTION_STATUS
 } from "./../../constants";
 
 export const createSubscription = (
@@ -38,33 +37,16 @@ export const createSubscription = (
 
       const { subscriptionData } = obj;
 
-      let newSubscriptionData;
-
-      switch (subscriptionData.listingType) {
-        case LISTING_TYPE.FOR_SALE:
-          newSubscriptionData = {
-            userId: findRes._id,
-            firstName,
-            organization,
-            createdDate: new Date(),
-            price: parseFloat(subscriptionData.price),
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
-          break;
-        case LISTING_TYPE.SUBSCRIPTION:
-        default:
-          newSubscriptionData = {
-            userId: findRes._id,
-            firstName,
-            organization,
-            createdDate: new Date(),
-            numberOfPeople: parseInt(subscriptionData.numberOfPeople),
-            price: parseFloat(subscriptionData.price),
-            subscriptionBrandName: subscriptionData.subscriptionBrand.name,
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
-          break;
-      }
+      const newSubscriptionData = {
+        userId: findRes._id,
+        firstName,
+        organization,
+        createdDate: new Date(),
+        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
+        price: parseFloat(subscriptionData.price),
+        subscriptionBrandName: subscriptionData.subscriptionBrand.name,
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      };
 
       Object.assign(subscriptionData, newSubscriptionData);
 

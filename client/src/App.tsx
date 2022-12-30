@@ -10,7 +10,6 @@ import "./components/CreateListing/create-listing.css";
 import "./components/Feedback/feedback.css";
 import "./components/Info/info.css";
 import "./components/Login/login.css";
-import "./components/ListingTypeChooser/listing-type-chooser.css";
 import "./components/Messages/messages.css";
 import "./components/NavBar/nav-bar.css";
 import "./components/Profile/profile.css";
@@ -28,7 +27,6 @@ import Privacy from "./components/Privacy/privacy";
 import Validate from "./components/Validate/validate";
 import Email from "./components/Validate/email";
 import Search from "./components/Search/search";
-import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-chooser";
 import CreateListing from "./components/CreateListing/create-listing";
 import Login from "./components/Login/login";
 import Profile from "./components/Profile/profile";
@@ -67,9 +65,6 @@ const App = () => (
             </Route>
             <Route path="/search">
               <Search />
-            </Route>
-            <Route path="/list">
-              <ListingTypeChooser />
             </Route>
             <Route path="/create">
               <CreateListing />
