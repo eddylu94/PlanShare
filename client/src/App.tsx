@@ -23,7 +23,7 @@ import "./components/Validate/validate.css";
 import "./components/TermsOfUse/terms-of-use.css";
 
 import NavBar from "./components/NavBar/nav-bar";
-import SignUp from "./components/SignUp/sign-up-provider";
+import SignUp from "./components/SignUp/sign-up";
 import Privacy from "./components/Privacy/privacy";
 import Validate from "./components/Validate/validate";
 import Email from "./components/Validate/email";

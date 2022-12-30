@@ -1,59 +1,198 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
-import TermsOfUse from "./../TermsOfUse/terms-of-use";
+import {
+  basePostRequest,
+  slackPostRequest,
+  ERROR_TYPE,
+  SLACK_HOOK
+} from "../../base-requests";
+import { log, IResponse, validatePass } from "../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { Link } from "react-router-dom";
+
+import TermsOfUse from "../TermsOfUse/terms-of-use";
 import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
-import { TITLE } from "./../../utils/constants";
-import { DEVICE_MODE } from "./../../utils/constants";
+import { TITLE } from "../../utils/constants";
+import { DEVICE_MODE } from "../../utils/constants";
 
 import Tooltip from "@material-ui/core/Tooltip";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-interface ISignUpCanvasProps {
-  handleInputChange: (event: React.ChangeEvent<any>) => void;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  firstName: string;
-  isFirstNameValid: boolean;
-  username: string;
-  isUsernameValid: boolean;
-  pass1: string;
-  isPass1Valid: boolean;
-  pass2: string;
-  isPass2Valid: boolean;
-  termsOfUseAcknowledged: boolean;
-  setTermsOfUseAcknowledged: (value: boolean) => void;
-  isFormDisabled: boolean;
-  isTermsOfUseDialogDisplayed: boolean;
-  setIsTermsOfUseDialogDisplayed: (value: boolean) => void;
-  isPassFocused: boolean;
-  togglePassFocused: (value: boolean) => void;
-  isEmailFocused: boolean;
-  toggleEmailFocused: (value: boolean) => void;
-}
+const SignUpProviderWithContext = (props: {
+  userData: IUserContext;
+  history: History;
+}) => {
+  const _userData = props.userData;
 
-const SignUpCanvas = (props: ISignUpCanvasProps) => {
-  const {
-    handleInputChange,
-    handleSubmit,
-    firstName,
-    isFirstNameValid,
-    username,
-    isUsernameValid,
-    pass1,
-    isPass1Valid,
-    pass2,
-    isPass2Valid,
-    termsOfUseAcknowledged,
-    setTermsOfUseAcknowledged,
-    isFormDisabled,
+  const { history } = props;
+
+  if (_userData.user?.userId) {
+    history.push("/search");
+  }
+
+  const [firstName, setFirstName] = useState("");
+  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
+
+  // const [email, setEmail] = useState("");
+  // const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const [username, setUsername] = useState("");
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
+
+  const [pass1, setPass1] = useState("");
+  const [isPass1Valid, setIsPass1Valid] = useState(false);
+
+  const [pass2, setPass2] = useState("");
+  const [isPass2Valid, setIsPass2Valid] = useState(false);
+
+  const [termsOfUseAcknowledged, setTermsOfUseAcknowledged] = useState(false);
+
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
+  const [isPassFocused, setIsPassFocused] = useState(false);
+
+  const [
     isTermsOfUseDialogDisplayed,
-    setIsTermsOfUseDialogDisplayed,
-    isPassFocused,
-    togglePassFocused,
-    isEmailFocused,
-    toggleEmailFocused
-  } = props;
+    setIsTermsOfUseDialogDisplayed
+  ] = useState(false);
+
+  const handleInputChange = (event: React.ChangeEvent<any>) => {
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+
+    switch (name) {
+      case FORM_INPUT_TYPE.FIRST_NAME:
+        setFirstName(value);
+        setIsFirstNameValid(validateFirstName(value));
+        break;
+      case FORM_INPUT_TYPE.USERNAME:
+        setUsername(value);
+        setIsUsernameValid(validateUsername(value));
+        break;
+      case FORM_INPUT_TYPE.PASS1:
+        setPass1(value);
+        setIsPass1Valid(validatePass(value));
+        setIsPass2Valid(validatePass2(value, pass2));
+        break;
+      case FORM_INPUT_TYPE.PASS2:
+        setPass2(value);
+        setIsPass2Valid(validatePass2(pass1, value));
+        break;
+      case FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED:
+        setTermsOfUseAcknowledged(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const validateFirstName = (firstName: string) => {
+    const re = /^[a-zA-Z ]+$/;
+    return re.test(firstName) && !!firstName.trim();
+  };
+
+  const validateUsername = (username: string) => {
+    const re = /^[a-zA-Z0-9_.-]*$/;
+    return re.test(username) && !!username.trim();
+  };
+
+  const validatePass2 = (pass1: string, pass2: string) =>
+    !!pass2 && pass1 === pass2;
+
+  const isFormDisabled = !(
+    isFirstNameValid &&
+    isUsernameValid &&
+    isPass1Valid &&
+    isPass2Valid &&
+    termsOfUseAcknowledged
+  );
+
+  const handleSubmitResponseHandler = (res: IResponse) => {
+    if (res) {
+      if (res.statusCode === STATUS_CODE.SUCCESS) {
+        log("Log in success for:", username);
+
+        const newUserData = res.body;
+
+        const postRequestData = {
+          text: JSON.stringify({
+            errorType: ERROR_TYPE.CLIENT,
+            type: "SIGN_UP",
+            userId: newUserData.userId,
+            username
+          })
+        };
+
+        slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
+
+        // Update user data for User Context
+        _userData.updateUser(newUserData);
+
+        // Update user data for local storage
+        localStorage.setItem("userId", newUserData.userId);
+        localStorage.setItem("auth", newUserData.auth);
+        localStorage.setItem("firstName", newUserData.firstName);
+
+        history.push("/email");
+      } else if (res.statusCode === STATUS_CODE.FAILURE) {
+        let errorMessage;
+        switch (res.statusMessage) {
+          case STATUS_MESSAGE.USERNAME_ALREADY_EXISTS:
+            errorMessage = "Username already exists";
+            log(errorMessage);
+            alert(errorMessage);
+            break;
+          case STATUS_MESSAGE.EMAIL_ALREADY_EXISTS:
+            errorMessage = "Email address already exists";
+            log(errorMessage);
+            alert(errorMessage);
+            break;
+          case STATUS_MESSAGE.UNKNOWN_ERROR:
+          default:
+            errorMessage = "An unknown error has occured";
+            log(errorMessage);
+            alert(errorMessage);
+            break;
+        }
+      }
+    } else {
+      log("Error receiving response");
+    }
+  };
+
+  const handleSubmitErrorHandler = (err: any) => {
+    log(err);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!isFormDisabled) {
+      const postRequestData = {
+        firstName,
+        username: username.toLocaleLowerCase(),
+        pass: pass1
+      };
+      basePostRequest(
+        "signup",
+        postRequestData,
+        handleSubmitResponseHandler,
+        handleSubmitErrorHandler
+      );
+    }
+
+    event.preventDefault();
+  };
+
+  const togglePassFocused = (value: boolean) => {
+    setIsPassFocused(value);
+  };
+
+  const toggleEmailFocused = (value: boolean) => {
+    setIsEmailFocused(value);
+  };
 
   const renderTextInputWithValidation = (
     name: string,
@@ -283,4 +422,12 @@ const SignUpCanvas = (props: ISignUpCanvasProps) => {
   );
 };
 
-export default SignUpCanvas;
+const SignUpProvider = (props: { history: History }) => (
+  <UserDataContext.Consumer>
+    {userData => (
+      <SignUpProviderWithContext userData={userData} history={props.history} />
+    )}
+  </UserDataContext.Consumer>
+);
+
+export default withRouter(SignUpProvider);
