@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "../Search/search-subscription-card";
-import Subscription from "../Subscription/subscription-provider";
+import Subscription from "../Subscription/subscription";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const ProfileProviderWithContext = (props: {

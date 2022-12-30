@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import { DEVICE_MODE } from "../../utils/constants";
 import SearchFiltersPane from "./search-filters";
 import SearchSubscriptionCard from "./search-subscription-card";
-import Subscription from "../Subscription/subscription-provider";
+import Subscription from "../Subscription/subscription";
 
 import Scrollbars from "react-custom-scrollbars";
 import useMediaQuery from "@material-ui/core/useMediaQuery";

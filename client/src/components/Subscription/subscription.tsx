@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { baseGetRequest } from "../../base-requests";
+import { log } from "../../utils/utils";
 import { Link } from "react-router-dom";
-
 import moment from "moment";
-
-import { ISubscriptionData } from "./../../utils/utils";
 import { LISTING_TYPE } from "../../utils/constants";
-import { IUserContext } from "../../user-context-provider";
 
-interface ISubscriptionCanvasProps {
+const SubscriptionProviderWithContext = (props: {
   userData: IUserContext;
-  subscriptionData: ISubscriptionData;
-  currentUser: string;
-  isGuest?: boolean;
-}
+  subscriptionId: string;
+}) => {
+  const _userData = props.userData;
 
-const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
-  const { userData, subscriptionData, currentUser, isGuest } = props;
+  const { subscriptionId } = props;
+
+  const [subscriptionData, setSubscriptionData] = useState(null as any);
+
+  const retrieveSubscriptionResponseHandler = (data: any) => {
+    log(data);
+
+    const newSubscriptionData = data?.body?.subscriptionData;
+    if (newSubscriptionData) {
+      log(newSubscriptionData);
+      setSubscriptionData(newSubscriptionData);
+    }
+  };
+
+  const retrieveSubscriptionErrorHandler = (error: any) => {
+    log(error);
+  };
+
+  const retrieveSubscription = () => {
+    baseGetRequest(
+      _userData.user?.auth ? "getsubscription" : "getsubscriptionasguest",
+      [{ subscriptionId }],
+      retrieveSubscriptionResponseHandler,
+      retrieveSubscriptionErrorHandler,
+      _userData.user?.auth
+    );
+  };
+
+  useEffect(() => {
+    if (subscriptionId && subscriptionId !== "guest") {
+      retrieveSubscription();
+    }
+    // eslint-disable-next-line
+  }, [subscriptionId]);
+
+  const userData = _userData;
+  const isGuest = !!(subscriptionId && subscriptionId === "guest");
+  const currentUser = _userData.user?.userId as string;
 
   if (isGuest) {
     return (
@@ -234,4 +269,15 @@ const SubscriptionCanvas = (props: ISubscriptionCanvasProps) => {
   );
 };
 
-export default SubscriptionCanvas;
+const SubscriptionProvider = (props: { subscriptionId: string }) => (
+  <UserDataContext.Consumer>
+    {userData => (
+      <SubscriptionProviderWithContext
+        userData={userData}
+        subscriptionId={props.subscriptionId}
+      />
+    )}
+  </UserDataContext.Consumer>
+);
+
+export default SubscriptionProvider;
