@@ -73,31 +73,30 @@ const CreateListingProviderWithContext = (props: {
   const retrieveSubscriptionResponseHandler = (data: any) => {
     log(data);
 
-    const newSubscriptionData = data?.body?.subscriptionData;
-    if (newSubscriptionData) {
+    const newData = data?.body?.subscriptionData;
+    if (newData) {
       setIsRetrievedListingCreationDataDirty(true);
+      log(newData);
 
-      log(newSubscriptionData);
-      // log(newSubscriptionData.subscriptionBrand.type);
-      setSubscriptionCategorySelection(
-        newSubscriptionData.subscriptionCategory
-      );
-      setSubscriptionBrandSelection(newSubscriptionData.subscriptionBrand);
-      setOtherSubscription(newSubscriptionData.otherSubscription);
-      setListingTitle(newSubscriptionData.listingTitle ?? "");
-      setListingDescription(newSubscriptionData.listingDescription ?? "");
-      setSubscriptionUrl(newSubscriptionData.subscriptionUrl ?? "");
-      setNumberOfPeople(newSubscriptionData.numberOfPeople);
-      setPrice(newSubscriptionData.price);
+      setSubscriptionCategorySelection(newData.subscriptionCategory);
+      setSubscriptionBrandSelection(newData.subscriptionBrand);
 
-      if (newSubscriptionData.contactFb) {
-        setIsContactFb(true);
-        setContactFb(newSubscriptionData.contactFb);
-      }
-      if (newSubscriptionData.contactEmail) {
-        setIsContactEmail(true);
-        setContactEmail(newSubscriptionData.contactEmail);
-      }
+      setFormValues({
+        otherSubscription: newData.otherSubscription,
+        subscriptionUrl: newData.subscriptionUrl ?? "",
+        listingTitle: newData.listingTitle ?? "",
+        listingDescription: newData.listingDescription ?? "",
+        numberOfPeople: newData.numberOfPeople,
+        price: newData.price,
+        ...(newData.contactFb && {
+          isContactFb: newData.isContactFb,
+          contactFb: newData.contactFb
+        }),
+        ...(newData.contactEmail && {
+          isContactEmail: true,
+          contactEmail: newData.contactEmail
+        })
+      });
     }
   };
 
@@ -126,31 +125,28 @@ const CreateListingProviderWithContext = (props: {
     setSubscriptionCategorySelection
   ] = useState({} as ISubscriptionCategory);
   const [subscriptionBrands, setSubscriptionBrands] = useState(
-    [] as ISubscriptionBrand[]
+    [] as Array<ISubscriptionBrand>
   );
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     {} as ISubscriptionBrand
   );
 
-  const [otherSubscription, setOtherSubscription] = useState("");
-
   const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
 
-  const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [formValues, setFormValues] = useState({
+    otherSubscription: "",
+    subscriptionUrl: "",
+    listingTitle: "",
+    listingDescription: "",
+    numberOfPeople: 0,
+    price: 0,
+    isContactFb: false,
+    contactFb: "",
+    isContactEmail: false,
+    contactEmail: ""
+  });
 
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
-
-  const [listingTitle, setListingTitle] = useState("");
-  const [listingDescription, setListingDescription] = useState("");
-
-  const [numberOfPeople, setNumberOfPeople] = useState(0);
-  const [price, setPrice] = useState(0);
-
-  const [isContactFb, setIsContactFb] = useState(false);
-  const [contactFb, setContactFb] = useState("");
-
-  const [isContactEmail, setIsContactEmail] = useState(false);
-  const [contactEmail, setContactEmail] = useState("");
 
   const [isFormDisabled, setIsFormDisabled] = useState(true);
 
@@ -254,10 +250,10 @@ const CreateListingProviderWithContext = (props: {
       case LISTING_TYPE.FOR_SALE:
         subscriptionData = {
           listingType: LISTING_TYPE.FOR_SALE,
-          listingTitle,
-          listingDescription,
-          subscriptionUrl,
-          price
+          listingTitle: formValues.listingTitle,
+          listingDescription: formValues.listingDescription,
+          subscriptionUrl: formValues.subscriptionUrl,
+          price: formValues.price
         };
         break;
       case LISTING_TYPE.SUBSCRIPTION:
@@ -266,10 +262,10 @@ const CreateListingProviderWithContext = (props: {
           listingType: LISTING_TYPE.SUBSCRIPTION,
           subscriptionCategory: subscriptionCategorySelection,
           subscriptionBrand: subscriptionBrandSelection,
-          subscriptionUrl,
-          listingDescription,
-          numberOfPeople,
-          price
+          subscriptionUrl: formValues.subscriptionUrl,
+          listingDescription: formValues.listingDescription,
+          numberOfPeople: formValues.numberOfPeople,
+          price: formValues.price
         };
         break;
     }
@@ -283,15 +279,21 @@ const CreateListingProviderWithContext = (props: {
     }
 
     if (isOtherInputDisplayed) {
-      Object.assign(postRequestData.subscriptionData, { otherSubscription });
+      Object.assign(postRequestData.subscriptionData, {
+        otherSubscription: formValues.otherSubscription
+      });
     }
 
-    if (isContactFb && contactFb) {
-      Object.assign(postRequestData.subscriptionData, { contactFb });
+    if (formValues.isContactFb && formValues.contactFb) {
+      Object.assign(postRequestData.subscriptionData, {
+        contactFb: formValues.contactFb
+      });
     }
 
-    if (isContactEmail && contactEmail) {
-      Object.assign(postRequestData.subscriptionData, { contactEmail });
+    if (formValues.isContactEmail && formValues.contactEmail) {
+      Object.assign(postRequestData.subscriptionData, {
+        contactEmail: formValues.contactEmail
+      });
     }
 
     if (!isFormDisabled) {
@@ -355,24 +357,30 @@ const CreateListingProviderWithContext = (props: {
   }, [subscriptionBrandSelection]);
 
   useEffect(() => {
-    setIsSubscriptionUrlValid(!subscriptionUrl || isValidURL(subscriptionUrl));
-  }, [subscriptionUrl]);
+    setIsSubscriptionUrlValid(
+      !formValues.subscriptionUrl || isValidURL(formValues.subscriptionUrl)
+    );
+  }, [formValues.subscriptionUrl]);
 
   useEffect(() => {
     let newIsFormDisabled;
 
     switch (listingType) {
       case LISTING_TYPE.FOR_SALE:
-        newIsFormDisabled = !(listingTitle && listingDescription && price);
+        newIsFormDisabled = !(
+          formValues.listingTitle &&
+          formValues.listingDescription &&
+          formValues.price
+        );
         break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         newIsFormDisabled = !(
-          listingDescription &&
-          numberOfPeople &&
-          price &&
+          formValues.listingDescription &&
+          formValues.numberOfPeople &&
+          formValues.price &&
           isSubscriptionUrlValid &&
-          (!isOtherInputDisplayed || otherSubscription)
+          (!isOtherInputDisplayed || formValues.otherSubscription)
         );
         break;
     }
@@ -380,12 +388,12 @@ const CreateListingProviderWithContext = (props: {
     setIsFormDisabled(newIsFormDisabled);
   }, [
     listingType,
-    listingTitle,
-    listingDescription,
-    numberOfPeople,
-    price,
+    formValues.listingTitle,
+    formValues.listingDescription,
+    formValues.numberOfPeople,
+    formValues.price,
+    formValues.otherSubscription,
     isSubscriptionUrlValid,
-    otherSubscription,
     isOtherInputDisplayed
   ]);
 
@@ -403,7 +411,7 @@ const CreateListingProviderWithContext = (props: {
 
   const handleOnBlurSubscriptionUrl = () => {
     setIsDisplaySubscriptionUrlErrorLabel(
-      !!subscriptionUrl && !isSubscriptionUrlValid
+      !!formValues.subscriptionUrl && !isSubscriptionUrlValid
     );
   };
 
@@ -466,7 +474,7 @@ const CreateListingProviderWithContext = (props: {
         onChange={e => {
           const brand = subscriptionBrands.find(
             brand => e.target.value === brand.subscriptionBrandId
-          ) as ISubscriptionBrand;
+          );
           if (brand) {
             setSubscriptionBrandSelection(brand);
           }
@@ -478,11 +486,13 @@ const CreateListingProviderWithContext = (props: {
     );
   };
 
-  const FormLabel = (props: { label: string; isRequired?: boolean }) => {
-    const { label, isRequired } = props;
-    const className = isRequired ? "form-label required-field" : "form-label";
-    return <label className={className}>{label}</label>;
-  };
+  const FormLabel = (props: { label: string; isRequired?: boolean }) => (
+    <label
+      className={props.isRequired ? "form-label required-field" : "form-label"}
+    >
+      {props.label}
+    </label>
+  );
 
   let priceLabel;
 
@@ -538,8 +548,13 @@ const CreateListingProviderWithContext = (props: {
                     ? "Hand sanitizer"
                     : "Room for rent"
                 }
-                value={listingTitle}
-                onChange={e => setListingTitle(e.target.value)}
+                value={formValues.listingTitle}
+                onChange={e =>
+                  setFormValues({
+                    ...formValues,
+                    listingTitle: e.target.value
+                  })
+                }
                 onBlur={handleOnBlurSubscriptionUrl}
                 style={{ width: 300 }}
               />
@@ -555,8 +570,13 @@ const CreateListingProviderWithContext = (props: {
               name={FORM_INPUT_TYPE.OTHER_SUBSCRIPTION}
               type="text"
               placeholder="Custom subscription"
-              value={otherSubscription}
-              onChange={e => setOtherSubscription(e.target.value)}
+              value={formValues.otherSubscription}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  otherSubscription: e.target.value
+                })
+              }
               onBlur={handleOnBlurSubscriptionUrl}
               style={{ width: 300 }}
             />
@@ -576,8 +596,13 @@ const CreateListingProviderWithContext = (props: {
               name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
               rows={5}
               placeholder="Currently have two people, need three more!"
-              value={listingDescription}
-              onChange={e => setListingDescription(e.target.value)}
+              value={formValues.listingDescription}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  listingDescription: e.target.value
+                })
+              }
               onFocus={() => toggleDescriptionFocused(true)}
               onBlur={() => toggleDescriptionFocused(false)}
               maxLength={750}
@@ -594,8 +619,13 @@ const CreateListingProviderWithContext = (props: {
               name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
               type="text"
               placeholder="https://example.com/"
-              value={subscriptionUrl}
-              onChange={e => setSubscriptionUrl(e.target.value)}
+              value={formValues.subscriptionUrl}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  subscriptionUrl: e.target.value
+                })
+              }
               onBlur={handleOnBlurSubscriptionUrl}
             />
             {isDisplaySubscriptionUrlErrorLabel ? (
@@ -624,8 +654,13 @@ const CreateListingProviderWithContext = (props: {
                     min="1"
                     max="50"
                     placeholder="0"
-                    value={numberOfPeople || ""}
-                    onChange={e => setNumberOfPeople(e.target.value as any)}
+                    value={formValues.numberOfPeople || ""}
+                    onChange={e =>
+                      setFormValues({
+                        ...formValues,
+                        numberOfPeople: e.target.value as any
+                      })
+                    }
                     style={{ width: 100 }}
                     onFocus={() => toggleNumberOfPeopleFocused(true)}
                     onBlur={() => toggleNumberOfPeopleFocused(false)}
@@ -653,8 +688,13 @@ const CreateListingProviderWithContext = (props: {
                   step="0.01"
                   max="100"
                   placeholder="0"
-                  value={price || ""}
-                  onChange={e => setPrice(e.target.value as any)}
+                  value={formValues.price || ""}
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      price: e.target.value as any
+                    })
+                  }
                   style={{ width: 100 }}
                   onFocus={() => togglePriceFocused(true)}
                   onBlur={() => togglePriceFocused(false)}
@@ -677,9 +717,14 @@ const CreateListingProviderWithContext = (props: {
             style={{ color: "#000000", marginTop: 10 }}
             control={
               <Checkbox
-                checked={isContactFb}
+                checked={formValues.isContactFb}
                 // TODO: Remove lambda expression
-                onChange={e => setIsContactFb(!isContactFb)}
+                onChange={e =>
+                  setFormValues({
+                    ...formValues,
+                    isContactFb: !formValues.isContactFb
+                  })
+                }
                 name={"contact-fb"}
                 style={{
                   padding: 0,
@@ -700,8 +745,13 @@ const CreateListingProviderWithContext = (props: {
                   name={FORM_INPUT_TYPE.CONTACT_FB}
                   type="text"
                   placeholder="Username"
-                  value={contactFb}
-                  onChange={e => setContactFb(e.target.value)}
+                  value={formValues.contactFb}
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      contactFb: e.target.value
+                    })
+                  }
                   onBlur={handleOnBlurSubscriptionUrl}
                 />
               </div>
@@ -713,9 +763,14 @@ const CreateListingProviderWithContext = (props: {
             style={{ color: "#000000", marginTop: 10 }}
             control={
               <Checkbox
-                checked={isContactEmail}
+                checked={formValues.isContactEmail}
                 // TODO: Remove lambda expression
-                onChange={e => setIsContactEmail(!isContactEmail)}
+                onChange={e =>
+                  setFormValues({
+                    ...formValues,
+                    isContactEmail: !formValues.isContactEmail
+                  })
+                }
                 name={"contact-email"}
                 style={{
                   padding: 0,
@@ -736,8 +791,13 @@ const CreateListingProviderWithContext = (props: {
                   name={FORM_INPUT_TYPE.CONTACT_EMAIL}
                   type="text"
                   placeholder="Email address"
-                  value={contactEmail}
-                  onChange={e => setContactEmail(e.target.value)}
+                  value={formValues.contactEmail}
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      contactEmail: e.target.value
+                    })
+                  }
                   onBlur={handleOnBlurSubscriptionUrl}
                 />
               </div>
