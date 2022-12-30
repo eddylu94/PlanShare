@@ -27,7 +27,7 @@ import SignUp from "./components/SignUp/sign-up-provider";
 import Privacy from "./components/Privacy/privacy";
 import Validate from "./components/Validate/validate";
 import Email from "./components/Validate/email";
-import Search from "./components/Search/search-provider";
+import Search from "./components/Search/search";
 import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-chooser";
 import CreateListing from "./components/CreateListing/create-listing";
 import Login from "./components/Login/login";

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DEVICE_MODE } from "./../../utils/constants";
+import { DEVICE_MODE } from "../../utils/constants";
 import SearchSubscriptionCardPlaceholder from "./search-subscription-card-placeholder";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
