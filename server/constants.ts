@@ -11,8 +11,7 @@ export const DATABASE_COLLECTION = {
 export const LISTING_TYPE = {
   ALL: "ALL",
   SUBSCRIPTION: "SUBSCRIPTION",
-  FOR_SALE: "FOR_SALE",
-  HOUSING: "HOUSING"
+  FOR_SALE: "FOR_SALE"
 };
 
 // Status codes

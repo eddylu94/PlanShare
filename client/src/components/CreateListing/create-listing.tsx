@@ -57,7 +57,6 @@ const CreateListingProviderWithContext = (props: {
     param = param?.toLocaleUpperCase();
 
     return param === LISTING_TYPE.FOR_SALE ||
-      param === LISTING_TYPE.HOUSING ||
       param === LISTING_TYPE.SUBSCRIPTION
       ? param
       : LISTING_TYPE.SUBSCRIPTION;
@@ -90,8 +89,6 @@ const CreateListingProviderWithContext = (props: {
       setSubscriptionUrl(newSubscriptionData.subscriptionUrl ?? "");
       setNumberOfPeople(newSubscriptionData.numberOfPeople);
       setPrice(newSubscriptionData.price);
-      setNumBedrooms(newSubscriptionData.numBedrooms);
-      setNumBathrooms(newSubscriptionData.numBathrooms);
 
       if (newSubscriptionData.contactFb) {
         setIsContactFb(true);
@@ -148,9 +145,6 @@ const CreateListingProviderWithContext = (props: {
 
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [price, setPrice] = useState(0);
-
-  const [numBedrooms, setNumBedrooms] = useState(0);
-  const [numBathrooms, setNumBathrooms] = useState(0);
 
   const [isContactFb, setIsContactFb] = useState(false);
   const [contactFb, setContactFb] = useState("");
@@ -209,12 +203,6 @@ const CreateListingProviderWithContext = (props: {
         break;
       case FORM_INPUT_TYPE.PRICE:
         setPrice(value);
-        break;
-      case FORM_INPUT_TYPE.NUM_BEDROOMS:
-        setNumBedrooms(value);
-        break;
-      case FORM_INPUT_TYPE.NUM_BATHROOMS:
-        setNumBathrooms(value);
         break;
       case FORM_INPUT_TYPE.CONTACT_FB:
         setContactFb(value);
@@ -323,16 +311,6 @@ const CreateListingProviderWithContext = (props: {
           price
         };
         break;
-      case LISTING_TYPE.HOUSING:
-        subscriptionData = {
-          listingType: LISTING_TYPE.HOUSING,
-          listingTitle,
-          listingDescription,
-          numBedrooms,
-          numBathrooms,
-          price
-        };
-        break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         subscriptionData = {
@@ -438,14 +416,6 @@ const CreateListingProviderWithContext = (props: {
       case LISTING_TYPE.FOR_SALE:
         newIsFormDisabled = !(listingTitle && listingDescription && price);
         break;
-      case LISTING_TYPE.HOUSING:
-        newIsFormDisabled = !(
-          listingTitle &&
-          listingDescription &&
-          price &&
-          numBathrooms
-        );
-        break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         newIsFormDisabled = !(
@@ -465,7 +435,6 @@ const CreateListingProviderWithContext = (props: {
     listingDescription,
     numberOfPeople,
     price,
-    numBathrooms,
     isSubscriptionUrlValid,
     otherSubscription,
     isOtherInputDisplayed
@@ -557,9 +526,6 @@ const CreateListingProviderWithContext = (props: {
     case LISTING_TYPE.SUBSCRIPTION:
       priceLabel = "Price per person:";
       break;
-    case LISTING_TYPE.HOUSING:
-      priceLabel = "Monthly rent:";
-      break;
     case LISTING_TYPE.FOR_SALE:
     default:
       priceLabel = "Price:";
@@ -595,8 +561,7 @@ const CreateListingProviderWithContext = (props: {
           </div>
         ) : null}
 
-        {listingType === LISTING_TYPE.FOR_SALE ||
-        listingType === LISTING_TYPE.HOUSING ? (
+        {listingType === LISTING_TYPE.FOR_SALE ? (
           <div className="subscription-fields">
             <div className="form-field">
               <FormLabel label={"Listing title:"} isRequired={true} />
@@ -677,50 +642,6 @@ const CreateListingProviderWithContext = (props: {
           </div>
         ) : null}
 
-        {listingType === LISTING_TYPE.HOUSING ? (
-          <div className="form-row">
-            <div className="form-field" style={{ marginRight: 20 }}>
-              <FormLabel label={"Bedrooms:"} isRequired={true} />
-              <div className="form-number-input-with-label">
-                <input
-                  className="form-text-input form-input form-number-input"
-                  name={FORM_INPUT_TYPE.NUM_BEDROOMS}
-                  type="number"
-                  min={"0"}
-                  step={"1"}
-                  max={"10"}
-                  placeholder="0"
-                  value={numBedrooms || ""}
-                  onChange={handleInputChange}
-                  style={{ width: 100 }}
-                  onFocus={() => togglePriceFocused(true)}
-                  onBlur={() => togglePriceFocused(false)}
-                />
-              </div>
-            </div>
-
-            <div className="form-field">
-              <FormLabel label={"Bathrooms:"} isRequired={true} />
-              <div className="form-number-input-with-label">
-                <input
-                  className="form-text-input form-input form-number-input"
-                  name={FORM_INPUT_TYPE.NUM_BATHROOMS}
-                  type="number"
-                  min={"1"}
-                  step={"1"}
-                  max={"10"}
-                  placeholder="0"
-                  value={numBathrooms || ""}
-                  onChange={handleInputChange}
-                  style={{ width: 100 }}
-                  onFocus={() => togglePriceFocused(true)}
-                  onBlur={() => togglePriceFocused(false)}
-                />
-              </div>
-            </div>
-          </div>
-        ) : null}
-
         <div className="form-row">
           {listingType === LISTING_TYPE.SUBSCRIPTION ? (
             <div className="form-field" style={{ marginRight: 50 }}>
@@ -755,11 +676,7 @@ const CreateListingProviderWithContext = (props: {
             <FormLabel label={priceLabel} isRequired={true} />
             <div className="form-number-input-with-label">
               <Tooltip
-                title={
-                  listingType === LISTING_TYPE.HOUSING
-                    ? "Between $1 to $5000"
-                    : "Between $0.01 to $100"
-                }
+                title="Between $0.01 to $100"
                 aria-label="add"
                 placement="bottom-start"
                 open={isPriceFocused}
@@ -768,9 +685,9 @@ const CreateListingProviderWithContext = (props: {
                   className="form-text-input form-input form-number-input"
                   name={FORM_INPUT_TYPE.PRICE}
                   type="number"
-                  min={listingType === LISTING_TYPE.HOUSING ? "1" : "0.01"}
-                  step={listingType === LISTING_TYPE.HOUSING ? "1" : "0.01"}
-                  max={listingType === LISTING_TYPE.HOUSING ? "5000" : "100"}
+                  min="0.01"
+                  step="0.01"
+                  max="100"
                   placeholder="0"
                   value={price || ""}
                   onChange={handleInputChange}

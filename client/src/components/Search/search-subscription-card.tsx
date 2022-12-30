@@ -56,9 +56,6 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       case LISTING_TYPE.FOR_SALE:
         logo = "https://planshare.io/for_sale_icon.png";
         break;
-      case LISTING_TYPE.HOUSING:
-        logo = "./icon.png";
-        break;
       case LISTING_TYPE.SUBSCRIPTION:
       default:
         logo = subscriptionBrand.logo;
@@ -126,9 +123,6 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
     switch (listingType) {
       case LISTING_TYPE.FOR_SALE:
-        name = subscription.listingTitle;
-        break;
-      case LISTING_TYPE.HOUSING:
         name = subscription.listingTitle;
         break;
       case LISTING_TYPE.SUBSCRIPTION:

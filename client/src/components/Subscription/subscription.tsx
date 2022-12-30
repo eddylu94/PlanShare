@@ -92,9 +92,6 @@ const SubscriptionProviderWithContext = (props: {
     case LISTING_TYPE.FOR_SALE:
       name = subscriptionData.listingTitle;
       break;
-    case LISTING_TYPE.HOUSING:
-      name = subscriptionData.listingTitle;
-      break;
     case LISTING_TYPE.SUBSCRIPTION:
     default:
       name =
@@ -109,9 +106,6 @@ const SubscriptionProviderWithContext = (props: {
   switch (listingType) {
     case LISTING_TYPE.FOR_SALE:
       logo = "https://planshare.io/for_sale_icon.png";
-      break;
-    case LISTING_TYPE.HOUSING:
-      logo = "./icon.png";
       break;
     case LISTING_TYPE.SUBSCRIPTION:
     default:

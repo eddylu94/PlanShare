@@ -16,7 +16,6 @@ export interface ISearchFiltersProps {
   listingTypes: IListingType[];
   isSubscriptionsType: boolean;
   isForSaleType: boolean;
-  isHousingType: boolean;
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
   filtersGroupSize: number[];

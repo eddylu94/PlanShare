@@ -26,7 +26,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     listingTypes,
     isSubscriptionsType,
     // isForSaleType,
-    // isHousingType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,

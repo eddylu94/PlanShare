@@ -47,11 +47,6 @@ export const getListingTypes = (
         name: "Group Orders",
         icon: "https://planshare.io/for_sale_icon.png"
       }
-      // {
-      //   type: LISTING_TYPE.HOUSING,
-      //   name: "Housing",
-      //   icon: "https://planshare.io/housing_icon.png"
-      // }
     ];
 
     db.close();

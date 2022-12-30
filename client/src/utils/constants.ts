@@ -4,8 +4,7 @@ export const SLOGAN = "Split costs on subscriptions, group orders, and more!";
 export const LISTING_TYPE = {
   ALL: "ALL",
   SUBSCRIPTION: "SUBSCRIPTION",
-  FOR_SALE: "FOR_SALE",
-  HOUSING: "HOUSING"
+  FOR_SALE: "FOR_SALE"
 };
 
 // Status codes
