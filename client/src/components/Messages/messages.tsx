@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import MessagesCanvas from "./messages-canvas";
-import { IUserContext, UserDataContext } from "./../../user-context-provider";
+import Conversation from "./conversation";
+import { IUserContext, UserDataContext } from "../../user-context-provider";
 import {
   SOCKET_IO_PATH,
   baseGetRequest,
@@ -12,15 +12,20 @@ import {
   ERROR_TYPE,
   slackPostRequest,
   SLACK_HOOK
-} from "./../../base-requests";
+} from "../../base-requests";
 import {
   log,
   IConversationSummary,
   IConversationData,
   IMessageData
-} from "./../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
-
+} from "../../utils/utils";
+import {
+  STATUS_CODE,
+  STATUS_MESSAGE,
+  DEVICE_MODE
+} from "../../utils/constants";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import moment from "moment";
 import socketIOClient from "socket.io-client";
 
 const MessagesProviderWithContext = (props: {
@@ -336,22 +341,136 @@ const MessagesProviderWithContext = (props: {
     setIsConversationModalOpen(false);
   };
 
+  const userId = otherUserId as string;
+
+  const renderConversationSummary = (
+    conversation: IConversationSummary,
+    index: number
+  ) => {
+    const { firstName, lastMessage } = conversation;
+    const conversationSummaryConversationId = conversation.conversationId;
+
+    let lastMessageComponent: any;
+    if (lastMessage) {
+      const { date, message, firstName } = lastMessage;
+      lastMessageComponent = (
+        <>
+          <div className="message-summary-message">{`${firstName}: ${message}`}</div>
+          <div className="message-summary-date">
+            {moment(date).format("lll")}
+          </div>
+        </>
+      );
+    } else {
+      lastMessageComponent = (
+        <>
+          <div
+            className="message-summary-message"
+            style={{ fontStyle: "italic" }}
+          >
+            New draft
+          </div>
+          <div className="message-summary-date"></div>
+        </>
+      );
+    }
+
+    return lastMessage ||
+      conversationId === conversationSummaryConversationId ||
+      initialConversationId === conversationSummaryConversationId ? (
+      <div
+        className="message-summary"
+        key={"message-summary-" + index}
+        onClick={() =>
+          handleConversationSelection(conversationSummaryConversationId)
+        }
+      >
+        <div className="message-summary-header">
+          <img
+            alt="Profile"
+            className="conversation-header-profile-picture"
+            src="/profile_picture_placeholder.png"
+          />
+          <span className="conversation-header-first-name">{firstName}</span>
+        </div>
+        {lastMessageComponent}
+      </div>
+    ) : (
+      undefined
+    );
+  };
+
+  const conversationListComponent = conversationsList
+    .map((conversation, i) => renderConversationSummary(conversation, i))
+    .filter(conversationComponent => !!conversationComponent);
+
+  const small = useMediaQuery("(max-width:768px)");
+  const medium = useMediaQuery("(min-width:768px)");
+  const large = useMediaQuery("(min-width:992px)");
+  const xLarge = useMediaQuery("(min-width:1200px)");
+
+  let deviceMode: string;
+  if (small) {
+    deviceMode = DEVICE_MODE.MOBILE;
+  } else if (medium && !large) {
+    deviceMode = DEVICE_MODE.TABLET;
+  } else if (large && !xLarge) {
+    deviceMode = DEVICE_MODE.DESKTOP;
+  } else {
+    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
+  }
+
+  const messagesPanes =
+    (conversationListComponent && conversationListComponent.length) ||
+    conversationId ? (
+      <div className="messages-container">
+        {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (
+          <div className="conversation-modal">
+            <Conversation
+              isConversationModalOpen={isConversationModalOpen}
+              currentUserId={currentUserId}
+              firstName={firstName}
+              userId={userId}
+              messages={messages}
+              text={text}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleConversationSelection={handleConversationSelection}
+              handleBackButtonClick={handleBackButtonClick}
+            />
+          </div>
+        ) : null}
+        <div className="message-summaries-pane">
+          {conversationListComponent}
+        </div>
+        {deviceMode !== DEVICE_MODE.MOBILE ? (
+          <Conversation
+            currentUserId={currentUserId}
+            firstName={firstName}
+            userId={userId}
+            messages={messages}
+            text={text}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            handleConversationSelection={handleConversationSelection}
+          />
+        ) : null}
+      </div>
+    ) : (
+      <div className="messages-container">
+        <div className="messages-no-messages">
+          You currently have no messages
+        </div>
+      </div>
+    );
+
   return isRetrievedConversationsDirty ? (
-    <MessagesCanvas
-      isConversationModalOpen={isConversationModalOpen}
-      initialConversationId={initialConversationId}
-      conversationId={conversationId}
-      conversationsList={conversationsList}
-      currentUserId={currentUserId}
-      firstName={firstName}
-      userId={otherUserId as string}
-      messages={messages}
-      text={text}
-      handleChange={handleChange}
-      handleSubmit={handleSubmit}
-      handleConversationSelection={handleConversationSelection}
-      handleBackButtonClick={handleBackButtonClick}
-    />
+    <div
+      className="page-container"
+      style={{ alignItems: "center", padding: 0 }}
+    >
+      <div className="page-wrapper">{messagesPanes}</div>
+    </div>
   ) : null;
 };
 
