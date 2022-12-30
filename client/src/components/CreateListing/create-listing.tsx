@@ -164,57 +164,6 @@ const CreateListingProviderWithContext = (props: {
     setIsDisplaySubscriptionUrlErrorLabel
   ] = useState(false);
 
-  const handleInputChange = (event: React.ChangeEvent<any>) => {
-    const { target } = event;
-    const { value, name } = target;
-
-    switch (name) {
-      case FORM_INPUT_TYPE.SUBSCRIPTION_TYPE:
-        const category = subscriptionCategories.find(
-          category => value === category.subscriptionCategoryId
-        );
-        if (category) {
-          setIsUserSelected(true);
-          setSubscriptionCategorySelection(category);
-        }
-        break;
-      case FORM_INPUT_TYPE.SUBSCRIPTION_BRAND:
-        const brand = subscriptionBrands.find(
-          brand => value === brand.subscriptionBrandId
-        ) as ISubscriptionBrand;
-        if (brand) {
-          setSubscriptionBrandSelection(brand);
-        }
-        break;
-      case FORM_INPUT_TYPE.OTHER_SUBSCRIPTION:
-        setOtherSubscription(value);
-        break;
-      case FORM_INPUT_TYPE.SUBSCRIPTION_URL:
-        setSubscriptionUrl(value);
-        break;
-      case FORM_INPUT_TYPE.LISTING_TITLE:
-        setListingTitle(value);
-        break;
-      case FORM_INPUT_TYPE.LISTING_DESCRIPTION:
-        setListingDescription(value);
-        break;
-      case FORM_INPUT_TYPE.NUMBER_OF_PEOPLE:
-        setNumberOfPeople(value);
-        break;
-      case FORM_INPUT_TYPE.PRICE:
-        setPrice(value);
-        break;
-      case FORM_INPUT_TYPE.CONTACT_FB:
-        setContactFb(value);
-        break;
-      case FORM_INPUT_TYPE.CONTACT_EMAIL:
-        setContactEmail(value);
-        break;
-      default:
-        break;
-    }
-  };
-
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (
       data.statusCode === STATUS_CODE.FAILURE &&
@@ -481,7 +430,15 @@ const CreateListingProviderWithContext = (props: {
       <select
         className="form-text-input form-input select-input"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_TYPE}
-        onChange={handleInputChange}
+        onChange={e => {
+          const category = subscriptionCategories.find(
+            category => e.target.value === category.subscriptionCategoryId
+          );
+          if (category) {
+            setIsUserSelected(true);
+            setSubscriptionCategorySelection(category);
+          }
+        }}
         value={subscriptionCategorySelection.subscriptionCategoryId}
       >
         {options}
@@ -506,7 +463,14 @@ const CreateListingProviderWithContext = (props: {
       <select
         className="form-text-input form-input select-input required-field"
         name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
-        onChange={handleInputChange}
+        onChange={e => {
+          const brand = subscriptionBrands.find(
+            brand => e.target.value === brand.subscriptionBrandId
+          ) as ISubscriptionBrand;
+          if (brand) {
+            setSubscriptionBrandSelection(brand);
+          }
+        }}
         value={subscriptionBrandSelection.subscriptionBrandId}
       >
         {options}
@@ -575,7 +539,7 @@ const CreateListingProviderWithContext = (props: {
                     : "Room for rent"
                 }
                 value={listingTitle}
-                onChange={handleInputChange}
+                onChange={e => setListingTitle(e.target.value)}
                 onBlur={handleOnBlurSubscriptionUrl}
                 style={{ width: 300 }}
               />
@@ -592,7 +556,7 @@ const CreateListingProviderWithContext = (props: {
               type="text"
               placeholder="Custom subscription"
               value={otherSubscription}
-              onChange={handleInputChange}
+              onChange={e => setOtherSubscription(e.target.value)}
               onBlur={handleOnBlurSubscriptionUrl}
               style={{ width: 300 }}
             />
@@ -613,7 +577,7 @@ const CreateListingProviderWithContext = (props: {
               rows={5}
               placeholder="Currently have two people, need three more!"
               value={listingDescription}
-              onChange={handleInputChange}
+              onChange={e => setListingDescription(e.target.value)}
               onFocus={() => toggleDescriptionFocused(true)}
               onBlur={() => toggleDescriptionFocused(false)}
               maxLength={750}
@@ -631,7 +595,7 @@ const CreateListingProviderWithContext = (props: {
               type="text"
               placeholder="https://example.com/"
               value={subscriptionUrl}
-              onChange={handleInputChange}
+              onChange={e => setSubscriptionUrl(e.target.value)}
               onBlur={handleOnBlurSubscriptionUrl}
             />
             {isDisplaySubscriptionUrlErrorLabel ? (
@@ -661,7 +625,7 @@ const CreateListingProviderWithContext = (props: {
                     max="50"
                     placeholder="0"
                     value={numberOfPeople || ""}
-                    onChange={handleInputChange}
+                    onChange={e => setNumberOfPeople(e.target.value as any)}
                     style={{ width: 100 }}
                     onFocus={() => toggleNumberOfPeopleFocused(true)}
                     onBlur={() => toggleNumberOfPeopleFocused(false)}
@@ -690,7 +654,7 @@ const CreateListingProviderWithContext = (props: {
                   max="100"
                   placeholder="0"
                   value={price || ""}
-                  onChange={handleInputChange}
+                  onChange={e => setPrice(e.target.value as any)}
                   style={{ width: 100 }}
                   onFocus={() => togglePriceFocused(true)}
                   onBlur={() => togglePriceFocused(false)}
@@ -737,7 +701,7 @@ const CreateListingProviderWithContext = (props: {
                   type="text"
                   placeholder="Username"
                   value={contactFb}
-                  onChange={handleInputChange}
+                  onChange={e => setContactFb(e.target.value)}
                   onBlur={handleOnBlurSubscriptionUrl}
                 />
               </div>
@@ -773,7 +737,7 @@ const CreateListingProviderWithContext = (props: {
                   type="text"
                   placeholder="Email address"
                   value={contactEmail}
-                  onChange={handleInputChange}
+                  onChange={e => setContactEmail(e.target.value)}
                   onBlur={handleOnBlurSubscriptionUrl}
                 />
               </div>
