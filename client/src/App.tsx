@@ -32,7 +32,7 @@ import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-cho
 import CreateListing from "./components/CreateListing/create-listing";
 import Login from "./components/Login/login";
 import Profile from "./components/Profile/profile";
-import Settings from "./components/Settings/settings-provider";
+import Settings from "./components/Settings/settings";
 import Messages from "./components/Messages/messages";
 import Organizations from "./components/Organizations/organizations";
 import Feedback from "./components/Feedback/feedback";
