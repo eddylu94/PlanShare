@@ -29,7 +29,7 @@ import Validate from "./components/Validate/validate";
 import Email from "./components/Validate/email";
 import Search from "./components/Search/search-provider";
 import ListingTypeChooser from "./components/ListingTypeChooser/listing-type-chooser-provider";
-import CreateListing from "./components/CreateListing/create-listing-provider";
+import CreateListing from "./components/CreateListing/create-listing";
 import Login from "./components/Login/login-provider";
 import Profile from "./components/Profile/profile-provider";
 import Settings from "./components/Settings/settings-provider";
