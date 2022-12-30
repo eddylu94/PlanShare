@@ -9,7 +9,7 @@ import {
   ERROR_TYPE,
   SLACK_HOOK
 } from "../../base-requests";
-import { log, IResponse, validatePass } from "../../utils/utils";
+import { log, IResponse, validatePass, useDeviceMode } from "../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
@@ -20,7 +20,6 @@ import { TITLE } from "../../utils/constants";
 import { DEVICE_MODE } from "../../utils/constants";
 
 import Tooltip from "@material-ui/core/Tooltip";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const SignUpProviderWithContext = (props: {
   userData: IUserContext;
@@ -53,6 +52,8 @@ const SignUpProviderWithContext = (props: {
 
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPassFocused, setIsPassFocused] = useState(false);
+
+  const deviceMode = useDeviceMode();
 
   const [
     isTermsOfUseDialogDisplayed,
@@ -276,22 +277,6 @@ const SignUpProviderWithContext = (props: {
       setTermsOfUseAcknowledged(!termsOfUseAcknowledged);
     }
   };
-
-  const small = useMediaQuery("(max-width:768px)");
-  const medium = useMediaQuery("(min-width:768px)");
-  const large = useMediaQuery("(min-width:992px)");
-  const xLarge = useMediaQuery("(min-width:1200px)");
-
-  let deviceMode: string;
-  if (small) {
-    deviceMode = DEVICE_MODE.MOBILE;
-  } else if (medium && !large) {
-    deviceMode = DEVICE_MODE.TABLET;
-  } else if (large && !xLarge) {
-    deviceMode = DEVICE_MODE.DESKTOP;
-  } else {
-    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
-  }
 
   return (
     <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>

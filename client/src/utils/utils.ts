@@ -1,3 +1,6 @@
+import { useMediaQuery } from "@material-ui/core";
+import { DEVICE_MODE } from "./constants";
+
 export interface IResponse {
   statusCode: number;
   statusMessage: string;
@@ -160,4 +163,21 @@ export const SETTINGS_EMAIL_NOTIFICATIONS = {
   WEEKLY: "WEEKLY",
   MONTHLY: "MONTHLY",
   NEVER: "NEVER"
+};
+
+export const useDeviceMode = () => {
+  const small = useMediaQuery("(max-width:768px)");
+  const medium = useMediaQuery("(min-width:768px)");
+  const large = useMediaQuery("(min-width:992px)");
+  const xLarge = useMediaQuery("(min-width:1200px)");
+
+  if (small) {
+    return DEVICE_MODE.MOBILE;
+  } else if (medium && !large) {
+    return DEVICE_MODE.TABLET;
+  } else if (large && !xLarge) {
+    return DEVICE_MODE.DESKTOP;
+  } else {
+    return DEVICE_MODE.LARGE_DESKTOP;
+  }
 };

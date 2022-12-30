@@ -6,8 +6,6 @@ import { DEVICE_MODE } from "./../../utils/constants";
 
 import Scrollbars from "react-custom-scrollbars";
 
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-
 import {
   FormLabel,
   FormControl,
@@ -19,6 +17,7 @@ import {
   RadioGroup,
   Typography
 } from "@material-ui/core";
+import { useDeviceMode } from "../../utils/utils";
 
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
@@ -38,6 +37,8 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     handleSortByChange
     // handleDaysActiveChange
   } = props;
+
+  const deviceMode = useDeviceMode();
 
   const listingTypeCheckboxes = listingTypes.map((listingType, index) => {
     return (
@@ -149,22 +150,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     height: "calc(100% - 40px)",
     backgroundColor: "#FFFFFF"
   };
-
-  const small = useMediaQuery("(max-width:768px)");
-  const medium = useMediaQuery("(min-width:768px)");
-  const large = useMediaQuery("(min-width:992px)");
-  const xLarge = useMediaQuery("(min-width:1200px)");
-
-  let deviceMode: string;
-  if (small) {
-    deviceMode = DEVICE_MODE.MOBILE;
-  } else if (medium && !large) {
-    deviceMode = DEVICE_MODE.TABLET;
-  } else if (large && !xLarge) {
-    deviceMode = DEVICE_MODE.DESKTOP;
-  } else {
-    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
-  }
 
   if (deviceMode === DEVICE_MODE.MOBILE) {
     Object.assign(scrollBarsStyle, {

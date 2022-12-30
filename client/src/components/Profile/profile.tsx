@@ -4,7 +4,12 @@ import { History } from "history";
 
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "../../base-requests";
-import { log, ISubscriptionData, IOrganization } from "../../utils/utils";
+import {
+  log,
+  ISubscriptionData,
+  IOrganization,
+  useDeviceMode
+} from "../../utils/utils";
 import {
   STATUS_CODE,
   STATUS_MESSAGE,
@@ -14,7 +19,6 @@ import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "../Search/search-subscription-card";
 import Subscription from "../Subscription/subscription";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;
@@ -44,6 +48,8 @@ const ProfileProviderWithContext = (props: {
   const [archivedSubscriptions, setArchivedSubscriptions] = useState(
     [] as ISubscriptionData[]
   );
+
+  const deviceMode = useDeviceMode();
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -224,22 +230,6 @@ const ProfileProviderWithContext = (props: {
       </div>
     );
   };
-
-  const small = useMediaQuery("(max-width:768px)");
-  const medium = useMediaQuery("(min-width:768px)");
-  const large = useMediaQuery("(min-width:992px)");
-  const xLarge = useMediaQuery("(min-width:1200px)");
-
-  let deviceMode: string;
-  if (small) {
-    deviceMode = DEVICE_MODE.MOBILE;
-  } else if (medium && !large) {
-    deviceMode = DEVICE_MODE.TABLET;
-  } else if (large && !xLarge) {
-    deviceMode = DEVICE_MODE.DESKTOP;
-  } else {
-    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
-  }
 
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (

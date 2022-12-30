@@ -14,7 +14,8 @@ import {
   IFiltersSubscriptionCategory,
   IOrganization,
   IListingType,
-  ISubscriptionData
+  ISubscriptionData,
+  useDeviceMode
 } from "../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import SearchCanvasPlaceholder from "./search-placeholder";
@@ -25,7 +26,6 @@ import SearchSubscriptionCard from "./search-subscription-card";
 import Subscription from "../Subscription/subscription";
 
 import Scrollbars from "react-custom-scrollbars";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
@@ -312,21 +312,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const isUser = !!_userData.user?.userId;
 
-  const small = useMediaQuery("(max-width:768px)");
-  const medium = useMediaQuery("(min-width:768px)");
-  const large = useMediaQuery("(min-width:992px)");
-  const xLarge = useMediaQuery("(min-width:1200px)");
-
-  let deviceMode: string;
-  if (small) {
-    deviceMode = DEVICE_MODE.MOBILE;
-  } else if (medium && !large) {
-    deviceMode = DEVICE_MODE.TABLET;
-  } else if (large && !xLarge) {
-    deviceMode = DEVICE_MODE.DESKTOP;
-  } else {
-    deviceMode = DEVICE_MODE.LARGE_DESKTOP;
-  }
+  const deviceMode = useDeviceMode();
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
     return (
