@@ -107,11 +107,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
 
   const scrollBarsStyle: React.CSSProperties = {
     display: "flex",
-    flex: 1,
+    flexGrow: 0,
     flexDirection: "column",
     margin: "20px 10px 20px 20px",
     borderRadius: 10,
-    height: "calc(100% - 40px)",
     backgroundColor: "#FFFFFF"
   };
 

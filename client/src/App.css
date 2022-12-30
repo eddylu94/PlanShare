@@ -131,3 +131,7 @@ body {
 .b {
   font-weight: 500;
 }
+
+.i {
+  font-style: italic;
+}

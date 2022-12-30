@@ -300,6 +300,7 @@
 
 .subscription-card-basic-info {
   display: flex;
+  justify-content: center;
   color: #686868;
   font-size: 14px;
   min-width: 110px;
@@ -539,10 +540,6 @@
 
 .subscription-card-info-name {
   font-size: 18px;
-  font-weight: 600;
-}
-
-.subscription-card-first-name {
   font-weight: 600;
 }
 

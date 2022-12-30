@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 
 import SearchSubscriptionCard from "../Search/search-subscription-card";
 import Subscription from "../Subscription/subscription";
+import { ClickEvent } from "../../utils/interfaces";
 
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;
@@ -42,11 +43,11 @@ const ProfileProviderWithContext = (props: {
   const [joinedDate, setJoinedDate] = useState(-1);
 
   const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
-    [] as ISubscriptionData[]
+    [] as Array<ISubscriptionData>
   );
 
   const [archivedSubscriptions, setArchivedSubscriptions] = useState(
-    [] as ISubscriptionData[]
+    [] as Array<ISubscriptionData>
   );
 
   const deviceMode = useDeviceMode();
@@ -142,10 +143,7 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const archiveSubscription = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
-  ) => {
+  const archiveSubscription = (event: ClickEvent, id: string) => {
     const postRequestData = {
       subscriptionId: id
     };

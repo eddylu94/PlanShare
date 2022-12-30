@@ -1,25 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
-
-import Tooltip from "@material-ui/core/Tooltip";
+import { ClickEvent } from "../../utils/interfaces";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
   isMobile: boolean;
-  archiveSubscription?: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
-  ) => void;
-  deleteSubscription?: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
-  ) => void;
   isProfile?: boolean;
-  handleSubscriptionCardClick?: (subscriptionId: string) => void;
   isDisplayButtons?: boolean;
   isArchived?: boolean;
+  archiveSubscription?: (event: ClickEvent, id: string) => void;
+  deleteSubscription?: (event: ClickEvent, id: string) => void;
+  handleSubscriptionCardClick?: (subscriptionId: string) => void;
 }
 
 const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
@@ -27,11 +21,11 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     subscription,
     isMobile,
     isProfile,
-    handleSubscriptionCardClick,
     isDisplayButtons,
+    isArchived,
+    handleSubscriptionCardClick,
     archiveSubscription,
-    deleteSubscription,
-    isArchived
+    deleteSubscription
   } = props;
 
   const {
@@ -41,112 +35,10 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     firstName,
     createdDate,
     price,
-    numberOfPeople,
     userId,
     otherSubscription,
     organization
   } = subscription;
-
-  const renderSubscriptionLogo = () => {
-    return (
-      <img
-        alt="Subscription logo"
-        className="subscription-card-subscription-logo"
-        src={subscriptionBrand.logo}
-      />
-    );
-  };
-
-  const renderSubsciptionCardAuthor = () => (
-    <div className="subscription-card-author">
-      {!isProfile ? (
-        <>
-          by{" "}
-          <div className={"subscription-author-detail"}>
-            {userId ? (
-              <>
-                <Link to={`profile?id=${userId}`} style={{ marginRight: 5 }}>
-                  <span className="subscription-card-first-name">
-                    {firstName}
-                  </span>{" "}
-                </Link>
-                <>
-                  at{" "}
-                  <span className="b" style={{ marginLeft: 5 }}>
-                    {organization ? organization.name : "Public"}
-                  </span>
-                  <img
-                    alt="Organization logo"
-                    className="subscription-card-organization-logo"
-                    src={organization ? organization.logo : "/icon.png"}
-                  />
-                </>
-              </>
-            ) : (
-              <>
-                <span className="b" style={{ marginRight: 5 }}>
-                  {firstName}
-                </span>{" "}
-                at{" "}
-                <span className="b" style={{ marginLeft: 5 }}>
-                  {organization ? organization.name : "Public"}
-                </span>
-                <img
-                  alt="Organization logo"
-                  className="subscription-card-organization-logo"
-                  src={organization ? organization.logo : "/icon.png"}
-                />
-              </>
-            )}
-          </div>
-        </>
-      ) : null}
-    </div>
-  );
-
-  const renderSubscriptionInfo = () => {
-    const name =
-      subscriptionBrand.type === "OTHER"
-        ? otherSubscription
-        : subscriptionBrand.name;
-
-    return (
-      <div className="subscription-card-info">
-        <div className="subscription-card-info-name subscription-detail-cropped">
-          {name}
-        </div>
-        {listingDescription ? (
-          <div className="subscription-card-description-container">
-            <div className="subscription-card-description">
-              <span>{listingDescription}</span>
-            </div>
-          </div>
-        ) : null}
-        {!isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
-      </div>
-    );
-  };
-
-  const renderSubscriptionBasicInfo = () => (
-    <div className="subscription-card-basic-info">
-      <div className="subscription-card-date">
-        {getDaysAgoString(new Date(createdDate))}
-      </div>
-      <div className="subscription-card-basic-info-detail">
-        ${price.toFixed(2)} each
-      </div>
-      {numberOfPeople ? (
-        <div className="subscription-card-basic-info-detail">
-          <img
-            alt="Number of people"
-            className="subscription-card-people-icon"
-            src="/people_icon.png"
-          />
-          {numberOfPeople}
-        </div>
-      ) : null}
-    </div>
-  );
 
   const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
 
@@ -158,28 +50,89 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     setIsHoverArchiveButton(false);
   };
 
+  const subscriptionLogo = (
+    <img
+      alt="Subscription logo"
+      className="subscription-card-subscription-logo"
+      src={subscriptionBrand.logo}
+    />
+  );
+
+  const name = <span className="b">{firstName}</span>;
+  const author = userId ? (
+    <Link to={`profile?id=${userId}`}>{name}</Link>
+  ) : (
+    name
+  );
+
+  const subsciptionCardAuthor = (
+    <div className="subscription-card-author">
+      {!isProfile && (
+        <>
+          Posted by{" "}
+          <div className={"subscription-author-detail"}>
+            {author}
+            <img
+              alt="Organization logo"
+              style={{ opacity: !organization ? 0.5 : 1 }}
+              className="subscription-card-organization-logo"
+              src={organization ? organization.logo : "/public_icon.png"}
+            />
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const subscriptionInfo = (
+    <div className="subscription-card-info">
+      <div className="subscription-card-info-name subscription-detail-cropped">
+        {subscriptionBrand.type === "OTHER"
+          ? otherSubscription
+          : subscriptionBrand.name}
+      </div>
+      {listingDescription && (
+        <div className="subscription-card-description-container">
+          <div className="subscription-card-description">
+            <span>{listingDescription}</span>
+          </div>
+        </div>
+      )}
+      {!isMobile && !isProfile && subsciptionCardAuthor}
+    </div>
+  );
+
+  const subscriptionBasicInfo = (
+    <div className="subscription-card-basic-info">
+      <div className="subscription-card-date i">
+        {getDaysAgoString(new Date(createdDate))}
+      </div>
+      <div className="subscription-card-basic-info-detail">
+        ${price.toFixed(2)}
+      </div>
+    </div>
+  );
+
   return (
     <>
       <div
         className="subscription-card"
         tabIndex={0}
-        onClick={() =>
-          handleSubscriptionCardClick ? handleSubscriptionCardClick(_id) : {}
-        }
+        onClick={() => handleSubscriptionCardClick?.(_id)}
       >
         <div
           className="subscription-card-logo-and-info"
           style={{ marginBottom: isProfile ? 10 : 0 }}
         >
-          {renderSubscriptionLogo()}
-          {renderSubscriptionInfo()}
+          {subscriptionLogo}
+          {subscriptionInfo}
         </div>
-        {isMobile && !isProfile ? renderSubsciptionCardAuthor() : null}
-        {renderSubscriptionBasicInfo()}
+        {isMobile && !isProfile && subsciptionCardAuthor}
+        {subscriptionBasicInfo}
       </div>
-      {isDisplayButtons ? (
+      {isDisplayButtons && (
         <div className="subscription-card-buttons">
-          {!isArchived ? (
+          {!isArchived && (
             <Link to={`edit?id=${_id}`}>
               <button className="subscription-card-button">
                 <img
@@ -190,8 +143,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
                 Edit
               </button>
             </Link>
-          ) : null}
-          {!isArchived ? (
+          )}
+          {!isArchived && (
             <Tooltip
               title={"Archived listings will only be visible to you"}
               aria-label="Archive listing"
@@ -202,9 +155,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
                 className="subscription-card-button"
                 onMouseOver={handleMouseOverArchiveButton}
                 onMouseLeave={handleMouseLeaveArchiveButton}
-                onClick={e =>
-                  archiveSubscription ? archiveSubscription(e, _id) : null
-                }
+                onClick={e => archiveSubscription?.(e, _id)}
               >
                 <img
                   alt="Archive"
@@ -214,12 +165,10 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
                 Archive
               </button>
             </Tooltip>
-          ) : null}
+          )}
           <button
             className="subscription-card-button"
-            onClick={e =>
-              deleteSubscription ? deleteSubscription(e, _id) : null
-            }
+            onClick={e => deleteSubscription?.(e, _id)}
           >
             <img
               alt="Delete"
@@ -229,7 +178,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
             Delete
           </button>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
