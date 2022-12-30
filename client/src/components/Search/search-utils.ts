@@ -1,4 +1,4 @@
-import { IListingType, IFiltersSubscriptionCategory } from "../../utils/utils";
+import { IFiltersSubscriptionCategory } from "../../utils/utils";
 
 export const SORT_BY = {
   DATE_ASC: "date_asc",
@@ -9,8 +9,6 @@ export const SORT_BY = {
 
 export interface ISearchFiltersProps {
   isDrawer?: boolean;
-  listingTypes: IListingType[];
-  isSubscriptionsType: boolean;
   isForSaleType: boolean;
   isHousingType: boolean;
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
@@ -18,10 +16,6 @@ export interface ISearchFiltersProps {
   filtersPrice: number[];
   filtersSortBy: string;
   filtersDaysActive: number;
-  toggleListingType: (
-    event: React.ChangeEvent<HTMLInputElement>,
-    type: string
-  ) => void;
   toggleFiltersSubscriptionCategory: (
     event: React.ChangeEvent<HTMLInputElement>,
     subscriptionCategoryId: string

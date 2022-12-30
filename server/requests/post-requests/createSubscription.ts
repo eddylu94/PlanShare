@@ -2,7 +2,6 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
   ERROR_TYPE,
@@ -13,8 +12,7 @@ import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
-  SUBSCRIPTION_STATUS,
-  LISTING_TYPE
+  SUBSCRIPTION_STATUS
 } from "./../../constants";
 
 export const createSubscription = (
@@ -34,44 +32,15 @@ export const createSubscription = (
 
       const { subscriptionData } = obj;
 
-      let newSubscriptionData;
-
-      switch (subscriptionData.listingType) {
-        case LISTING_TYPE.FOR_SALE:
-          newSubscriptionData = {
-            userId: findRes._id,
-            username,
-            createdDate: new Date(),
-            price: parseFloat(subscriptionData.price),
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
-          break;
-        case LISTING_TYPE.HOUSING:
-          newSubscriptionData = {
-            userId: findRes._id,
-            username,
-            createdDate: new Date(),
-            price: parseFloat(subscriptionData.price),
-            numBedrooms: parseInt(subscriptionData.numBedrooms),
-            numBathrooms: parseInt(subscriptionData.numBathrooms),
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
-          break;
-        case LISTING_TYPE.SUBSCRIPTION:
-        default:
-          newSubscriptionData = {
-            userId: findRes._id,
-            username,
-            createdDate: new Date(),
-            numberOfPeople: parseInt(subscriptionData.numberOfPeople),
-            price: parseFloat(subscriptionData.price),
-            subscriptionBrandName: subscriptionData.subscriptionBrand.name,
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          };
-          break;
-      }
-
-      Object.assign(subscriptionData, newSubscriptionData);
+      Object.assign(subscriptionData, {
+        userId: findRes._id,
+        username,
+        createdDate: new Date(),
+        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
+        price: parseFloat(subscriptionData.price),
+        subscriptionBrandName: subscriptionData.subscriptionBrand.name,
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      });
 
       const dbo = db.db(DATABASE_NAME);
 

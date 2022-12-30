@@ -133,7 +133,7 @@ const SearchCanvas = (props: ISearchCanvasProps) => {
               <input
                 type="text"
                 className="search-text-input"
-                placeholder="Search for a subscription"
+                placeholder="Search for a listing"
                 value={filtersText}
                 onChange={handleTextChange}
                 autoFocus

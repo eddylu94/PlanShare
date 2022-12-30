@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 
 import Tooltip from "@material-ui/core/Tooltip";
-import { LISTING_TYPE } from "../../utils/constants";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
@@ -37,7 +36,6 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
   const {
     _id,
-    listingType,
     subscriptionBrand,
     listingDescription,
     username,
@@ -49,20 +47,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   } = subscription;
 
   const renderSubscriptionLogo = () => {
-    let logo;
-
-    switch (listingType) {
-      case LISTING_TYPE.FOR_SALE:
-        logo = "https://planshare.io/for_sale_icon.png";
-        break;
-      case LISTING_TYPE.HOUSING:
-        logo = "./icon.png";
-        break;
-      case LISTING_TYPE.SUBSCRIPTION:
-      default:
-        logo = subscriptionBrand.logo;
-        break;
-    }
+    const logo = subscriptionBrand.logo;
 
     return (
       <img
@@ -101,23 +86,10 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   );
 
   const renderSubscriptionInfo = () => {
-    let name;
-
-    switch (listingType) {
-      case LISTING_TYPE.FOR_SALE:
-        name = subscription.listingTitle;
-        break;
-      case LISTING_TYPE.HOUSING:
-        name = subscription.listingTitle;
-        break;
-      case LISTING_TYPE.SUBSCRIPTION:
-      default:
-        name =
-          subscriptionBrand.type === "OTHER"
-            ? otherSubscription
-            : subscriptionBrand.name;
-        break;
-    }
+    const name =
+      subscriptionBrand.type === "OTHER"
+        ? otherSubscription
+        : subscriptionBrand.name;
 
     return (
       <div className="subscription-card-info">
@@ -189,7 +161,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       {isDisplayButtons ? (
         <div className="subscription-card-buttons">
           {!isArchived ? (
-            <Link to={`edit?id=${_id}&type=${listingType.toLocaleLowerCase()}`}>
+            <Link to={`edit?id=${_id}`}>
               <button className="subscription-card-button">
                 <img
                   alt="Edit"

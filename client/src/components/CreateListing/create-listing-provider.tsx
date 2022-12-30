@@ -12,11 +12,7 @@ import {
   SLACK_HOOK,
   ERROR_TYPE
 } from "./../../base-requests";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  LISTING_TYPE
-} from "./../../utils/constants";
+import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import {
   log,
   ISubscriptionCategory,
@@ -49,22 +45,6 @@ const CreateListingProviderWithContext = (props: {
   // eslint-disable-next-line
   const [subscriptionId, setSubscriptionId] = useState(
     subscriptionIdParam ?? ""
-  );
-
-  const getListingType = (param: string) => {
-    param = param?.toLocaleUpperCase();
-
-    return param === LISTING_TYPE.FOR_SALE ||
-      param === LISTING_TYPE.HOUSING ||
-      param === LISTING_TYPE.SUBSCRIPTION
-      ? param
-      : LISTING_TYPE.SUBSCRIPTION;
-  };
-
-  const listingTypeParam = params.get("type") as string;
-  // eslint-disable-next-line
-  const [listingType, setListingType] = useState(
-    getListingType(listingTypeParam)
   );
 
   const [isUserSelected, setIsUserSelected] = useState(false); // Whether the user has selected a subscription type
@@ -325,41 +305,14 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    let subscriptionData;
-
-    switch (listingType) {
-      case LISTING_TYPE.FOR_SALE:
-        subscriptionData = {
-          listingType: LISTING_TYPE.FOR_SALE,
-          listingTitle,
-          listingDescription,
-          subscriptionUrl,
-          price
-        };
-        break;
-      case LISTING_TYPE.HOUSING:
-        subscriptionData = {
-          listingType: LISTING_TYPE.HOUSING,
-          listingTitle,
-          listingDescription,
-          numBedrooms,
-          numBathrooms,
-          price
-        };
-        break;
-      case LISTING_TYPE.SUBSCRIPTION:
-      default:
-        subscriptionData = {
-          listingType: LISTING_TYPE.SUBSCRIPTION,
-          subscriptionCategory: subscriptionCategorySelection,
-          subscriptionBrand: subscriptionBrandSelection,
-          subscriptionUrl,
-          listingDescription,
-          numberOfPeople,
-          price
-        };
-        break;
-    }
+    const subscriptionData = {
+      subscriptionCategory: subscriptionCategorySelection,
+      subscriptionBrand: subscriptionBrandSelection,
+      subscriptionUrl,
+      listingDescription,
+      numberOfPeople,
+      price
+    };
 
     const postRequestData = { subscriptionData };
 
@@ -446,35 +399,16 @@ const CreateListingProviderWithContext = (props: {
   }, [subscriptionUrl]);
 
   useEffect(() => {
-    let newIsFormDisabled;
-
-    switch (listingType) {
-      case LISTING_TYPE.FOR_SALE:
-        newIsFormDisabled = !(listingTitle && listingDescription && price);
-        break;
-      case LISTING_TYPE.HOUSING:
-        newIsFormDisabled = !(
-          listingTitle &&
-          listingDescription &&
-          price &&
-          numBathrooms
-        );
-        break;
-      case LISTING_TYPE.SUBSCRIPTION:
-      default:
-        newIsFormDisabled = !(
-          listingDescription &&
-          numberOfPeople &&
-          price &&
-          isSubscriptionUrlValid &&
-          (!isOtherInputDisplayed || otherSubscription)
-        );
-        break;
-    }
+    let newIsFormDisabled = !(
+      listingDescription &&
+      numberOfPeople &&
+      price &&
+      isSubscriptionUrlValid &&
+      (!isOtherInputDisplayed || otherSubscription)
+    );
 
     setIsFormDisabled(newIsFormDisabled);
   }, [
-    listingType,
     listingTitle,
     listingDescription,
     numberOfPeople,
@@ -505,8 +439,6 @@ const CreateListingProviderWithContext = (props: {
 
   return isRetrievedListingCreationDataDirty ? (
     <CreateListingCanvas
-      listingType={listingType}
-      setListingType={setListingType}
       subscriptionId={subscriptionId}
       handleInputChange={handleInputChange}
       subscriptionCategories={subscriptionCategories}

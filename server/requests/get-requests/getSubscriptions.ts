@@ -1,18 +1,12 @@
 import mongodb from "mongodb";
 
-import {
-  authenticate,
-  getDomain,
-  postSuccess,
-  postFailure
-} from "./../../utils";
+import { authenticate, postSuccess, postFailure } from "./../../utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
   SORT_BY,
-  SUBSCRIPTION_STATUS,
-  LISTING_TYPE
+  SUBSCRIPTION_STATUS
 } from "./../../constants";
 
 export const getSubscriptions = (
@@ -23,21 +17,9 @@ export const getSubscriptions = (
   console.log("Retrieving subscriptions...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
-      const [db, findRes] = res;
+      const [db] = res;
 
-      const email = findRes.email;
-
-      const {
-        isSubscriptionsType,
-        isForSaleType,
-        isHousingType,
-        t,
-        sc,
-        gs,
-        sb,
-        da,
-        p
-      } = postReq.query;
+      const { t, sc, gs, sb, da, p } = postReq.query;
 
       const subscriptionCategories = sc.split(",");
 
@@ -58,154 +40,55 @@ export const getSubscriptions = (
 
       const promises = [];
 
-      if (isSubscriptionsType === "true") {
-        let sort: any;
-        switch (sb) {
-          case SORT_BY.DATE_DES:
-            sort = { createdDate: -1 };
-            break;
-          case SORT_BY.DATE_ASC:
-            sort = { createdDate: 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-            sort = { "subscriptionBrand.name": 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_DES:
-            sort = { "subscriptionBrand.name": -1 };
-            break;
-          default:
-            sort = { createdDate: -1 };
-            break;
-        }
-
-        const findQuery = {
-          "subscriptionBrand.type": { $in: subscriptionCategories },
-          numberOfPeople: {
-            $gte: minGroupSize,
-            $lte: maxGroupSize
-          },
-          price: {
-            $gte: minPrice,
-            $lte: maxPrice
-          },
-          createdDate: {
-            $lte: new Date(currentDate),
-            $gte: new Date(oldestDate)
-          },
-          listingType: LISTING_TYPE.SUBSCRIPTION,
-          status: SUBSCRIPTION_STATUS.ACTIVE
-        };
-
-        if (t.length) {
-          Object.assign(findQuery, {
-            $text: { $search: t }
-          });
-        }
-
-        const subscriptionsPromise = dbo
-          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-          .find(findQuery)
-          .sort(sort)
-          .toArray();
-
-        promises.push(subscriptionsPromise);
+      let sort: any;
+      switch (sb) {
+        case SORT_BY.DATE_DES:
+          sort = { createdDate: -1 };
+          break;
+        case SORT_BY.DATE_ASC:
+          sort = { createdDate: 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
+          sort = { "subscriptionBrand.name": 1 };
+          break;
+        case SORT_BY.SUBSCRIPTION_BRAND_DES:
+          sort = { "subscriptionBrand.name": -1 };
+          break;
+        default:
+          sort = { createdDate: -1 };
+          break;
       }
 
-      if (isForSaleType === "true") {
-        let sort: any;
-        switch (sb) {
-          case SORT_BY.DATE_DES:
-            sort = { createdDate: -1 };
-            break;
-          case SORT_BY.DATE_ASC:
-            sort = { createdDate: 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-            sort = { listingTitle: 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_DES:
-            sort = { listingTitle: -1 };
-            break;
-          default:
-            sort = { createdDate: -1 };
-            break;
-        }
+      const findQuery = {
+        "subscriptionBrand.type": { $in: subscriptionCategories },
+        numberOfPeople: {
+          $gte: minGroupSize,
+          $lte: maxGroupSize
+        },
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice
+        },
+        createdDate: {
+          $lte: new Date(currentDate),
+          $gte: new Date(oldestDate)
+        },
+        status: SUBSCRIPTION_STATUS.ACTIVE
+      };
 
-        const findQuery = {
-          price: {
-            $gte: minPrice,
-            $lte: maxPrice
-          },
-          createdDate: {
-            $lte: new Date(currentDate),
-            $gte: new Date(oldestDate)
-          },
-          listingType: LISTING_TYPE.FOR_SALE,
-          status: SUBSCRIPTION_STATUS.ACTIVE
-        };
-
-        if (t.length) {
-          Object.assign(findQuery, {
-            $text: { $search: t }
-          });
-        }
-
-        const forSalePromise = dbo
-          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-          .find(findQuery)
-          .sort(sort)
-          .toArray();
-
-        promises.push(forSalePromise);
+      if (t.length) {
+        Object.assign(findQuery, {
+          $text: { $search: t }
+        });
       }
 
-      if (isHousingType === "true") {
-        let sort: any;
-        switch (sb) {
-          case SORT_BY.DATE_DES:
-            sort = { createdDate: -1 };
-            break;
-          case SORT_BY.DATE_ASC:
-            sort = { createdDate: 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-            sort = { listingTitle: 1 };
-            break;
-          case SORT_BY.SUBSCRIPTION_BRAND_DES:
-            sort = { listingTitle: -1 };
-            break;
-          default:
-            sort = { createdDate: -1 };
-            break;
-        }
+      const subscriptionsPromise = dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .find(findQuery)
+        .sort(sort)
+        .toArray();
 
-        const findQuery = {
-          price: {
-            $gte: minPrice,
-            $lte: maxPrice
-          },
-          createdDate: {
-            $lte: new Date(currentDate),
-            $gte: new Date(oldestDate)
-          },
-          listingType: LISTING_TYPE.HOUSING,
-          status: SUBSCRIPTION_STATUS.ACTIVE
-        };
-
-        if (t.length) {
-          Object.assign(findQuery, {
-            $text: { $search: t }
-          });
-        }
-
-        const housingPromise = dbo
-          .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-          .find(findQuery)
-          .sort(sort)
-          .toArray();
-
-        promises.push(housingPromise);
-      }
+      promises.push(subscriptionsPromise);
 
       return Promise.all(promises)
         .then(results => {

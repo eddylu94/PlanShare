@@ -5,16 +5,8 @@ import { History } from "history";
 import { IUserContext, UserDataContext } from "./../../user-context-provider";
 import SearchCanvas from "./search-canvas";
 import { baseGetRequest } from "./../../base-requests";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  LISTING_TYPE
-} from "../../utils/constants";
-import {
-  log,
-  IFiltersSubscriptionCategory,
-  IListingType
-} from "./../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+import { log, IFiltersSubscriptionCategory } from "./../../utils/utils";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import SearchCanvasPlaceholder from "./search-canvas-placeholder";
 
@@ -44,12 +36,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersText, setFiltersText] = useState("");
 
-  const [listingTypes, setListingTypes] = useState([] as IListingType[]);
-
-  const [isSubscriptionsType, setIsSubscriptionsType] = useState(true);
-  const [isForSaleType, setIsForSaleType] = useState(true);
-  const [isHousingType, setIsHousingType] = useState(true);
-
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
@@ -57,7 +43,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
 
-  const [filtersPrice, setFiltersPrice] = useState([0, 100]);
+  const [filtersPrice, setFiltersPrice] = useState([0, 1000]);
 
   const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
 
@@ -95,18 +81,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       retrieveSubscriptionsErrorHandler,
       _userData.user?.auth
     );
-  };
-
-  const toggleListingType = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    type: string
-  ) => {
-    const list = listingTypes.slice(0);
-    let listingType = listingTypes.find(
-      currentListingType => currentListingType.type === type
-    ) as IListingType;
-    Object.assign(listingType, { isSelected: !listingType.isSelected });
-    setListingTypes(list);
   };
 
   const toggleFiltersSubscriptionCategory = (
@@ -193,32 +167,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     );
   };
 
-  const retrieveListingTypesResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-
-      const types = body.listingTypes as IListingType[];
-      const typesData = types.map(listingType =>
-        Object.assign(listingType, { isSelected: true })
-      );
-      setListingTypes(typesData);
-    }
-  };
-
-  const retrieveListingTypesErrorHandler = (error: any) => {
-    log(error);
-  };
-
-  const retrieveListingTypes = () => {
-    baseGetRequest(
-      "getlistingtypes",
-      [],
-      retrieveListingTypesResponseHandler,
-      retrieveListingTypesErrorHandler,
-      _userData.user?.auth
-    );
-  };
-
   useEffect(() => {
     if (_throttle.current) {
       clearTimeout(_throttle.current);
@@ -233,9 +181,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
     _throttle.current = setTimeout(() => {
       retrieveSubscriptions([
-        { isSubscriptionsType }, // Subscription type selected
-        { isForSaleType }, // For Sale type selected
-        { isHousingType }, // Housing type selected
         { t: filtersText },
         { sc }, // Subscription category
         { gs: filtersGroupSize }, // Group size
@@ -247,9 +192,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     // eslint-disable-next-line
   }, [
     _throttle,
-    isSubscriptionsType,
-    isForSaleType,
-    isHousingType,
     filtersText,
     filtersSubscriptionCategories,
     filtersGroupSize,
@@ -259,40 +201,17 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   ]);
 
   useEffect(() => {
-    const subscriptionsType = listingTypes.find(
-      listingType => listingType.type === LISTING_TYPE.SUBSCRIPTION
-    );
-    setIsSubscriptionsType(!!subscriptionsType?.isSelected);
-
-    const forSaleType = listingTypes.find(
-      listingType => listingType.type === LISTING_TYPE.FOR_SALE
-    );
-    setIsForSaleType(!!forSaleType?.isSelected);
-
-    const housingType = listingTypes.find(
-      listingType => listingType.type === LISTING_TYPE.HOUSING
-    );
-    setIsHousingType(!!housingType?.isSelected);
-  }, [listingTypes]);
-
-  useEffect(() => {
     // retrieveSubscriptions();
-    retrieveListingTypes();
     retrieveSubscriptionCategories();
     // eslint-disable-next-line
   }, []);
 
   const searchFilters = {
-    listingTypes,
-    isSubscriptionsType,
-    isForSaleType,
-    isHousingType,
     filtersSubscriptionCategories,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
-    toggleListingType,
     toggleFiltersSubscriptionCategory,
     handleGroupSizeChange,
     handlePriceChange,

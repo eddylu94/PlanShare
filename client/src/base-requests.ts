@@ -1,6 +1,7 @@
 import request from "request";
 
-export const BASE_URL = `https://planshare.io/backend`;
+// export const BASE_URL = `https://planshare.io/backend`;
+export const BASE_URL = `http://localhost:36322`;
 
 export const SOCKET_URL = "https://planshare.io/";
 
@@ -62,15 +63,19 @@ export const basePostRequest = (
 };
 
 export const ERROR_TYPE = {
-	CLIENT: 'CLIENT',
-	SERVER: 'SERVER'
+  CLIENT: "CLIENT",
+  SERVER: "SERVER"
 };
 
 export const SLACK_HOOK = {
-	SIGNUPS: 'https://hooks.slack.com/services/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',
-	ERRORS: 'https://hooks.slack.com/services/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',
-	POSTS: 'https://hooks.slack.com/services/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',
-	MESSAGES: 'https://hooks.slack.com/services/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'
+  SIGNUPS:
+    "https://hooks.slack.com/services/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",
+  ERRORS:
+    "https://hooks.slack.com/services/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",
+  POSTS:
+    "https://hooks.slack.com/services/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",
+  MESSAGES:
+    "https://hooks.slack.com/services/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"
 };
 
 export const slackPostRequest = (slackHook: string, data: any) => {

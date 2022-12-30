@@ -1,5 +1,4 @@
 import { getValidationEmail } from "./get-requests/getValidationEmail";
-import { getListingTypes } from "./get-requests/getListingTypes";
 import { getSubscriptionCategories } from "./get-requests/getSubscriptionCategories";
 import { getSubscriptionBrands } from "./get-requests/getSubscriptionBrands";
 import { getSubscriptions } from "./get-requests/getSubscriptions";
@@ -17,7 +16,6 @@ import { getConversationsList } from "./get-requests/getConversationsList";
 
 const getRequests = {
   getValidationEmail,
-  getListingTypes,
   getSubscriptionCategories,
   getSubscriptionBrands,
   getSubscriptions,
