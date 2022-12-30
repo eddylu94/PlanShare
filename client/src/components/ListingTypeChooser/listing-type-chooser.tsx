@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import { baseGetRequest } from "./../../base-requests";
+import { baseGetRequest } from "../../base-requests";
 import { STATUS_CODE, LISTING_TYPE } from "../../utils/constants";
-import { log, IListingType } from "./../../utils/utils";
-import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import ListingTypeChooserCanvas from "./listing-type-chooser-canvas";
+import { log, IListingType } from "../../utils/utils";
+import { IUserContext, UserDataContext } from "../../user-context-provider";
 
 const ListingTypeChooserProviderWithContext = (props: {
   userData: IUserContext;
@@ -73,11 +72,27 @@ const ListingTypeChooserProviderWithContext = (props: {
     // eslint-disable-next-line
   }, []);
 
+  const cards = listingTypes.map((listingType, i) => (
+    <div
+      key={"listing-card-" + i}
+      className="organizations-organization organizations-organization-card"
+      onClick={e => handleListingTypeSelection(e, listingType.type)}
+    >
+      <img alt="Amazon" src={listingType.icon} className="listing-type-icon" />
+      <div className="listing-type-label">{listingType.name}</div>
+    </div>
+  ));
+
   return (
-    <ListingTypeChooserCanvas
-      listingTypes={listingTypes}
-      handleListingTypeSelection={handleListingTypeSelection}
-    />
+    <div
+      className="page-container"
+      style={{ alignItems: "center", justifyContent: "center" }}
+    >
+      <form className="form-container" onSubmit={() => {}} noValidate>
+        <h2 className="form-header">{"Choose listing type"}</h2>
+        {cards}
+      </form>
+    </div>
   );
 };
 
