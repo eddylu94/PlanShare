@@ -58,55 +58,6 @@ const Organizations = () => {
           <img alt="Google" src="goog_logo.png" className="organization-logo" />
           <div className="organizations-label">Google</div>
         </div>
-
-        {/* <h4>Universities</h4>
-
-        <div className="organizations-organization">
-          <img
-            alt="McGill University"
-            src="mcgill_u_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">McGill University</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="University of Toronto"
-            src="u_of_toronto_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">University of Toronto</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="Queen's University"
-            src="queensu_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">Queen's University</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="Washington University, St. Louis"
-            src="washu_stl_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">
-            Washington University, St. Louis
-          </div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="University of Washington"
-            src="u_of_wa_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">University of Washington</div>
-        </div> */}
       </div>
     </div>
   );

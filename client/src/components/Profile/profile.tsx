@@ -1,9 +1,18 @@
+// Third-party libraries
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
 
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+// Components
+import SearchSubscriptionCard from "../Search/search-subscription-card";
+import Subscription from "../Subscription/subscription";
+
+// API
 import { baseGetRequest, basePostRequest } from "../../base-requests";
+
+// Utilities
+import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { ClickEvent } from "../../utils/interfaces";
 import {
   log,
   ISubscriptionData,
@@ -15,26 +24,27 @@ import {
   STATUS_MESSAGE,
   DEVICE_MODE
 } from "../../utils/constants";
-import { Link } from "react-router-dom";
-
-import SearchSubscriptionCard from "../Search/search-subscription-card";
-import Subscription from "../Subscription/subscription";
-import { ClickEvent } from "../../utils/interfaces";
 
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
   location: Location;
 }) => {
-  const _userData = props.userData;
+  const { history, location, userData: _userData } = props;
+
+  if (!_userData.user?.auth) {
+    history.push("/signup");
+  }
+
+  log(_userData);
+
+  const params = new URLSearchParams(location.search);
+  const profileUserId = params.get("id");
+
+  const deviceMode = useDeviceMode();
 
   // Whether at least one request has been executed for profile
   const [isRetrievedProfileDirty, setIsRetrievedProfileDirty] = useState(false);
-
-  const { history, location } = props;
-
-  var params = new URLSearchParams(location.search);
-  const profileUserId = params.get("id");
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
 
@@ -49,14 +59,6 @@ const ProfileProviderWithContext = (props: {
   const [archivedSubscriptions, setArchivedSubscriptions] = useState(
     [] as Array<ISubscriptionData>
   );
-
-  const deviceMode = useDeviceMode();
-
-  if (!_userData.user?.auth) {
-    history.push("/signup");
-  }
-
-  log(_userData);
 
   const closeModal = () => {
     setSelectedSubscription("");
@@ -165,10 +167,7 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const deleteSubscription = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-    id: string
-  ) => {
+  const deleteSubscription = (event: ClickEvent, id: string) => {
     const postRequestData = {
       subscriptionId: id
     };
@@ -211,23 +210,20 @@ const ProfileProviderWithContext = (props: {
   const isDifferentUser = !!(
     profileUserId && profileUserId !== (_userData.user?.userId as string)
   );
-  const otherUserId = profileUserId as string;
 
-  const renderOrganization = () => {
-    return (
-      <div className="profile-detail-container">
-        <div className="profile-detail-header">Member of:</div>
-        <div className="profile-organization">
-          <img
-            alt="Organization logo"
-            className="profile-organization-logo"
-            src={organization.logo}
-          />
-          <div className="profile-detail-name">{organization.name}</div>
-        </div>
+  const organizationDetails = (
+    <div className="profile-detail-container">
+      <div className="profile-detail-header">Member of:</div>
+      <div className="profile-organization">
+        <img
+          alt="Organization logo"
+          className="profile-organization-logo"
+          src={organization.logo}
+        />
+        <div className="profile-detail-name">{organization.name}</div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (
@@ -299,7 +295,7 @@ const ProfileProviderWithContext = (props: {
   return isRetrievedProfileDirty ? (
     <div className="page-container" style={{ alignItems: "center" }}>
       <div className="page-wrapper">
-        {selectedSubscription ? (
+        {selectedSubscription && (
           <>
             <div className="overlay" onClick={closeModal}></div>
             <div className="search-modal-container">
@@ -315,7 +311,7 @@ const ProfileProviderWithContext = (props: {
               </div>
             </div>
           </>
-        ) : null}
+        )}
         <div className="profile-container">
           <div className="profile-wrapper">
             <div className="profile-header">
@@ -332,7 +328,7 @@ const ProfileProviderWithContext = (props: {
               <div className="profile-detail-container">
                 <div className="profile-detail-header">Contact:</div>
                 <div className="profile-message-link-wrapper">
-                  <Link to={`messages?id=${otherUserId}`}>
+                  <Link to={`messages?id=${profileUserId}`}>
                     <button className="profile-message-button">
                       {`Message ${firstName}`}
                       <img
@@ -345,7 +341,7 @@ const ProfileProviderWithContext = (props: {
                 </div>
               </div>
             ) : null}
-            {organization ? renderOrganization() : null}
+            {organization ? organizationDetails : null}
             <div className="profile-detail-container">
               <div className="profile-detail-header">Member since:</div>
               <div
@@ -358,7 +354,7 @@ const ProfileProviderWithContext = (props: {
           </div>
         </div>
         {profileSubscriptions}
-        {!otherUserId || currentUserId === otherUserId
+        {!profileUserId || currentUserId === profileUserId
           ? profileArchivedSubscriptions
           : null}
       </div>
