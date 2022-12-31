@@ -6,6 +6,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 // API
 import {
@@ -376,30 +378,35 @@ const CreateListingProviderWithContext = (props: {
       return null;
     }
 
-    const options = subscriptionBrands.map((subscriptionBrand, i) => (
-      <option
-        key={"subscription-brand-" + i}
-        value={subscriptionBrand.subscriptionBrandId}
-      >
-        {subscriptionBrand.name}
-      </option>
-    ));
+    const options = subscriptionBrands.map((subscriptionBrand, i) => ({
+      label: subscriptionBrand.name,
+      value: subscriptionBrand.subscriptionBrandId
+    }));
+
     return (
-      <select
-        className="form-text-input form-input select-input required-field"
-        name={FORM_INPUT_TYPE.SUBSCRIPTION_BRAND}
-        onChange={e => {
-          const brand = subscriptionBrands.find(
-            brand => e.target.value === brand.subscriptionBrandId
-          );
+      <Autocomplete
+        id="free-solo-demo"
+        onChange={(e, value) => {
+          const brand = subscriptionBrands.find(brand => value === brand.name);
           if (brand) {
             setSubscriptionBrandSelection(brand);
           }
         }}
-        value={subscriptionBrandSelection.subscriptionBrandId}
-      >
-        {options}
-      </select>
+        freeSolo
+        options={options.map(option => option.label)}
+        renderInput={params => (
+          <TextField
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              type: "search"
+            }}
+            InputLabelProps={{ shrink: false }}
+            placeholder="Category"
+          />
+        )}
+      />
     );
   };
 
@@ -420,13 +427,17 @@ const CreateListingProviderWithContext = (props: {
 
         <div className="subscription-fields">
           <div className="form-field">
-            <FormLabel label={"Subscription type:"} isRequired />
+            <FormLabel label="Category:" isRequired />
             {renderSubscriptionCategoryDropdown()}
           </div>
 
           <div className="subscription-field-and-logo">
-            <div className="form-field subscription-field">
-              <FormLabel label={"Subscription:"} isRequired />
+            {/* TODO: Replace "marginLeft: 0" with proper CSS styling */}
+            <div
+              className="form-field subscription-field"
+              style={{ marginLeft: 0, width: "100%" }}
+            >
+              <FormLabel label="Subcategory:" isRequired />
               {renderSubscriptionBrandDropdown()}
             </div>
 
