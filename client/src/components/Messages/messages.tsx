@@ -1,9 +1,14 @@
+// Third-party libraries
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
+import moment from "moment";
+import socketIOClient from "socket.io-client";
 
+// Components
 import Conversation from "./conversation";
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+
+// API
 import {
   SOCKET_IO_PATH,
   baseGetRequest,
@@ -13,6 +18,9 @@ import {
   slackPostRequest,
   SLACK_HOOK
 } from "../../base-requests";
+
+// Utilities
+import { IUserContext, UserDataContext } from "../../user-context-provider";
 import {
   log,
   IConversationSummary,
@@ -25,21 +33,18 @@ import {
   STATUS_MESSAGE,
   DEVICE_MODE
 } from "../../utils/constants";
-import moment from "moment";
-import socketIOClient from "socket.io-client";
 
 const MessagesProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
   location: Location;
 }) => {
-  const _userData = props.userData;
+  let _firstConversationRetrieval = false;
+  let _conversationByIdRetrieval = 0;
+
+  const { history, location, userData: _userData } = props;
 
   const currentUserId = _userData.user?.userId as string;
-
-  const { history, location } = props;
-
-  let _firstConversationRetrieval = false;
 
   const [
     isRetrievedConversationsDirty,
@@ -61,9 +66,7 @@ const MessagesProviderWithContext = (props: {
 
   const deviceMode = useDeviceMode();
 
-  let conversationByIdRetrieval = 0;
-
-  var params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(location.search);
   const [otherUserId, setOtherUserId] = useState(params.get("id") as string);
 
   const [sockets, setSockets] = useState({} as any);
@@ -81,8 +84,9 @@ const MessagesProviderWithContext = (props: {
       history.push("/validate");
     }
 
-    let newConversationsList = data?.body
-      ?.conversationsList as IConversationSummary[];
+    let newConversationsList = data?.body?.conversationsList as Array<
+      IConversationSummary
+    >;
     if (newConversationsList) {
       setIsRetrievedConversationsDirty(true);
 
@@ -202,17 +206,18 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversationById = () => {
-    if (conversationId) {
-      if (new Date().getTime() - conversationByIdRetrieval >= 500) {
-        conversationByIdRetrieval = new Date().getTime();
-        baseGetRequest(
-          "getconversationbyid",
-          [{ conversationId }],
-          retrieveConversationByIdResponseHandler,
-          retrieveConversationByIdErrorHandler,
-          _userData.user?.auth
-        );
-      }
+    if (
+      conversationId &&
+      new Date().getTime() - _conversationByIdRetrieval >= 500
+    ) {
+      _conversationByIdRetrieval = new Date().getTime();
+      baseGetRequest(
+        "getconversationbyid",
+        [{ conversationId }],
+        retrieveConversationByIdResponseHandler,
+        retrieveConversationByIdErrorHandler,
+        _userData.user?.auth
+      );
     }
   };
 
@@ -335,8 +340,6 @@ const MessagesProviderWithContext = (props: {
     setIsConversationModalOpen(false);
   };
 
-  const userId = otherUserId as string;
-
   const renderConversationSummary = (
     conversation: IConversationSummary,
     index: number
@@ -344,30 +347,24 @@ const MessagesProviderWithContext = (props: {
     const { firstName, lastMessage } = conversation;
     const conversationSummaryConversationId = conversation.conversationId;
 
-    let lastMessageComponent: any;
-    if (lastMessage) {
-      const { date, message, firstName } = lastMessage;
-      lastMessageComponent = (
-        <>
-          <div className="message-summary-message">{`${firstName}: ${message}`}</div>
-          <div className="message-summary-date">
-            {moment(date).format("lll")}
-          </div>
-        </>
-      );
-    } else {
-      lastMessageComponent = (
-        <>
-          <div
-            className="message-summary-message"
-            style={{ fontStyle: "italic" }}
-          >
-            New draft
-          </div>
-          <div className="message-summary-date"></div>
-        </>
-      );
-    }
+    const lastMessageComponent = lastMessage ? (
+      <>
+        <div className="message-summary-message">{`${lastMessage.firstName}: ${lastMessage.message}`}</div>
+        <div className="message-summary-date">
+          {moment(lastMessage.date).format("lll")}
+        </div>
+      </>
+    ) : (
+      <>
+        <div
+          className="message-summary-message"
+          style={{ fontStyle: "italic" }}
+        >
+          New draft
+        </div>
+        <div className="message-summary-date"></div>
+      </>
+    );
 
     return lastMessage ||
       conversationId === conversationSummaryConversationId ||
@@ -402,13 +399,13 @@ const MessagesProviderWithContext = (props: {
     (conversationListComponent && conversationListComponent.length > 0) ||
     conversationId ? (
       <div className="messages-container">
-        {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (
+        {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen && (
           <div className="conversation-modal">
             <Conversation
               isConversationModalOpen={isConversationModalOpen}
               currentUserId={currentUserId}
               firstName={firstName}
-              userId={userId}
+              userId={otherUserId}
               messages={messages}
               text={text}
               handleChange={handleChange}
@@ -417,22 +414,22 @@ const MessagesProviderWithContext = (props: {
               handleBackButtonClick={handleBackButtonClick}
             />
           </div>
-        ) : null}
+        )}
         <div className="message-summaries-pane">
           {conversationListComponent}
         </div>
-        {deviceMode !== DEVICE_MODE.MOBILE ? (
+        {deviceMode !== DEVICE_MODE.MOBILE && (
           <Conversation
             currentUserId={currentUserId}
             firstName={firstName}
-            userId={userId}
+            userId={otherUserId}
             messages={messages}
             text={text}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
             handleConversationSelection={handleConversationSelection}
           />
-        ) : null}
+        )}
       </div>
     ) : (
       <div className="messages-container">

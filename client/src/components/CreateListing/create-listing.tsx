@@ -7,6 +7,15 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 
+// API
+import {
+  baseGetRequest,
+  basePostRequest,
+  slackPostRequest,
+  SLACK_HOOK,
+  ERROR_TYPE
+} from "../../base-requests";
+
 // Utilities
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { FORM_INPUT_TYPE } from "./create-listing-utils";
@@ -17,15 +26,6 @@ import {
   ISubscriptionBrand,
   isValidURL
 } from "../../utils/utils";
-
-// API
-import {
-  baseGetRequest,
-  basePostRequest,
-  slackPostRequest,
-  SLACK_HOOK,
-  ERROR_TYPE
-} from "../../base-requests";
 
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;

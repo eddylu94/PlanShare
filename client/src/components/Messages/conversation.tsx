@@ -1,9 +1,10 @@
+// Third-party libraries
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-
-import { IMessageData } from "./../../utils/utils";
-
 import Scrollbars from "react-custom-scrollbars";
+
+// Utilites
+import { IMessageData } from "./../../utils/utils";
 
 interface IConversationCanvasProps {
   currentUserId: string;
@@ -25,36 +26,46 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
     userId,
     messages,
     text,
+    isConversationModalOpen,
     handleChange,
     handleSubmit,
-    isConversationModalOpen,
     handleBackButtonClick
   } = props;
+
+  const messagesEndRef = useRef(null);
+
+  const [previousMessagesLength, setPreviousMessagesLength] = useState(0);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef) {
+      const behavior = previousMessagesLength > 0 ? { behavior: "smooth" } : {};
+      (messagesEndRef as any).current.scrollIntoView(behavior);
+      setPreviousMessagesLength(messages.length);
+    }
+  };
+
+  useEffect(scrollToBottom, [messages]);
 
   const renderCurrentUserMessage = (
     messageData: IMessageData,
     index: number
-  ) => {
-    return (
-      <div
-        key={"conversation-message-" + index}
-        className="conversation-message conversation-current-user-message"
-      >
-        {messageData.message}
-      </div>
-    );
-  };
+  ) => (
+    <div
+      key={"conversation-message-" + index}
+      className="conversation-message conversation-current-user-message"
+    >
+      {messageData.message}
+    </div>
+  );
 
-  const renderOtherUserMessage = (messageData: IMessageData, index: number) => {
-    return (
-      <div
-        key={"conversation-message-" + index}
-        className="conversation-message conversation-other-user-message"
-      >
-        {messageData.message}
-      </div>
-    );
-  };
+  const renderOtherUserMessage = (messageData: IMessageData, index: number) => (
+    <div
+      key={"conversation-message-" + index}
+      className="conversation-message conversation-other-user-message"
+    >
+      {messageData.message}
+    </div>
+  );
 
   const renderMessage = (messageData: IMessageData, index: number) =>
     messageData.userId === currentUserId
@@ -65,24 +76,10 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
     return messages.map((messageData, i) => renderMessage(messageData, i));
   };
 
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    if (messagesEndRef) {
-      const behavior = previousMessagesLength > 0 ? { behavior: "smooth" } : {};
-      (messagesEndRef as any).current.scrollIntoView(behavior);
-      setPreviousMessagesLength(messages.length);
-    }
-  };
-
-  const [previousMessagesLength, setPreviousMessagesLength] = useState(0);
-
-  useEffect(scrollToBottom, [messages]);
-
   return (
     <div className="conversation-container">
       <div className="conversation-header">
-        {isConversationModalOpen ? (
+        {isConversationModalOpen && (
           <button
             className="conversation-back-button"
             onClick={handleBackButtonClick}
@@ -93,7 +90,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
               src="/back_arrow_icon.png"
             />
           </button>
-        ) : null}
+        )}
         <img
           alt="Profile"
           className="conversation-header-profile-picture"
@@ -103,6 +100,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           <span className="conversation-header-first-name">{firstName}</span>
         </Link>
       </div>
+
       <Scrollbars
         style={{
           display: "flex",
@@ -115,6 +113,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
           <div ref={messagesEndRef}></div>
         </div>
       </Scrollbars>
+
       <div className="conversation-footer">
         <div className="conversation-warning">
           Never share your bank account or debit/credit card information
