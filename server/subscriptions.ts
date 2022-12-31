@@ -25,7 +25,7 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   },
   MOBILE_SERVICE: {
     subscriptionCategoryId: "MOBILE_SERVICE",
-    name: "Mobile"
+    name: "Mobile Plans"
   },
   MUSIC_SERVICE: {
     subscriptionCategoryId: "MUSIC_SERVICE",

@@ -64,6 +64,7 @@ const CreateListingProviderWithContext = (props: {
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     {} as ISubscriptionBrand
   );
+  const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
   // Form validation
@@ -86,12 +87,6 @@ const CreateListingProviderWithContext = (props: {
     isContactEmail: false,
     contactEmail: ""
   });
-
-  const handleOnBlurSubscriptionUrl = () => {
-    setIsDisplaySubscriptionUrlErrorLabel(
-      !!formValues.subscriptionUrl && !isSubscriptionUrlValid
-    );
-  };
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
     log(data);
@@ -229,6 +224,9 @@ const CreateListingProviderWithContext = (props: {
       numberOfPeople: formValues.numberOfPeople,
       price: formValues.price,
       ...(subscriptionId && { subscriptionId }),
+      ...(isOtherInputDisplayed && {
+        otherSubscription: formValues.otherSubscription
+      }),
       ...(formValues.isContactFb &&
         formValues.contactFb && { contactFb: formValues.contactFb }),
       ...(formValues.isContactEmail &&
@@ -247,6 +245,12 @@ const CreateListingProviderWithContext = (props: {
 
     e.preventDefault();
   };
+
+  useEffect(() => {
+    setIsDisplaySubscriptionUrlErrorLabel(
+      !!formValues.subscriptionUrl && !isSubscriptionUrlValid
+    );
+  }, [formValues.subscriptionUrl, isSubscriptionUrlValid]);
 
   useEffect(() => {
     retrieveSubscriptionCategories();
@@ -278,6 +282,10 @@ const CreateListingProviderWithContext = (props: {
       ) as ISubscriptionBrand;
       setSubscriptionBrandLogo(brand?.logo);
     }
+
+    setIsOtherInputDisplayed(
+      subscriptionBrandSelection?.subscriptionBrandId === "OTHER"
+    );
     // eslint-disable-next-line
   }, [subscriptionBrandSelection]);
 
@@ -292,6 +300,7 @@ const CreateListingProviderWithContext = (props: {
       formValues.listingDescription &&
       formValues.numberOfPeople &&
       formValues.price &&
+      (!isOtherInputDisplayed || formValues.otherSubscription) &&
       isSubscriptionUrlValid
     );
 
@@ -350,19 +359,16 @@ const CreateListingProviderWithContext = (props: {
 
     return (
       <Autocomplete
-        disableClearable
+        disablePortal
+        options={options.map(option => option.label)}
         onChange={(e, value) => {
           const brand = subscriptionBrands.find(brand => value === brand.name);
           if (brand) {
             setSubscriptionBrandSelection(brand);
           }
         }}
-        freeSolo
-        options={options.map(option => option.label)}
-        value={subscriptionBrandSelection.subscriptionBrandId}
-        renderInput={params => (
-          <TextField {...params} placeholder="Subcategory" />
-        )}
+        value={subscriptionBrandSelection.name}
+        renderInput={params => <TextField {...params} placeholder="Service" />}
       />
     );
   };
@@ -394,7 +400,7 @@ const CreateListingProviderWithContext = (props: {
               className="form-field subscription-field"
               style={{ marginLeft: 0, width: "100%" }}
             >
-              <FormLabel label="Subcategory:" isRequired />
+              <FormLabel label="Service:" isRequired />
               {renderSubscriptionBrandDropdown()}
             </div>
 
@@ -405,6 +411,20 @@ const CreateListingProviderWithContext = (props: {
             />
           </div>
         </div>
+
+        {isOtherInputDisplayed && (
+          <div className="form-field">
+            <FormLabel label={"If other, please specify:"} isRequired />
+            <TextField
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  otherSubscription: e.target.value
+                })
+              }
+            />
+          </div>
+        )}
 
         <div className="form-field">
           <FormLabel label="Listing description:" isRequired />
@@ -430,7 +450,6 @@ const CreateListingProviderWithContext = (props: {
                 subscriptionUrl: e.target.value
               })
             }
-            onBlur={handleOnBlurSubscriptionUrl}
             placeholder="https://example.com/"
             error={isDisplaySubscriptionUrlErrorLabel}
             helperText={
@@ -525,7 +544,6 @@ const CreateListingProviderWithContext = (props: {
                       contactFb: e.target.value
                     })
                   }
-                  onBlur={handleOnBlurSubscriptionUrl}
                   placeholder="Username"
                 />
               </div>
@@ -567,7 +585,6 @@ const CreateListingProviderWithContext = (props: {
                       contactEmail: e.target.value
                     })
                   }
-                  onBlur={handleOnBlurSubscriptionUrl}
                   placeholder="Email address"
                 />
               </div>
