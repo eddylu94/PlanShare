@@ -333,6 +333,7 @@ const CreateListingProviderWithContext = (props: {
             setSubscriptionCategorySelection(category);
           }
         }}
+        value={subscriptionCategorySelection.name}
         renderInput={params => <TextField {...params} placeholder="Category" />}
       />
     );
@@ -358,7 +359,10 @@ const CreateListingProviderWithContext = (props: {
         }}
         freeSolo
         options={options.map(option => option.label)}
-        renderInput={params => <TextField {...params} placeholder="Category" />}
+        value={subscriptionBrandSelection.subscriptionBrandId}
+        renderInput={params => (
+          <TextField {...params} placeholder="Subcategory" />
+        )}
       />
     );
   };

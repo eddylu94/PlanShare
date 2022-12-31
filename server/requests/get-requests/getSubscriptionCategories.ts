@@ -32,7 +32,9 @@ export const getSubscriptionCategories = (
       return;
     }
 
-    const defaultSubscriptionCategory = subscriptionCategories[0];
+    const defaultSubscriptionCategory = subscriptionCategories.find(
+      category => category.subscriptionCategoryId === "MOBILE_SERVICE"
+    );
 
     db.close();
     postSuccess(postRes, {

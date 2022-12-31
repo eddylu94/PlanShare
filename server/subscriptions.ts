@@ -248,9 +248,9 @@ const liveTvSubscriptionBrandIds = [
 ];
 
 const mobileSubscriptionBrandIds = [
+  SUBSCRIPTION.TMOBILE_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.VERIZON_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.SPRINT_MOBILE.subscriptionBrandId,
-  SUBSCRIPTION.TMOBILE_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.ATT_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.METRO_MOBILE.subscriptionBrandId,
   SUBSCRIPTION.CRICKET_MOBILE.subscriptionBrandId,
