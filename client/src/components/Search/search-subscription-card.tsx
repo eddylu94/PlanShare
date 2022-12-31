@@ -1,7 +1,9 @@
+// Third-party libraries
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 
+// Utilities
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
 import { ClickEvent } from "../../utils/interfaces";
 

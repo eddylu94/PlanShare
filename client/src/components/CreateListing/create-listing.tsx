@@ -1,16 +1,15 @@
+// Third-party libraries
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
+import Tooltip from "@material-ui/core/Tooltip";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
 
-import { FORM_INPUT_TYPE } from "./create-listing-utils";
+// Utilities
 import { IUserContext, UserDataContext } from "../../user-context-provider";
-import {
-  baseGetRequest,
-  basePostRequest,
-  slackPostRequest,
-  SLACK_HOOK,
-  ERROR_TYPE
-} from "../../base-requests";
+import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import {
   log,
@@ -18,16 +17,29 @@ import {
   ISubscriptionBrand,
   isValidURL
 } from "../../utils/utils";
-import { Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
-import { FormControlLabel, Checkbox, Typography } from "@material-ui/core";
+
+// API
+import {
+  baseGetRequest,
+  basePostRequest,
+  slackPostRequest,
+  SLACK_HOOK,
+  ERROR_TYPE
+} from "../../base-requests";
 
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
   location: Location;
 }) => {
-  const _userData = props.userData;
+  const { history, location, userData: _userData } = props;
+
+  if (!_userData.user?.auth) {
+    history.push("/signup");
+  }
+
+  const params = new URLSearchParams(location.search);
+  const subscriptionId = params.get("id") as string;
 
   // Whether at least one request has been executed for listing creation data
   const [
@@ -35,21 +47,69 @@ const CreateListingProviderWithContext = (props: {
     setIsRetrievedListingCreationDataDirty
   ] = useState(false);
 
-  const { history, location } = props;
+  // Whether the user has selected a subscription type
+  const [isUserSelected, setIsUserSelected] = useState(false);
 
-  if (!_userData.user?.auth) {
-    history.push("/signup");
-  }
-
-  var params = new URLSearchParams(location.search);
-
-  const subscriptionIdParam = params.get("id") as string;
-  // eslint-disable-next-line
-  const [subscriptionId, setSubscriptionId] = useState(
-    subscriptionIdParam ?? ""
+  // Subscription fields
+  const [subscriptionCategories, setSubscriptionCategories] = useState(
+    [] as ISubscriptionCategory[]
   );
+  const [
+    subscriptionCategorySelection,
+    setSubscriptionCategorySelection
+  ] = useState({} as ISubscriptionCategory);
+  const [subscriptionBrands, setSubscriptionBrands] = useState(
+    [] as Array<ISubscriptionBrand>
+  );
+  const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
+    {} as ISubscriptionBrand
+  );
+  const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
+  const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
-  const [isUserSelected, setIsUserSelected] = useState(false); // Whether the user has selected a subscription type
+  // Focus on components
+  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
+  const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
+  const [isPriceFocused, setIsPriceFocused] = useState(false);
+
+  // Form validation
+  const [isFormDisabled, setIsFormDisabled] = useState(true);
+  const [isSubscriptionUrlValid, setIsSubscriptionUrlValid] = useState(true);
+  const [
+    isDisplaySubscriptionUrlErrorLabel,
+    setIsDisplaySubscriptionUrlErrorLabel
+  ] = useState(false);
+
+  const [formValues, setFormValues] = useState({
+    otherSubscription: "",
+    subscriptionUrl: "",
+    listingTitle: "",
+    listingDescription: "",
+    numberOfPeople: 0,
+    price: 0,
+    isContactFb: false,
+    contactFb: "",
+    isContactEmail: false,
+    contactEmail: ""
+  });
+
+  const toggleDescriptionFocused = (value: boolean) => {
+    setIsDescriptionFocused(value);
+  };
+
+  const toggleNumberOfPeopleFocused = (value: boolean) => {
+    setIsNumberOfPeopleFocused(value);
+  };
+
+  const togglePriceFocused = (value: boolean) => {
+    setIsPriceFocused(value);
+  };
+
+  const handleOnBlurSubscriptionUrl = () => {
+    setIsDisplaySubscriptionUrlErrorLabel(
+      !!formValues.subscriptionUrl && !isSubscriptionUrlValid
+    );
+  };
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
     log(data);
@@ -57,11 +117,8 @@ const CreateListingProviderWithContext = (props: {
     const newData = data?.body?.subscriptionData;
     if (newData) {
       setIsRetrievedListingCreationDataDirty(true);
-      log(newData);
-
       setSubscriptionCategorySelection(newData.subscriptionCategory);
       setSubscriptionBrandSelection(newData.subscriptionBrand);
-
       setFormValues({
         otherSubscription: newData.otherSubscription,
         subscriptionUrl: newData.subscriptionUrl ?? "",
@@ -98,49 +155,6 @@ const CreateListingProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [subscriptionId]);
 
-  const [subscriptionCategories, setSubscriptionCategories] = useState(
-    [] as ISubscriptionCategory[]
-  );
-  const [
-    subscriptionCategorySelection,
-    setSubscriptionCategorySelection
-  ] = useState({} as ISubscriptionCategory);
-  const [subscriptionBrands, setSubscriptionBrands] = useState(
-    [] as Array<ISubscriptionBrand>
-  );
-  const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
-    {} as ISubscriptionBrand
-  );
-
-  const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
-
-  const [formValues, setFormValues] = useState({
-    otherSubscription: "",
-    subscriptionUrl: "",
-    listingTitle: "",
-    listingDescription: "",
-    numberOfPeople: 0,
-    price: 0,
-    isContactFb: false,
-    contactFb: "",
-    isContactEmail: false,
-    contactEmail: ""
-  });
-
-  const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
-
-  const [isFormDisabled, setIsFormDisabled] = useState(true);
-
-  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
-  const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
-  const [isPriceFocused, setIsPriceFocused] = useState(false);
-
-  const [isSubscriptionUrlValid, setIsSubscriptionUrlValid] = useState(true);
-  const [
-    isDisplaySubscriptionUrlErrorLabel,
-    setIsDisplaySubscriptionUrlErrorLabel
-  ] = useState(false);
-
   const retrieveSubscriptionCategoriesResponseHandler = (data: any) => {
     if (
       data.statusCode === STATUS_CODE.FAILURE &&
@@ -149,17 +163,17 @@ const CreateListingProviderWithContext = (props: {
       log("User not validated");
       history.push("/validate");
     } else if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
+      const { body } = data;
 
       if (!subscriptionId) {
         const newDefaultSubscriptionCategory = body.defaultSubscriptionCategory;
         setSubscriptionCategorySelection(newDefaultSubscriptionCategory);
       }
 
+      setIsRetrievedListingCreationDataDirty(true);
+
       const newSubscriptionCategories = body.subscriptionCategories;
       setSubscriptionCategories(newSubscriptionCategories);
-
-      setIsRetrievedListingCreationDataDirty(true);
     }
   };
 
@@ -224,63 +238,35 @@ const CreateListingProviderWithContext = (props: {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     const subscriptionData = {
       subscriptionCategory: subscriptionCategorySelection,
       subscriptionBrand: subscriptionBrandSelection,
       subscriptionUrl: formValues.subscriptionUrl,
       listingDescription: formValues.listingDescription,
       numberOfPeople: formValues.numberOfPeople,
-      price: formValues.price
+      price: formValues.price,
+      ...(subscriptionId && { subscriptionId }),
+      ...(isOtherInputDisplayed && {
+        otherSubscription: formValues.otherSubscription
+      }),
+      ...(formValues.isContactFb &&
+        formValues.contactFb && { contactFb: formValues.contactFb }),
+      ...(formValues.isContactEmail &&
+        formValues.contactEmail && { contactEmail: formValues.contactEmail })
     };
 
-    const postRequestData = { subscriptionData };
-
-    Object.assign(postRequestData.subscriptionData, subscriptionData);
-
-    if (subscriptionId) {
-      Object.assign(postRequestData.subscriptionData, { subscriptionId });
-    }
-
-    if (isOtherInputDisplayed) {
-      Object.assign(postRequestData.subscriptionData, {
-        otherSubscription: formValues.otherSubscription
-      });
-    }
-
-    if (formValues.isContactFb && formValues.contactFb) {
-      Object.assign(postRequestData.subscriptionData, {
-        contactFb: formValues.contactFb
-      });
-    }
-
-    if (formValues.isContactEmail && formValues.contactEmail) {
-      Object.assign(postRequestData.subscriptionData, {
-        contactEmail: formValues.contactEmail
-      });
-    }
-
     if (!isFormDisabled) {
-      if (subscriptionId) {
-        basePostRequest(
-          "editsubscription",
-          postRequestData,
-          handleSubmitResponseHandler,
-          log,
-          _userData.user?.auth
-        );
-      } else {
-        basePostRequest(
-          "createsubscription",
-          postRequestData,
-          handleSubmitResponseHandler,
-          log,
-          _userData.user?.auth
-        );
-      }
+      basePostRequest(
+        subscriptionId ? "editsubscription" : "createsubscription",
+        { subscriptionData },
+        handleSubmitResponseHandler,
+        log,
+        _userData.user?.auth
+      );
     }
 
-    event.preventDefault();
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -290,8 +276,8 @@ const CreateListingProviderWithContext = (props: {
 
   useEffect(() => {
     if (
-      subscriptionCategorySelection &&
-      Object.keys(subscriptionCategorySelection).length
+      subscriptionCategorySelection != null &&
+      Object.keys(subscriptionCategorySelection).length > 0
     ) {
       retrieveSubscriptionBrands(
         subscriptionCategorySelection.subscriptionCategoryId
@@ -305,7 +291,7 @@ const CreateListingProviderWithContext = (props: {
 
     if (subscriptionIdParam) {
       setSubscriptionBrandLogo(subscriptionBrandSelection?.logo);
-    } else if (Object.keys(subscriptionBrandSelection).length) {
+    } else if (Object.keys(subscriptionBrandSelection).length > 0) {
       const brand = subscriptionBrands.find(
         (brand: any) =>
           brand.subscriptionBrandId ===
@@ -346,29 +332,11 @@ const CreateListingProviderWithContext = (props: {
     isOtherInputDisplayed
   ]);
 
-  const toggleDescriptionFocused = (value: boolean) => {
-    setIsDescriptionFocused(value);
-  };
-
-  const toggleNumberOfPeopleFocused = (value: boolean) => {
-    setIsNumberOfPeopleFocused(value);
-  };
-
-  const togglePriceFocused = (value: boolean) => {
-    setIsPriceFocused(value);
-  };
-
-  const handleOnBlurSubscriptionUrl = () => {
-    setIsDisplaySubscriptionUrlErrorLabel(
-      !!formValues.subscriptionUrl && !isSubscriptionUrlValid
-    );
-  };
-
   const renderSubscriptionCategoryDropdown = () => {
     if (
       !(
         subscriptionCategories &&
-        Object.keys(subscriptionCategories).length &&
+        Object.keys(subscriptionCategories).length > 0 &&
         subscriptionCategorySelection
       )
     ) {
@@ -404,7 +372,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const renderSubscriptionBrandDropdown = () => {
-    if (!(subscriptionBrands && subscriptionBrands.length)) {
+    if (!(subscriptionBrands?.length > 0)) {
       return null;
     }
 
@@ -452,13 +420,13 @@ const CreateListingProviderWithContext = (props: {
 
         <div className="subscription-fields">
           <div className="form-field">
-            <FormLabel label={"Subscription type:"} isRequired={true} />
+            <FormLabel label={"Subscription type:"} isRequired />
             {renderSubscriptionCategoryDropdown()}
           </div>
 
           <div className="subscription-field-and-logo">
             <div className="form-field subscription-field">
-              <FormLabel label={"Subscription:"} isRequired={true} />
+              <FormLabel label={"Subscription:"} isRequired />
               {renderSubscriptionBrandDropdown()}
             </div>
 
@@ -470,9 +438,9 @@ const CreateListingProviderWithContext = (props: {
           </div>
         </div>
 
-        {isOtherInputDisplayed ? (
+        {isOtherInputDisplayed && (
           <div className="form-field">
-            <FormLabel label={"If other, please specify:"} isRequired={true} />
+            <FormLabel label={"If other, please specify:"} isRequired />
             <input
               className="form-text-input form-input"
               name={FORM_INPUT_TYPE.OTHER_SUBSCRIPTION}
@@ -489,10 +457,10 @@ const CreateListingProviderWithContext = (props: {
               style={{ width: 300 }}
             />
           </div>
-        ) : null}
+        )}
 
         <div className="form-field">
-          <FormLabel label={"Listing description:"} isRequired={true} />
+          <FormLabel label={"Listing description:"} isRequired />
           <Tooltip
             title={"Max 750 characters"}
             aria-label="Max 750 characters"
@@ -534,16 +502,16 @@ const CreateListingProviderWithContext = (props: {
             }
             onBlur={handleOnBlurSubscriptionUrl}
           />
-          {isDisplaySubscriptionUrlErrorLabel ? (
+          {isDisplaySubscriptionUrlErrorLabel && (
             <div className="form-error-label">
               Link must be a valid URL or blank
             </div>
-          ) : null}
+          )}
         </div>
 
         <div className="form-row">
           <div className="form-field" style={{ marginRight: 50 }}>
-            <FormLabel label={"Looking for:"} isRequired={true} />
+            <FormLabel label={"Looking for:"} isRequired />
             <div className="form-number-input-with-label">
               <Tooltip
                 title={"Between 1 to 50 people per group"}
@@ -575,7 +543,7 @@ const CreateListingProviderWithContext = (props: {
           </div>
 
           <div className="form-field">
-            <FormLabel label="Price per person:" isRequired={true} />
+            <FormLabel label="Price per person:" isRequired />
             <div className="form-number-input-with-label">
               <Tooltip
                 title="Between $0.01 to $100"

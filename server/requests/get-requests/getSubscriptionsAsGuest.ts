@@ -98,7 +98,7 @@ export const getSubscriptionsAsGuest = (
       status: SUBSCRIPTION_STATUS.ACTIVE
     };
 
-    if (t.length) {
+    if (t.length > 0) {
       Object.assign(findQuery, {
         $text: { $search: t }
       });
@@ -116,7 +116,7 @@ export const getSubscriptionsAsGuest = (
       .then(results => {
         // console.log(results)
 
-        if (!results.length) {
+        if (results.length === 0) {
           console.log("Unable to find subscriptions");
           db.close();
           postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);

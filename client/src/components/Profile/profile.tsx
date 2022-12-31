@@ -237,7 +237,7 @@ const ProfileProviderWithContext = (props: {
         key={"subscription-card-" + i}
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
-        isProfile={true}
+        isProfile
         isDisplayButtons={!isDifferentUser}
         handleSubscriptionCardClick={handleSubscriptionCardClick}
       />
@@ -254,9 +254,9 @@ const ProfileProviderWithContext = (props: {
           key={"subscription-card-" + i}
           subscription={subscription}
           isMobile={deviceMode === DEVICE_MODE.MOBILE}
-          isProfile={true}
+          isProfile
           isDisplayButtons={!isDifferentUser}
-          isArchived={true}
+          isArchived
           handleSubscriptionCardClick={handleSubscriptionCardClick}
         />
       );
@@ -267,7 +267,7 @@ const ProfileProviderWithContext = (props: {
       <h3 className="profile-authored-subscriptions-header">
         Listed subscriptions
       </h3>
-      {subscriptionCards && subscriptionCards.length ? (
+      {subscriptionCards && subscriptionCards.length > 0 ? (
         <div className="profile-authored-subscriptions">
           {subscriptionCards}
         </div>
@@ -284,7 +284,7 @@ const ProfileProviderWithContext = (props: {
       <h3 className="profile-authored-subscriptions-header">
         Archived subscriptions
       </h3>
-      {archivedSubscriptionCards && archivedSubscriptionCards.length ? (
+      {archivedSubscriptionCards && archivedSubscriptionCards.length > 0 ? (
         <div className="profile-authored-subscriptions">
           {archivedSubscriptionCards}
         </div>

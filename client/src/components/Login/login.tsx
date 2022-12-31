@@ -13,9 +13,7 @@ const LoginProviderWithContext = (props: {
   userData: IUserContext;
   history: History;
 }) => {
-  const _userData = props.userData;
-
-  const { history } = props;
+  const { history, userData: _userData } = props;
 
   if (_userData.user?.userId) {
     history.push("/search");
@@ -47,7 +45,6 @@ const LoginProviderWithContext = (props: {
   };
 
   const validateUsername = (username: string) => !!username;
-
   const validatePass = (pass: string) => !!pass;
 
   const isFormDisabled = !(isUsernameValid && isPassValid);

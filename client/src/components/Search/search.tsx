@@ -293,7 +293,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
               <div className="overlay" onClick={toggleFiltersDrawer}></div>
               <div className="search-filters-drawer-container">
                 <div className="search-filters-drawer">
-                  <SearchFiltersPane {...searchFilters} isDrawer={true} />
+                  <SearchFiltersPane {...searchFilters} isDrawer />
                 </div>
               </div>
             </>

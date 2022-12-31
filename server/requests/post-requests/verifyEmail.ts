@@ -149,7 +149,7 @@ export const verifyEmail = (
                 });
 
                 const validateLockedDate =
-                  validateAttempts &&
+                  validateAttempts != null &&
                   validateAttempts.length >= MAX_VALIDATE_ATTEMPTS
                     ? attemptDate
                     : null;

@@ -39,7 +39,7 @@ export const getConversationsList = (
           return;
         }
 
-        if (!findRes.length) {
+        if (findRes.length === 0) {
           console.log("Conversations list empty");
           db.close();
           postSuccess(postRes, {

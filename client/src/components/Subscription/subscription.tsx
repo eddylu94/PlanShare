@@ -117,8 +117,9 @@ const SubscriptionProviderWithContext = (props: {
         <span className="b">{organization ? organization.name : "Public"}</span>
         <img
           alt="Organization logo"
+          style={{ opacity: !organization ? 0.5 : 1 }}
           className="subscription-card-organization-logo"
-          src={organization ? organization.logo : "/icon.png"}
+          src={organization ? organization.logo : "/public_icon.png"}
         />
       </div>
       <div className="subscription-detail subscription-subscription-detail">
@@ -127,23 +128,21 @@ const SubscriptionProviderWithContext = (props: {
         </span>
       </div>
 
-      {userId && userId !== currentUser ? (
-        <>
-          <div className="subscription-detail" style={{ marginTop: 15 }}>
-            <Link
-              to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
-            >
-              <button className="subscription-message-button">
-                <span className="b subscription-message-label">{`Message ${firstName}`}</span>
-                <img
-                  alt="Posted date"
-                  className="subscription-message-icon"
-                  src="/send_icon_white.png"
-                />
-              </button>
-            </Link>
-          </div>
-        </>
+      {userId != null && userId !== currentUser ? (
+        <div className="subscription-detail" style={{ marginTop: 15 }}>
+          <Link
+            to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
+          >
+            <button className="subscription-message-button">
+              <span className="b subscription-message-label">{`Message ${firstName}`}</span>
+              <img
+                alt="Posted date"
+                className="subscription-message-icon"
+                src="/send_icon_white.png"
+              />
+            </button>
+          </Link>
+        </div>
       ) : null}
 
       {contactFb || contactEmail ? (

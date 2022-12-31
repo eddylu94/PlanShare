@@ -399,7 +399,7 @@ const MessagesProviderWithContext = (props: {
     .filter(conversationComponent => !!conversationComponent);
 
   const messagesPanes =
-    (conversationListComponent && conversationListComponent.length) ||
+    (conversationListComponent && conversationListComponent.length > 0) ||
     conversationId ? (
       <div className="messages-container">
         {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen ? (

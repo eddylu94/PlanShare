@@ -117,7 +117,7 @@ export const login = (
             });
 
             const lockedDate =
-              authAttempts && authAttempts.length >= MAX_AUTH_ATTEMPTS
+              authAttempts != null && authAttempts.length >= MAX_AUTH_ATTEMPTS
                 ? attemptDate
                 : null;
 
