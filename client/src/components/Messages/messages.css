@@ -63,12 +63,24 @@
   height: 30px;
 }
 
+.conversation-scrollbars-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+/* disable horizontal scroll */
+.conversation-scrollbars-container div {
+  overflow-x: hidden !important;
+}
+
 .conversation-body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
-  padding: 20px;
+  /* Extra top padding of 17px due to negative margin caused by react-custom-scrollbars */
+  padding: 37px 20px 20px 20px;
 }
 
 .conversation-header-first-name {
@@ -79,9 +91,10 @@
   display: flex;
   flex-direction: row;
   flex-shrink: 0;
-  padding: 8px 10px;
+  padding: 8px 15px;
   border-radius: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .conversation-current-user-message {
@@ -102,8 +115,7 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  border-top: 1px solid #d8d8d8;
-  padding: 0 20px 20px 20px;
+  padding: 10px 20px 20px 20px;
 }
 
 .conversation-bar {

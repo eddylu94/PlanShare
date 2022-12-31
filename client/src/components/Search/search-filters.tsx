@@ -59,7 +59,9 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             />
           }
           label={
-            <Typography style={{ fontSize: 15 }}>{category.name}</Typography>
+            <Typography style={{ fontSize: 14, color: "#333" }}>
+              {category.name}
+            </Typography>
           }
         />
       );
@@ -122,7 +124,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
         style={{ boxShadow: "none" }}
       >
         <FormControl component="fieldset" style={{ flexShrink: 0 }}>
-          <FiltersFormLabel label={"Subscription Category"} />
+          <FiltersFormLabel label={"Category"} />
           <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
         </FormControl>
 
@@ -130,7 +132,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           component="fieldset"
           style={{ flexShrink: 0, marginTop: 20 }}
         >
-          <FiltersFormLabel label={"Subscription Price"} />
+          <FiltersFormLabel label={"Price"} />
           <Slider
             style={sliderStyles}
             getAriaValueText={valuetext}
@@ -149,7 +151,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
           component="fieldset"
           style={{ flexShrink: 0, marginTop: 20 }}
         >
-          <FiltersFormLabel label={"Subscription Group Size"} />
+          <FiltersFormLabel label={"Group Size"} />
           <Slider
             style={sliderStyles}
             getAriaValueText={valuetext}
@@ -198,7 +200,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
               value={SORT_BY.DATE_DES}
               control={<Radio style={filtersRadioStyles} />}
               label={
-                <Typography style={{ fontSize: 15 }}>
+                <Typography style={{ fontSize: 14, color: "#333" }}>
                   {"Date (newest at top)"}
                 </Typography>
               }
@@ -207,7 +209,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
               value={SORT_BY.DATE_ASC}
               control={<Radio style={filtersRadioStyles} />}
               label={
-                <Typography style={{ fontSize: 15 }}>
+                <Typography style={{ fontSize: 14, color: "#333" }}>
                   {"Date (oldest at top)"}
                 </Typography>
               }
@@ -216,7 +218,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
               value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
               control={<Radio style={filtersRadioStyles} />}
               label={
-                <Typography style={{ fontSize: 15 }}>
+                <Typography style={{ fontSize: 14, color: '#333' }}>
                   {"Title (A to Z)"}
                 </Typography>
               }
@@ -225,7 +227,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
               value={SORT_BY.SUBSCRIPTION_BRAND_DES}
               control={<Radio style={filtersRadioStyles} />}
               label={
-                <Typography style={{ fontSize: 15 }}>
+                <Typography style={{ fontSize: 14, color: '#333' }}>
                   {"Title (Z to A)"}
                 </Typography>
               }

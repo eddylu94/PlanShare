@@ -102,13 +102,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
         </Link>
       </div>
 
-      <Scrollbars
-        style={{
-          display: "flex",
-          flex: 1,
-          flexDirection: "column"
-        }}
-      >
+      <Scrollbars className="conversation-scrollbars-container">
         <div className="conversation-body">
           {renderMessages(messages)}
           <div ref={messagesEndRef}></div>
@@ -116,9 +110,6 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
       </Scrollbars>
 
       <div className="conversation-footer">
-        <div className="conversation-warning">
-          Never share your bank account or debit/credit card information
-        </div>
         <form className="conversation-bar" onSubmit={handleSubmit}>
           <input
             type="text"

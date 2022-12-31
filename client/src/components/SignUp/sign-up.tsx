@@ -303,8 +303,8 @@ const SignUpProviderWithContext = (props: {
             <div className="intro-footer">
               <div>
                 <span className="b">{TITLE}</span> is a classifieds website that
-                helps you find people to split costs on subscriptions,
-                deliveries, and more.
+                helps you find people to split costs on subscriptions, group
+                purchases, and more.
               </div>
 
               <br />

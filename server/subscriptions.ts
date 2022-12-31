@@ -37,7 +37,7 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   },
   DELIVERIES: {
     subscriptionCategoryId: "DELIVERIES",
-    name: "Deliveries"
+    name: "Group Purchases"
   },
   OTHER: {
     subscriptionCategoryId: "OTHER",

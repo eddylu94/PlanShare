@@ -211,7 +211,7 @@ const ProfileProviderWithContext = (props: {
     profileUserId && profileUserId !== (_userData.user?.userId as string)
   );
 
-  const organizationDetails = (
+  const organizationDetails = organization && (
     <div className="profile-detail-container">
       <div className="profile-detail-header">Member of:</div>
       <div className="profile-organization">
