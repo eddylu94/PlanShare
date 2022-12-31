@@ -33,6 +33,7 @@ import {
   STATUS_MESSAGE,
   DEVICE_MODE
 } from "../../utils/constants";
+import { InputChangeEvent } from "../../utils/interfaces";
 
 const MessagesProviderWithContext = (props: {
   userData: IUserContext;
@@ -247,7 +248,7 @@ const MessagesProviderWithContext = (props: {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: InputChangeEvent) => {
     setText(event.target.value);
   };
 

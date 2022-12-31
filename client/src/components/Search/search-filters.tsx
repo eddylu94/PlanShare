@@ -1,22 +1,20 @@
+// Third-party libraries
 import React from "react";
+import Scrollbars from "react-custom-scrollbars";
+import FormLabel from "@material-ui/core/FormLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Slider from "@material-ui/core/Slider";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Typography from "@material-ui/core/Typography";
 
+// Utilities
 import { SORT_BY } from "./search-utils";
 import { ISearchFiltersProps } from "./search-utils";
 import { DEVICE_MODE } from "./../../utils/constants";
-
-import Scrollbars from "react-custom-scrollbars";
-
-import {
-  FormLabel,
-  FormControl,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
-  Slider,
-  Radio,
-  RadioGroup,
-  Typography
-} from "@material-ui/core";
 import { useDeviceMode } from "../../utils/utils";
 
 const SearchFilters = (props: ISearchFiltersProps) => {
@@ -68,9 +66,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     }
   );
 
-  function valuetext(value: number) {
-    return `${value}°C`;
-  }
+  const valuetext = (value: number) => `${value}°C`;
 
   const FiltersFormLabel = (props: { label: string }) => (
     <FormLabel
@@ -88,12 +84,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   };
 
   const createMarks = (values: number[], isCurrency?: boolean) =>
-    values.map(value => {
-      return {
-        value,
-        label: isCurrency ? "$" + value.toString() : value.toString()
-      };
-    });
+    values.map(value => ({
+      value,
+      label: isCurrency ? "$" + value.toString() : value.toString()
+    }));
 
   const sliderStyles = {
     marginLeft: 12,
@@ -101,35 +95,32 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     color: "#6C5DBD"
   };
 
-  const filterPaneClassName = isDrawer
-    ? "filter-pane"
-    : "filter-pane search-pane";
-
-  const scrollBarsStyle: React.CSSProperties = {
-    display: "flex",
-    flexGrow: 0,
-    flexDirection: "column",
-    margin: "20px 10px 20px 20px",
-    borderRadius: 10,
-    backgroundColor: "#FFFFFF"
-  };
-
-  if (deviceMode === DEVICE_MODE.MOBILE) {
-    Object.assign(scrollBarsStyle, {
-      width: "calc(100% - 20px)"
-    });
-  } else {
-    Object.assign(scrollBarsStyle, {
-      width: 250,
-      minWidth: 250,
-      maxWidth: 250,
-      boxShadow: "0px 0px 10px #d8d8d8"
-    });
-  }
-
   return (
-    <Scrollbars autoHide style={scrollBarsStyle}>
-      <div className={filterPaneClassName} style={{ boxShadow: "none" }}>
+    <Scrollbars
+      autoHide
+      style={{
+        display: "flex",
+        flexGrow: 0,
+        flexDirection: "column",
+        margin: "20px 10px 20px 20px",
+        borderRadius: 10,
+        backgroundColor: "#FFFFFF",
+        ...(deviceMode === DEVICE_MODE.MOBILE
+          ? {
+              width: "calc(100% - 20px)"
+            }
+          : {
+              width: 250,
+              minWidth: 250,
+              maxWidth: 250,
+              boxShadow: "0px 0px 10px #d8d8d8"
+            })
+      }}
+    >
+      <div
+        className={isDrawer ? "filter-pane" : "filter-pane search-pane"}
+        style={{ boxShadow: "none" }}
+      >
         <FormControl component="fieldset" style={{ flexShrink: 0 }}>
           <FiltersFormLabel label={"Subscription Category"} />
           <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>

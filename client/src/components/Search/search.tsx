@@ -1,10 +1,26 @@
+// Third-party libraries
 import React, { useState, useEffect, useRef } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
+import Scrollbars from "react-custom-scrollbars";
 import { History } from "history";
 
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+// Components
+import SearchFiltersPane from "./search-filters";
+import SearchSubscriptionCard from "./search-subscription-card";
+import Subscription from "../Subscription/subscription";
+import SearchCanvasPlaceholder from "./search-placeholder";
+
+// API
 import { baseGetRequest } from "../../base-requests";
-import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+
+// Utilites
+import { IUserContext, UserDataContext } from "../../user-context-provider";
+import {
+  STATUS_CODE,
+  STATUS_MESSAGE,
+  DEVICE_MODE
+} from "../../utils/constants";
+import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import {
   log,
   IFiltersSubscriptionCategory,
@@ -12,25 +28,23 @@ import {
   ISubscriptionData,
   useDeviceMode
 } from "../../utils/utils";
-import { SORT_BY, ISearchFiltersProps } from "./search-utils";
-import SearchCanvasPlaceholder from "./search-placeholder";
-import { Link } from "react-router-dom";
-import { DEVICE_MODE } from "../../utils/constants";
-import SearchFiltersPane from "./search-filters";
-import SearchSubscriptionCard from "./search-subscription-card";
-import Subscription from "../Subscription/subscription";
-
-import Scrollbars from "react-custom-scrollbars";
-
-const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
+import { InputChangeEvent } from "../../utils/interfaces";
 
 interface ISearchProviderProps {
   userData: IUserContext;
   history: History;
 }
 
+const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
+
 const SearchProviderWithContext = (props: ISearchProviderProps) => {
-  const _userData = props.userData;
+  const { history, userData: _userData } = props;
+
+  const isUser = !!_userData.user?.userId;
+
+  let _throttle = useRef(null as any);
+
+  const deviceMode = useDeviceMode();
 
   // Whether at least one request has been executed for retrieving subscriptions
   const [
@@ -38,34 +52,25 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setIsRetrievedSubscriptionsDirty
   ] = useState(false);
 
-  let _throttle = useRef(null as any);
-
-  const { history } = props;
-
   const [organization, setOrganization] = useState({} as IOrganization);
 
-  const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
-
   const [subscriptionData, setSubscriptionData] = useState(
-    [] as ISubscriptionData[]
+    [] as Array<ISubscriptionData>
   );
-
-  const [filtersText, setFiltersText] = useState("");
 
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
-  ] = useState([] as IFiltersSubscriptionCategory[]);
-
+  ] = useState([] as Array<IFiltersSubscriptionCategory>);
+  const [filtersText, setFiltersText] = useState("");
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
-
   const [filtersPrice, setFiltersPrice] = useState([0, 100]);
-
   const [filtersSortBy, setFiltersSortBy] = useState(SORT_BY.DATE_DES);
-
   const [filtersDaysActive, setFiltersDaysActive] = useState(3 * 365);
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
+
+  const [isFiltersDrawerOpen, setIsFiltersDrawerOpen] = useState(false);
 
   const toggleFiltersDrawer = () => {
     setIsFiltersDrawerOpen(!isFiltersDrawerOpen);
@@ -96,7 +101,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const toggleFiltersSubscriptionCategory = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: InputChangeEvent,
     subscriptionCategoryId: string
   ) => {
     const list = filtersSubscriptionCategories.slice(0);
@@ -107,7 +112,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersSubscriptionCategories(list);
   };
 
-  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (event: InputChangeEvent) => {
     setFiltersText(event.target.value);
   };
 
@@ -123,7 +128,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const handlePriceChange = (
     event: React.ChangeEvent<{}>,
-    value: number | number[]
+    value: number | Array<number>
   ) => {
     event.preventDefault();
 
@@ -133,7 +138,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const handleDaysActiveChange = (
     event: React.ChangeEvent<{}>,
-    value: number | number[]
+    value: number | Array<number>
   ) => {
     event.preventDefault();
 
@@ -141,7 +146,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersDaysActive(newValue);
   };
 
-  const handleSortByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSortByChange = (event: InputChangeEvent) => {
     setFiltersSortBy((event.target as HTMLInputElement).value);
   };
 
@@ -245,10 +250,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     handleDaysActiveChange
   } as ISearchFiltersProps;
 
-  const isUser = !!_userData.user?.userId;
-
-  const deviceMode = useDeviceMode();
-
   const subscriptionCards = subscriptionData.map((subscription, i) => {
     return (
       <SearchSubscriptionCard
@@ -265,22 +266,18 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     flex: 1,
     flexDirection: "column",
     borderRadius: 10,
-    height: "calc(100% - 40px)"
+    height: "calc(100% - 40px)",
+    ...(deviceMode === DEVICE_MODE.MOBILE
+      ? {
+          marginTop: 5
+        }
+      : {
+          margin: "10px 0 20px 0"
+        })
   };
 
-  if (deviceMode === DEVICE_MODE.MOBILE) {
-    Object.assign(scrollBarsStyle, {
-      marginTop: 5
-    });
-  } else {
-    Object.assign(scrollBarsStyle, {
-      margin: "10px 0 20px 0"
-    });
-  }
-
   const organizationsMap = subscriptionData.reduce((map, subscription) => {
-    const organization = subscription.organization?.name;
-    return Object.assign(map, { [organization]: 1 });
+    return Object.assign(map, { [subscription.organization?.name]: 1 });
   }, {});
   const numberOfOrganizations = Object.keys(organizationsMap).length;
 
@@ -288,7 +285,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     <div className="search-panes">
       {isRetrievedSubscriptionsDirty ? (
         <div className="search-panes" style={{ justifyContent: "center" }}>
-          {isFiltersDrawerOpen && deviceMode === DEVICE_MODE.MOBILE ? (
+          {isFiltersDrawerOpen && deviceMode === DEVICE_MODE.MOBILE && (
             <>
               <div className="overlay" onClick={toggleFiltersDrawer}></div>
               <div className="search-filters-drawer-container">
@@ -297,29 +294,32 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                 </div>
               </div>
             </>
-          ) : null}
+          )}
+
           {selectedSubscription &&
-          deviceMode !== DEVICE_MODE.DESKTOP &&
-          deviceMode !== DEVICE_MODE.LARGE_DESKTOP ? (
-            <>
-              <div className="overlay" onClick={closeModal}></div>
-              <div className="search-modal-container">
-                <div className="search-modal">
-                  <button className="close-button" onClick={closeModal}>
-                    <img
-                      alt="Close"
-                      className="close-icon"
-                      src="/close_icon.png"
-                    />
-                  </button>
-                  <Subscription subscriptionId={selectedSubscription} />
+            deviceMode !== DEVICE_MODE.DESKTOP &&
+            deviceMode !== DEVICE_MODE.LARGE_DESKTOP && (
+              <>
+                <div className="overlay" onClick={closeModal}></div>
+                <div className="search-modal-container">
+                  <div className="search-modal">
+                    <button className="close-button" onClick={closeModal}>
+                      <img
+                        alt="Close"
+                        className="close-icon"
+                        src="/close_icon.png"
+                      />
+                    </button>
+                    <Subscription subscriptionId={selectedSubscription} />
+                  </div>
                 </div>
-              </div>
-            </>
-          ) : null}
-          {deviceMode !== DEVICE_MODE.MOBILE ? (
+              </>
+            )}
+
+          {deviceMode !== DEVICE_MODE.MOBILE && (
             <SearchFiltersPane {...searchFilters} />
-          ) : null}
+          )}
+
           <div className="results-pane">
             <div className="search-bar-and-filter">
               {deviceMode === DEVICE_MODE.MOBILE ? (
@@ -395,6 +395,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
               </div>
             </Scrollbars>
           </div>
+
           {deviceMode === DEVICE_MODE.DESKTOP ||
           deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
             selectedSubscription ? (
@@ -414,7 +415,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                 <span style={{ fontWeight: 500 }}>
                   Select a listing to view its details
                 </span>
-                {!isUser ? (
+                {!isUser && (
                   <>
                     <br />
                     <span>
@@ -423,7 +424,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                       within an organization
                     </span>
                   </>
-                ) : null}
+                )}
               </div>
             )
           ) : null}

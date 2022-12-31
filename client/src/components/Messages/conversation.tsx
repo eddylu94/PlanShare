@@ -5,6 +5,7 @@ import Scrollbars from "react-custom-scrollbars";
 
 // Utilites
 import { IMessageData } from "./../../utils/utils";
+import { InputChangeEvent } from "../../utils/interfaces";
 
 interface IConversationCanvasProps {
   currentUserId: string;
@@ -12,7 +13,7 @@ interface IConversationCanvasProps {
   userId: string;
   messages: IMessageData[];
   text: string;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (event: InputChangeEvent) => void;
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   handleConversationSelection: (id: string) => void;
   isConversationModalOpen?: boolean;

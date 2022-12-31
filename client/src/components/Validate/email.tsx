@@ -11,6 +11,7 @@ import {
 import { log, IResponse } from "./../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { InputChangeEvent } from "../../utils/interfaces";
 
 const EmailProviderWithContext = (props: {
   userData: IUserContext;
@@ -77,7 +78,7 @@ const EmailProviderWithContext = (props: {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: InputChangeEvent) => {
     setText(e.target.value);
   };
 

@@ -18,6 +18,7 @@ import {
   RadioGroup,
   Typography
 } from "@material-ui/core";
+import { InputChangeEvent } from "../../utils/interfaces";
 
 const SettingsProviderWithContext = (props: {
   userData: IUserContext;
@@ -47,7 +48,7 @@ const SettingsProviderWithContext = (props: {
 
   log(_userData);
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: InputChangeEvent) => {
     const { value, name } = event.target;
 
     switch (name) {
@@ -68,9 +69,7 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const handleChangeEmailNotifications = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeEmailNotifications = (event: InputChangeEvent) => {
     const newSetting = (event.target as HTMLInputElement).value;
 
     setSettingEmailNotifications(newSetting);

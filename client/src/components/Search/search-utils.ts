@@ -1,3 +1,4 @@
+import { InputChangeEvent } from "../../utils/interfaces";
 import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
@@ -19,11 +20,11 @@ export interface ISearchFiltersProps {
   filtersSortBy: string;
   filtersDaysActive: number;
   toggleFiltersOrganization: (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: InputChangeEvent,
     organizationId: string
   ) => void;
   toggleFiltersSubscriptionCategory: (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: InputChangeEvent,
     subscriptionCategoryId: string
   ) => void;
   handleGroupSizeChange: (
@@ -34,7 +35,7 @@ export interface ISearchFiltersProps {
     event: React.ChangeEvent<{}>,
     value: number | number[]
   ) => void;
-  handleSortByChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSortByChange: (event: InputChangeEvent) => void;
   handleDaysActiveChange: (
     event: React.ChangeEvent<{}>,
     value: number | number[]
