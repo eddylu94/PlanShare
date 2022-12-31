@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
-import Tooltip from "@material-ui/core/Tooltip";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
@@ -20,7 +19,6 @@ import {
 
 // Utilities
 import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { FORM_INPUT_TYPE } from "./create-listing-utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import {
   log,
@@ -66,13 +64,7 @@ const CreateListingProviderWithContext = (props: {
   const [subscriptionBrandSelection, setSubscriptionBrandSelection] = useState(
     {} as ISubscriptionBrand
   );
-  const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
-
-  // Focus on components
-  const [isDescriptionFocused, setIsDescriptionFocused] = useState(false);
-  const [isNumberOfPeopleFocused, setIsNumberOfPeopleFocused] = useState(false);
-  const [isPriceFocused, setIsPriceFocused] = useState(false);
 
   // Form validation
   const [isFormDisabled, setIsFormDisabled] = useState(true);
@@ -94,18 +86,6 @@ const CreateListingProviderWithContext = (props: {
     isContactEmail: false,
     contactEmail: ""
   });
-
-  const toggleDescriptionFocused = (value: boolean) => {
-    setIsDescriptionFocused(value);
-  };
-
-  const toggleNumberOfPeopleFocused = (value: boolean) => {
-    setIsNumberOfPeopleFocused(value);
-  };
-
-  const togglePriceFocused = (value: boolean) => {
-    setIsPriceFocused(value);
-  };
 
   const handleOnBlurSubscriptionUrl = () => {
     setIsDisplaySubscriptionUrlErrorLabel(
@@ -249,9 +229,6 @@ const CreateListingProviderWithContext = (props: {
       numberOfPeople: formValues.numberOfPeople,
       price: formValues.price,
       ...(subscriptionId && { subscriptionId }),
-      ...(isOtherInputDisplayed && {
-        otherSubscription: formValues.otherSubscription
-      }),
       ...(formValues.isContactFb &&
         formValues.contactFb && { contactFb: formValues.contactFb }),
       ...(formValues.isContactEmail &&
@@ -301,10 +278,6 @@ const CreateListingProviderWithContext = (props: {
       ) as ISubscriptionBrand;
       setSubscriptionBrandLogo(brand?.logo);
     }
-
-    setIsOtherInputDisplayed(
-      subscriptionBrandSelection?.subscriptionBrandId === "OTHER"
-    );
     // eslint-disable-next-line
   }, [subscriptionBrandSelection]);
 
@@ -319,8 +292,7 @@ const CreateListingProviderWithContext = (props: {
       formValues.listingDescription &&
       formValues.numberOfPeople &&
       formValues.price &&
-      isSubscriptionUrlValid &&
-      (!isOtherInputDisplayed || formValues.otherSubscription)
+      isSubscriptionUrlValid
     );
 
     setIsFormDisabled(newIsFormDisabled);
@@ -330,8 +302,7 @@ const CreateListingProviderWithContext = (props: {
     formValues.numberOfPeople,
     formValues.price,
     formValues.otherSubscription,
-    isSubscriptionUrlValid,
-    isOtherInputDisplayed
+    isSubscriptionUrlValid
   ]);
 
   const renderSubscriptionCategoryDropdown = () => {
@@ -345,31 +316,25 @@ const CreateListingProviderWithContext = (props: {
       return null;
     }
 
-    const options = subscriptionCategories.map((category, i) => (
-      <option
-        key={"subscription-type-" + i}
-        value={category.subscriptionCategoryId}
-      >
-        {category.name}
-      </option>
-    ));
+    const options = subscriptionCategories.map((category, i) => ({
+      label: category.name
+    }));
+
     return (
-      <select
-        className="form-text-input form-input select-input"
-        name={FORM_INPUT_TYPE.SUBSCRIPTION_TYPE}
-        onChange={e => {
+      <Autocomplete
+        disablePortal
+        options={options.map(option => option.label)}
+        onChange={(e, value) => {
           const category = subscriptionCategories.find(
-            category => e.target.value === category.subscriptionCategoryId
+            category => value === category.name
           );
           if (category) {
             setIsUserSelected(true);
             setSubscriptionCategorySelection(category);
           }
         }}
-        value={subscriptionCategorySelection.subscriptionCategoryId}
-      >
-        {options}
-      </select>
+        renderInput={params => <TextField {...params} placeholder="Category" />}
+      />
     );
   };
 
@@ -378,14 +343,13 @@ const CreateListingProviderWithContext = (props: {
       return null;
     }
 
-    const options = subscriptionBrands.map((subscriptionBrand, i) => ({
-      label: subscriptionBrand.name,
-      value: subscriptionBrand.subscriptionBrandId
+    const options = subscriptionBrands.map(subscriptionBrand => ({
+      label: subscriptionBrand.name
     }));
 
     return (
       <Autocomplete
-        id="free-solo-demo"
+        disableClearable
         onChange={(e, value) => {
           const brand = subscriptionBrands.find(brand => value === brand.name);
           if (brand) {
@@ -394,18 +358,7 @@ const CreateListingProviderWithContext = (props: {
         }}
         freeSolo
         options={options.map(option => option.label)}
-        renderInput={params => (
-          <TextField
-            {...params}
-            InputProps={{
-              ...params.InputProps,
-              disableUnderline: true,
-              type: "search"
-            }}
-            InputLabelProps={{ shrink: false }}
-            placeholder="Category"
-          />
-        )}
+        renderInput={params => <TextField {...params} placeholder="Category" />}
       />
     );
   };
@@ -449,62 +402,24 @@ const CreateListingProviderWithContext = (props: {
           </div>
         </div>
 
-        {isOtherInputDisplayed && (
-          <div className="form-field">
-            <FormLabel label={"If other, please specify:"} isRequired />
-            <input
-              className="form-text-input form-input"
-              name={FORM_INPUT_TYPE.OTHER_SUBSCRIPTION}
-              type="text"
-              placeholder="Custom subscription"
-              value={formValues.otherSubscription}
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  otherSubscription: e.target.value
-                })
-              }
-              onBlur={handleOnBlurSubscriptionUrl}
-              style={{ width: 300 }}
-            />
-          </div>
-        )}
-
         <div className="form-field">
-          <FormLabel label={"Listing description:"} isRequired />
-          <Tooltip
-            title={"Max 750 characters"}
-            aria-label="Max 750 characters"
-            placement="bottom-start"
-            open={isDescriptionFocused}
-          >
-            <textarea
-              className="form-text-area form-input"
-              name={FORM_INPUT_TYPE.LISTING_DESCRIPTION}
-              rows={5}
-              placeholder="Currently have two people, need three more!"
-              value={formValues.listingDescription}
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  listingDescription: e.target.value
-                })
-              }
-              onFocus={() => toggleDescriptionFocused(true)}
-              onBlur={() => toggleDescriptionFocused(false)}
-              maxLength={750}
-            />
-          </Tooltip>
+          <FormLabel label="Listing description:" isRequired />
+          <TextField
+            multiline
+            rows={5}
+            placeholder="Currently have two people, need three more!"
+            onChange={e =>
+              setFormValues({
+                ...formValues,
+                listingDescription: e.target.value
+              })
+            }
+          />
         </div>
 
         <div className="form-field">
           <FormLabel label={"Link to subscription (optional):"} />
-          <input
-            className="form-text-input form-input"
-            name={FORM_INPUT_TYPE.SUBSCRIPTION_URL}
-            type="text"
-            placeholder="https://example.com/"
-            value={formValues.subscriptionUrl}
+          <TextField
             onChange={e =>
               setFormValues({
                 ...formValues,
@@ -512,43 +427,33 @@ const CreateListingProviderWithContext = (props: {
               })
             }
             onBlur={handleOnBlurSubscriptionUrl}
+            placeholder="https://example.com/"
+            error={isDisplaySubscriptionUrlErrorLabel}
+            helperText={
+              isDisplaySubscriptionUrlErrorLabel
+                ? "Link must be a valid URL or blank"
+                : undefined
+            }
           />
-          {isDisplaySubscriptionUrlErrorLabel && (
-            <div className="form-error-label">
-              Link must be a valid URL or blank
-            </div>
-          )}
         </div>
 
         <div className="form-row">
           <div className="form-field" style={{ marginRight: 50 }}>
             <FormLabel label={"Looking for:"} isRequired />
             <div className="form-number-input-with-label">
-              <Tooltip
-                title={"Between 1 to 50 people per group"}
-                aria-label="add"
-                placement="bottom-start"
-                open={isNumberOfPeopleFocused}
-              >
-                <input
-                  className="form-text-input form-input form-number-input"
-                  name={FORM_INPUT_TYPE.NUMBER_OF_PEOPLE}
-                  type="number"
-                  min="1"
-                  max="50"
-                  placeholder="0"
-                  value={formValues.numberOfPeople || ""}
-                  onChange={e =>
-                    setFormValues({
-                      ...formValues,
-                      numberOfPeople: e.target.value as any
-                    })
-                  }
-                  style={{ width: 100 }}
-                  onFocus={() => toggleNumberOfPeopleFocused(true)}
-                  onBlur={() => toggleNumberOfPeopleFocused(false)}
-                />
-              </Tooltip>
+              <TextField
+                onChange={e =>
+                  setFormValues({
+                    ...formValues,
+                    numberOfPeople: e.target.value as any
+                  })
+                }
+                type="number"
+                placeholder="0"
+                style={{ width: 100 }}
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                // helperText='Between 1 to 50 people per group'
+              />
               <span style={{ marginLeft: 10 }}>people</span>
             </div>
           </div>
@@ -556,32 +461,19 @@ const CreateListingProviderWithContext = (props: {
           <div className="form-field">
             <FormLabel label="Price per person:" isRequired />
             <div className="form-number-input-with-label">
-              <Tooltip
-                title="Between $0.01 to $100"
-                aria-label="add"
-                placement="bottom-start"
-                open={isPriceFocused}
-              >
-                <input
-                  className="form-text-input form-input form-number-input"
-                  name={FORM_INPUT_TYPE.PRICE}
-                  type="number"
-                  min="0.01"
-                  step="0.01"
-                  max="100"
-                  placeholder="0"
-                  value={formValues.price || ""}
-                  onChange={e =>
-                    setFormValues({
-                      ...formValues,
-                      price: e.target.value as any
-                    })
-                  }
-                  style={{ width: 100 }}
-                  onFocus={() => togglePriceFocused(true)}
-                  onBlur={() => togglePriceFocused(false)}
-                />
-              </Tooltip>
+              <TextField
+                onChange={e =>
+                  setFormValues({
+                    ...formValues,
+                    price: e.target.value as any
+                  })
+                }
+                type="number"
+                placeholder="0"
+                style={{ width: 100 }}
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                // helperText='Between $0.01 to $100'
+              />
               <span style={{ marginLeft: 10 }}>$</span>
             </div>
           </div>
@@ -622,12 +514,7 @@ const CreateListingProviderWithContext = (props: {
                 >
                   Facebook
                 </Typography>
-                <input
-                  className="form-text-input form-input"
-                  name={FORM_INPUT_TYPE.CONTACT_FB}
-                  type="text"
-                  placeholder="Username"
-                  value={formValues.contactFb}
+                <TextField
                   onChange={e =>
                     setFormValues({
                       ...formValues,
@@ -635,6 +522,7 @@ const CreateListingProviderWithContext = (props: {
                     })
                   }
                   onBlur={handleOnBlurSubscriptionUrl}
+                  placeholder="Username"
                 />
               </div>
             }
@@ -668,12 +556,7 @@ const CreateListingProviderWithContext = (props: {
                 >
                   Email
                 </Typography>
-                <input
-                  className="form-text-input form-input"
-                  name={FORM_INPUT_TYPE.CONTACT_EMAIL}
-                  type="text"
-                  placeholder="Email address"
-                  value={formValues.contactEmail}
+                <TextField
                   onChange={e =>
                     setFormValues({
                       ...formValues,
@@ -681,6 +564,7 @@ const CreateListingProviderWithContext = (props: {
                     })
                   }
                   onBlur={handleOnBlurSubscriptionUrl}
+                  placeholder="Email address"
                 />
               </div>
             }
