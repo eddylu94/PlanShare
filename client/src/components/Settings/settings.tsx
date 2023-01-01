@@ -1,24 +1,26 @@
+// Third-party libraries
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import Typography from "@material-ui/core/Typography";
 
+// Utilites
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { baseGetRequest, basePostRequest } from "../../base-requests";
+import {
+  log,
+  validatePass,
+  SETTINGS_EMAIL_NOTIFICATIONS
+} from "../../utils/utils";
+import { InputChangeEvent } from "../../utils/interfaces";
 import {
   STATUS_CODE,
   STATUS_MESSAGE,
   SETTINGS_INPUT_NAME
 } from "../../utils/constants";
-import { log, SETTINGS_EMAIL_NOTIFICATIONS } from "../../utils/utils";
-import { validatePass } from "../../utils/utils";
-
-import {
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography
-} from "@material-ui/core";
-import { InputChangeEvent } from "../../utils/interfaces";
 
 const SettingsProviderWithContext = (props: {
   userData: IUserContext;

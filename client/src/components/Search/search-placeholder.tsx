@@ -36,9 +36,6 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
           <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
-          <div className="placeholder-filter-shape placeholder-background"></div>
-          <div className="placeholder-filter-shape placeholder-background"></div>
-          <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filters-header-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
