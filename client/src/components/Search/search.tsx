@@ -399,7 +399,12 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
           {deviceMode === DEVICE_MODE.DESKTOP ||
           deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
             selectedSubscription ? (
-              <div className="subscription-pane search-pane">
+              <div
+                className="subscription-pane search-pane"
+                style={{
+                  ...(selectedSubscription && { height: "fit-content" })
+                }}
+              >
                 <Subscription subscriptionId={selectedSubscription} />
               </div>
             ) : (

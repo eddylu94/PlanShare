@@ -1,6 +1,7 @@
 // Third-party libraries
-import React from "react";
-import Scrollbars from "react-custom-scrollbars";
+import React, { useState } from "react";
+import Scrollbar from "react-custom-scrollbars";
+import Measure from "react-measure";
 import FormLabel from "@material-ui/core/FormLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
@@ -21,18 +22,20 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
     filtersSubscriptionCategories,
-    filtersGroupSize,
+    // filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     // filtersDaysActive,
     toggleFiltersSubscriptionCategory,
-    handleGroupSizeChange,
+    // handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange
     // handleDaysActiveChange
   } = props;
 
   const deviceMode = useDeviceMode();
+
+  const [contentHeight, setContentHeight] = useState(0);
 
   const subscriptionCategoryCheckboxes = filtersSubscriptionCategories.map(
     (category, index) => {
@@ -98,13 +101,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   };
 
   return (
-    <Scrollbars
+    <Scrollbar
       autoHide
       style={{
         display: "flex",
-        flexGrow: 0,
         flexDirection: "column",
         margin: "20px 10px 20px 20px",
+        height: contentHeight,
         borderRadius: 10,
         backgroundColor: "#FFFFFF",
         ...(deviceMode === DEVICE_MODE.MOBILE
@@ -119,123 +122,135 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             })
       }}
     >
-      <div
-        className={isDrawer ? "filter-pane" : "filter-pane search-pane"}
-        style={{ boxShadow: "none" }}
+      <Measure
+        bounds
+        onResize={contentRect => {
+          console.log(contentRect.bounds);
+          setContentHeight(contentRect.bounds?.height ?? 0);
+        }}
       >
-        <FormControl component="fieldset" style={{ flexShrink: 0 }}>
-          <FiltersFormLabel label={"Category"} />
-          <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
-        </FormControl>
+        {({ measureRef }) => (
+          <div ref={measureRef}>
+            <div
+              className={isDrawer ? "filter-pane" : "filter-pane search-pane"}
+              style={{ boxShadow: "none" }}
+            >
+              <FormControl component="fieldset" style={{ flexShrink: 0 }}>
+                <FiltersFormLabel label={"Category"} />
+                <FormGroup>{subscriptionCategoryCheckboxes}</FormGroup>
+              </FormControl>
 
-        <FormControl
-          component="fieldset"
-          style={{ flexShrink: 0, marginTop: 20 }}
-        >
-          <FiltersFormLabel label={"Price"} />
-          <Slider
-            style={sliderStyles}
-            getAriaValueText={valuetext}
-            aria-labelledby="range-slider"
-            step={1}
-            valueLabelDisplay="auto"
-            value={filtersPrice}
-            onChange={handlePriceChange}
-            marks={createMarks([0, 100], true)}
-            min={0}
-            max={100}
-          />
-        </FormControl>
+              <FormControl
+                component="fieldset"
+                style={{ flexShrink: 0, marginTop: 20 }}
+              >
+                <FiltersFormLabel label={"Price"} />
+                <Slider
+                  style={sliderStyles}
+                  getAriaValueText={valuetext}
+                  aria-labelledby="range-slider"
+                  step={1}
+                  valueLabelDisplay="auto"
+                  value={filtersPrice}
+                  onChange={handlePriceChange}
+                  marks={createMarks([0, 100], true)}
+                  min={0}
+                  max={100}
+                />
+              </FormControl>
 
-        <FormControl
-          component="fieldset"
-          style={{ flexShrink: 0, marginTop: 20 }}
-        >
-          <FiltersFormLabel label={"Group Size"} />
-          <Slider
-            style={sliderStyles}
-            getAriaValueText={valuetext}
-            aria-labelledby="range-slider"
-            step={1}
-            valueLabelDisplay="auto"
-            value={filtersGroupSize}
-            onChange={handleGroupSizeChange}
-            marks={createMarks([1, 50])}
-            min={1}
-            max={50}
-          />
-        </FormControl>
+              {/* <FormControl
+								component="fieldset"
+								style={{ flexShrink: 0, marginTop: 20 }}
+							>
+								<FiltersFormLabel label={"Group Size"} />
+								<Slider
+									style={sliderStyles}
+									getAriaValueText={valuetext}
+									aria-labelledby="range-slider"
+									step={1}
+									valueLabelDisplay="auto"
+									value={filtersGroupSize}
+									onChange={handleGroupSizeChange}
+									marks={createMarks([1, 50])}
+									min={1}
+									max={50}
+								/>
+							</FormControl> */}
 
-        {/* <FormControl
-          component="fieldset"
-          style={{ flexShrink: 0, marginTop: 20 }}
-        >
-          <FiltersFormLabel label={"Days Active"} />
-          <Slider
-            style={sliderStyles}
-            value={filtersDaysActive}
-            onChange={handleDaysActiveChange}
-            getAriaValueText={valuetext}
-            aria-labelledby="discrete-slider-custom"
-            step={1}
-            valueLabelDisplay="auto"
-            marks={createMarks([0, 180])}
-            min={0}
-            max={180}
-          />
-        </FormControl> */}
+              {/* <FormControl
+								component="fieldset"
+								style={{ flexShrink: 0, marginTop: 20 }}
+							>
+								<FiltersFormLabel label={"Days Active"} />
+								<Slider
+									style={sliderStyles}
+									value={filtersDaysActive}
+									onChange={handleDaysActiveChange}
+									getAriaValueText={valuetext}
+									aria-labelledby="discrete-slider-custom"
+									step={1}
+									valueLabelDisplay="auto"
+									marks={createMarks([0, 180])}
+									min={0}
+									max={180}
+								/>
+							</FormControl> */}
 
-        <FormControl
-          component="fieldset"
-          style={{ flexShrink: 0, marginTop: 20 }}
-        >
-          <FiltersFormLabel label={"Sort Results"} />
-          <RadioGroup
-            aria-label="Sort results by"
-            name="sort-by"
-            value={filtersSortBy}
-            onChange={handleSortByChange}
-          >
-            <FormControlLabel
-              value={SORT_BY.DATE_DES}
-              control={<Radio style={filtersRadioStyles} />}
-              label={
-                <Typography style={{ fontSize: 14, color: "#333" }}>
-                  {"Date (newest at top)"}
-                </Typography>
-              }
-            />
-            <FormControlLabel
-              value={SORT_BY.DATE_ASC}
-              control={<Radio style={filtersRadioStyles} />}
-              label={
-                <Typography style={{ fontSize: 14, color: "#333" }}>
-                  {"Date (oldest at top)"}
-                </Typography>
-              }
-            />
-            {/* <FormControlLabel
-              value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
-              control={<Radio style={filtersRadioStyles} />}
-              label={
-                <Typography style={{ fontSize: 14, color: '#333' }}>
-                  {"Title (A to Z)"}
-                </Typography>
-              }
-            />
-            <FormControlLabel
-              value={SORT_BY.SUBSCRIPTION_BRAND_DES}
-              control={<Radio style={filtersRadioStyles} />}
-              label={
-                <Typography style={{ fontSize: 14, color: '#333' }}>
-                  {"Title (Z to A)"}
-                </Typography>
-              }
-            /> */}
-          </RadioGroup>
-        </FormControl>
-      </div>
-    </Scrollbars>
+              <FormControl
+                component="fieldset"
+                style={{ flexShrink: 0, marginTop: 20 }}
+              >
+                <FiltersFormLabel label={"Sort Results"} />
+                <RadioGroup
+                  aria-label="Sort results by"
+                  name="sort-by"
+                  value={filtersSortBy}
+                  onChange={handleSortByChange}
+                >
+                  <FormControlLabel
+                    value={SORT_BY.DATE_DES}
+                    control={<Radio style={filtersRadioStyles} />}
+                    label={
+                      <Typography style={{ fontSize: 14, color: "#333" }}>
+                        {"Date (newest at top)"}
+                      </Typography>
+                    }
+                  />
+                  <FormControlLabel
+                    value={SORT_BY.DATE_ASC}
+                    control={<Radio style={filtersRadioStyles} />}
+                    label={
+                      <Typography style={{ fontSize: 14, color: "#333" }}>
+                        {"Date (oldest at top)"}
+                      </Typography>
+                    }
+                  />
+                  {/* <FormControlLabel
+										value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
+										control={<Radio style={filtersRadioStyles} />}
+										label={
+											<Typography style={{ fontSize: 14, color: '#333' }}>
+												{"Title (A to Z)"}
+											</Typography>
+										}
+									/>
+									<FormControlLabel
+										value={SORT_BY.SUBSCRIPTION_BRAND_DES}
+										control={<Radio style={filtersRadioStyles} />}
+										label={
+											<Typography style={{ fontSize: 14, color: '#333' }}>
+												{"Title (Z to A)"}
+											</Typography>
+										}
+									/> */}
+                </RadioGroup>
+              </FormControl>
+            </div>
+          </div>
+        )}
+      </Measure>
+    </Scrollbar>
   );
 };
 

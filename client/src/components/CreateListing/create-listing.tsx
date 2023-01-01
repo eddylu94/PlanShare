@@ -311,6 +311,7 @@ const CreateListingProviderWithContext = (props: {
     formValues.numberOfPeople,
     formValues.price,
     formValues.otherSubscription,
+    isOtherInputDisplayed,
     isSubscriptionUrlValid
   ]);
 
@@ -332,6 +333,7 @@ const CreateListingProviderWithContext = (props: {
     return (
       <Autocomplete
         disablePortal
+        disableClearable
         options={options.map(option => option.label)}
         onChange={(e, value) => {
           const category = subscriptionCategories.find(
@@ -360,6 +362,7 @@ const CreateListingProviderWithContext = (props: {
     return (
       <Autocomplete
         disablePortal
+        disableClearable
         options={options.map(option => option.label)}
         onChange={(e, value) => {
           const brand = subscriptionBrands.find(brand => value === brand.name);

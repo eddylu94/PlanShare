@@ -300,7 +300,6 @@
 
 .subscription-card-basic-info {
   display: flex;
-  justify-content: center;
   color: #686868;
   font-size: 14px;
   min-width: 110px;
@@ -315,6 +314,7 @@
   /* /* Medium, Large, Extra-large */
   .subscription-card-basic-info {
     flex-direction: column;
+    justify-content: center;
     margin-left: 20px;
   }
 }
@@ -550,7 +550,7 @@
 }
 
 .subscription-pane {
-  display: block;
+  display: flex;
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
