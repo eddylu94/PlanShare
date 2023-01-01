@@ -339,7 +339,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                   <input
                     type="text"
                     className="search-text-input"
-                    placeholder="Search for a subscription"
+                    placeholder="Search listings"
                     value={filtersText}
                     onChange={handleTextChange}
                     autoFocus

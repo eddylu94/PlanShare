@@ -128,7 +128,7 @@ const SubscriptionProviderWithContext = (props: {
         </span>
       </div>
 
-      {userId != null && userId !== currentUser ? (
+      {userId != null && userId !== currentUser && (
         <div className="subscription-detail" style={{ marginTop: 15 }}>
           <Link
             to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
@@ -143,11 +143,11 @@ const SubscriptionProviderWithContext = (props: {
             </button>
           </Link>
         </div>
-      ) : null}
+      )}
 
-      {contactFb || contactEmail ? (
+      {(contactFb || contactEmail) && (
         <div style={{ marginTop: 20 }}>
-          {contactFb ? (
+          {contactFb && (
             <div className="subscription-detail subscription-subscription-detail">
               <img
                 alt="Facebook"
@@ -157,9 +157,9 @@ const SubscriptionProviderWithContext = (props: {
               />
               {contactFb}
             </div>
-          ) : null}
+          )}
 
-          {contactEmail ? (
+          {contactEmail && (
             <div className="subscription-detail subscription-subscription-detail">
               <img
                 alt="Email"
@@ -168,9 +168,9 @@ const SubscriptionProviderWithContext = (props: {
               />
               {contactEmail}
             </div>
-          ) : null}
+          )}
         </div>
-      ) : null}
+      )}
 
       <div className="subscription-label">Details</div>
       <div className="subscription-detail subscription-subscription-detail">
