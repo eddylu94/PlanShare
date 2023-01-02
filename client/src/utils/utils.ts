@@ -59,6 +59,7 @@ export interface ISubscriptionData {
   otherSubscription?: string;
   contactFb?: string;
   contactEmail?: string;
+  potentialLimit?: boolean;
 }
 
 export interface IMessageData {

@@ -128,7 +128,8 @@ export const getSubscriptionsAsGuest = (
               subscriptionBrandname: subscription.subscriptionBrandName,
               subscriptionCategory: subscription.subscriptionCategory,
               subscriptionUrl: subscription.subscriptionUrl,
-              otherSubscription: subscription.otherSubscription
+              otherSubscription: subscription.otherSubscription,
+              potentialLimit: subscription.potentialLimit
             };
           })
           .sort((a: any, b: any) => {

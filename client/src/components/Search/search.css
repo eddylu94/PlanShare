@@ -540,8 +540,22 @@
   color: #6c5dbd;
 }
 
+.subscription-card-header {
+  display: flex;
+  flex-direction: row;
+}
+
 .subscription-card-info-name {
   font-size: 18px;
+  font-weight: 600;
+}
+
+.subscription-card-sharing-warning {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #6c5dbd;
   font-weight: 600;
 }
 

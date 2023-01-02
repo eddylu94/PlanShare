@@ -1,7 +1,9 @@
 // Third-party libraries
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
+import WarningIcon from "@mui/icons-material/WarningAmber";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 
 // Utilities
 import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
@@ -39,7 +41,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     price,
     userId,
     otherSubscription,
-    organization
+    organization,
+    potentialLimit
   } = subscription;
 
   const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
@@ -88,10 +91,22 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
   const subscriptionInfo = (
     <div className="subscription-card-info">
-      <div className="subscription-card-info-name subscription-detail-cropped">
-        {subscriptionBrand.type === "OTHER"
-          ? otherSubscription
-          : subscriptionBrand.name}
+      <div className="subscription-card-header">
+        <div className="subscription-card-info-name subscription-detail-cropped">
+          {subscriptionBrand.type === "OTHER"
+            ? otherSubscription
+            : subscriptionBrand.name}
+        </div>
+        {potentialLimit && (
+          <Tooltip title="This listing has been marked by our moderators or community as a service that may come with limitations regarding sharing. Verify with the service's terms of use before enrolling into any shared services.">
+            <IconButton style={{ marginLeft: 5, width: 20, padding: 0 }}>
+              <WarningIcon
+                className="subscription-card-sharing-warning"
+                style={{ width: 20 }}
+              />
+            </IconButton>
+          </Tooltip>
+        )}
       </div>
       {listingDescription && (
         <div className="subscription-card-description-container">

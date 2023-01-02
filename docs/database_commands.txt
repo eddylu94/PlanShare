@@ -11,10 +11,13 @@ db.createCollection("Conversations");
 
 // CREATE USERS
 db.Users.insertOne({
-	firstName: 'eddy',
-	email: 'eddy',
-	pass: 'eddy'
+	firstName: '<name>',
+	email: '<email>',
+	pass: '<pass>'
 });
 
 // Create index for searching of subscriptions
-db.Subscriptions.createIndex( { "subscriptionBrandName": "text", listingDescription: "text" } )
+db.Subscriptions.createIndex( { "subscriptionBrandName": "<text>", listingDescription: "<text>" } )
+
+// Mark listing as potential sharing limitation
+db.Subscriptions.update({subscriptionBrandName: "<brand_name>"}, {$set: {potentialLimit: true}}, {multi: true})
