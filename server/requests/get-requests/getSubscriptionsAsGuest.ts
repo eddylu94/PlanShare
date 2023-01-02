@@ -60,25 +60,14 @@ export const getSubscriptionsAsGuest = (
       new Date().setDate(new Date().getDate() - parseInt(da) - 1)
     );
 
-    const promises = [] as any[];
-
     let sort: any;
     switch (sb) {
-      case SORT_BY.DATE_DES:
-        sort = { createdDate: -1 };
-        break;
       case SORT_BY.DATE_ASC:
         sort = { createdDate: 1 };
         break;
-      case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-        sort = { "subscriptionBrand.name": 1 };
-        break;
-      case SORT_BY.SUBSCRIPTION_BRAND_DES:
-        sort = { "subscriptionBrand.name": -1 };
-        break;
+      case SORT_BY.DATE_DES:
       default:
         sort = { createdDate: -1 };
-        break;
     }
 
     const findQuery = {
@@ -109,18 +98,12 @@ export const getSubscriptionsAsGuest = (
       });
     }
 
-    const subscriptionsPromise = dbo
+    dbo
       .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
       .find(findQuery)
       .sort(sort)
-      .toArray();
-
-    promises.push(subscriptionsPromise);
-
-    return Promise.all(promises)
+      .toArray()
       .then(results => {
-        // console.log(results)
-
         if (results.length === 0) {
           console.log("Unable to find subscriptions");
           db.close();
@@ -128,9 +111,6 @@ export const getSubscriptionsAsGuest = (
           return;
         }
         const data = results
-          .reduce((acc, curr) => {
-            return acc.concat(curr);
-          }, [])
           .map((subscription: any) => {
             if (!subscription.organization) {
               return subscription;
@@ -153,14 +133,9 @@ export const getSubscriptionsAsGuest = (
           })
           .sort((a: any, b: any) => {
             switch (sb) {
-              case SORT_BY.DATE_DES:
-                return b.createdDate - a.createdDate;
               case SORT_BY.DATE_ASC:
                 return a.createdDate - b.createdDate;
-              case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-                return b.listingTitle < a.listingTitle ? -1 : 1;
-              case SORT_BY.SUBSCRIPTION_BRAND_DES:
-                return b.listingTitle < a.listingTitle ? 1 : -1;
+              case SORT_BY.DATE_DES:
               default:
                 return b.createdDate - a.createdDate;
             }

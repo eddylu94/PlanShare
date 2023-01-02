@@ -24,8 +24,7 @@ export const getSubscriptions = (
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
       const [db, findRes] = res;
-
-      const email = findRes.email;
+      const { email } = findRes;
 
       const { t, sc, gs, sb, da, p } = postReq.query;
 
@@ -50,63 +49,34 @@ export const getSubscriptions = (
       const organization = retrieveOrganizationByDomain(domain);
       const organizationId = organization && organization.organizationId;
 
-      const promises = [] as any[];
-
       let sort: any;
       switch (sb) {
-        case SORT_BY.DATE_DES:
-          sort = { createdDate: -1 };
-          break;
         case SORT_BY.DATE_ASC:
           sort = { createdDate: 1 };
           break;
-        case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-          sort = { "subscriptionBrand.name": 1 };
-          break;
-        case SORT_BY.SUBSCRIPTION_BRAND_DES:
-          sort = { "subscriptionBrand.name": -1 };
-          break;
+        case SORT_BY.DATE_DES:
         default:
           sort = { createdDate: -1 };
-          break;
       }
 
       const findQuery = {
+        "subscriptionBrand.type": { $in: subscriptionCategories },
+        numberOfPeople: {
+          $gte: minGroupSize,
+          $lte: maxGroupSize
+        },
+        price: {
+          $gte: minPrice,
+          $lte: maxPrice
+        },
+        createdDate: {
+          $lte: new Date(currentDate),
+          $gte: new Date(oldestDate)
+        },
+        status: SUBSCRIPTION_STATUS.ACTIVE,
         $or: [
-          {
-            organization: null,
-            "subscriptionBrand.type": { $in: subscriptionCategories },
-            numberOfPeople: {
-              $gte: minGroupSize,
-              $lte: maxGroupSize
-            },
-            price: {
-              $gte: minPrice,
-              $lte: maxPrice
-            },
-            createdDate: {
-              $lte: new Date(currentDate),
-              $gte: new Date(oldestDate)
-            },
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          },
-          {
-            "organization.organizationId": organizationId,
-            "subscriptionBrand.type": { $in: subscriptionCategories },
-            numberOfPeople: {
-              $gte: minGroupSize,
-              $lte: maxGroupSize
-            },
-            price: {
-              $gte: minPrice,
-              $lte: maxPrice
-            },
-            createdDate: {
-              $lte: new Date(currentDate),
-              $gte: new Date(oldestDate)
-            },
-            status: SUBSCRIPTION_STATUS.ACTIVE
-          }
+          { organization: null },
+          { "organization.organizationId": organizationId }
         ]
       };
 
@@ -121,18 +91,12 @@ export const getSubscriptions = (
         });
       }
 
-      const subscriptionsPromise = dbo
+      dbo
         .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
         .find(findQuery)
         .sort(sort)
-        .toArray();
-
-      promises.push(subscriptionsPromise);
-
-      return Promise.all(promises)
+        .toArray()
         .then(results => {
-          // console.log(results)
-
           if (results.length === 0) {
             console.log("Unable to find subscriptions");
             db.close();
@@ -140,24 +104,15 @@ export const getSubscriptions = (
             return;
           }
 
-          const data = results
-            .reduce((acc, curr) => {
-              return acc.concat(curr);
-            }, [])
-            .sort((a: any, b: any) => {
-              switch (sb) {
-                case SORT_BY.DATE_DES:
-                  return b.createdDate - a.createdDate;
-                case SORT_BY.DATE_ASC:
-                  return a.createdDate - b.createdDate;
-                case SORT_BY.SUBSCRIPTION_BRAND_ASC:
-                  return b.listingTitle < a.listingTitle ? -1 : 1;
-                case SORT_BY.SUBSCRIPTION_BRAND_DES:
-                  return b.listingTitle < a.listingTitle ? 1 : -1;
-                default:
-                  return b.createdDate - a.createdDate;
-              }
-            });
+          const data = results.sort((a: any, b: any) => {
+            switch (sb) {
+              case SORT_BY.DATE_ASC:
+                return a.createdDate - b.createdDate;
+              case SORT_BY.DATE_DES:
+              default:
+                return b.createdDate - a.createdDate;
+            }
+          });
 
           db.close();
           postSuccess(postRes, {

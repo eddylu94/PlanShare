@@ -226,24 +226,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                       </Typography>
                     }
                   />
-                  {/* <FormControlLabel
-										value={SORT_BY.SUBSCRIPTION_BRAND_ASC}
-										control={<Radio style={filtersRadioStyles} />}
-										label={
-											<Typography style={{ fontSize: 14, color: '#333' }}>
-												{"Title (A to Z)"}
-											</Typography>
-										}
-									/>
-									<FormControlLabel
-										value={SORT_BY.SUBSCRIPTION_BRAND_DES}
-										control={<Radio style={filtersRadioStyles} />}
-										label={
-											<Typography style={{ fontSize: 14, color: '#333' }}>
-												{"Title (Z to A)"}
-											</Typography>
-										}
-									/> */}
                 </RadioGroup>
               </FormControl>
             </div>
