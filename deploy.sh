@@ -3,11 +3,6 @@ start_time=`date +%s`
 echo "Pulling latest changes"
 git pull
 
-echo "Killing server process"
-fuser -k 36322/tcp
-echo "Killing client process"
-fuser -k 36321/tcp
-
 cd server
 echo "Removing server node_modules"
 rm -rf node_modules
@@ -24,6 +19,12 @@ cd ..
 cd client
 echo "Installing client dependencies"
 yarn install
+
+echo "Killing server process"
+fuser -k 36322/tcp
+echo "Killing client process"
+fuser -k 36321/tcp
+
 echo "Building client"
 yarn build
 cd ..
