@@ -96,11 +96,20 @@ const MessagesProviderWithContext = (props: {
           conversation =>
             !!conversation.lastMessage || conversation.userId === otherUserId
         )
-        .sort(
-          (a, b) =>
+        .sort((a, b) => {
+          if (!b.lastMessage) {
+            return 1;
+          }
+
+          if (!a.lastMessage) {
+            return -1;
+          }
+
+          return (
             new Date(b.lastMessage.date).getTime() -
             new Date(a.lastMessage.date).getTime()
-        );
+          );
+        });
 
       if (!conversationId && newConversationsList[0]) {
         setConversationId(newConversationsList[0].conversationId);
@@ -128,11 +137,20 @@ const MessagesProviderWithContext = (props: {
           conversation =>
             !!conversation.lastMessage || conversation.userId === otherUserId
         )
-        .sort(
-          (a, b) =>
+        .sort((a, b) => {
+          if (!b.lastMessage) {
+            return 1;
+          }
+
+          if (!a.lastMessage) {
+            return -1;
+          }
+
+          return (
             new Date(b.lastMessage.date).getTime() -
             new Date(a.lastMessage.date).getTime()
-        );
+          );
+        });
 
       log(newConversationsList);
       setConversationsList(newConversationsList);

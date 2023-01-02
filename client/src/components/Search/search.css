@@ -501,11 +501,13 @@
   flex-direction: row;
   flex-grow: 1;
   min-width: 0;
+  color: #333333;
 }
 
 .subscription-card-description {
   display: flex;
   overflow: hidden;
+  color: #333333;
 }
 
 .subscription-card-description span {
