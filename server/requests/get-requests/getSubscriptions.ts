@@ -110,9 +110,14 @@ export const getSubscriptions = (
         ]
       };
 
+      const regex = new RegExp(t, "i");
+
       if (t.length > 0) {
         Object.assign(findQuery, {
-          $text: { $search: t }
+          $or: [
+            { $text: { $search: t } },
+            { "subscriptionBrand.name": { $regex: regex } }
+          ]
         });
       }
 

@@ -98,9 +98,14 @@ export const getSubscriptionsAsGuest = (
       status: SUBSCRIPTION_STATUS.ACTIVE
     };
 
+    const regex = new RegExp(t, "i");
+
     if (t.length > 0) {
       Object.assign(findQuery, {
-        $text: { $search: t }
+        $or: [
+          { $text: { $search: t } },
+          { "subscriptionBrand.name": { $regex: regex } }
+        ]
       });
     }
 
