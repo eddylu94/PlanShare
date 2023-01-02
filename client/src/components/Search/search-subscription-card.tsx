@@ -4,9 +4,14 @@ import { Link } from "react-router-dom";
 import WarningIcon from "@mui/icons-material/WarningAmber";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 
 // Utilities
-import { ISubscriptionData, getDaysAgoString } from "../../utils/utils";
+import {
+  mobileAndTabletCheck,
+  ISubscriptionData,
+  getDaysAgoString
+} from "../../utils/utils";
 import { ClickEvent } from "../../utils/interfaces";
 
 interface ISearchSubscriptionCardProps {
@@ -89,6 +94,51 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     </div>
   );
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = (e: any) => {
+    setOpen(!open);
+    e.stopPropagation();
+  };
+
+  const warningBtn = (
+    <IconButton
+      onClick={handleTooltipOpen}
+      style={{ marginLeft: 5, width: 20, padding: 0 }}
+    >
+      <WarningIcon
+        className="subscription-card-sharing-warning"
+        style={{ width: 20 }}
+      />
+    </IconButton>
+  );
+
+  const warningMessage =
+    "This listing has been marked by our moderators as a service that may come with sharing limitations. Verify with the service's terms of use before enrolling into any shared services.";
+  const warning = mobileAndTabletCheck() ? (
+    <ClickAwayListener onClickAway={handleTooltipClose}>
+      <Tooltip
+        title={warningMessage}
+        PopperProps={{
+          disablePortal: true
+        }}
+        onClose={handleTooltipClose}
+        open={open}
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+      >
+        {warningBtn}
+      </Tooltip>
+    </ClickAwayListener>
+  ) : (
+    <Tooltip title={warningMessage}>{warningBtn}</Tooltip>
+  );
+
   const subscriptionInfo = (
     <div className="subscription-card-info">
       <div className="subscription-card-header">
@@ -97,16 +147,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
             ? otherSubscription
             : subscriptionBrand.name}
         </div>
-        {potentialLimit && (
-          <Tooltip title="This listing has been marked by our moderators or community as a service that may come with limitations regarding sharing. Verify with the service's terms of use before enrolling into any shared services.">
-            <IconButton style={{ marginLeft: 5, width: 20, padding: 0 }}>
-              <WarningIcon
-                className="subscription-card-sharing-warning"
-                style={{ width: 20 }}
-              />
-            </IconButton>
-          </Tooltip>
-        )}
+        {potentialLimit ? warning : null}
       </div>
       {listingDescription && (
         <div className="subscription-card-description-container">
