@@ -1,7 +1,7 @@
 // Third-party libraries
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import WarningIcon from "@mui/icons-material/WarningAmber";
+import WarningIcon from "@mui/icons-material/Warning";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
