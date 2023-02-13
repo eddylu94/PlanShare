@@ -221,9 +221,14 @@ export const postSuccess = (postRes: any, body: any) => {
   });
 };
 
-export const postFailure = (postRes: any, statusMessage: string) => {
+export const postFailure = (
+  postRes: any,
+  statusMessage: string,
+  additionalParams?: any
+) => {
   postRes.json({
     statusCode: STATUS_CODE.FAILURE,
-    statusMessage
+    statusMessage,
+    ...(additionalParams != null && additionalParams)
   });
 };

@@ -66,7 +66,8 @@ export const getSubscriptionAsGuest = (
             db.close();
             postFailure(
               postRes,
-              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION,
+              { organization: subscriptionFindRes.organization }
             );
             return;
           }

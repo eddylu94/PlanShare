@@ -117,6 +117,7 @@ export const getSubscriptionsAsGuest = (
             }
 
             return {
+              _id: subscription._id,
               listingDescription: subscription.listingDescription,
               createdDate: subscription.createdDate,
               firstName: subscription.firstName,

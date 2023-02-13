@@ -30,6 +30,7 @@
   box-sizing: border-box;
   overflow-y: auto;
   transition: all 0.2s ease-in-out;
+  height: 500px;
 }
 
 .search-modal {

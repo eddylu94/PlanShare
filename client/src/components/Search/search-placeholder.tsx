@@ -64,10 +64,8 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
       deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
         <div
           className="subscription-pane search-pane"
-          style={{ backgroundColor: "#efefef" }}
-        >
-          {/* <Subscription subscriptionId={selectedSubscription} /> */}
-        </div>
+          style={{ backgroundColor: "#fff", height: 500 }}
+        ></div>
       ) : null}
     </div>
   );

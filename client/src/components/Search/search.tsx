@@ -417,7 +417,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                   justifyContent: "center"
                 }}
               >
-                <span style={{ fontWeight: 500 }}>
+                <span style={{ fontWeight: 600 }}>
                   Select a listing to view its details
                 </span>
                 {!isUser && (
