@@ -30,6 +30,19 @@
   color: #6c5dbd;
 }
 
+.subscription-external-organization {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.subscription-external-organization-logo {
+  width: 50px;
+  margin-left: 10px;
+}
+
 .subscription-icons-container {
   display: flex;
   flex-direction: column;

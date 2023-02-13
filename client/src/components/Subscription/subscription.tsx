@@ -1,10 +1,16 @@
+// Third-party libraries
 import React, { useState, useEffect } from "react";
-
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { baseGetRequest } from "../../base-requests";
-import { log } from "../../utils/utils";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import LockIcon from "@mui/icons-material/Lock";
+
+// API
+import { baseGetRequest } from "../../base-requests";
+
+// Utilities
+import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { log } from "../../utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 
 const SubscriptionProviderWithContext = (props: {
   userData: IUserContext;
@@ -23,6 +29,13 @@ const SubscriptionProviderWithContext = (props: {
     if (newSubscriptionData) {
       log(newSubscriptionData);
       setSubscriptionData(newSubscriptionData);
+    } else if (
+      data?.statusCode === STATUS_CODE.FAILURE &&
+      data?.statusMessage === STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
+    ) {
+      setSubscriptionData({
+        organization: data?.organization
+      });
     }
   };
 
@@ -44,18 +57,27 @@ const SubscriptionProviderWithContext = (props: {
   }, [subscriptionId]);
 
   const userData = _userData;
-  const isGuest = !!(subscriptionId && subscriptionId === "guest");
   const currentUser = _userData.user?.userId as string;
 
-  if (isGuest) {
+  console.log(currentUser);
+
+  if (subscriptionData != null && Object.keys(subscriptionData).length === 1) {
+    const organization = subscriptionData?.organization;
+
     return (
       <div className="subscription-guest-login-message">
         <div className="subscription-guest-login-message-wrapper">
           <span>
-            The selected listing is only visible for members of the same
-            organization.
-            <br />
-            <br />
+            The selected listing is only visible for members of the{" "}
+            <b>{organization?.name}</b> organization.
+            <div className="subscription-external-organization">
+              <LockIcon htmlColor="#888" fontSize="large" />
+              <img
+                className="subscription-external-organization-logo"
+                src={organization?.logo}
+                alt={organization.name}
+              />
+            </div>
             Please <Link to="/login">log in</Link> or{" "}
             <Link to="/signup">sign up</Link> to view listing details within an
             organization
