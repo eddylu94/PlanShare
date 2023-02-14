@@ -45,6 +45,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(scrollToBottom, [messages]);
 
   const renderCurrentUserMessage = (

@@ -1,4 +1,4 @@
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { DEVICE_MODE } from "./constants";
 
 export interface IResponse {

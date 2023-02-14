@@ -10,6 +10,8 @@ cd ..
 cd client
 echo "Removing client node_modules"
 rm -rf node_modules
+echo "Removing client build"
+rm -rf build
 cd ..
 
 cd server

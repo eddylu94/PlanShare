@@ -19,7 +19,7 @@ import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
 import { TITLE } from "../../utils/constants";
 import { DEVICE_MODE } from "../../utils/constants";
 
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
 const SignUpProviderWithContext = (props: {
   userData: IUserContext;

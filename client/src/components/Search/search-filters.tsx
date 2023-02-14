@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 import Scrollbar from "react-custom-scrollbars";
 import Measure from "react-measure";
-import FormLabel from "@material-ui/core/FormLabel";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Slider from "@material-ui/core/Slider";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Typography from "@material-ui/core/Typography";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Slider from "@mui/material/Slider";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
 
 // Utilities
 import { SORT_BY } from "./search-utils";
@@ -146,6 +146,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
               >
                 <FiltersFormLabel label={"Price"} />
                 <Slider
+                  size="small"
                   style={sliderStyles}
                   getAriaValueText={valuetext}
                   aria-labelledby="range-slider"

@@ -29,10 +29,7 @@ export interface ISearchFiltersProps {
     event: React.ChangeEvent<{}>,
     value: number | number[]
   ) => void;
-  handlePriceChange: (
-    event: React.ChangeEvent<{}>,
-    value: number | number[]
-  ) => void;
+  handlePriceChange: (event: Event, value: number | number[]) => void;
   handleSortByChange: (event: InputChangeEvent) => void;
   handleDaysActiveChange: (
     event: React.ChangeEvent<{}>,

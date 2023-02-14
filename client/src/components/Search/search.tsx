@@ -126,10 +126,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setFiltersGroupSize(newValue);
   };
 
-  const handlePriceChange = (
-    event: React.ChangeEvent<{}>,
-    value: number | Array<number>
-  ) => {
+  const handlePriceChange = (event: Event, value: number | Array<number>) => {
     event.preventDefault();
 
     const newValue = value as number[];
