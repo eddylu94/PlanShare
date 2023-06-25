@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Scrollbars from "react-custom-scrollbars";
+import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 
 // Utilites
 import { IMessageData } from "./../../utils/utils";
@@ -74,6 +75,26 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
       ? renderCurrentUserMessage(messageData, index)
       : renderOtherUserMessage(messageData, index);
 
+  const renderDraftPrompt = () => {
+    return (
+      <div className="conversation-message-draft-prompt">
+        <ContactMailTwoToneIcon
+          style={{
+            width: 80,
+            height: 80,
+            color: "#AAAAAA",
+            marginBottom: 10
+          }}
+        />
+
+        <div>Start your conversation with {firstName}!</div>
+        <div className="b i conversation-message-draft-prompt-disclaimer">
+          Remember, never share any bank account or credit card information.
+        </div>
+      </div>
+    );
+  };
+
   const renderMessages = (messages: IMessageData[]) => {
     return messages.map((messageData, i) => renderMessage(messageData, i));
   };
@@ -105,7 +126,7 @@ const ConversationCanvas = (props: IConversationCanvasProps) => {
 
       <Scrollbars className="conversation-scrollbars-container">
         <div className="conversation-body">
-          {renderMessages(messages)}
+          {messages.length > 0 ? renderMessages(messages) : renderDraftPrompt()}
           <div ref={messagesEndRef}></div>
         </div>
       </Scrollbars>

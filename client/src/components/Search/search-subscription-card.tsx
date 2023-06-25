@@ -80,15 +80,17 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <div className="subscription-card-author">
       {!isProfile && (
         <>
-          Posted by{" "}
+          by{" "}
           <div className={"subscription-author-detail"}>
             {author}
-            <img
-              alt="Organization logo"
-              style={{ opacity: !organization ? 0.5 : 1 }}
-              className="subscription-card-organization-logo"
-              src={organization ? organization.logo : "/public_icon.png"}
-            />
+            {sponsor == null && (
+              <img
+                alt="Organization logo"
+                style={{ opacity: !organization ? 0.5 : 1 }}
+                className="subscription-card-organization-logo"
+                src={organization ? organization.logo : "/public_icon.png"}
+              />
+            )}
           </div>
         </>
       )}

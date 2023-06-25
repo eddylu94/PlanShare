@@ -79,6 +79,7 @@
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
+  min-height: 80%;
   /* Extra top padding of 17px due to negative margin caused by react-custom-scrollbars */
   padding: 37px 20px 20px 20px;
 }
@@ -95,6 +96,19 @@
   border-radius: 20px;
   margin-bottom: 8px;
   font-size: 14px;
+}
+
+.conversation-message-draft-prompt {
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.conversation-message-draft-prompt-disclaimer {
+  margin-top: 10px;
 }
 
 .conversation-current-user-message {

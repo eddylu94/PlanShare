@@ -415,7 +415,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                 }}
               >
                 <span style={{ fontWeight: 600 }}>
-                  Select a listing to view its details
+                  Select a listing to get started
                 </span>
                 {!isUser && (
                   <>

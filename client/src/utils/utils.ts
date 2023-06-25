@@ -148,7 +148,7 @@ export const getDaysAgoString = (d: Date) => {
       } else if (differenceInDays <= 7) {
         return `${differenceInDays} days ago`;
       } else {
-        return "Over a week ago";
+        return ">1 week ago";
       }
     }
   }
