@@ -60,6 +60,9 @@ export interface ISubscriptionData {
   contactFb?: string;
   contactEmail?: string;
   potentialLimit?: boolean;
+  sponsor?: {
+    src: string;
+  };
 }
 
 export interface IMessageData {

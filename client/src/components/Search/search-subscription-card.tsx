@@ -47,7 +47,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     userId,
     otherSubscription,
     organization,
-    potentialLimit
+    potentialLimit,
+    sponsor
   } = subscription;
 
   const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
@@ -162,9 +163,16 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
 
   const subscriptionBasicInfo = (
     <div className="subscription-card-basic-info">
-      <div className="subscription-card-date i">
-        {getDaysAgoString(new Date(createdDate))}
-      </div>
+      {sponsor ? (
+        <div className="subscription-card-date">
+          <div className="subscription-card-sponsored-tag">Sponsored</div>
+        </div>
+      ) : (
+        <div className="subscription-card-date i">
+          {getDaysAgoString(new Date(createdDate))}
+        </div>
+      )}
+
       <div className="subscription-card-basic-info-detail">
         ${price.toFixed(2)}
       </div>
@@ -176,7 +184,11 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
       <div
         className="subscription-card"
         tabIndex={0}
-        onClick={() => handleSubscriptionCardClick?.(_id)}
+        onClick={() =>
+          sponsor != null
+            ? window.open(sponsor.src, "_blank")?.focus()
+            : handleSubscriptionCardClick?.(_id)
+        }
       >
         <div
           className="subscription-card-logo-and-info"

@@ -324,6 +324,12 @@
   box-shadow: none;
 }
 
+.subscription-card-sponsored-tag {
+  background-color: #dedede;
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
 .subscription-card-date {
   display: flex;
   flex-direction: row;
