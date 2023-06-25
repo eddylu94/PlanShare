@@ -15,10 +15,6 @@ interface ISubscription {
 }
 
 export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
-  LIVE_TV_STREAMING: {
-    subscriptionCategoryId: "LIVE_TV_STREAMING",
-    name: "Live TV Streaming"
-  },
   ONLINE_STREAMING: {
     subscriptionCategoryId: "ONLINE_STREAMING",
     name: "Online Streaming"
@@ -47,7 +43,6 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
 
 const subscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
@@ -98,19 +93,19 @@ export const SUBSCRIPTION: ISubscription = {
   },
   YOUTUBE_TV: {
     subscriptionBrandId: "YOUTUBE_TV",
-    type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "YouTube TV",
     logo: "https://planshare.io/plans/youtube_tv.png"
   },
   HULU_TV: {
     subscriptionBrandId: "HULU_TV",
-    type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "Hulu with Live TV",
     logo: "https://planshare.io/plans/hulu_tv.png"
   },
   ATT_TV: {
     subscriptionBrandId: "ATT_TV",
-    type: SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId,
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "AT&T TV Now",
     logo: "https://planshare.io/plans/att_tv.png"
   },
@@ -237,11 +232,7 @@ const onlineStreamingBrandIds = [
   SUBSCRIPTION.DISNEY_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.HOTSTAR_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId,
-  SUBSCRIPTION.OTHER.subscriptionBrandId
-];
-
-const liveTvSubscriptionBrandIds = [
-  SUBSCRIPTION.YOUTUBE_TV.subscriptionBrandId,
+	SUBSCRIPTION.YOUTUBE_TV.subscriptionBrandId,
   SUBSCRIPTION.HULU_TV.subscriptionBrandId,
   SUBSCRIPTION.ATT_TV.subscriptionBrandId,
   SUBSCRIPTION.OTHER.subscriptionBrandId
@@ -290,9 +281,6 @@ export const retrieveSubscriptionBrands = (type: string) => {
   switch (type) {
     case SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId:
       ids = onlineStreamingBrandIds;
-      break;
-    case SUBSCRIPTION_CATEGORY.LIVE_TV_STREAMING.subscriptionCategoryId:
-      ids = liveTvSubscriptionBrandIds;
       break;
     case SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId:
       ids = mobileSubscriptionBrandIds;

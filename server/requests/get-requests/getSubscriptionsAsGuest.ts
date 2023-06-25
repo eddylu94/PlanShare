@@ -16,6 +16,7 @@ import {
   SORT_BY,
   SUBSCRIPTION_STATUS
 } from "./../../constants";
+import { Sponsors } from "../../sponsors";
 
 export const getSubscriptionsAsGuest = (
   mongoClient: typeof mongodb.MongoClient,
@@ -130,7 +131,7 @@ export const getSubscriptionsAsGuest = (
               subscriptionCategory: subscription.subscriptionCategory,
               subscriptionUrl: subscription.subscriptionUrl,
               otherSubscription: subscription.otherSubscription,
-              potentialLimit: subscription.potentialLimit
+              potentialLimit: subscription.potentialLimit,
             };
           })
           .sort((a: any, b: any) => {
@@ -142,6 +143,10 @@ export const getSubscriptionsAsGuest = (
                 return b.createdDate - a.createdDate;
             }
           });
+
+				if (data.length >= 2) {
+					data.splice(2, 0, Sponsors[0]);
+				}
 
         db.close();
         postSuccess(postRes, {
