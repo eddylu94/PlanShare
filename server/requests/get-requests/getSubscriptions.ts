@@ -14,6 +14,7 @@ import {
   SORT_BY,
   SUBSCRIPTION_STATUS
 } from "./../../constants";
+import { Sponsors } from "../../sponsors";
 
 export const getSubscriptions = (
   mongoClient: typeof mongodb.MongoClient,
@@ -113,6 +114,10 @@ export const getSubscriptions = (
                 return b.createdDate - a.createdDate;
             }
           });
+
+					if (data.length >= 2) {
+						data.splice(2, 0, Sponsors[0]);
+					}
 
           db.close();
           postSuccess(postRes, {
