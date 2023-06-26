@@ -142,6 +142,24 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <Tooltip title={warningMessage}>{warningBtn}</Tooltip>
   );
 
+  const subscriptionBasicInfo = (
+    <div className="subscription-card-basic-info">
+      {sponsor ? (
+        <div className="subscription-card-date">
+          <div className="subscription-card-sponsored-tag">Sponsored</div>
+        </div>
+      ) : (
+        <div className="subscription-card-date i">
+          {getDaysAgoString(new Date(createdDate))}
+        </div>
+      )}
+
+      <div className="subscription-card-basic-info-detail">
+        ${price.toFixed(2)}
+      </div>
+    </div>
+  );
+
   const subscriptionInfo = (
     <div className="subscription-card-info">
       <div className="subscription-card-header">
@@ -159,25 +177,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           </div>
         </div>
       )}
-      {!isMobile && !isProfile && subsciptionCardAuthor}
-    </div>
-  );
-
-  const subscriptionBasicInfo = (
-    <div className="subscription-card-basic-info">
-      {sponsor ? (
-        <div className="subscription-card-date">
-          <div className="subscription-card-sponsored-tag">Sponsored</div>
-        </div>
-      ) : (
-        <div className="subscription-card-date i">
-          {getDaysAgoString(new Date(createdDate))}
-        </div>
-      )}
-
-      <div className="subscription-card-basic-info-detail">
-        ${price.toFixed(2)}
-      </div>
+      {!isProfile ? subsciptionCardAuthor : null}
+      {isMobile ? subscriptionBasicInfo : null}
     </div>
   );
 
@@ -199,8 +200,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           {subscriptionLogo}
           {subscriptionInfo}
         </div>
-        {isMobile && !isProfile && subsciptionCardAuthor}
-        {subscriptionBasicInfo}
+        {!isMobile ? subscriptionBasicInfo : null}
       </div>
       {isDisplayButtons && (
         <div className="subscription-card-buttons">

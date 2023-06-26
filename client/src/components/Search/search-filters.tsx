@@ -18,6 +18,9 @@ import { ISearchFiltersProps } from "./search-utils";
 import { DEVICE_MODE } from "./../../utils/constants";
 import { useDeviceMode } from "../../utils/utils";
 
+const FONT_FAMILY =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'";
+
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
@@ -62,7 +65,9 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             />
           }
           label={
-            <Typography style={{ fontSize: 14, color: "#333" }}>
+            <Typography
+              style={{ fontSize: 15, color: "#333", fontFamily: FONT_FAMILY }}
+            >
               {category.name}
             </Typography>
           }
@@ -213,7 +218,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                     value={SORT_BY.DATE_DES}
                     control={<Radio style={filtersRadioStyles} />}
                     label={
-                      <Typography style={{ fontSize: 14, color: "#333" }}>
+                      <Typography
+                        style={{
+                          fontSize: 15,
+                          color: "#333",
+                          fontFamily: FONT_FAMILY
+                        }}
+                      >
                         {"Date (newest at top)"}
                       </Typography>
                     }
@@ -222,7 +233,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                     value={SORT_BY.DATE_ASC}
                     control={<Radio style={filtersRadioStyles} />}
                     label={
-                      <Typography style={{ fontSize: 14, color: "#333" }}>
+                      <Typography
+                        style={{
+                          fontSize: 15,
+                          color: "#333",
+                          fontFamily: FONT_FAMILY
+                        }}
+                      >
                         {"Date (oldest at top)"}
                       </Typography>
                     }

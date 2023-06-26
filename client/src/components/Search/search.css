@@ -514,7 +514,7 @@
 .subscription-card-description {
   display: flex;
   overflow: hidden;
-  color: #333333;
+  color: #555555;
 }
 
 .subscription-card-description span {
@@ -533,7 +533,7 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .subscription-card-author {
-    margin: 10px 0;
+    margin: 10px 0 8px 0;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -555,6 +555,7 @@
 .subscription-card-info-name {
   font-size: 18px;
   font-weight: 600;
+  color: #333333;
 }
 
 .subscription-card-sharing-warning {

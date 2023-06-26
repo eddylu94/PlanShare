@@ -27,6 +27,8 @@ fuser -k 36322/tcp
 echo "Killing client process"
 fuser -k 36321/tcp
 
+# Faster alternative is to build locally and SCP build directory to server
+# scp -r build root@138.197.220.137:~/Project%203632/client/build
 echo "Building client"
 yarn build
 cd ..
