@@ -104,7 +104,7 @@ const CreateListingProviderWithContext = (props: {
         numberOfPeople: newData.numberOfPeople,
         price: newData.price,
         ...(newData.contactFb && {
-          isContactFb: newData.isContactFb,
+          isContactFb: true,
           contactFb: newData.contactFb
         }),
         ...(newData.contactEmail && {
@@ -330,12 +330,14 @@ const CreateListingProviderWithContext = (props: {
       label: category.name
     }));
 
+    console.log(options.map(option => option.label));
+
     return (
       <Autocomplete
         disablePortal
         disableClearable
         options={options.map(option => option.label)}
-        onChange={(e, value) => {
+        onChange={(_e, value) => {
           const category = subscriptionCategories.find(
             category => value === category.name
           );
@@ -364,7 +366,7 @@ const CreateListingProviderWithContext = (props: {
         disablePortal
         disableClearable
         options={options.map(option => option.label)}
-        onChange={(e, value) => {
+        onChange={(_e, value) => {
           const brand = subscriptionBrands.find(brand => value === brand.name);
           if (brand) {
             setSubscriptionBrandSelection(brand);
@@ -419,6 +421,7 @@ const CreateListingProviderWithContext = (props: {
           <div className="form-field">
             <FormLabel label={"If other, please specify:"} isRequired />
             <TextField
+              value={formValues.otherSubscription}
               onChange={e =>
                 setFormValues({
                   ...formValues,
@@ -435,6 +438,7 @@ const CreateListingProviderWithContext = (props: {
             multiline
             rows={5}
             placeholder="Currently have two people, need three more!"
+            value={formValues.listingDescription}
             onChange={e =>
               setFormValues({
                 ...formValues,
@@ -447,6 +451,7 @@ const CreateListingProviderWithContext = (props: {
         <div className="form-field">
           <FormLabel label={"Link to subscription (optional):"} />
           <TextField
+            value={formValues.subscriptionUrl}
             onChange={e =>
               setFormValues({
                 ...formValues,
@@ -468,6 +473,7 @@ const CreateListingProviderWithContext = (props: {
             <FormLabel label={"Looking for:"} isRequired />
             <div className="form-number-input-with-label">
               <TextField
+                value={formValues.numberOfPeople}
                 onChange={e =>
                   setFormValues({
                     ...formValues,
@@ -488,6 +494,7 @@ const CreateListingProviderWithContext = (props: {
             <FormLabel label="Price per person:" isRequired />
             <div className="form-number-input-with-label">
               <TextField
+                value={formValues.price}
                 onChange={e =>
                   setFormValues({
                     ...formValues,
@@ -518,8 +525,8 @@ const CreateListingProviderWithContext = (props: {
             control={
               <Checkbox
                 checked={formValues.isContactFb}
-                // TODO: Remove lambda expression
-                onChange={e =>
+                value={formValues.isContactFb}
+                onChange={() =>
                   setFormValues({
                     ...formValues,
                     isContactFb: !formValues.isContactFb
@@ -541,6 +548,7 @@ const CreateListingProviderWithContext = (props: {
                   Facebook
                 </Typography>
                 <TextField
+                  value={formValues.contactFb}
                   onChange={e =>
                     setFormValues({
                       ...formValues,
@@ -559,8 +567,8 @@ const CreateListingProviderWithContext = (props: {
             control={
               <Checkbox
                 checked={formValues.isContactEmail}
-                // TODO: Remove lambda expression
-                onChange={e =>
+                value={formValues.isContactEmail}
+                onChange={() =>
                   setFormValues({
                     ...formValues,
                     isContactEmail: !formValues.isContactEmail
@@ -582,6 +590,7 @@ const CreateListingProviderWithContext = (props: {
                   Email
                 </Typography>
                 <TextField
+                  value={formValues.contactEmail}
                   onChange={e =>
                     setFormValues({
                       ...formValues,
