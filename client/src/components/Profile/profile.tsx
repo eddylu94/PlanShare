@@ -145,7 +145,7 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const archiveSubscription = (event: ClickEvent, id: string) => {
+  const archiveSubscription = (_e: ClickEvent, id: string) => {
     const postRequestData = {
       subscriptionId: id
     };
@@ -167,7 +167,7 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const deleteSubscription = (event: ClickEvent, id: string) => {
+  const deleteSubscription = (_e: ClickEvent, id: string) => {
     const postRequestData = {
       subscriptionId: id
     };

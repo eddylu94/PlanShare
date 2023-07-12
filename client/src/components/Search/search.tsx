@@ -11,7 +11,7 @@ import Subscription from "../Subscription/subscription";
 import SearchCanvasPlaceholder from "./search-placeholder";
 
 // API
-import { baseGetRequest } from "../../base-requests";
+import { baseGetRequest, basePostRequest } from "../../base-requests";
 
 // Utilites
 import { IUserContext, UserDataContext } from "../../user-context-provider";
@@ -28,7 +28,7 @@ import {
   ISubscriptionData,
   useDeviceMode
 } from "../../utils/utils";
-import { InputChangeEvent } from "../../utils/interfaces";
+import { ClickEvent, InputChangeEvent } from "../../utils/interfaces";
 
 interface ISearchProviderProps {
   userData: IUserContext;
@@ -194,6 +194,50 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     );
   };
 
+  const handleArchiveSubscriptionResponseHandler = (data: any) => {
+    log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveSubscriptionCategories();
+      alert(
+        "The listing has been archived. Only you are be able to view your archived listings"
+      );
+    }
+  };
+
+  const archiveSubscription = (_e: ClickEvent, id: string) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "archivesubscription",
+      postRequestData,
+      handleArchiveSubscriptionResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
+
+  const handleDeleteSubscriptionResponseHandler = (data: any) => {
+    log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      retrieveSubscriptionCategories();
+      alert("The listing has been deleted.");
+    }
+  };
+
+  const deleteSubscription = (_e: ClickEvent, id: string) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "deletesubscription",
+      postRequestData,
+      handleDeleteSubscriptionResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
+
   useEffect(() => {
     if (_throttle.current) {
       clearTimeout(_throttle.current);
@@ -248,12 +292,19 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   } as ISearchFiltersProps;
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
+    const isAuthor = !!(
+      subscription.userId === (_userData.user?.userId as string)
+    );
+
     return (
       <SearchSubscriptionCard
         key={"subscription-card-" + i}
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
         handleSubscriptionCardClick={handleSubscriptionCardClick}
+        isDisplayButtons={isAuthor}
+        archiveSubscription={archiveSubscription}
+        deleteSubscription={deleteSubscription}
       />
     );
   });

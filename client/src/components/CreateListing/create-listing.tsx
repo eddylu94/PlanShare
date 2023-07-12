@@ -330,8 +330,6 @@ const CreateListingProviderWithContext = (props: {
       label: category.name
     }));
 
-    console.log(options.map(option => option.label));
-
     return (
       <Autocomplete
         disablePortal
