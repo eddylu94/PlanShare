@@ -3,24 +3,37 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import LockIcon from "@mui/icons-material/Lock";
+import Tooltip from "@mui/material/Tooltip";
 
 // API
-import { baseGetRequest } from "../../base-requests";
+import { baseGetRequest, basePostRequest } from "../../base-requests";
 
 // Utilities
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { log } from "../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+import { ClickEvent } from "../../utils/interfaces";
 
 const SubscriptionProviderWithContext = (props: {
   userData: IUserContext;
   subscriptionId: string;
+  closePane?: () => void;
 }) => {
   const _userData = props.userData;
 
   const { subscriptionId } = props;
 
   const [subscriptionData, setSubscriptionData] = useState(null as any);
+
+  const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
+
+  const handleMouseOverArchiveButton = () => {
+    setIsHoverArchiveButton(true);
+  };
+
+  const handleMouseLeaveArchiveButton = () => {
+    setIsHoverArchiveButton(false);
+  };
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
     log(data);
@@ -110,6 +123,52 @@ const SubscriptionProviderWithContext = (props: {
     subscriptionBrand.type === "OTHER"
       ? otherSubscription
       : subscriptionBrand.name;
+
+  const isDisplayButtons = !!(userId === (_userData.user?.userId as string));
+
+  const handleArchiveSubscriptionResponseHandler = (data: any) => {
+    log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      props.closePane?.();
+      alert(
+        "The listing has been archived. Only you are be able to view your archived listings"
+      );
+    }
+  };
+
+  const archiveSubscription = (_e: ClickEvent, id: string) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "archivesubscription",
+      postRequestData,
+      handleArchiveSubscriptionResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
+
+  const handleDeleteSubscriptionResponseHandler = (data: any) => {
+    log(data);
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      props.closePane?.();
+      alert("The listing has been deleted.");
+    }
+  };
+
+  const deleteSubscription = (_e: ClickEvent, id: string) => {
+    const postRequestData = {
+      subscriptionId: id
+    };
+    basePostRequest(
+      "deletesubscription",
+      postRequestData,
+      handleDeleteSubscriptionResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
 
   return (
     <div className="subscription-wrapper">
@@ -232,16 +291,66 @@ const SubscriptionProviderWithContext = (props: {
           "---"
         )}
       </div>
+
+      {isDisplayButtons && (
+        <div className="subscription-pane-buttons">
+          <Link to={`edit?id=${subscriptionId}`}>
+            <button className="subscription-pane-button">
+              <img
+                alt="Edit"
+                className="subscription-pane-button-icon"
+                src="/edit_icon.png"
+              />
+              Edit
+            </button>
+          </Link>
+          <Tooltip
+            title={"Archived listings will only be visible to you"}
+            aria-label="Archive listing"
+            placement="bottom-start"
+            open={isHoverArchiveButton}
+          >
+            <button
+              className="subscription-pane-button"
+              onMouseOver={handleMouseOverArchiveButton}
+              onMouseLeave={handleMouseLeaveArchiveButton}
+              onClick={e => archiveSubscription?.(e, subscriptionId)}
+            >
+              <img
+                alt="Archive"
+                className="subscription-pane-button-icon"
+                src="/archive_icon.png"
+              />
+              Archive
+            </button>
+          </Tooltip>
+          <button
+            className="subscription-pane-button"
+            onClick={e => deleteSubscription?.(e, subscriptionId)}
+          >
+            <img
+              alt="Delete"
+              className="subscription-pane-button-icon"
+              src="/delete_icon.png"
+            />
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
-const SubscriptionProvider = (props: { subscriptionId: string }) => (
+const SubscriptionProvider = (props: {
+  subscriptionId: string;
+  closePane?: () => void;
+}) => (
   <UserDataContext.Consumer>
     {userData => (
       <SubscriptionProviderWithContext
         userData={userData}
         subscriptionId={props.subscriptionId}
+        closePane={props.closePane}
       />
     )}
   </UserDataContext.Consumer>

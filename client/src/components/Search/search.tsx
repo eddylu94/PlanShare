@@ -329,6 +329,11 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   }, {});
   const numberOfOrganizations = Object.keys(organizationsMap).length;
 
+  const closePane = () => {
+    retrieveSubscriptionCategories();
+    setSelectedSubscription("");
+  };
+
   return (
     <div className="search-panes">
       {isRetrievedSubscriptionsDirty ? (
@@ -358,7 +363,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                         src="/close_icon.png"
                       />
                     </button>
-                    <Subscription subscriptionId={selectedSubscription} />
+                    <Subscription
+                      subscriptionId={selectedSubscription}
+                      closePane={closePane}
+                    />
                   </div>
                 </div>
               </>
@@ -453,7 +461,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
                   ...(selectedSubscription && { height: "fit-content" })
                 }}
               >
-                <Subscription subscriptionId={selectedSubscription} />
+                <Subscription
+                  subscriptionId={selectedSubscription}
+                  closePane={closePane}
+                />
               </div>
             ) : (
               <div
