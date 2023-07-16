@@ -32,13 +32,14 @@ import { ClickEvent, InputChangeEvent } from "../../utils/interfaces";
 
 interface ISearchProviderProps {
   userData: IUserContext;
+  location: Location;
   history: History;
 }
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
 const SearchProviderWithContext = (props: ISearchProviderProps) => {
-  const { history, userData: _userData } = props;
+  const { history, userData: _userData, location } = props;
 
   const isUser = !!_userData.user?.userId;
 
@@ -239,6 +240,17 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   useEffect(() => {
+    // Update URL with ID of selected subscription
+    if (selectedSubscription.length > 0) {
+      const Window = window as any;
+      if (Window.history.pushState) {
+        const newurl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?id=${selectedSubscription}`;
+        window.history.pushState({ path: newurl }, "", newurl);
+      }
+    }
+  }, [selectedSubscription]);
+
+  useEffect(() => {
     if (_throttle.current) {
       clearTimeout(_throttle.current);
     }
@@ -275,6 +287,13 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     // retrieveSubscriptions();
     retrieveSubscriptionCategories();
     retrieveOrganization();
+
+    // Render subscription if subscription ID is included in URL
+    const params = new URLSearchParams(location.search);
+    const selectedSub = params.get("id") as string;
+    if (selectedSub?.length > 0) {
+      setSelectedSubscription(selectedSub);
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -502,10 +521,14 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   );
 };
 
-const SearchProvider = (props: { history: History }) => (
+const SearchProvider = (props: { history: History; location: any }) => (
   <UserDataContext.Consumer>
     {userData => (
-      <SearchProviderWithContext userData={userData} history={props.history} />
+      <SearchProviderWithContext
+        userData={userData}
+        history={props.history}
+        location={props.location}
+      />
     )}
   </UserDataContext.Consumer>
 );
