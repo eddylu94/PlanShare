@@ -69,10 +69,17 @@ const SubscriptionProviderWithContext = (props: {
     // eslint-disable-next-line
   }, [subscriptionId]);
 
+  useEffect(() => {
+    const description = subscriptionData?.listingDescription;
+    if (subscriptionData?.listingDescription != null) {
+      document
+        .querySelector('meta[name="description"]')
+        ?.setAttribute("content", description);
+    }
+  }, [subscriptionData]);
+
   const userData = _userData;
   const currentUser = _userData.user?.userId as string;
-
-  console.log(currentUser);
 
   if (subscriptionData != null && Object.keys(subscriptionData).length === 1) {
     const organization = subscriptionData?.organization;
