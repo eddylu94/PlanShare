@@ -49,7 +49,6 @@ export interface ISubscriptionData {
   subscriptionBrand: ISubscription;
   listingTitle: string;
   listingDescription: string;
-  numberOfPeople: number;
   price: number;
   userId: string;
   firstName: string;
@@ -57,8 +56,6 @@ export interface ISubscriptionData {
   createdDate: string;
   subscriptionUrl?: string;
   otherSubscription?: string;
-  contactFb?: string;
-  contactEmail?: string;
   potentialLimit?: boolean;
   sponsor?: {
     src: string;

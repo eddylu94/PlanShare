@@ -2,9 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -80,12 +77,7 @@ const CreateListingProviderWithContext = (props: {
     subscriptionUrl: "",
     listingTitle: "",
     listingDescription: "",
-    numberOfPeople: 0,
-    price: 0,
-    isContactFb: false,
-    contactFb: "",
-    isContactEmail: false,
-    contactEmail: ""
+    price: 0
   });
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
@@ -101,16 +93,7 @@ const CreateListingProviderWithContext = (props: {
         subscriptionUrl: newData.subscriptionUrl ?? "",
         listingTitle: newData.listingTitle ?? "",
         listingDescription: newData.listingDescription ?? "",
-        numberOfPeople: newData.numberOfPeople,
-        price: newData.price,
-        ...(newData.contactFb && {
-          isContactFb: true,
-          contactFb: newData.contactFb
-        }),
-        ...(newData.contactEmail && {
-          isContactEmail: true,
-          contactEmail: newData.contactEmail
-        })
+        price: newData.price
       });
     }
   };
@@ -221,16 +204,11 @@ const CreateListingProviderWithContext = (props: {
       subscriptionBrand: subscriptionBrandSelection,
       subscriptionUrl: formValues.subscriptionUrl,
       listingDescription: formValues.listingDescription,
-      numberOfPeople: formValues.numberOfPeople,
       price: formValues.price,
       ...(subscriptionId && { subscriptionId }),
       ...(isOtherInputDisplayed && {
         otherSubscription: formValues.otherSubscription
-      }),
-      ...(formValues.isContactFb &&
-        formValues.contactFb && { contactFb: formValues.contactFb }),
-      ...(formValues.isContactEmail &&
-        formValues.contactEmail && { contactEmail: formValues.contactEmail })
+      })
     };
 
     if (!isFormDisabled) {
@@ -298,7 +276,6 @@ const CreateListingProviderWithContext = (props: {
   useEffect(() => {
     const newIsFormDisabled = !(
       formValues.listingDescription &&
-      formValues.numberOfPeople &&
       formValues.price &&
       (!isOtherInputDisplayed || formValues.otherSubscription) &&
       isSubscriptionUrlValid
@@ -308,7 +285,6 @@ const CreateListingProviderWithContext = (props: {
   }, [
     formValues.listingTitle,
     formValues.listingDescription,
-    formValues.numberOfPeople,
     formValues.price,
     formValues.otherSubscription,
     isOtherInputDisplayed,
@@ -467,27 +443,6 @@ const CreateListingProviderWithContext = (props: {
         </div>
 
         <div className="form-row">
-          <div className="form-field" style={{ marginRight: 50 }}>
-            <FormLabel label={"Looking for:"} isRequired />
-            <div className="form-number-input-with-label">
-              <TextField
-                value={formValues.numberOfPeople}
-                onChange={e =>
-                  setFormValues({
-                    ...formValues,
-                    numberOfPeople: e.target.value as any
-                  })
-                }
-                type="number"
-                placeholder="0"
-                style={{ width: 100 }}
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                // helperText='Between 1 to 50 people per group'
-              />
-              <span style={{ marginLeft: 10 }}>people</span>
-            </div>
-          </div>
-
           <div className="form-field">
             <FormLabel label="Price per person:" isRequired />
             <div className="form-number-input-with-label">
@@ -508,98 +463,6 @@ const CreateListingProviderWithContext = (props: {
               <span style={{ marginLeft: 10 }}>$</span>
             </div>
           </div>
-        </div>
-
-        <div className="create-listing-contact">
-          <FormLabel
-            label={
-              "Users may also reach out to me about this listing by (optional):"
-            }
-          />
-
-          <FormControlLabel
-            key={"filters-category-fb"}
-            style={{ color: "#000000", marginTop: 10 }}
-            control={
-              <Checkbox
-                checked={formValues.isContactFb}
-                value={formValues.isContactFb}
-                onChange={() =>
-                  setFormValues({
-                    ...formValues,
-                    isContactFb: !formValues.isContactFb
-                  })
-                }
-                name={"contact-fb"}
-                style={{
-                  padding: 0,
-                  margin: "5px 5px 5px 20px",
-                  color: "#6C5DBD"
-                }}
-              />
-            }
-            label={
-              <div className="flex-horizontal-centered">
-                <Typography
-                  style={{ fontSize: 15, marginRight: 10, minWidth: 80 }}
-                >
-                  Facebook
-                </Typography>
-                <TextField
-                  value={formValues.contactFb}
-                  onChange={e =>
-                    setFormValues({
-                      ...formValues,
-                      contactFb: e.target.value
-                    })
-                  }
-                  placeholder="Username"
-                />
-              </div>
-            }
-          />
-
-          <FormControlLabel
-            key={"filters-category-email"}
-            style={{ color: "#000000", marginTop: 10 }}
-            control={
-              <Checkbox
-                checked={formValues.isContactEmail}
-                value={formValues.isContactEmail}
-                onChange={() =>
-                  setFormValues({
-                    ...formValues,
-                    isContactEmail: !formValues.isContactEmail
-                  })
-                }
-                name={"contact-email"}
-                style={{
-                  padding: 0,
-                  margin: "5px 5px 5px 20px",
-                  color: "#6C5DBD"
-                }}
-              />
-            }
-            label={
-              <div className="flex-horizontal-centered">
-                <Typography
-                  style={{ fontSize: 15, marginRight: 10, minWidth: 80 }}
-                >
-                  Email
-                </Typography>
-                <TextField
-                  value={formValues.contactEmail}
-                  onChange={e =>
-                    setFormValues({
-                      ...formValues,
-                      contactEmail: e.target.value
-                    })
-                  }
-                  placeholder="Email address"
-                />
-              </div>
-            }
-          />
         </div>
 
         <div className="create-listing-edit-footer">

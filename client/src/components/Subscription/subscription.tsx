@@ -121,14 +121,11 @@ const SubscriptionProviderWithContext = (props: {
     subscriptionBrand,
     listingDescription,
     firstName,
-    numberOfPeople,
     createdDate,
     price,
     subscriptionUrl,
     userId,
     otherSubscription,
-    contactFb,
-    contactEmail,
     organization
   } = subscriptionData;
 
@@ -239,51 +236,8 @@ const SubscriptionProviderWithContext = (props: {
         </div>
       )}
 
-      {(contactFb || contactEmail) && (
-        <div style={{ marginTop: 20 }}>
-          {contactFb && (
-            <div className="subscription-detail subscription-subscription-detail">
-              <img
-                alt="Facebook"
-                className="subscription-detail-icon"
-                style={{ opacity: 1 }}
-                src="/fb_logo.png"
-              />
-              {contactFb}
-            </div>
-          )}
-
-          {contactEmail && (
-            <div className="subscription-detail subscription-subscription-detail">
-              <img
-                alt="Email"
-                className="subscription-detail-icon"
-                src="/email_icon.png"
-              />
-              {contactEmail}
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="subscription-label">Details</div>
+      <div className="subscription-label">Price</div>
       <div className="subscription-detail subscription-subscription-detail">
-        <img
-          alt="Number of people"
-          className="subscription-detail-icon"
-          src="/people_icon.png"
-        />
-        <span className="subscription-detail-bold">
-          {`${numberOfPeople} ${numberOfPeople === 1 ? "person" : "people"}`}
-        </span>
-        needed
-      </div>
-      <div className="subscription-detail subscription-subscription-detail">
-        <img
-          alt="Price per person"
-          className="subscription-detail-icon"
-          src="/exchange_icon.png"
-        />
         <span className="subscription-detail-bold">${price.toFixed(2)}</span>{" "}
         <span>per person</span>
       </div>
