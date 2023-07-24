@@ -75,6 +75,12 @@ const SubscriptionProviderWithContext = (props: {
       document
         .querySelector('meta[name="description"]')
         ?.setAttribute("content", description);
+      document
+        .querySelector('meta[property="og:description"]')
+        ?.setAttribute("content", description);
+      document
+        .querySelector('meta[property="twitter:description"]')
+        ?.setAttribute("content", description);
     }
   }, [subscriptionData]);
 
