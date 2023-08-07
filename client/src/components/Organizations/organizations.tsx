@@ -10,6 +10,35 @@ const Organizations = () => {
           the following organizations:
         </div>
 
+        <h4>Universities</h4>
+
+        <div className="organizations-organization">
+          <img
+            alt="McGill University"
+            src="mcgill_u_logo.png"
+            className="organization-logo"
+          />
+          <div className="organizations-label">McGill University</div>
+        </div>
+
+        <div className="organizations-organization">
+          <img
+            alt="University of Toronto"
+            src="u_of_toronto_logo.png"
+            className="organization-logo"
+          />
+          <div className="organizations-label">University of Toronto</div>
+        </div>
+
+        <div className="organizations-organization">
+          <img
+            alt="Queen's University"
+            src="queensu_logo.png"
+            className="organization-logo"
+          />
+          <div className="organizations-label">Queen's University</div>
+        </div>
+
         <h4>Companies</h4>
 
         <div className="organizations-organization">
@@ -28,15 +57,6 @@ const Organizations = () => {
             className="organization-logo"
           />
           <div className="organizations-label">LinkedIn</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="GitHub"
-            src="github_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">GitHub</div>
         </div>
 
         <div className="organizations-organization">
