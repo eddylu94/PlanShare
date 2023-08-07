@@ -27,7 +27,6 @@ export const editSubscription = (
       Object.assign(subscriptionData, {
         firstName,
         editedDate: new Date(),
-        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
         subscriptionUrl: subscriptionData.subscriptionUrl,
         subscriptionBrandName:

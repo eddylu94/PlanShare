@@ -42,7 +42,6 @@ export const createSubscription = (
         firstName,
         organization,
         createdDate: new Date(),
-        numberOfPeople: parseInt(subscriptionData.numberOfPeople),
         price: parseFloat(subscriptionData.price),
         subscriptionBrandName: subscriptionData.subscriptionBrand.name,
         status: SUBSCRIPTION_STATUS.ACTIVE

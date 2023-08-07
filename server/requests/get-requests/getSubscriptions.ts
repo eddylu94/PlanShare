@@ -62,10 +62,6 @@ export const getSubscriptions = (
 
       const findQuery = {
         "subscriptionBrand.type": { $in: subscriptionCategories },
-        numberOfPeople: {
-          $gte: minGroupSize,
-          $lte: maxGroupSize
-        },
         price: {
           $gte: minPrice,
           $lte: maxPrice
