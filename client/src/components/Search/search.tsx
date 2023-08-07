@@ -353,6 +353,13 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     setSelectedSubscription("");
   };
 
+  let countForOrganization = 0;
+  if (organization?.name?.length > 0) {
+    countForOrganization = subscriptionData.filter(
+      sub => !sub.sponsor && sub.organization?.name === organization.name
+    ).length;
+  }
+
   return (
     <div className="search-panes">
       {isRetrievedSubscriptionsDirty ? (
@@ -436,8 +443,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
               {organization?.name ? (
                 <>
                   <span className="b" style={{ marginRight: 5 }}>
-                    {subscriptionData.length}{" "}
-                    {subscriptionData.length === 1 ? "result" : "results"}
+                    {countForOrganization}{" "}
+                    {countForOrganization === 1 ? "result" : "results"}
                   </span>{" "}
                   found for{" "}
                   <span className="b" style={{ marginLeft: 5 }}>
@@ -452,7 +459,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
               ) : (
                 <>
                   <span className="b" style={{ marginRight: 5 }}>
-                    {subscriptionData.length} results
+                    {subscriptionData.filter(sub => !sub.sponsor).length}{" "}
+                    results
                   </span>{" "}
                   found across{" "}
                   <span className="b" style={{ marginLeft: 5 }}>
