@@ -59,10 +59,18 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     [] as Array<ISubscriptionData>
   );
 
+  const [subscriptionOrganizations, setSubscriptionOrganizations] = useState<
+    Array<string>
+  >([]);
+
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
   ] = useState([] as Array<IFiltersSubscriptionCategory>);
+  const [
+    filtersSubscriptionOrganizations,
+    setFiltersSubscriptionOrganizations
+  ] = useState<Array<{ label: string }>>([]);
   const [filtersText, setFiltersText] = useState("");
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
   const [filtersPrice, setFiltersPrice] = useState([0, 100]);
@@ -111,6 +119,10 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     ) as IFiltersSubscriptionCategory;
     Object.assign(category, { isSelected: !category.isSelected });
     setFiltersSubscriptionCategories(list);
+  };
+
+  const handleOrganizationsChange = (val: Array<{ label: string }>) => {
+    setFiltersSubscriptionOrganizations(val);
   };
 
   const handleTextChange = (event: InputChangeEvent) => {
@@ -173,6 +185,27 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       "getsubscriptioncategories",
       [],
       retrieveSubscriptionCategoriesResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
+
+  const retrieveSubscriptionOrgsResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const body = data.body;
+
+      console.log(body);
+      setSubscriptionOrganizations(body.subscriptionOrgs);
+    }
+  };
+
+  const retrieveSubscriptionOrgs = () => {
+    baseGetRequest(
+      _userData.user?.userId
+        ? "getsubscriptionorganizations"
+        : "getsubscriptionorganizationsasguest",
+      [],
+      retrieveSubscriptionOrgsResponseHandler,
       log,
       _userData.user?.auth
     );
@@ -266,6 +299,9 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
       retrieveSubscriptions([
         { t: filtersText },
         { sc }, // Subscription category
+        {
+          o: filtersSubscriptionOrganizations.map(org => org.label).join("||")
+        },
         { gs: filtersGroupSize }, // Group size
         { p: filtersPrice }, // Price
         { sb: filtersSortBy }, // Sort by
@@ -277,6 +313,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     _throttle,
     filtersText,
     filtersSubscriptionCategories,
+    filtersSubscriptionOrganizations,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
@@ -286,6 +323,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   useEffect(() => {
     // retrieveSubscriptions();
     retrieveSubscriptionCategories();
+    retrieveSubscriptionOrgs();
     retrieveOrganization();
 
     // Render subscription if subscription ID is included in URL
@@ -298,17 +336,25 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   }, []);
 
   const searchFilters = {
+    subscriptionOrganizations,
     filtersSubscriptionCategories,
+    filtersSubscriptionOrganizations,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
     toggleFiltersSubscriptionCategory,
+    handleOrganizationsChange,
     handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange,
     handleDaysActiveChange
   } as ISearchFiltersProps;
+
+  console.log(
+    "filtersSubscriptionOrganizations",
+    filtersSubscriptionOrganizations
+  );
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
     const isAuthor = !!(

@@ -11,8 +11,10 @@ export const SORT_BY = {
 
 export interface ISearchFiltersProps {
   isDrawer?: boolean;
+  subscriptionOrganizations: string[];
   filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
+  filtersSubscriptionOrganizations: { label: string }[];
   filtersGroupSize: number[];
   filtersPrice: number[];
   filtersSortBy: string;
@@ -25,6 +27,7 @@ export interface ISearchFiltersProps {
     event: InputChangeEvent,
     subscriptionCategoryId: string
   ) => void;
+  handleOrganizationsChange: (val: Array<{ label: string }>) => void;
   handleGroupSizeChange: (
     event: React.ChangeEvent<{}>,
     value: number | number[]

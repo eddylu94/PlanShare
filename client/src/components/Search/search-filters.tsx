@@ -6,10 +6,12 @@ import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import Autocomplete from "@mui/material/Autocomplete";
 import Checkbox from "@mui/material/Checkbox";
 import Slider from "@mui/material/Slider";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 
 // Utilities
@@ -24,12 +26,15 @@ const FONT_FAMILY =
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
+    subscriptionOrganizations,
     filtersSubscriptionCategories,
+    filtersSubscriptionOrganizations,
     // filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     // filtersDaysActive,
     toggleFiltersSubscriptionCategory,
+    handleOrganizationsChange,
     // handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange
@@ -105,6 +110,10 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     color: "#6C5DBD"
   };
 
+  const subscriptionOrgsOptions = subscriptionOrganizations.map(org => ({
+    label: org
+  }));
+
   return (
     <Scrollbar
       autoHide
@@ -130,7 +139,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
       <Measure
         bounds
         onResize={contentRect => {
-          console.log(contentRect.bounds);
           setContentHeight(contentRect.bounds?.height ?? 0);
         }}
       >
@@ -162,6 +170,33 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                   marks={createMarks([0, 100], true)}
                   min={0}
                   max={100}
+                />
+              </FormControl>
+
+              <FormControl
+                component="fieldset"
+                style={{ flexShrink: 0, marginTop: 20 }}
+              >
+                <FiltersFormLabel label={"Organizations"} />
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={subscriptionOrgsOptions.filter(opt => {
+                    // Remove selected options from options list
+                    const val = filtersSubscriptionOrganizations;
+                    return !val.map(valOpt => valOpt.label).includes(opt.label);
+                  })}
+                  getOptionLabel={option => option.label}
+                  filterSelectedOptions
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size="small"
+                      placeholder="Ex. Microsoft"
+                    />
+                  )}
+                  onChange={(_e, val) => handleOrganizationsChange(val)}
+                  value={filtersSubscriptionOrganizations}
                 />
               </FormControl>
 
