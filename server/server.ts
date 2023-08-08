@@ -91,6 +91,14 @@ getRequestBuilder(
   GetRequests.getSubscriptionAsGuest
 );
 getRequestBuilder(
+  "/getsubscriptionorganizations",
+  GetRequests.getSubscriptionOrganizations
+);
+getRequestBuilder(
+  "/getsubscriptionorganizationsasguest",
+  GetRequests.getSubscriptionOrganizationsAsGuest
+);
+getRequestBuilder(
   "/getsubscriptionsbyauthor",
   GetRequests.getSubscriptionsByAuthor
 );

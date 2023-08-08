@@ -42,9 +42,10 @@ export const getSubscriptionsAsGuest = (
       return;
     }
 
-    const { t, sc, gs, sb, da, p } = postReq.query;
+    const { t, sc, o, gs, sb, da, p } = postReq.query;
 
     const subscriptionCategories = sc.split(",");
+		const subscriptionOrganizations = o != null && o.length > 0 ? o.split("||") : [];
 
     let [minGroupSize, maxGroupSize] = gs
       ? gs.split(",").map((val: string) => parseInt(val))
@@ -73,6 +74,7 @@ export const getSubscriptionsAsGuest = (
 
     const findQuery = {
       "subscriptionBrand.type": { $in: subscriptionCategories },
+			...(subscriptionOrganizations.length > 0 && {"organization.name": { $in: subscriptionOrganizations }}),
       price: {
         $gte: minPrice,
         $lte: maxPrice

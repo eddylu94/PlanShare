@@ -5,6 +5,8 @@ import { getSubscriptions } from "./get-requests/getSubscriptions";
 import { getSubscriptionsAsGuest } from "./get-requests/getSubscriptionsAsGuest";
 import { getSubscription } from "./get-requests/getSubscription";
 import { getSubscriptionAsGuest } from "./get-requests/getSubscriptionAsGuest";
+import { getSubscriptionOrganizations } from "./get-requests/getSubscriptionOrganizations";
+import { getSubscriptionOrganizationsAsGuest } from "./get-requests/getSubscriptionOrganizationsAsGuest";
 import { getProfile } from "./get-requests/getProfile";
 import { getOrganization } from "./get-requests/getOrganization";
 import { getSubscriptionsByAuthor } from "./get-requests/getSubscriptionsByAuthor";
@@ -23,6 +25,8 @@ const getRequests = {
   getSubscriptionsAsGuest,
   getSubscription,
   getSubscriptionAsGuest,
+	getSubscriptionOrganizations,
+	getSubscriptionOrganizationsAsGuest,
   getProfile,
   getOrganization,
   getSubscriptionsByAuthor,
