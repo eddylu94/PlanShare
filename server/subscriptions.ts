@@ -17,7 +17,7 @@ interface ISubscription {
 export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   ONLINE_STREAMING: {
     subscriptionCategoryId: "ONLINE_STREAMING",
-    name: "Online Streaming"
+    name: "Streaming"
   },
   MOBILE_SERVICE: {
     subscriptionCategoryId: "MOBILE_SERVICE",
@@ -26,6 +26,10 @@ export const SUBSCRIPTION_CATEGORY: ISubscriptionCategory = {
   MUSIC_SERVICE: {
     subscriptionCategoryId: "MUSIC_SERVICE",
     name: "Music"
+  },
+	REFERRALS: {
+    subscriptionCategoryId: "REFERRALS",
+    name: "Referrals"
   },
   INTERVIEW_PREP: {
     subscriptionCategoryId: "INTERVIEW_PREP",
@@ -45,7 +49,8 @@ const subscriptionCategoriesIds = [
   SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MOBILE_SERVICE.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId,
-  SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
+  SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+	SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
   SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId
 ];
@@ -181,6 +186,18 @@ export const SUBSCRIPTION: ISubscription = {
     name: "Pandora Music",
     logo: "https://planshare.io/plans/pandora_music.png"
   },
+	CHASE_SAPPHIRE_RESERVE_REFERRAL: {
+    subscriptionBrandId: "CHASE_SAPPHIRE_RESERVE_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Chase Reserve Credit Card",
+    logo: "https://planshare.io/plans/chase_sapphire_reserve_icon.png",
+  },
+	AMEX_PLATINUM_REFERRAL: {
+		subscriptionBrandId: "AMEX_PLATINUM_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Amex Platinum Credit Card",
+    logo: "https://planshare.io/plans/amex_platinum_icon.png",
+	},
   LEETCODE: {
     subscriptionBrandId: "LEETCODE",
     type: SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
@@ -258,6 +275,11 @@ const musicSubscriptionBrandIds = [
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
+const referralBrandIds = [
+	SUBSCRIPTION.CHASE_SAPPHIRE_RESERVE_REFERRAL.subscriptionBrandId,
+	SUBSCRIPTION.AMEX_PLATINUM_REFERRAL.subscriptionBrandId,
+];
+
 const interviewPrepBrandIds = [
   SUBSCRIPTION.LEETCODE.subscriptionBrandId,
   SUBSCRIPTION.OTHER.subscriptionBrandId
@@ -288,6 +310,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
     case SUBSCRIPTION_CATEGORY.MUSIC_SERVICE.subscriptionCategoryId:
       ids = musicSubscriptionBrandIds;
       break;
+		case SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId:
+			ids = referralBrandIds;
+			break;
     case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
       ids = interviewPrepBrandIds;
       break;
