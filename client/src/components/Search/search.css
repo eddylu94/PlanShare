@@ -478,13 +478,24 @@
 }
 
 .subscription-card-subscription-logo {
-  width: 50px;
-  min-width: 50px;
-  height: 50px;
+  width: 60px;
+  min-width: 60px;
+  height: 60px;
   border-radius: 50%;
 }
 
 .subscription-card-subscription-logo:hover {
+  box-shadow: none;
+}
+
+.subscription-card-referral-card-subscription-logo {
+  width: 60px;
+  min-width: 60px;
+  max-width: 60px;
+  border-radius: 5px;
+}
+
+.subscription-card-referral-subscription-logo:hover {
   box-shadow: none;
 }
 

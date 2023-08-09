@@ -49,6 +49,24 @@
   }
 }
 
+.create-listing-subscription-card-referral-logo {
+  border-radius: 5px;
+  align-self: flex-end;
+  margin: 0 0 15px 15px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .create-listing-subscription-card-referral-logo {
+    width: 36px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .create-listing-subscription-card-referral-logo {
+    width: 60px;
+  }
+}
+
 .create-listing-organization-field {
   display: flex;
   flex-direction: row;

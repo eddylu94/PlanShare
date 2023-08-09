@@ -180,12 +180,21 @@ const SubscriptionProviderWithContext = (props: {
     );
   };
 
+  const isCardReferral = [
+    "CHASE_SAPPHIRE_RESERVE_REFERRAL",
+    "AMEX_PLATINUM_REFERRAL"
+  ].includes(subscriptionBrand.subscriptionBrandId);
+
   return (
     <div className="subscription-wrapper">
       <div className="subscription-header">
         <img
           alt="Subscription logo"
-          className="subscription-card-subscription-logo"
+          className={
+            isCardReferral
+              ? "subscription-card-referral-card-subscription-logo"
+              : "subscription-card-subscription-logo"
+          }
           src={subscriptionBrand.logo}
         />
         <div

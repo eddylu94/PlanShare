@@ -276,7 +276,8 @@ const CreateListingProviderWithContext = (props: {
   useEffect(() => {
     const newIsFormDisabled = !(
       formValues.listingDescription &&
-      formValues.price &&
+      (formValues.price ||
+        subscriptionCategorySelection.subscriptionCategoryId === "REFERRALS") &&
       (!isOtherInputDisplayed || formValues.otherSubscription) &&
       isSubscriptionUrlValid
     );
@@ -360,6 +361,11 @@ const CreateListingProviderWithContext = (props: {
     </label>
   );
 
+  const isCardReferral = [
+    "CHASE_SAPPHIRE_RESERVE_REFERRAL",
+    "AMEX_PLATINUM_REFERRAL"
+  ].includes(subscriptionBrandSelection.subscriptionBrandId);
+
   return isRetrievedListingCreationDataDirty ? (
     <div className="page-container" style={{ alignItems: "center" }}>
       <form className="form-container" onSubmit={handleSubmit} noValidate>
@@ -385,7 +391,11 @@ const CreateListingProviderWithContext = (props: {
 
             <img
               alt="Subscription logo"
-              className="create-listing-subscription-logo"
+              className={
+                isCardReferral
+                  ? "create-listing-subscription-card-referral-logo"
+                  : "create-listing-subscription-logo"
+              }
               src={subscriptionBrandLogo}
             />
           </div>
@@ -442,43 +452,50 @@ const CreateListingProviderWithContext = (props: {
           />
         </div>
 
-        <div className="form-row">
-          <div className="form-field">
-            <FormLabel label="Price per person:" isRequired />
-            <div className="form-number-input-with-label">
-              <TextField
-                value={formValues.price}
-                onChange={e =>
-                  setFormValues({
-                    ...formValues,
-                    price: e.target.value as any
-                  })
-                }
-                type="number"
-                placeholder="0"
-                style={{ width: 100 }}
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                // helperText='Between $0.01 to $100'
-              />
-              <span style={{ marginLeft: 10 }}>$</span>
+        {subscriptionCategorySelection.subscriptionCategoryId !==
+          "REFERRALS" && (
+          <div className="form-row">
+            <div className="form-field">
+              <FormLabel label="Price per person:" isRequired />
+              <div className="form-number-input-with-label">
+                <TextField
+                  value={formValues.price}
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      price: e.target.value as any
+                    })
+                  }
+                  type="number"
+                  placeholder="0"
+                  style={{ width: 100 }}
+                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                  // helperText='Between $0.01 to $100'
+                />
+                <span style={{ marginLeft: 10 }}>$</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         <div className="create-listing-edit-footer">
           You can later Edit, Archive, and Delete this listing from your{" "}
           <Link to="/profile">posted listings</Link>
         </div>
 
-        <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
-          WARNING:{" "}
-          <Link to="/info" target="_blank" rel="noopener noreferrer">
-            Certain subscription providers
-          </Link>{" "}
-          restrict sharing of their services. It is the user's responsiblity to
-          ensure that their subscription listings do not violate their
-          provider's terms of use.
-        </div>
+        {["ONLINE_STREAMING", "MUSIC_SERVICE"].includes(
+          subscriptionCategorySelection.subscriptionCategoryId
+        ) && (
+          <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
+            WARNING:{" "}
+            <Link to="/info" target="_blank" rel="noopener noreferrer">
+              Certain subscription providers
+            </Link>{" "}
+            restrict sharing of their services. It is the user's responsiblity
+            to ensure that their subscription listings do not violate their
+            provider's terms of use.
+          </div>
+        )}
 
         <input
           className="form-submit-button"

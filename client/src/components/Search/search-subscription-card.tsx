@@ -61,10 +61,19 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     setIsHoverArchiveButton(false);
   };
 
+  const isCardReferral = [
+    "CHASE_SAPPHIRE_RESERVE_REFERRAL",
+    "AMEX_PLATINUM_REFERRAL"
+  ].includes(subscriptionBrand.subscriptionBrandId);
+
   const subscriptionLogo = (
     <img
       alt="Subscription logo"
-      className="subscription-card-subscription-logo"
+      className={
+        isCardReferral
+          ? "subscription-card-referral-card-subscription-logo"
+          : "subscription-card-subscription-logo"
+      }
       src={subscriptionBrand.logo}
     />
   );

@@ -41,6 +41,7 @@ export interface ISubscription {
   name: string;
   type: string;
   logo: string;
+  subscriptionBrandId: string;
 }
 
 export interface ISubscriptionData {
