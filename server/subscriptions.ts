@@ -189,13 +189,13 @@ export const SUBSCRIPTION: ISubscription = {
 	CHASE_SAPPHIRE_RESERVE_REFERRAL: {
     subscriptionBrandId: "CHASE_SAPPHIRE_RESERVE_REFERRAL",
     type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
-    name: "Chase Reserve Credit Card",
+    name: "Chase Reserve Card Referral",
     logo: "https://planshare.io/plans/chase_sapphire_reserve_icon.png",
   },
 	AMEX_PLATINUM_REFERRAL: {
 		subscriptionBrandId: "AMEX_PLATINUM_REFERRAL",
     type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
-    name: "Amex Platinum Credit Card",
+    name: "Amex Platinum Card Referral",
     logo: "https://planshare.io/plans/amex_platinum_icon.png",
 	},
   LEETCODE: {
