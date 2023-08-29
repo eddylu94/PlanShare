@@ -9,7 +9,7 @@ import {
   ERROR_TYPE,
   SLACK_HOOK
 } from "../../base-requests";
-import { log, IResponse, validatePass, useDeviceMode } from "../../utils/utils";
+import { log, IResponse, validatePass } from "../../utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
@@ -17,7 +17,6 @@ import { Link } from "react-router-dom";
 import TermsOfUse from "../TermsOfUse/terms-of-use";
 import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
 import { TITLE } from "../../utils/constants";
-import { DEVICE_MODE } from "../../utils/constants";
 
 import Tooltip from "@mui/material/Tooltip";
 
@@ -52,8 +51,6 @@ const SignUpProviderWithContext = (props: {
 
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPassFocused, setIsPassFocused] = useState(false);
-
-  const deviceMode = useDeviceMode();
 
   const [
     isTermsOfUseDialogDisplayed,
@@ -279,7 +276,7 @@ const SignUpProviderWithContext = (props: {
   };
 
   return (
-    <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
+    <div className="page-container" style={{ backgroundColor: "#f3f1ff" }}>
       <div className="sign-up-container">
         <div className="intro-and-signup">
           <div className="intro">
@@ -310,27 +307,12 @@ const SignUpProviderWithContext = (props: {
               <br />
 
               <div>
-                After signing up and verifying your email address, you can
-                either search through listings or post your own. Once you find a
-                listing of interest, you can message the listing author and
-                discuss how you want to complete the transaction.
-              </div>
-
-              <br />
-
-              <div>
                 Users can either post and browse publicly or privately with
                 colleagues from{" "}
                 <Link to="/organizations">these organizations</Link>.
               </div>
             </div>
           </div>
-          {deviceMode === DEVICE_MODE.DESKTOP ||
-          deviceMode === DEVICE_MODE.LARGE_DESKTOP ? (
-            <div className="vertical-divider"></div>
-          ) : (
-            <div className="horizontal-divider"></div>
-          )}
           <form className="signup-form-container" onSubmit={handleSubmit}>
             {isTermsOfUseDialogDisplayed ? (
               <TermsOfUse

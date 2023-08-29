@@ -17,8 +17,9 @@
 .intro-and-signup {
   display: flex;
   flex-shrink: 0;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: #ffffff;
+  box-shadow: 0px 0px 10px #ccc;
 }
 @media only screen and (max-width: 768px) {
   /* Small */
@@ -47,24 +48,27 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
   padding: 24px;
   box-sizing: border-box;
+  background-color: #6547dc;
+  /* background: radial-gradient(#9376ea, #6841da); */
+  color: #fff;
 }
 @media only screen and (max-width: 768px) {
   /* Small */
   .intro {
     width: 100%;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 }
 @media only screen and (min-width: 768px) {
   /* Medium */
   .intro {
     width: 600px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 }
 @media only screen and (min-width: 992px) {
@@ -73,8 +77,8 @@
     width: calc(50% - 20px);
     max-width: 600px;
     height: 580px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 }
 @media only screen and (min-width: 1200px) {
@@ -83,8 +87,8 @@
     width: calc(50% - 20px);
     max-width: 600px;
     height: 580px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
   }
 }
 
@@ -102,12 +106,12 @@
   flex-shrink: 0;
   width: 100%;
   margin-top: 15px;
-  color: #686868;
   font-size: 16px;
+  text-align: center;
 }
 
 .intro-footer a {
-  color: #6c5dbd;
+  color: white;
   font-weight: 500;
 }
 

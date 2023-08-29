@@ -12,7 +12,7 @@
 
 .intro-title {
   margin-left: 10px;
-  font-size: 24px;
+  font-size: 42px;
   font-weight: 450;
 }
 
@@ -33,7 +33,7 @@
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .subscription-icons {
-    width: 290px;
-    height: 150px;
+    width: 319px;
+    height: 165px;
   }
 }
