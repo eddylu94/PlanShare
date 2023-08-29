@@ -132,48 +132,52 @@ const LoginProviderWithContext = (props: {
   );
 
   return (
-    <div className="page-container" style={{ backgroundColor: "#6C5DBD" }}>
+    <div className="page-container" style={{ backgroundColor: "#f3f1ff" }}>
       <div className="login-container">
         <form className="login-form-container" onSubmit={handleSubmit}>
-          <div className="intro-logo-and-title" style={{ marginBottom: 20 }}>
-            <img
-              alt={TITLE}
-              className="intro-icon"
-              src={"./icon_transparent.png"}
-            />
-            <span className="intro-title">{TITLE}</span>
+          <div className="login-intro">
+            <div className="intro-logo-and-title" style={{ marginBottom: 20 }}>
+              <img
+                alt={TITLE}
+                className="intro-icon"
+                src={"./icon_transparent.png"}
+              />
+              <span className="intro-title">{TITLE}</span>
+            </div>
+            <div
+              className="subscription-icons-container"
+              style={{ marginBottom: 20 }}
+            >
+              <img
+                alt="Subscriptions"
+                className="subscription-icons"
+                src={"./subscription_icons.png"}
+              />
+            </div>
           </div>
-          <div
-            className="subscription-icons-container"
-            style={{ marginBottom: 20 }}
-          >
-            <img
-              alt="Subscriptions"
-              className="subscription-icons"
-              src={"./subscription_icons.png"}
+          <div className="login-form-wrapper">
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.USERNAME,
+              "username",
+              "Username",
+              username
+            )}
+            {renderTextInputWithValidation(
+              FORM_INPUT_TYPE.PASS,
+              "password",
+              "Password",
+              pass
+            )}
+            <input
+              className="form-submit-button"
+              type="submit"
+              value="Submit"
+              disabled={isFormDisabled}
             />
+            <Link className="signup-toggle" to="/signup">
+              Need to create an account? Sign up here
+            </Link>
           </div>
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.USERNAME,
-            "username",
-            "Username",
-            username
-          )}
-          {renderTextInputWithValidation(
-            FORM_INPUT_TYPE.PASS,
-            "password",
-            "Password",
-            pass
-          )}
-          <input
-            className="form-submit-button"
-            type="submit"
-            value="Submit"
-            disabled={isFormDisabled}
-          />
-          <Link className="signup-toggle" to="/signup">
-            Need to create an account? Sign up here
-          </Link>
         </form>
       </div>
     </div>
