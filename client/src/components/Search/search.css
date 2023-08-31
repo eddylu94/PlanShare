@@ -326,8 +326,30 @@
 
 .subscription-card-sponsored-tag {
   background-color: #dedede;
-  padding: 1px 5px;
-  border-radius: 5px;
+  padding: 1px 8px;
+  border-radius: 3px;
+}
+
+.subscription-card-free-tag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4735adaa;
+  color: white;
+  padding: 1px 8px;
+  border-radius: 3px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-card-free-tag {
+    align-self: flex-start;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-card-free-tag {
+    align-self: flex-end;
+  }
 }
 
 .subscription-card-date {

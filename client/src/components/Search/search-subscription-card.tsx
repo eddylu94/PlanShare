@@ -151,6 +151,19 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <Tooltip title={warningMessage}>{warningBtn}</Tooltip>
   );
 
+  const isFree = price === 0;
+  console.log(isFree);
+
+  const priceInfo = isFree ? (
+    <div className="subscription-card-free-tag subscription-card-basic-info-detail">
+      Free
+    </div>
+  ) : (
+    <div className="subscription-card-basic-info-detail">
+      ${price.toFixed(2)}
+    </div>
+  );
+
   const subscriptionBasicInfo = (
     <div className="subscription-card-basic-info">
       {sponsor ? (
@@ -158,14 +171,13 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
           <div className="subscription-card-sponsored-tag">Sponsored</div>
         </div>
       ) : (
-        <div className="subscription-card-date i">
-          {getDaysAgoString(new Date(createdDate))}
-        </div>
+        <>
+          <div className="subscription-card-date i">
+            {getDaysAgoString(new Date(createdDate))}
+          </div>
+          {priceInfo}
+        </>
       )}
-
-      <div className="subscription-card-basic-info-detail">
-        ${price.toFixed(2)}
-      </div>
     </div>
   );
 
