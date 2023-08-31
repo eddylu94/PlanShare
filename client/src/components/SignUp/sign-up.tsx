@@ -9,8 +9,12 @@ import {
   ERROR_TYPE,
   SLACK_HOOK
 } from "../../base-requests";
-import { log, IResponse, validatePass } from "../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+import { log, IResponse, validatePass, useDeviceMode } from "../../utils/utils";
+import {
+  DEVICE_MODE,
+  STATUS_CODE,
+  STATUS_MESSAGE
+} from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
 
@@ -275,8 +279,16 @@ const SignUpProviderWithContext = (props: {
     }
   };
 
+  const deviceMode = useDeviceMode();
+
   return (
-    <div className="page-container" style={{ backgroundColor: "#f3f1ff" }}>
+    <div
+      className="page-container"
+      style={{
+        backgroundColor: "#f3f1ff",
+        ...(deviceMode === DEVICE_MODE.MOBILE && { padding: 0 })
+      }}
+    >
       <div className="sign-up-container">
         <div className="intro-and-signup">
           <div className="intro">
@@ -377,6 +389,9 @@ const SignUpProviderWithContext = (props: {
             />
             <Link className="signup-toggle" to="/login">
               Already have an account? Log in here
+            </Link>
+            <Link className="signup-toggle" to="/">
+              Browse as guest
             </Link>
           </form>
         </div>

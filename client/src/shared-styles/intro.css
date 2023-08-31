@@ -15,6 +15,23 @@
   font-size: 42px;
   font-weight: 450;
 }
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .intro-title {
+    font-size: 32px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .intro-title {
+    font-size: 42px;
+  }
+}
+
+.intro-welcome-header {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
 
 .signup-toggle {
   text-align: center;

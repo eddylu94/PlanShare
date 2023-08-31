@@ -48,7 +48,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-icons-container {
+    margin: 10px 0;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-icons-container {
+    margin: 20px 0;
+  }
 }
 
 .subscription-message-button {

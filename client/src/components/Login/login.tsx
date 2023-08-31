@@ -4,8 +4,13 @@ import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./login-utils";
 import { basePostRequest } from "../../base-requests";
-import { log, IResponse } from "../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE, TITLE } from "../../utils/constants";
+import { log, IResponse, useDeviceMode } from "../../utils/utils";
+import {
+  DEVICE_MODE,
+  STATUS_CODE,
+  STATUS_MESSAGE,
+  TITLE
+} from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
 
@@ -131,8 +136,16 @@ const LoginProviderWithContext = (props: {
     </div>
   );
 
+  const deviceMode = useDeviceMode();
+
   return (
-    <div className="page-container" style={{ backgroundColor: "#f3f1ff" }}>
+    <div
+      className="page-container"
+      style={{
+        backgroundColor: "#f3f1ff",
+        ...(deviceMode === DEVICE_MODE.MOBILE && { padding: 0 })
+      }}
+    >
       <div className="login-container">
         <form className="login-form-container" onSubmit={handleSubmit}>
           <div className="login-intro">
@@ -154,8 +167,10 @@ const LoginProviderWithContext = (props: {
                 src={"./subscription_icons.png"}
               />
             </div>
+            <div className="intro-welcome-header">Welcome back!</div>
           </div>
           <div className="login-form-wrapper">
+            <h2 className="signup-form-header">Log In</h2>
             {renderTextInputWithValidation(
               FORM_INPUT_TYPE.USERNAME,
               "username",
@@ -176,6 +191,9 @@ const LoginProviderWithContext = (props: {
             />
             <Link className="signup-toggle" to="/signup">
               Need to create an account? Sign up here
+            </Link>
+            <Link className="signup-toggle" to="/">
+              Browse as guest
             </Link>
           </div>
         </form>
