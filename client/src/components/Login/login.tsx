@@ -13,6 +13,7 @@ import {
 } from "../../utils/constants";
 import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 const LoginProviderWithContext = (props: {
   userData: IUserContext;
@@ -114,28 +115,6 @@ const LoginProviderWithContext = (props: {
     event.preventDefault();
   };
 
-  const renderTextInputWithValidation = (
-    name: string,
-    type: string,
-    placeholder: string,
-    value: string
-  ) => (
-    <div
-      key={"form-input-with-validation-" + name}
-      className="form-text-input-with-validation"
-    >
-      <input
-        key={"form-input-" + name}
-        className={"form-text-input"}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={handleInputChange}
-      />
-    </div>
-  );
-
   const deviceMode = useDeviceMode();
 
   return (
@@ -171,18 +150,22 @@ const LoginProviderWithContext = (props: {
           </div>
           <div className="login-form-wrapper">
             <h2 className="signup-form-header">Log In</h2>
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.USERNAME,
-              "username",
-              "Username",
-              username
-            )}
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.PASS,
-              "password",
-              "Password",
-              pass
-            )}
+            <TextField
+              label="Username"
+              name={FORM_INPUT_TYPE.USERNAME}
+              value={username}
+              onChange={handleInputChange}
+              margin="dense"
+              autoComplete="off"
+            />
+            <TextField
+              label="Password"
+              name={FORM_INPUT_TYPE.PASS}
+              value={pass}
+              onChange={handleInputChange}
+              margin="dense"
+              autoComplete="off"
+            />
             <input
               className="form-submit-button"
               type="submit"

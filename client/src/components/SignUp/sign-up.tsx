@@ -19,10 +19,10 @@ import { IUserContext, UserDataContext } from "../../user-context-provider";
 import { Link } from "react-router-dom";
 
 import TermsOfUse from "../TermsOfUse/terms-of-use";
-import { KEYBOARD_CHAR_CODE } from "../../utils/utils";
 import { TITLE } from "../../utils/constants";
 
-import Tooltip from "@mui/material/Tooltip";
+import TextField from "@mui/material/TextField";
+import { Checkbox, FormControlLabel } from "@mui/material";
 
 const SignUpProviderWithContext = (props: {
   userData: IUserContext;
@@ -39,9 +39,6 @@ const SignUpProviderWithContext = (props: {
   const [firstName, setFirstName] = useState("");
   const [isFirstNameValid, setIsFirstNameValid] = useState(false);
 
-  // const [email, setEmail] = useState("");
-  // const [isEmailValid, setIsEmailValid] = useState(false);
-
   const [username, setUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(false);
 
@@ -52,9 +49,6 @@ const SignUpProviderWithContext = (props: {
   const [isPass2Valid, setIsPass2Valid] = useState(false);
 
   const [termsOfUseAcknowledged, setTermsOfUseAcknowledged] = useState(false);
-
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [isPassFocused, setIsPassFocused] = useState(false);
 
   const [
     isTermsOfUseDialogDisplayed,
@@ -184,99 +178,11 @@ const SignUpProviderWithContext = (props: {
     event.preventDefault();
   };
 
-  const togglePassFocused = (value: boolean) => {
-    setIsPassFocused(value);
-  };
-
-  const toggleEmailFocused = (value: boolean) => {
-    setIsEmailFocused(value);
-  };
-
-  const renderTextInputWithValidation = (
-    name: string,
-    type: string,
-    placeholder: string,
-    value: string,
-    isValid: boolean
-  ) => {
-    let tooltip = "";
-    switch (name) {
-      case "email":
-        tooltip =
-          "To verify your current company; your email address will not be shown to anyone but yourself";
-        break;
-      case "pass1":
-        tooltip = "Do not use your password for work";
-        break;
-      default:
-        break;
-    }
-
-    const onFocusHandler = () => {
-      switch (name) {
-        case "email":
-          return toggleEmailFocused(true);
-        case "pass1":
-          return togglePassFocused(true);
-        default:
-          return {};
-      }
-    };
-
-    const onBlurHandler = () => {
-      switch (name) {
-        case "email":
-          return toggleEmailFocused(false);
-        case "pass1":
-          return togglePassFocused(false);
-        default:
-          return {};
-      }
-    };
-
-    const isOpen =
-      (name === "email" && isEmailFocused) ||
-      (name === "pass1" && isPassFocused);
-
-    return (
-      <div
-        key={"form-input-with-validation-" + name}
-        className="form-text-input-with-validation"
-      >
-        <Tooltip
-          title={tooltip}
-          aria-label="add"
-          placement="bottom-start"
-          open={isOpen}
-        >
-          <input
-            key={"form-input-" + name}
-            className={"form-text-input"}
-            name={name}
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            onChange={handleInputChange}
-            autoComplete="off"
-            onFocus={onFocusHandler}
-            onBlur={onBlurHandler}
-          />
-        </Tooltip>
-      </div>
-    );
-  };
-
   const handleClickTermsOfUse = (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => {
     e.preventDefault();
     setIsTermsOfUseDialogDisplayed(true);
-  };
-
-  const handleKeyPressCheckbox = (e: React.KeyboardEvent<HTMLSpanElement>) => {
-    if (e.charCode === KEYBOARD_CHAR_CODE.SPACE) {
-      setTermsOfUseAcknowledged(!termsOfUseAcknowledged);
-    }
   };
 
   const deviceMode = useDeviceMode();
@@ -333,53 +239,87 @@ const SignUpProviderWithContext = (props: {
               />
             ) : null}
             <h2 className="signup-form-header">Sign Up</h2>
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.FIRST_NAME,
-              "text",
-              "First name",
-              firstName,
-              isFirstNameValid
-            )}
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.USERNAME,
-              "username",
-              "Username",
-              username,
-              isUsernameValid
-            )}
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.PASS1,
-              "password",
-              "Password (8+ letters & nums)",
-              pass1,
-              isPass1Valid
-            )}
-            {renderTextInputWithValidation(
-              FORM_INPUT_TYPE.PASS2,
-              "password",
-              "Confirm password",
-              pass2,
-              isPass2Valid
-            )}
+            <TextField
+              error={!isFirstNameValid && firstName.length > 0}
+              label="First name"
+              name={FORM_INPUT_TYPE.FIRST_NAME}
+              value={firstName}
+              onChange={handleInputChange}
+              margin="dense"
+              autoComplete="off"
+            />
+            <TextField
+              error={!isUsernameValid && username.length > 0}
+              label="Username"
+              helperText={
+                !isUsernameValid && username.length > 0
+                  ? "Only letters and numbers"
+                  : undefined
+              }
+              name={FORM_INPUT_TYPE.USERNAME}
+              value={username}
+              onChange={handleInputChange}
+              margin="dense"
+              autoComplete="off"
+            />
+            <TextField
+              error={!isPass1Valid && pass1.length > 0}
+              label="Password"
+              helperText={
+                !isPass1Valid && pass1.length > 0
+                  ? "8+ characters with both letters and numbers"
+                  : undefined
+              }
+              name={FORM_INPUT_TYPE.PASS1}
+              value={pass1}
+              onChange={handleInputChange}
+              type="password"
+              margin="dense"
+              autoComplete="off"
+            />
+            <TextField
+              error={!isPass2Valid && pass2.length > 0}
+              label="Confirm password"
+              helperText={
+                !isPass2Valid && pass2.length > 0
+                  ? "Must be same as line above"
+                  : undefined
+              }
+              name={FORM_INPUT_TYPE.PASS2}
+              value={pass2}
+              onChange={handleInputChange}
+              type="password"
+              margin="dense"
+              autoComplete="off"
+            />
             <label className="form-terms-container">
-              <input
-                name={FORM_INPUT_TYPE.TERMS_OF_USE_ACKNOWLEDGED}
-                type="checkbox"
-                checked={termsOfUseAcknowledged}
-                onChange={handleInputChange}
-                tabIndex={-1}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    value={termsOfUseAcknowledged}
+                    onChange={() =>
+                      setTermsOfUseAcknowledged(!termsOfUseAcknowledged)
+                    }
+                    sx={{
+                      color: "#6c5dbd",
+                      "&.Mui-checked": {
+                        color: "#6c5dbd"
+                      }
+                    }}
+                  />
+                }
+                label={
+                  <>
+                    By signing up, you agree to the{" "}
+                    <span
+                      className="terms-label"
+                      onClick={handleClickTermsOfUse}
+                    >
+                      Terms of Use
+                    </span>
+                  </>
+                }
               />
-              <span
-                className="form-terms-checkmark"
-                role="checkbox"
-                aria-checked={termsOfUseAcknowledged}
-                tabIndex={0}
-                onKeyPress={handleKeyPressCheckbox}
-              ></span>
-              By signing up, you agree to the{" "}
-              <span className="terms-label" onClick={handleClickTermsOfUse}>
-                Terms of Use
-              </span>
             </label>
             <input
               className="form-submit-button"
