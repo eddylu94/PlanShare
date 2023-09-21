@@ -8,19 +8,15 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Typography from "@mui/material/Typography";
 
 // Utilites
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { baseGetRequest, basePostRequest } from "../../base-requests";
-import {
-  log,
-  validatePass,
-  SETTINGS_EMAIL_NOTIFICATIONS
-} from "../../utils/utils";
-import { InputChangeEvent } from "../../utils/interfaces";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { baseGetRequest, basePostRequest } from "base-requests";
+import { log, validatePass, SETTINGS_EMAIL_NOTIFICATIONS } from "@utils/utils";
+import { InputChangeEvent } from "@utils/interfaces";
 import {
   STATUS_CODE,
   STATUS_MESSAGE,
   SETTINGS_INPUT_NAME
-} from "../../utils/constants";
+} from "@utils/constants";
 
 const SettingsProviderWithContext = (props: {
   userData: IUserContext;

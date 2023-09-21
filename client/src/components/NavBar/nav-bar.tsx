@@ -2,9 +2,9 @@ import React from "react";
 
 import { Link, withRouter } from "react-router-dom";
 import { History } from "history";
-import { IUserContext, UserDataContext } from "./../../user-context-provider";
-import { TITLE } from "./../../utils/constants";
-import { log } from "./../../utils/utils";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { TITLE } from "@utils/constants";
+import { log } from "@utils/utils";
 
 const NavBarWithContext = (props: {
   userData: IUserContext;

@@ -3,15 +3,15 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./login-utils";
-import { basePostRequest } from "../../base-requests";
-import { log, IResponse, useDeviceMode } from "../../utils/utils";
+import { basePostRequest } from "base-requests";
+import { log, IResponse, useDeviceMode } from "@utils/utils";
 import {
   DEVICE_MODE,
   STATUS_CODE,
   STATUS_MESSAGE,
   TITLE
-} from "../../utils/constants";
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+} from "@utils/constants";
+import { IUserContext, UserDataContext } from "user-context-provider";
 import { Link } from "react-router-dom";
 import { TextField } from "@mui/material";
 

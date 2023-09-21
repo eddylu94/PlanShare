@@ -4,26 +4,22 @@ import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
 
 // Components
-import SearchSubscriptionCard from "../Search/search-subscription-card";
-import Subscription from "../Subscription/subscription";
+import SearchSubscriptionCard from "@components/Search/search-subscription-card";
+import Subscription from "@components/Subscription/subscription";
 
 // API
-import { baseGetRequest, basePostRequest } from "../../base-requests";
+import { baseGetRequest, basePostRequest } from "base-requests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { ClickEvent } from "../../utils/interfaces";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { ClickEvent } from "@utils/interfaces";
 import {
   log,
   ISubscriptionData,
   IOrganization,
   useDeviceMode
-} from "../../utils/utils";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  DEVICE_MODE
-} from "../../utils/constants";
+} from "@utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 
 const ProfileProviderWithContext = (props: {
   userData: IUserContext;

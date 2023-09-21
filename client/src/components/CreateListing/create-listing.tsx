@@ -12,17 +12,17 @@ import {
   slackPostRequest,
   SLACK_HOOK,
   ERROR_TYPE
-} from "../../base-requests";
+} from "base-requests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import {
   log,
   ISubscriptionCategory,
   ISubscriptionBrand,
   isValidURL
-} from "../../utils/utils";
+} from "@utils/utils";
 
 const CreateListingProviderWithContext = (props: {
   userData: IUserContext;
@@ -284,6 +284,7 @@ const CreateListingProviderWithContext = (props: {
 
     setIsFormDisabled(newIsFormDisabled);
   }, [
+    subscriptionCategorySelection.subscriptionCategoryId,
     formValues.listingTitle,
     formValues.listingDescription,
     formValues.price,

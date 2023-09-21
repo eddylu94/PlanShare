@@ -5,8 +5,8 @@ import React from "react";
 import SearchSubscriptionCardPlaceholder from "./search-subscription-card-placeholder";
 
 // Utilities
-import { DEVICE_MODE } from "../../utils/constants";
-import { useDeviceMode } from "../../utils/utils";
+import { DEVICE_MODE } from "@utils/constants";
+import { useDeviceMode } from "@utils/utils";
 
 const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
   const deviceMode = useDeviceMode();

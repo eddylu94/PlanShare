@@ -8,18 +8,14 @@ import {
   slackPostRequest,
   ERROR_TYPE,
   SLACK_HOOK
-} from "../../base-requests";
-import { log, IResponse, validatePass, useDeviceMode } from "../../utils/utils";
-import {
-  DEVICE_MODE,
-  STATUS_CODE,
-  STATUS_MESSAGE
-} from "../../utils/constants";
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+} from "base-requests";
+import { log, IResponse, validatePass, useDeviceMode } from "@utils/utils";
+import { DEVICE_MODE, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { IUserContext, UserDataContext } from "user-context-provider";
 import { Link } from "react-router-dom";
 
-import TermsOfUse from "../TermsOfUse/terms-of-use";
-import { TITLE } from "../../utils/constants";
+import TermsOfUse from "@components/TermsOfUse/terms-of-use";
+import { TITLE } from "@utils/constants";
 
 import TextField from "@mui/material/TextField";
 import { Checkbox, FormControlLabel } from "@mui/material";

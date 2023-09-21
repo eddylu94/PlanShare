@@ -7,19 +7,15 @@ import { History } from "history";
 // Components
 import SearchFiltersPane from "./search-filters";
 import SearchSubscriptionCard from "./search-subscription-card";
-import Subscription from "../Subscription/subscription";
 import SearchCanvasPlaceholder from "./search-placeholder";
+import Subscription from "@components/Subscription/subscription";
 
 // API
-import { baseGetRequest, basePostRequest } from "../../base-requests";
+import { baseGetRequest, basePostRequest } from "base-requests";
 
 // Utilites
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  DEVICE_MODE
-} from "../../utils/constants";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import {
   log,
@@ -27,8 +23,8 @@ import {
   IOrganization,
   ISubscriptionData,
   useDeviceMode
-} from "../../utils/utils";
-import { ClickEvent, InputChangeEvent } from "../../utils/interfaces";
+} from "@utils/utils";
+import { ClickEvent, InputChangeEvent } from "@utils/interfaces";
 
 interface ISearchProviderProps {
   userData: IUserContext;

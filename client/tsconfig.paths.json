@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "base-requests": ["./base-requests"],
+      "user-context-provider": ["./user-context-provider"],
+      "@components/*": ["./components/*"],
+      "@utils/*": ["./utils/*"],
+      "@shared-styles": ["./shared-styles/*"]
+    }
+  }
+}

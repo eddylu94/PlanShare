@@ -1,8 +1,8 @@
-import { InputChangeEvent } from "../../utils/interfaces";
+import { InputChangeEvent } from "@utils/interfaces";
 import {
   IFiltersOrganization,
   IFiltersSubscriptionCategory
-} from "../../utils/utils";
+} from "@utils/utils";
 
 export const SORT_BY = {
   DATE_ASC: "date_asc",

@@ -7,11 +7,11 @@ import {
   slackPostRequest,
   ERROR_TYPE,
   SLACK_HOOK
-} from "./../../base-requests";
-import { log, IResponse } from "./../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { InputChangeEvent } from "../../utils/interfaces";
+} from "base-requests";
+import { log, IResponse } from "@utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { InputChangeEvent } from "@utils/interfaces";
 
 const EmailProviderWithContext = (props: {
   userData: IUserContext;

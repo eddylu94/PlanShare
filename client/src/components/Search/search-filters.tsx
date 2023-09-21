@@ -17,8 +17,8 @@ import Typography from "@mui/material/Typography";
 // Utilities
 import { SORT_BY } from "./search-utils";
 import { ISearchFiltersProps } from "./search-utils";
-import { DEVICE_MODE } from "./../../utils/constants";
-import { useDeviceMode } from "../../utils/utils";
+import { DEVICE_MODE } from "@utils/constants";
+import { useDeviceMode } from "@utils/utils";
 
 const FONT_FAMILY =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'";

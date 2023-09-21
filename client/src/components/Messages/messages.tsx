@@ -17,23 +17,19 @@ import {
   ERROR_TYPE,
   slackPostRequest,
   SLACK_HOOK
-} from "../../base-requests";
+} from "base-requests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "../../user-context-provider";
+import { IUserContext, UserDataContext } from "user-context-provider";
 import {
   log,
   IConversationSummary,
   IConversationData,
   IMessageData,
   useDeviceMode
-} from "../../utils/utils";
-import {
-  STATUS_CODE,
-  STATUS_MESSAGE,
-  DEVICE_MODE
-} from "../../utils/constants";
-import { InputChangeEvent } from "../../utils/interfaces";
+} from "@utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
+import { InputChangeEvent } from "@utils/interfaces";
 
 const MessagesProviderWithContext = (props: {
   userData: IUserContext;

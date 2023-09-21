@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { log } from "./utils/utils";
+import { log } from "@utils/utils";
 
 export type UserDataType = {
   userId: string | null;

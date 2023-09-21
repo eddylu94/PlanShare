@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import { IUserContext, UserDataContext } from "./../../user-context-provider";
+import { IUserContext, UserDataContext } from "user-context-provider";
 import {
   baseGetRequest,
   basePostRequest,
   slackPostRequest,
   SLACK_HOOK,
   ERROR_TYPE
-} from "./../../base-requests";
-import { STATUS_CODE, STATUS_MESSAGE } from "./../../utils/constants";
-import { log } from "./../../utils/utils";
+} from "base-requests";
+import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { log } from "@utils/utils";
 
 const ValidateWithContext = (props: {
   userData: IUserContext;

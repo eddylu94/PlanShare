@@ -6,13 +6,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import Tooltip from "@mui/material/Tooltip";
 
 // API
-import { baseGetRequest, basePostRequest } from "../../base-requests";
+import { baseGetRequest, basePostRequest } from "base-requests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "../../user-context-provider";
-import { log } from "../../utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "../../utils/constants";
-import { ClickEvent } from "../../utils/interfaces";
+import { IUserContext, UserDataContext } from "user-context-provider";
+import { log } from "@utils/utils";
+import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { ClickEvent } from "@utils/interfaces";
 
 const SubscriptionProviderWithContext = (props: {
   userData: IUserContext;

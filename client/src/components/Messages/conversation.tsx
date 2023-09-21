@@ -5,8 +5,8 @@ import Scrollbars from "react-custom-scrollbars";
 import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 
 // Utilites
-import { IMessageData } from "./../../utils/utils";
-import { InputChangeEvent } from "../../utils/interfaces";
+import { IMessageData } from "@utils/utils";
+import { InputChangeEvent } from "@utils/interfaces";
 
 interface IConversationCanvasProps {
   currentUserId: string;

@@ -11,8 +11,8 @@ import {
   mobileAndTabletCheck,
   ISubscriptionData,
   getDaysAgoString
-} from "../../utils/utils";
-import { ClickEvent } from "../../utils/interfaces";
+} from "@utils/utils";
+import { ClickEvent } from "@utils/interfaces";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
