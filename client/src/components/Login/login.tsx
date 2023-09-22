@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./login-utils";
-import { basePostRequest } from "base-requests";
 import { log, IResponse, useDeviceMode } from "@utils/utils";
 import {
   DEVICE_MODE,
@@ -14,6 +13,7 @@ import {
 import { IUserContext, UserDataContext } from "user-context-provider";
 import { Link } from "react-router-dom";
 import { TextField } from "@mui/material";
+import { login } from "@requests/postRequests";
 
 const LoginProviderWithContext = (props: {
   userData: IUserContext;
@@ -100,13 +100,9 @@ const LoginProviderWithContext = (props: {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
-      const postRequestData = {
-        username: username.toLocaleLowerCase(),
-        pass
-      };
-      basePostRequest(
-        "login",
-        postRequestData,
+      login(
+        username.toLocaleLowerCase(),
+        pass,
         handleSubmitResponseHandler,
         log
       );
@@ -163,6 +159,7 @@ const LoginProviderWithContext = (props: {
               name={FORM_INPUT_TYPE.PASS}
               value={pass}
               onChange={handleInputChange}
+              type="password"
               margin="dense"
               autoComplete="off"
             />

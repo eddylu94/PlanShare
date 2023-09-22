@@ -6,6 +6,7 @@
       "user-context-provider": ["./user-context-provider"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],
+      "@requests/*": ["./requests/*"],
       "@shared-styles": ["./shared-styles/*"]
     }
   }

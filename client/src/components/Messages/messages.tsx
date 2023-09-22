@@ -11,13 +11,17 @@ import Conversation from "./conversation";
 // API
 import {
   SOCKET_IO_PATH,
-  baseGetRequest,
-  basePostRequest,
   SOCKET_URL,
   ERROR_TYPE,
   slackPostRequest,
   SLACK_HOOK
 } from "base-requests";
+import {
+  getConversation,
+  getConversationById,
+  getConversationList
+} from "@requests/getRequests";
+import { sendMessage } from "@requests/postRequests";
 
 // Utilities
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -159,9 +163,7 @@ const MessagesProviderWithContext = (props: {
   };
 
   const retrieveConversationsList = (isConversationsListOnly?: boolean) => {
-    baseGetRequest(
-      "getconversationslist",
-      [],
+    getConversationList(
       isConversationsListOnly
         ? retrieveConversationsListOnlyResponseHandler
         : retrieveConversationsListResponseHandler,
@@ -192,9 +194,8 @@ const MessagesProviderWithContext = (props: {
       retrieveConversationsList();
       _firstConversationRetrieval = true;
     } else if (otherUserId) {
-      baseGetRequest(
-        "getconversation",
-        [{ userId: otherUserId }],
+      getConversation(
+        otherUserId,
         retrieveConversationResponseHandler,
         log,
         _userData.user?.auth
@@ -226,9 +227,8 @@ const MessagesProviderWithContext = (props: {
       new Date().getTime() - _conversationByIdRetrieval >= 500
     ) {
       _conversationByIdRetrieval = new Date().getTime();
-      baseGetRequest(
-        "getconversationbyid",
-        [{ conversationId }],
+      getConversationById(
+        conversationId,
         retrieveConversationByIdResponseHandler,
         retrieveConversationByIdErrorHandler,
         _userData.user?.auth
@@ -277,15 +277,9 @@ const MessagesProviderWithContext = (props: {
       return;
     }
 
-    const postRequestData = {
+    sendMessage(
       conversationId,
-      message: text
-    };
-    log(postRequestData);
-
-    basePostRequest(
-      "sendmessage",
-      postRequestData,
+      text,
       handleSubmitResponseHandler,
       log,
       _userData.user?.auth

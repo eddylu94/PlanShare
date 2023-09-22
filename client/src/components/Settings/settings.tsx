@@ -7,9 +7,19 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Typography from "@mui/material/Typography";
 
+// API
+import {
+  getEmailAddress,
+  getSettingEmailNotifications
+} from "@requests/getRequests";
+import {
+  changePass,
+  changeSettingEmailNotifications,
+  deleteUser
+} from "@requests/postRequests";
+
 // Utilites
 import { IUserContext, UserDataContext } from "user-context-provider";
-import { baseGetRequest, basePostRequest } from "base-requests";
 import { log, validatePass, SETTINGS_EMAIL_NOTIFICATIONS } from "@utils/utils";
 import { InputChangeEvent } from "@utils/interfaces";
 import {
@@ -71,7 +81,7 @@ const SettingsProviderWithContext = (props: {
     const newSetting = (event.target as HTMLInputElement).value;
 
     setSettingEmailNotifications(newSetting);
-    changeSettingEmailNotifications(newSetting);
+    changeSettingEmailNotificationsHandler(newSetting);
   };
 
   const changeSettingEmailNotificationsResponseHandler = (data: any) => {
@@ -97,14 +107,9 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const changeSettingEmailNotifications = (newSetting: string) => {
-    const postRequestData = {
-      settingEmailNotifications: newSetting
-    };
-
-    basePostRequest(
-      "changesettingemailnotifications",
-      postRequestData,
+  const changeSettingEmailNotificationsHandler = (newSetting: string) => {
+    changeSettingEmailNotifications(
+      newSetting,
       changeSettingEmailNotificationsResponseHandler,
       log,
       _userData.user?.auth
@@ -135,16 +140,11 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const deleteUser = () => {
-    const postRequestData = {
-      userId: _userData.user?.userId as string,
+  const deleteUserHandler = () => {
+    deleteUser(
+      _userData.user?.userId as string,
       email,
-      pass
-    };
-
-    basePostRequest(
-      "deleteuser",
-      postRequestData,
+      pass,
       deleteUserResponseHandler,
       log,
       _userData.user?.auth
@@ -172,16 +172,11 @@ const SettingsProviderWithContext = (props: {
     }
   };
 
-  const changePass = () => {
-    const postRequestData = {
-      currPass: changePassCurrent,
-      newPass1: changePassNew1,
-      newPass2: changePassNew2
-    };
-
-    basePostRequest(
-      "changepass",
-      postRequestData,
+  const changePassHandler = () => {
+    changePass(
+      changePassCurrent,
+      changePassNew1,
+      changePassNew2,
       changePassResponseHandler,
       log,
       _userData.user?.auth
@@ -203,13 +198,7 @@ const SettingsProviderWithContext = (props: {
   };
 
   const retrieveEmail = () => {
-    baseGetRequest(
-      "getemailaddress",
-      [],
-      retrieveEmailResponseHandler,
-      log,
-      _userData.user?.auth
-    );
+    getEmailAddress(retrieveEmailResponseHandler, log, _userData.user?.auth);
   };
 
   const retrieveSettingEmailNotificationsResponseHandler = (data: any) => {
@@ -228,9 +217,7 @@ const SettingsProviderWithContext = (props: {
   };
 
   const retrieveSettingEmailNotifications = () => {
-    baseGetRequest(
-      "getsettingemailnotifications",
-      [],
+    getSettingEmailNotifications(
       retrieveSettingEmailNotificationsResponseHandler,
       log,
       _userData.user?.auth
@@ -352,7 +339,7 @@ const SettingsProviderWithContext = (props: {
             </div>
             <button
               className="settings-delete-button"
-              onClick={changePass}
+              onClick={changePassHandler}
               style={{ marginTop: 20 }}
               disabled={isSubmitChangePassDisabled}
             >
@@ -380,7 +367,7 @@ const SettingsProviderWithContext = (props: {
             />
             <button
               className="settings-delete-button"
-              onClick={deleteUser}
+              onClick={deleteUserHandler}
               disabled={!pass}
             >
               Delete Account

@@ -6,13 +6,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
 // API
+import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import {
-  baseGetRequest,
-  basePostRequest,
-  slackPostRequest,
-  SLACK_HOOK,
-  ERROR_TYPE
-} from "base-requests";
+  getSubscription,
+  getSubscriptionBrands,
+  getSubscriptionCategories
+} from "@requests/getRequests";
+import { createSubscription } from "@requests/postRequests";
 
 // Utilities
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -99,9 +99,9 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscription = () => {
-    baseGetRequest(
-      "getsubscription",
-      [{ subscriptionId }],
+    getSubscription(
+      subscriptionId,
+      true,
       retrieveSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -138,9 +138,7 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionCategories = () => {
-    baseGetRequest(
-      "getsubscriptioncategories",
-      [],
+    getSubscriptionCategories(
       retrieveSubscriptionCategoriesResponseHandler,
       log,
       _userData.user?.auth
@@ -168,9 +166,8 @@ const CreateListingProviderWithContext = (props: {
   };
 
   const retrieveSubscriptionBrands = (selection: string) => {
-    baseGetRequest(
-      "getsubscriptionbrands",
-      [{ subscriptionCategory: selection }],
+    getSubscriptionBrands(
+      selection,
       retrieveSubscriptionBrandsResponseHandler,
       log,
       _userData.user?.auth
@@ -212,9 +209,9 @@ const CreateListingProviderWithContext = (props: {
     };
 
     if (!isFormDisabled) {
-      basePostRequest(
-        subscriptionId ? "editsubscription" : "createsubscription",
-        { subscriptionData },
+      createSubscription(
+        !!subscriptionId,
+        subscriptionData,
         handleSubmitResponseHandler,
         log,
         _userData.user?.auth

@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import {
-  basePostRequest,
-  slackPostRequest,
-  ERROR_TYPE,
-  SLACK_HOOK
-} from "base-requests";
+import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { IUserContext, UserDataContext } from "user-context-provider";
 import { InputChangeEvent } from "@utils/interfaces";
+import { addEmail } from "@requests/postRequests";
 
 const EmailProviderWithContext = (props: {
   userData: IUserContext;
@@ -122,15 +118,7 @@ const EmailProviderWithContext = (props: {
           ? text
           : `${text}@${getOrganizationDomain(orgSymbol)}`;
 
-      const postRequestData = { email };
-
-      basePostRequest(
-        "addemail",
-        postRequestData,
-        handleSubmitResponseHandler,
-        log,
-        _userData.user?.auth
-      );
+      addEmail(email, handleSubmitResponseHandler, log, _userData.user?.auth);
     }
   };
 

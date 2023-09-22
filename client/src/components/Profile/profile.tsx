@@ -8,7 +8,15 @@ import SearchSubscriptionCard from "@components/Search/search-subscription-card"
 import Subscription from "@components/Subscription/subscription";
 
 // API
-import { baseGetRequest, basePostRequest } from "base-requests";
+import {
+  getArchivedSubscriptions,
+  getProfile,
+  getSubscriptionsByAuthor
+} from "@requests/getRequests";
+import {
+  archiveSubscription,
+  deleteSubscription
+} from "@requests/postRequests";
 
 // Utilities
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -90,8 +98,7 @@ const ProfileProviderWithContext = (props: {
       query.push({ profileUserId });
     }
 
-    baseGetRequest(
-      "getprofile",
+    getProfile(
       query,
       retrieveProfileResponseHandler,
       log,
@@ -121,8 +128,7 @@ const ProfileProviderWithContext = (props: {
       query.push({ profileUserId });
     }
 
-    baseGetRequest(
-      "getsubscriptionsbyauthor",
+    getSubscriptionsByAuthor(
       query,
       retrieveSubscriptionsByUserResponseHandler,
       log,
@@ -141,13 +147,9 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const archiveSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "archivesubscription",
-      postRequestData,
+  const archiveSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    archiveSubscription(
+      id,
       handleArchiveSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -163,13 +165,9 @@ const ProfileProviderWithContext = (props: {
     }
   };
 
-  const deleteSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "deletesubscription",
-      postRequestData,
+  const deleteSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    deleteSubscription(
+      id,
       handleDeleteSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -177,9 +175,7 @@ const ProfileProviderWithContext = (props: {
   };
 
   const retrieveArchivedSubscriptions = () => {
-    baseGetRequest(
-      "getarchivedsubscriptions",
-      [],
+    getArchivedSubscriptions(
       retrieveArchivedSubscriptionsResponseHandler,
       log,
       _userData.user?.auth
@@ -224,8 +220,8 @@ const ProfileProviderWithContext = (props: {
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
     return (
       <SearchSubscriptionCard
-        archiveSubscription={archiveSubscription}
-        deleteSubscription={deleteSubscription}
+        archiveSubscription={archiveSubscriptionHandler}
+        deleteSubscription={deleteSubscriptionHandler}
         key={"subscription-card-" + i}
         subscription={subscription}
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
@@ -241,8 +237,8 @@ const ProfileProviderWithContext = (props: {
     archivedSubscriptions.map((subscription, i) => {
       return (
         <SearchSubscriptionCard
-          archiveSubscription={archiveSubscription}
-          deleteSubscription={deleteSubscription}
+          archiveSubscription={archiveSubscriptionHandler}
+          deleteSubscription={deleteSubscriptionHandler}
           key={"subscription-card-" + i}
           subscription={subscription}
           isMobile={deviceMode === DEVICE_MODE.MOBILE}

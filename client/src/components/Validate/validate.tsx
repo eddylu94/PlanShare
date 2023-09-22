@@ -3,15 +3,11 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { IUserContext, UserDataContext } from "user-context-provider";
-import {
-  baseGetRequest,
-  basePostRequest,
-  slackPostRequest,
-  SLACK_HOOK,
-  ERROR_TYPE
-} from "base-requests";
+import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { log } from "@utils/utils";
+import { getValidationEmail } from "@requests/getRequests";
+import { resendConfirmationCode, verifyEmail } from "@requests/postRequests";
 
 const ValidateWithContext = (props: {
   userData: IUserContext;
@@ -48,9 +44,7 @@ const ValidateWithContext = (props: {
   };
 
   const retrieveValidationEmail = () => {
-    baseGetRequest(
-      "getvalidationemail",
-      [],
+    getValidationEmail(
       retrieveValidationEmailResponseHandler,
       log,
       _userData.user?.auth
@@ -97,17 +91,7 @@ const ValidateWithContext = (props: {
     event.preventDefault();
 
     if (text.length === 5) {
-      const postRequestData = {
-        validationCode: text
-      };
-
-      basePostRequest(
-        "verifyemail",
-        postRequestData,
-        handleSubmitResponseHandler,
-        log,
-        _userData.user?.auth
-      );
+      verifyEmail(text, handleSubmitResponseHandler, log, _userData.user?.auth);
     }
   };
 
@@ -118,9 +102,7 @@ const ValidateWithContext = (props: {
   };
 
   const resendCode = () => {
-    basePostRequest(
-      "resendconfirmationcode",
-      [],
+    resendConfirmationCode(
       resendCodeResponseHandler,
       log,
       _userData.user?.auth

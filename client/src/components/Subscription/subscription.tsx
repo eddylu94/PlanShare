@@ -6,7 +6,11 @@ import LockIcon from "@mui/icons-material/Lock";
 import Tooltip from "@mui/material/Tooltip";
 
 // API
-import { baseGetRequest, basePostRequest } from "base-requests";
+import { getSubscription } from "@requests/getRequests";
+import {
+  archiveSubscription,
+  deleteSubscription
+} from "@requests/postRequests";
 
 // Utilities
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -53,9 +57,9 @@ const SubscriptionProviderWithContext = (props: {
   };
 
   const retrieveSubscription = () => {
-    baseGetRequest(
-      _userData.user?.auth ? "getsubscription" : "getsubscriptionasguest",
-      [{ subscriptionId }],
+    getSubscription(
+      subscriptionId,
+      !!_userData.user?.auth,
       retrieveSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -146,13 +150,9 @@ const SubscriptionProviderWithContext = (props: {
     }
   };
 
-  const archiveSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "archivesubscription",
-      postRequestData,
+  const archiveSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    archiveSubscription(
+      id,
       handleArchiveSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -167,13 +167,9 @@ const SubscriptionProviderWithContext = (props: {
     }
   };
 
-  const deleteSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "deletesubscription",
-      postRequestData,
+  const deleteSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    deleteSubscription(
+      id,
       handleDeleteSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -290,7 +286,7 @@ const SubscriptionProviderWithContext = (props: {
               className="subscription-pane-button"
               onMouseOver={handleMouseOverArchiveButton}
               onMouseLeave={handleMouseLeaveArchiveButton}
-              onClick={e => archiveSubscription?.(e, subscriptionId)}
+              onClick={e => archiveSubscriptionHandler(e, subscriptionId)}
             >
               <img
                 alt="Archive"
@@ -302,7 +298,7 @@ const SubscriptionProviderWithContext = (props: {
           </Tooltip>
           <button
             className="subscription-pane-button"
-            onClick={e => deleteSubscription?.(e, subscriptionId)}
+            onClick={e => deleteSubscriptionHandler(e, subscriptionId)}
           >
             <img
               alt="Delete"

@@ -11,7 +11,16 @@ import SearchCanvasPlaceholder from "./search-placeholder";
 import Subscription from "@components/Subscription/subscription";
 
 // API
-import { baseGetRequest, basePostRequest } from "base-requests";
+import {
+  getOrganization,
+  getSubscriptionCategories,
+  getSubscriptionOrganizations,
+  getSubscriptions
+} from "@requests/getRequests";
+import {
+  archiveSubscription,
+  deleteSubscription
+} from "@requests/postRequests";
 
 // Utilites
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -96,8 +105,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveSubscriptions = (query?: { [key: string]: any }[]) => {
-    baseGetRequest(
-      _userData.user?.userId ? "getsubscriptions" : "getsubscriptionsasguest",
+    getSubscriptions(
+      !!_userData.user?.userId,
       query ?? [],
       retrieveSubscriptionsResponseHandler,
       log,
@@ -177,9 +186,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveSubscriptionCategories = () => {
-    baseGetRequest(
-      "getsubscriptioncategories",
-      [],
+    getSubscriptionCategories(
       retrieveSubscriptionCategoriesResponseHandler,
       log,
       _userData.user?.auth
@@ -196,11 +203,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveSubscriptionOrgs = () => {
-    baseGetRequest(
-      _userData.user?.userId
-        ? "getsubscriptionorganizations"
-        : "getsubscriptionorganizationsasguest",
-      [],
+    getSubscriptionOrganizations(
+      !!_userData.user?.userId,
       retrieveSubscriptionOrgsResponseHandler,
       log,
       _userData.user?.auth
@@ -215,9 +219,7 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
   };
 
   const retrieveOrganization = () => {
-    baseGetRequest(
-      "getorganization",
-      [],
+    getOrganization(
       retrieveOrganizationResponseHandler,
       log,
       _userData.user?.auth
@@ -234,13 +236,9 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const archiveSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "archivesubscription",
-      postRequestData,
+  const archiveSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    archiveSubscription(
+      id,
       handleArchiveSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -255,13 +253,9 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     }
   };
 
-  const deleteSubscription = (_e: ClickEvent, id: string) => {
-    const postRequestData = {
-      subscriptionId: id
-    };
-    basePostRequest(
-      "deletesubscription",
-      postRequestData,
+  const deleteSubscriptionHandler = (_e: ClickEvent, id: string) => {
+    deleteSubscription(
+      id,
       handleDeleteSubscriptionResponseHandler,
       log,
       _userData.user?.auth
@@ -364,8 +358,8 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
         isMobile={deviceMode === DEVICE_MODE.MOBILE}
         handleSubscriptionCardClick={handleSubscriptionCardClick}
         isDisplayButtons={isAuthor}
-        archiveSubscription={archiveSubscription}
-        deleteSubscription={deleteSubscription}
+        archiveSubscription={archiveSubscriptionHandler}
+        deleteSubscription={deleteSubscriptionHandler}
       />
     );
   });

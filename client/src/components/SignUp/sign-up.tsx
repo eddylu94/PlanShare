@@ -3,12 +3,7 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
-import {
-  basePostRequest,
-  slackPostRequest,
-  ERROR_TYPE,
-  SLACK_HOOK
-} from "base-requests";
+import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse, validatePass, useDeviceMode } from "@utils/utils";
 import { DEVICE_MODE, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { IUserContext, UserDataContext } from "user-context-provider";
@@ -19,6 +14,8 @@ import { TITLE } from "@utils/constants";
 
 import TextField from "@mui/material/TextField";
 import { Checkbox, FormControlLabel } from "@mui/material";
+
+import { signup } from "@requests/postRequests";
 
 const SignUpProviderWithContext = (props: {
   userData: IUserContext;
@@ -158,14 +155,10 @@ const SignUpProviderWithContext = (props: {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
-      const postRequestData = {
+      signup(
         firstName,
-        username: username.toLocaleLowerCase(),
-        pass: pass1
-      };
-      basePostRequest(
-        "signup",
-        postRequestData,
+        username.toLocaleLowerCase(),
+        pass1,
         handleSubmitResponseHandler,
         log
       );
