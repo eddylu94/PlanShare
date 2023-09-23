@@ -12,6 +12,7 @@ import "@components/Info/info.css";
 import "@components/Login/login.css";
 import "@components/Messages/messages.css";
 import "@components/NavBar/nav-bar.css";
+import "@components/Onboarding/onboarding-dialog.css";
 import "@components/Profile/profile.css";
 import "@components/Search/search.css";
 import "@components/Settings/settings.css";
@@ -35,69 +36,73 @@ import Messages from "@components/Messages/messages";
 import Organizations from "@components/Organizations/organizations";
 import Feedback from "@components/Feedback/feedback";
 import Info from "@components/Info/info";
+import OnboardingDialog from "@components/Onboarding/onboarding-dialog";
 import { UserContextProvider } from "user-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
   <UserContextProvider>{props.children}</UserContextProvider>
 );
 
-const App = () => (
-  <div className="app">
-    <AppContextProviders>
-      <Router>
-        <div className="app-container">
-          <NavBar />
-          <Switch>
-            <Route exact path="/">
-              <Search />
-            </Route>
-            <Route path="/signup">
-              <SignUp />
-            </Route>
-            <Route path="/privacy">
-              <Privacy />
-            </Route>
-            <Route path="/feedback">
-              <Feedback />
-            </Route>
-            <Route path="/info">
-              <Info />
-            </Route>
-            <Route path="/search">
-              <Search />
-            </Route>
-            <Route path="/create">
-              <CreateListing />
-            </Route>
-            <Route path="/edit">
-              <CreateListing />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/validate">
-              <Validate />
-            </Route>
-            <Route path="/email">
-              <Email />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/settings">
-              <Settings />
-            </Route>
-            <Route path="/messages">
-              <Messages />
-            </Route>
-            <Route path="/organizations">
-              <Organizations />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
-    </AppContextProviders>
-  </div>
-);
+const App = () => {
+  return (
+    <div className="app">
+      <AppContextProviders>
+        <Router>
+          <div className="app-container">
+            <NavBar />
+            <OnboardingDialog />
+            <Switch>
+              <Route exact path="/">
+                <Search />
+              </Route>
+              <Route path="/signup">
+                <SignUp />
+              </Route>
+              <Route path="/privacy">
+                <Privacy />
+              </Route>
+              <Route path="/feedback">
+                <Feedback />
+              </Route>
+              <Route path="/info">
+                <Info />
+              </Route>
+              <Route path="/search">
+                <Search />
+              </Route>
+              <Route path="/create">
+                <CreateListing />
+              </Route>
+              <Route path="/edit">
+                <CreateListing />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/validate">
+                <Validate />
+              </Route>
+              <Route path="/email">
+                <Email />
+              </Route>
+              <Route path="/profile">
+                <Profile />
+              </Route>
+              <Route path="/settings">
+                <Settings />
+              </Route>
+              <Route path="/messages">
+                <Messages />
+              </Route>
+              <Route path="/organizations">
+                <Organizations />
+              </Route>
+            </Switch>
+          </div>
+        </Router>
+      </AppContextProviders>
+    </div>
+  );
+};
 
 export default App;

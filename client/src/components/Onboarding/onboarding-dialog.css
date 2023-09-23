@@ -1,0 +1,13 @@
+.onboarding-dialog-description-container {
+  padding: 20px;
+}
+
+.onboarding-dialog-header {
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.onboarding-dialog-description {
+  line-height: 18px;
+}
