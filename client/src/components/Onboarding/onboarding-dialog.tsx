@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,44 +16,45 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: "San Francisco – Oakland Bay Bridge, United States",
-    imgPath:
-      "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
+    imgPath: "/onboarding_1.png",
     header: "Welcome to PlanShare!",
-    description: "Lalala"
+    description:
+      "PlanShare is a classifieds website where users can find other people to share mobile subscriptions, referral links, group deliveries, and other things!"
   },
   {
-    label: "Bird",
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-    header: "Search and post listings",
-    description: "Lalala"
+    imgPath: "/onboarding_2.png",
+    header: "Search and Message",
+    description:
+      "Once you find a listing of interest, you can start a new conversation with the poster to discuss how you'd like to share the cost of the subscription, etc.",
+    note:
+      "Note that you will need to discuss how payments will be made as our platform currently does not support payments (for now)."
   },
   {
-    label: "Bali, Indonesia",
-    imgPath:
-      "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-    header: "Message",
-    description: "Lalala"
+    imgPath: "/onboarding_3.png",
+    header: "Find people from your organization",
+    description:
+      "Although not required, we allow users to register with their work/university emails so that they can limit communication to their colleagues/students as some people feel safer this way."
   },
   {
-    label: "Bird",
-    imgPath:
-      "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-    header: "Account",
-    description: "Lalala"
-  },
-  {
-    label: "Goč, Serbia",
-    imgPath:
-      "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60",
-    header: "Eligible listings",
-    description: "Lalala"
+    imgPath: "/onboarding_4.png",
+    header: "We take rules seriously",
+    description:
+      "You may notice that some popular services, such as Netflix, are not included in our listings. This is because we only allow users to post listings that are shareable based on each service's terms of use. For example, mobile plans are commonly shareable, whereas streaming services tend to not be shareable.",
+    note:
+      "Listings that potentially violate terms are either deleted or flagged by our moderators."
   }
 ];
 
 const OnboardingDialog = () => {
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    const onboarded = localStorage.getItem("onboarded");
+    if (onboarded !== "true") {
+      setOpen(true);
+      localStorage.setItem("onboarded", "true");
+    }
+  }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -84,25 +85,27 @@ const OnboardingDialog = () => {
         enableMouseEvents
       >
         {images.map((step, index) => (
-          <div key={step.label}>
+          <div key={`onboarding-${index}`}>
             {Math.abs(activeStep - index) <= 2 ? (
               <div>
                 <Box
                   component="img"
                   sx={{
-                    height: 255,
                     display: "block",
                     overflow: "hidden",
                     width: "100%"
                   }}
                   src={step.imgPath}
-                  alt={step.label}
+                  alt={step.header}
                 />
                 <div className="onboarding-dialog-description-container">
                   <div className="onboarding-dialog-header">{step.header}</div>
                   <div className="onboarding-dialog-description">
                     {step.description}
                   </div>
+                  {step.note != null && (
+                    <div className="onboarding-dialog-note">{step.note}</div>
+                  )}
                 </div>
               </div>
             ) : null}
@@ -116,15 +119,20 @@ const OnboardingDialog = () => {
         nextButton={
           <Button
             size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
+            variant="contained"
+            onClick={activeStep === maxSteps - 1 ? handleClose : handleNext}
           >
-            Next
+            {activeStep === maxSteps - 1 ? "Got it!" : "Next"}
             <KeyboardArrowRight />
           </Button>
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleBack}
+            disabled={activeStep === 0}
+          >
             <KeyboardArrowLeft />
             Back
           </Button>
