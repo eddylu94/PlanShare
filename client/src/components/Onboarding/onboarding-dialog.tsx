@@ -23,6 +23,14 @@ const images = [
   },
   {
     imgPath: "/onboarding_2.png",
+    header: "We take rules seriously",
+    description:
+      "You may notice that some popular services, such as Netflix, are not included in our listings. This is because we only allow users to post listings that are shareable based on each service's terms of use. For example, mobile plans are commonly shareable, whereas streaming services tend to not be shareable.",
+    note:
+      "Listings that potentially violate terms are either deleted or flagged by our moderators."
+  },
+  {
+    imgPath: "/onboarding_3.png",
     header: "Search and Message",
     description:
       "Once you find a listing of interest, you can start a new conversation with the poster to discuss how you'd like to share the cost of the subscription, etc.",
@@ -30,18 +38,10 @@ const images = [
       "Note that you will need to discuss how payments will be made as our platform currently does not support payments (for now)."
   },
   {
-    imgPath: "/onboarding_3.png",
+    imgPath: "/onboarding_4.png",
     header: "Find people from your organization",
     description:
       "Although not required, we allow users to register with their work/university emails so that they can limit communication to their colleagues/students as some people feel safer this way."
-  },
-  {
-    imgPath: "/onboarding_4.png",
-    header: "We take rules seriously",
-    description:
-      "You may notice that some popular services, such as Netflix, are not included in our listings. This is because we only allow users to post listings that are shareable based on each service's terms of use. For example, mobile plans are commonly shareable, whereas streaming services tend to not be shareable.",
-    note:
-      "Listings that potentially violate terms are either deleted or flagged by our moderators."
   }
 ];
 
