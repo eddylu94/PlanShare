@@ -86,11 +86,15 @@ export const getConversationsList = (
 
 										const conversationId = conversation._id.toString();
 
+										const isHost = userId === conversation.host;
+										const isRead = (isHost && conversation.isPrimaryRead) || (!isHost && conversation.isSecondaryRead);
+
 										resolve({
 											conversationId,
 											firstName,
 											userId: otherUserId,
-											lastMessage
+											lastMessage,
+											isRead,
 										});
 									}
 								);

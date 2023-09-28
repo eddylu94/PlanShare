@@ -79,7 +79,10 @@ export const getConversation = (
                       if (!findConversationRes) {
                         const conversationData = {
                           userIds: [currentUserId, userId],
-                          messages: []
+													host: currentUserId,
+                          messages: [],
+													isPrimaryRead: true,
+													isSecondaryRead: true,
                         };
 
                         dbo

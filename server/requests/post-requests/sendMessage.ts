@@ -58,11 +58,16 @@ export const sendMessage = (
                 message
               };
 
+							const isHost = userId === findConversationRes.host;
+
               dbo
                 .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
                 .updateOne(
                   { _id: new ObjectId(conversationId) },
-                  { $push: { messages: messageData } }
+                  {
+										$set: { [isHost ? "isSecondaryRead" : "isPrimaryRead"]: false },
+										$push: { messages: messageData }
+									},
                 )
                 .then(() => {
                   io.emit("message sent", "Hello World !");
