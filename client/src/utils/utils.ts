@@ -82,6 +82,7 @@ export interface IConversationSummary {
   firstName: string;
   userId: string;
   lastMessage: IMessageData;
+  isRead: boolean;
 }
 
 export const KEYBOARD_CHAR_CODE = {

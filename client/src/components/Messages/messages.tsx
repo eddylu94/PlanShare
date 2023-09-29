@@ -375,16 +375,24 @@ const MessagesProviderWithContext = (props: {
       </>
     );
 
+    let messageSummaryClassName = "message-summary";
+    if (!conversation.isRead) {
+      messageSummaryClassName += " message-summary--unread";
+    }
+
     return lastMessage ||
       conversationId === conversationSummaryConversationId ||
       initialConversationId === conversationSummaryConversationId ? (
       <div
-        className="message-summary"
+        className={messageSummaryClassName}
         key={"message-summary-" + index}
         onClick={() =>
           handleConversationSelection(conversationSummaryConversationId)
         }
       >
+        {!conversation.isRead && (
+          <div className="message-summary-unread-indicator"></div>
+        )}
         <div className="message-summary-header">
           <img
             alt="Profile"

@@ -247,6 +247,7 @@
 }
 
 .message-summary {
+  position: relative;
   background-color: #ffffff;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -256,6 +257,10 @@
   margin-bottom: 15px;
 }
 
+.message-summary--unread {
+  font-weight: 650;
+}
+
 .message-summary:hover {
   box-shadow: 0px 0px 10px #888888;
 }
@@ -263,6 +268,16 @@
 .message-summary:focus {
   outline: none !important;
   box-shadow: 0px 0px 10px #6c5dbdee;
+}
+
+.message-summary-unread-indicator {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background-color: #6495ed;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
 }
 
 .message-summary-header {

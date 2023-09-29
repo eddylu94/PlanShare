@@ -644,6 +644,11 @@
   }
 }
 
+.subscription-pane a {
+  font-weight: 500;
+  color: #6c5dbd;
+}
+
 .subscription-card-people-icon {
   width: 20px;
   height: 20px;
