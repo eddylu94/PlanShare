@@ -152,7 +152,6 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
   );
 
   const isFree = price === 0;
-  console.log(isFree);
 
   const priceInfo = isFree ? (
     <div className="subscription-card-free-tag subscription-card-basic-info-detail">

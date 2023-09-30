@@ -231,14 +231,3 @@
     font-size: 22px;
   }
 }
-
-.navbar-icon {
-  width: 25px;
-  height: 25px;
-}
-/* Medium, Large, Extra-large */
-@media only screen and (min-width: 768px) {
-  .navbar-icon {
-    margin-right: 5px;
-  }
-}

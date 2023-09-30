@@ -23,6 +23,8 @@ echo "Installing client dependencies"
 yarn install
 
 echo "Killing server process"
+# May need to also run:
+# nvm use 16.10
 fuser -k 36322/tcp
 echo "Killing client process"
 fuser -k 36321/tcp

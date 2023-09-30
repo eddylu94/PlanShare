@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "paths": {
       "base-requests": ["./base-requests"],
+      "notifications-context-provider": ["./notifications-context-provider"],
       "user-context-provider": ["./user-context-provider"],
       "@components/*": ["./components/*"],
       "@utils/*": ["./utils/*"],

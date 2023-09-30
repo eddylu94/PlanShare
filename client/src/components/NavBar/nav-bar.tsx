@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link, withRouter } from "react-router-dom";
 import { History } from "history";
@@ -6,13 +6,43 @@ import { IUserContext, UserDataContext } from "user-context-provider";
 import { TITLE } from "@utils/constants";
 import { log } from "@utils/utils";
 
-const NavBarWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-}) => {
-  const { userData, history } = props;
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from "@mui/icons-material/Edit";
+import MailIcon from "@mui/icons-material/Mail";
+import Badge from "@mui/material/Badge";
+import {
+  INotificationsContext,
+  NotificationsDataContext
+} from "notifications-context-provider";
+import { getUnreadMessagesCount } from "@requests/getRequests";
 
-  log(history);
+interface INavBarProps {
+  userData: IUserContext;
+  notificationsData: INotificationsContext;
+  history: History;
+}
+
+const NavBarWithContext = (props: INavBarProps) => {
+  const { userData, notificationsData, history } = props;
+
+  const getUnreadMessagesCountResponseHandler = (res: {
+    body?: { unreadMessages: number };
+  }) => {
+    const unreadMessagesCount = res.body?.unreadMessages;
+    if (unreadMessagesCount != null) {
+      notificationsData.updateNotifications({ unreadMessagesCount });
+    }
+  };
+
+  useEffect(() => {
+    getUnreadMessagesCount(
+      getUnreadMessagesCountResponseHandler,
+      log,
+      user?.auth
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logoutHandler = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
@@ -64,31 +94,32 @@ const NavBarWithContext = (props: {
             <>
               <li>
                 <Link to="/search">
-                  <img
-                    alt="Search listings"
-                    className="navbar-icon"
-                    src={"./search_icon_white.png"}
-                  />
+                  <IconButton aria-label="Search">
+                    <SearchIcon style={{ color: "white" }} />
+                  </IconButton>
                   <span className="navbar-link-label">Search</span>
                 </Link>
               </li>
               <li>
                 <Link to="/create">
-                  <img
-                    alt="Create new listing"
-                    className="navbar-icon"
-                    src={"./create_icon_white.png"}
-                  />
+                  <IconButton aria-label="Post">
+                    <EditIcon style={{ color: "white" }} />
+                  </IconButton>
                   <span className="navbar-link-label">Post</span>
                 </Link>
               </li>
               <li>
                 <Link to="/messages">
-                  <img
-                    alt="Messages"
-                    className="navbar-icon"
-                    src={"./message_icon_white.png"}
-                  />
+                  <IconButton aria-label="cart">
+                    <Badge
+                      badgeContent={
+                        notificationsData.notifications?.unreadMessagesCount
+                      }
+                      color="warning"
+                    >
+                      <MailIcon style={{ color: "white" }} />
+                    </Badge>
+                  </IconButton>
                   <span className="navbar-link-label">Messages</span>
                 </Link>
               </li>
@@ -135,7 +166,15 @@ const NavBarWithContext = (props: {
 const NavBar = (props: { history: History }) => (
   <UserDataContext.Consumer>
     {userData => (
-      <NavBarWithContext userData={userData} history={props.history} />
+      <NotificationsDataContext.Consumer>
+        {notificationsData => (
+          <NavBarWithContext
+            userData={userData}
+            history={props.history}
+            notificationsData={notificationsData}
+          />
+        )}
+      </NotificationsDataContext.Consumer>
     )}
   </UserDataContext.Consumer>
 );

@@ -13,6 +13,7 @@ import { getSubscriptionOrganizations } from "./get-requests/getSubscriptionOrga
 import { getSubscriptions } from "./get-requests/getSubscriptions";
 import { getSubscriptionsByAuthor } from "./get-requests/getSubscriptionsByAuthor";
 import { getValidationEmail } from "./get-requests/getValidationEmail";
+import { getUnreadMessagesCount } from "./get-requests/getUnreadMessagesCount";
 
 export {
   getArchivedSubscriptions,
@@ -29,5 +30,6 @@ export {
   getSubscriptionOrganizations,
   getSubscriptions,
   getSubscriptionsByAuthor,
+  getUnreadMessagesCount,
   getValidationEmail
 };

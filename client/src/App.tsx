@@ -38,9 +38,14 @@ import Feedback from "@components/Feedback/feedback";
 import Info from "@components/Info/info";
 import OnboardingDialog from "@components/Onboarding/onboarding-dialog";
 import { UserContextProvider } from "user-context-provider";
+import { NotificationsContextProvider } from "notifications-context-provider";
 
 const AppContextProviders = (props: { children: any }) => (
-  <UserContextProvider>{props.children}</UserContextProvider>
+  <UserContextProvider>
+    <NotificationsContextProvider>
+      {props.children}
+    </NotificationsContextProvider>
+  </UserContextProvider>
 );
 
 const App = () => {

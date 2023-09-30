@@ -197,7 +197,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       const body = data.body;
 
-      console.log(body);
       setSubscriptionOrganizations(body.subscriptionOrgs);
     }
   };
@@ -213,7 +212,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
 
   const retrieveOrganizationResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
-      console.log(data.body.organization);
       setOrganization(data.body.organization);
     }
   };
@@ -340,11 +338,6 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     handleSortByChange,
     handleDaysActiveChange
   } as ISearchFiltersProps;
-
-  console.log(
-    "filtersSubscriptionOrganizations",
-    filtersSubscriptionOrganizations
-  );
 
   const subscriptionCards = subscriptionData.map((subscription, i) => {
     const isAuthor = !!(
