@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { withRouter, Link } from "react-router-dom";
 import Scrollbars from "react-custom-scrollbars";
 import { History } from "history";
@@ -23,7 +23,7 @@ import {
 } from "@requests/postRequests";
 
 // Utilites
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import {
@@ -36,15 +36,16 @@ import {
 import { ClickEvent, InputChangeEvent } from "@utils/interfaces";
 
 interface ISearchProviderProps {
-  userData: IUserContext;
-  location: Location;
+  location: any;
   history: History;
 }
 
 const THROTTLE_TIMEOUT = 250; // Allow at most one request to be executed per 250 milliseconds
 
-const SearchProviderWithContext = (props: ISearchProviderProps) => {
-  const { history, userData: _userData, location } = props;
+const SearchProvider = (props: ISearchProviderProps) => {
+  const { history, location } = props;
+
+  const _userData = useContext(UserDataContext);
 
   const isUser = !!_userData.user?.userId;
 
@@ -557,17 +558,5 @@ const SearchProviderWithContext = (props: ISearchProviderProps) => {
     </div>
   );
 };
-
-const SearchProvider = (props: { history: History; location: any }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <SearchProviderWithContext
-        userData={userData}
-        history={props.history}
-        location={props.location}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(SearchProvider);

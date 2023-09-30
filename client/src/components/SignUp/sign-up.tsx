@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
@@ -6,7 +6,7 @@ import { FORM_INPUT_TYPE } from "./sign-up-utils";
 import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse, validatePass, useDeviceMode } from "@utils/utils";
 import { DEVICE_MODE, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { Link } from "react-router-dom";
 
 import TermsOfUse from "@components/TermsOfUse/terms-of-use";
@@ -17,11 +17,8 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 
 import { signup } from "@requests/postRequests";
 
-const SignUpProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-}) => {
-  const _userData = props.userData;
+const SignUpProvider = (props: { history: History }) => {
+  const _userData = useContext(UserDataContext);
 
   const { history } = props;
 
@@ -328,13 +325,5 @@ const SignUpProviderWithContext = (props: {
     </div>
   );
 };
-
-const SignUpProvider = (props: { history: History }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <SignUpProviderWithContext userData={userData} history={props.history} />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(SignUpProvider);

@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -15,7 +15,7 @@ import {
 import { createSubscription } from "@requests/postRequests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import {
   log,
@@ -24,12 +24,10 @@ import {
   isValidURL
 } from "@utils/utils";
 
-const CreateListingProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-  location: Location;
-}) => {
-  const { history, location, userData: _userData } = props;
+const CreateListingProvider = (props: { history: History; location: any }) => {
+  const { history, location } = props;
+
+  const _userData = useContext(UserDataContext);
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -506,17 +504,5 @@ const CreateListingProviderWithContext = (props: {
     </div>
   ) : null;
 };
-
-const CreateListingProvider = (props: { history: History; location: any }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <CreateListingProviderWithContext
-        userData={userData}
-        history={props.history}
-        location={props.location}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(CreateListingProvider);

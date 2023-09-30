@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
@@ -10,16 +10,15 @@ import {
   STATUS_MESSAGE,
   TITLE
 } from "@utils/constants";
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { Link } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { login } from "@requests/postRequests";
 
-const LoginProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-}) => {
-  const { history, userData: _userData } = props;
+const LoginProvider = (props: { history: History }) => {
+  const { history } = props;
+
+  const _userData = useContext(UserDataContext);
 
   if (_userData.user?.userId) {
     history.push("/search");
@@ -181,13 +180,5 @@ const LoginProviderWithContext = (props: {
     </div>
   );
 };
-
-const LoginProvider = (props: { history: History }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <LoginProviderWithContext userData={userData} history={props.history} />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(LoginProvider);

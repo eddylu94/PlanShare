@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { log } from "@utils/utils";
 import { getValidationEmail } from "@requests/getRequests";
 import { resendConfirmationCode, verifyEmail } from "@requests/postRequests";
 
-const ValidateWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-}) => {
-  const _userData = props.userData;
+const Validate = (props: { history: History }) => {
+  const _userData = useContext(UserDataContext);
 
   const { history } = props;
 
@@ -163,13 +160,5 @@ const ValidateWithContext = (props: {
     </div>
   );
 };
-
-const Validate = (props: { history: History }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <ValidateWithContext userData={userData} history={props.history} />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(Validate);

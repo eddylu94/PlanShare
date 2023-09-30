@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -19,7 +19,7 @@ import {
 } from "@requests/postRequests";
 
 // Utilites
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { log, validatePass, SETTINGS_EMAIL_NOTIFICATIONS } from "@utils/utils";
 import { InputChangeEvent } from "@utils/interfaces";
 import {
@@ -28,11 +28,8 @@ import {
   SETTINGS_INPUT_NAME
 } from "@utils/constants";
 
-const SettingsProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-}) => {
-  const _userData = props.userData;
+const SettingsProvider = (props: { history: History }) => {
+  const _userData = useContext(UserDataContext);
 
   // Whether at least one request has been executed for profile
   const [isRetrievedProfileDirty, setIsRetrievedProfileDirty] = useState(false);
@@ -378,16 +375,5 @@ const SettingsProviderWithContext = (props: {
     </div>
   ) : null;
 };
-
-const SettingsProvider = (props: { history: History }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <SettingsProviderWithContext
-        userData={userData}
-        history={props.history}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(SettingsProvider);

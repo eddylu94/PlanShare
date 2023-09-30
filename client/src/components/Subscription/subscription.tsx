@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import LockIcon from "@mui/icons-material/Lock";
@@ -13,17 +13,16 @@ import {
 } from "@requests/postRequests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { log } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { ClickEvent } from "@utils/interfaces";
 
-const SubscriptionProviderWithContext = (props: {
-  userData: IUserContext;
+const SubscriptionProvider = (props: {
   subscriptionId: string;
   closePane?: () => void;
 }) => {
-  const _userData = props.userData;
+  const _userData = useContext(UserDataContext);
 
   const { subscriptionId } = props;
 
@@ -312,20 +311,5 @@ const SubscriptionProviderWithContext = (props: {
     </div>
   );
 };
-
-const SubscriptionProvider = (props: {
-  subscriptionId: string;
-  closePane?: () => void;
-}) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <SubscriptionProviderWithContext
-        userData={userData}
-        subscriptionId={props.subscriptionId}
-        closePane={props.closePane}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default SubscriptionProvider;

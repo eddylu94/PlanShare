@@ -1,20 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { InputChangeEvent } from "@utils/interfaces";
 import { addEmail } from "@requests/postRequests";
 
-const EmailProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-  location: Location;
-}) => {
-  const _userData = props.userData;
+const Email = (props: { history: History; location: any }) => {
+  const _userData = useContext(UserDataContext);
 
   const { history, location } = props;
 
@@ -369,17 +365,5 @@ const EmailProviderWithContext = (props: {
     </div>
   );
 };
-
-const Email = (props: { history: History; location: any }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <EmailProviderWithContext
-        userData={userData}
-        history={props.history}
-        location={props.location}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(Email);

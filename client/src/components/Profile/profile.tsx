@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
 
@@ -19,7 +19,7 @@ import {
 } from "@requests/postRequests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import { ClickEvent } from "@utils/interfaces";
 import {
   log,
@@ -29,12 +29,10 @@ import {
 } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 
-const ProfileProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-  location: Location;
-}) => {
-  const { history, location, userData: _userData } = props;
+const ProfileProvider = (props: { history: History; location: any }) => {
+  const { history, location } = props;
+
+  const _userData = useContext(UserDataContext);
 
   if (!_userData.user?.auth) {
     history.push("/signup");
@@ -353,17 +351,5 @@ const ProfileProviderWithContext = (props: {
     </div>
   ) : null;
 };
-
-const ProfileProvider = (props: { history: History; location: any }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <ProfileProviderWithContext
-        userData={userData}
-        history={props.history}
-        location={props.location}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(ProfileProvider);

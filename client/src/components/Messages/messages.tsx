@@ -1,5 +1,5 @@
 // Third-party libraries
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 import moment from "moment";
@@ -24,7 +24,7 @@ import {
 import { sendMessage } from "@requests/postRequests";
 
 // Utilities
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
 import {
   log,
   IConversationSummary,
@@ -35,15 +35,13 @@ import {
 import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 import { InputChangeEvent } from "@utils/interfaces";
 
-const MessagesProviderWithContext = (props: {
-  userData: IUserContext;
-  history: History;
-  location: Location;
-}) => {
+const MessagesProvider = (props: { history: History; location: any }) => {
   let _firstConversationRetrieval = false;
   let _conversationByIdRetrieval = 0;
 
-  const { history, location, userData: _userData } = props;
+  const { history, location } = props;
+
+  const _userData = useContext(UserDataContext);
 
   const currentUserId = _userData.user?.userId as string;
 
@@ -465,17 +463,5 @@ const MessagesProviderWithContext = (props: {
     </div>
   ) : null;
 };
-
-const MessagesProvider = (props: { history: History; location: any }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <MessagesProviderWithContext
-        userData={userData}
-        history={props.history}
-        location={props.location}
-      />
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(MessagesProvider);

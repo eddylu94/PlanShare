@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Link, withRouter } from "react-router-dom";
 import { History } from "history";
-import { IUserContext, UserDataContext } from "user-context-provider";
+import { UserDataContext } from "user-context-provider";
+import { NotificationsDataContext } from "notifications-context-provider";
 import { TITLE } from "@utils/constants";
 import { log } from "@utils/utils";
 
@@ -11,20 +12,18 @@ import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import MailIcon from "@mui/icons-material/Mail";
 import Badge from "@mui/material/Badge";
-import {
-  INotificationsContext,
-  NotificationsDataContext
-} from "notifications-context-provider";
+
 import { getUnreadMessagesCount } from "@requests/getRequests";
 
 interface INavBarProps {
-  userData: IUserContext;
-  notificationsData: INotificationsContext;
   history: History;
 }
 
-const NavBarWithContext = (props: INavBarProps) => {
-  const { userData, notificationsData, history } = props;
+const NavBar = (props: INavBarProps) => {
+  const { history } = props;
+
+  const userData = useContext(UserDataContext);
+  const notificationsData = useContext(NotificationsDataContext);
 
   const getUnreadMessagesCountResponseHandler = (res: {
     body?: { unreadMessages: number };
@@ -162,21 +161,5 @@ const NavBarWithContext = (props: INavBarProps) => {
     </nav>
   ) : null;
 };
-
-const NavBar = (props: { history: History }) => (
-  <UserDataContext.Consumer>
-    {userData => (
-      <NotificationsDataContext.Consumer>
-        {notificationsData => (
-          <NavBarWithContext
-            userData={userData}
-            history={props.history}
-            notificationsData={notificationsData}
-          />
-        )}
-      </NotificationsDataContext.Consumer>
-    )}
-  </UserDataContext.Consumer>
-);
 
 export default withRouter(NavBar);
