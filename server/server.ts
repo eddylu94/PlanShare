@@ -114,6 +114,7 @@ getRequestBuilder(
 getRequestBuilder("/getconversation", GetRequests.getConversation);
 getRequestBuilder("/getconversationbyid", GetRequests.getConversationById);
 getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
+getRequestBuilder("/getunreadmessages", GetRequests.getUnreadMessagesCount);
 
 // POST requests
 postRequestBuilder("/signup", PostRequests.signUp);

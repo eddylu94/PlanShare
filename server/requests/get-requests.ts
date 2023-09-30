@@ -16,6 +16,7 @@ import { getSettingEmailNotifications } from "./get-requests/getSettingEmailNoti
 import { getConversation } from "./get-requests/getConversation";
 import { getConversationById } from "./get-requests/getConversationById";
 import { getConversationsList } from "./get-requests/getConversationsList";
+import { getUnreadMessagesCount } from "./get-requests/getUnreadMessagesCount";
 
 const getRequests = {
   getValidationEmail,
@@ -35,7 +36,8 @@ const getRequests = {
   getSettingEmailNotifications,
   getConversation,
   getConversationById,
-  getConversationsList
+  getConversationsList,
+	getUnreadMessagesCount,
 };
 
 export default getRequests;
