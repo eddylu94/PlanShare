@@ -45,7 +45,7 @@ export const getUnreadMessagesCount = (
 						return;
 					}
 
-					console.log("Conversations length:", findRes.length);
+					// console.log("Conversations length:", findRes.length);
 
 					const filteredConversations = findRes.filter(conversation => {
 						const isHost = userId === conversation.host;

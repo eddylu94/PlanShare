@@ -55,10 +55,10 @@ const postRequestBuilder = (
 };
 
 io.on("connection", (socket: any) => {
-  console.log("a user connected");
+  // console.log("a user connected");
 
   const room = socket.request._query.conversationId;
-  console.log("Room:", room);
+  // console.log("Room:", room);
 
   socket.join(room);
 

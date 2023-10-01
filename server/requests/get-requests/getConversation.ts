@@ -132,6 +132,23 @@ export const getConversation = (
 
                         return;
                       } else {
+												const isHost = currentUserId === findConversationRes.host;
+
+												dbo
+													.collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+													.updateOne(
+														{ _id: new ObjectId(findConversationRes._id) },
+														{
+															$set: { [isHost ? "isPrimaryRead" : "isSecondaryRead"]: true },
+														},
+													)
+													.then(() => {
+														console.log('Conversation marked as read');
+													})
+													.catch((err) => {
+														console.log('Unable to mark conversation as read', err);
+													});
+
                         console.log("Conversation retrieved");
                         db.close();
                         postSuccess(postRes, {

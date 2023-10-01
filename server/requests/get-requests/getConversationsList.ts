@@ -14,6 +14,14 @@ import {
 
 const ObjectId = mongodb.ObjectID;
 
+interface IConversationPreview {
+	conversationId: string;
+	firstName: string;
+	userId: string;
+	lastMessage: any;
+	isRead: boolean;
+}
+
 export const getConversationsList = (
   mongoClient: typeof mongodb.MongoClient,
   postReq: any,
@@ -49,7 +57,7 @@ export const getConversationsList = (
 						return;
 					}
 
-					console.log("Conversations length:", findRes.length);
+					// console.log("Conversations length:", findRes.length);
 
 					const conversationsListPromises = findRes.map(conversation => {
 						const otherUserId = getOtherUser(conversation.userIds, userId);
@@ -73,6 +81,10 @@ export const getConversationsList = (
 										const otherUserId = findUserRes._id.toString();
 
 										const messages = conversation.messages;
+
+										if (messages.length === 0) {
+											resolve(null);
+										}
 
 										const lastMessage = messages[messages.length - 1];
 										if (lastMessage) {
@@ -102,14 +114,17 @@ export const getConversationsList = (
 					});
 
 					Promise.all(conversationsListPromises).then(conversationsList => {
-						conversationsList = conversationsList.filter(
-							conversationsList => !!conversationsList
-						);
+						const filteredConversationsList = conversationsList.filter(
+							conversation => conversation != null
+						) as Array<IConversationPreview>;
+
+						const unreadMessages = filteredConversationsList.filter(conversation => !conversation.isRead).length;
 
 						console.log("Conversations list retrieved");
 						db.close();
 						postSuccess(postRes, {
-							conversationsList
+							conversationsList: filteredConversationsList,
+							unreadMessages,
 						});
 					});
 

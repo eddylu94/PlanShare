@@ -70,15 +70,32 @@ export const getConversationById = (
                       return;
                     }
 
-                    db.close();
-                    postSuccess(postRes, {
-                      conversation: {
-                        conversationId: findConversationRes._id,
-                        firstName: findOtherUserRes.firstName.toString(),
-                        userId: findOtherUserRes._id.toString(),
-                        messages: findConversationRes.messages
-                      }
-                    });
+										const isHost = userId === findConversationRes.host;
+
+										dbo
+											.collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+											.updateOne(
+												{ _id: new ObjectId(findConversationRes._id) },
+												{
+													$set: { [isHost ? "isPrimaryRead" : "isSecondaryRead"]: true },
+												},
+											)
+											.then(() => {
+												console.log('Conversation marked as read');
+											})
+											.catch((err) => {
+												console.log('Unable to mark conversation as read', err);
+											}).finally(() => {
+												db.close();
+												postSuccess(postRes, {
+													conversation: {
+														conversationId: findConversationRes._id,
+														firstName: findOtherUserRes.firstName.toString(),
+														userId: findOtherUserRes._id.toString(),
+														messages: findConversationRes.messages
+													}
+												});
+											});
                   }
                 );
             }
