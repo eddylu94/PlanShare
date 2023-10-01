@@ -217,6 +217,20 @@
   z-index: 300;
 }
 
+.conversation-no-conversation-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 18px;
+  color: #666;
+  border: 2px dashed #a8a8a8;
+  border-radius: 10px;
+  margin: 20px 20px 20px 10px;
+}
+
 .messages-no-messages {
   margin: 20px;
 }

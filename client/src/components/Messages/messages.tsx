@@ -24,6 +24,7 @@ import {
 import { sendMessage } from "@requests/postRequests";
 
 // Utilities
+import { NotificationsDataContext } from "notifications-context-provider";
 import { UserDataContext } from "user-context-provider";
 import {
   log,
@@ -42,6 +43,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
   const { history, location } = props;
 
   const _userData = useContext(UserDataContext);
+  const notificationsData = useContext(NotificationsDataContext);
 
   const currentUserId = _userData.user?.userId as string;
 
@@ -83,6 +85,13 @@ const MessagesProvider = (props: { history: History; location: any }) => {
       history.push("/validate");
     }
 
+    const unreadMessages = data?.body?.unreadMessages;
+    if (unreadMessages != null) {
+      notificationsData.updateNotifications({
+        unreadMessagesCount: unreadMessages
+      });
+    }
+
     let newConversationsList = data?.body?.conversationsList as Array<
       IConversationSummary
     >;
@@ -109,9 +118,9 @@ const MessagesProvider = (props: { history: History; location: any }) => {
           );
         });
 
-      if (!conversationId && newConversationsList[0]) {
-        setConversationId(newConversationsList[0].conversationId);
-      }
+      // if (!conversationId && newConversationsList[0]) {
+      //   setConversationId(newConversationsList[0].conversationId);
+      // }
 
       if (conversationId) {
         retrieveConversationById();
@@ -125,6 +134,13 @@ const MessagesProvider = (props: { history: History; location: any }) => {
   };
 
   const retrieveConversationsListOnlyResponseHandler = (data: any) => {
+    const unreadMessages = data?.body?.unreadMessages;
+    if (unreadMessages != null) {
+      notificationsData.updateNotifications({
+        unreadMessagesCount: unreadMessages
+      });
+    }
+
     let newConversationsList = data?.body
       ?.conversationsList as IConversationSummary[];
     if (newConversationsList) {
@@ -414,26 +430,33 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     (conversationListComponent && conversationListComponent.length > 0) ||
     conversationId ? (
       <div className="messages-container">
-        {deviceMode === DEVICE_MODE.MOBILE && isConversationModalOpen && (
-          <div className="conversation-modal">
-            <Conversation
-              isConversationModalOpen={isConversationModalOpen}
-              currentUserId={currentUserId}
-              firstName={firstName}
-              userId={otherUserId}
-              messages={messages}
-              text={text}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              handleConversationSelection={handleConversationSelection}
-              handleBackButtonClick={handleBackButtonClick}
-            />
-          </div>
-        )}
+        {conversationId !== "" &&
+          deviceMode === DEVICE_MODE.MOBILE &&
+          isConversationModalOpen && (
+            <div className="conversation-modal">
+              <Conversation
+                isConversationModalOpen={isConversationModalOpen}
+                currentUserId={currentUserId}
+                firstName={firstName}
+                userId={otherUserId}
+                messages={messages}
+                text={text}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                handleConversationSelection={handleConversationSelection}
+                handleBackButtonClick={handleBackButtonClick}
+              />
+            </div>
+          )}
         <div className="message-summaries-pane">
           {conversationListComponent}
         </div>
-        {deviceMode !== DEVICE_MODE.MOBILE && (
+        {conversationId === "" && deviceMode !== DEVICE_MODE.MOBILE && (
+          <div className="conversation-no-conversation-selected">
+            Please select a conversation
+          </div>
+        )}
+        {conversationId !== "" && deviceMode !== DEVICE_MODE.MOBILE && (
           <Conversation
             currentUserId={currentUserId}
             firstName={firstName}
