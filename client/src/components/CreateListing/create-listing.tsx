@@ -4,6 +4,7 @@ import { withRouter, Link } from "react-router-dom";
 import { History } from "history";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
 
 // API
 import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
@@ -375,6 +376,23 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
             {renderSubscriptionCategoryDropdown()}
           </div>
 
+          {["ONLINE_STREAMING", "MUSIC_SERVICE"].includes(
+            subscriptionCategorySelection.subscriptionCategoryId
+          ) && (
+            <Alert
+              severity="warning"
+              className="create-listing-edit-footer-disclaimer"
+            >
+              WARNING:{" "}
+              <Link to="/info" target="_blank" rel="noopener noreferrer">
+                Certain subscription providers
+              </Link>{" "}
+              restrict sharing of their services. It is the user's responsiblity
+              to ensure that their subscription listings do not violate their
+              provider's terms of use.
+            </Alert>
+          )}
+
           <div className="subscription-field-and-logo">
             {/* TODO: Replace "marginLeft: 0" with proper CSS styling */}
             <div
@@ -454,6 +472,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
             <div className="form-field">
               <FormLabel label="Price per person:" isRequired />
               <div className="form-number-input-with-label">
+                <span style={{ marginRight: 10 }}>$</span>
                 <TextField
                   value={formValues.price}
                   onChange={e =>
@@ -466,9 +485,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
                   placeholder="0"
                   style={{ width: 100 }}
                   inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                  // helperText='Between $0.01 to $100'
                 />
-                <span style={{ marginLeft: 10 }}>$</span>
               </div>
             </div>
           </div>
@@ -478,20 +495,6 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
           You can later Edit, Archive, and Delete this listing from your{" "}
           <Link to="/profile">posted listings</Link>
         </div>
-
-        {["ONLINE_STREAMING", "MUSIC_SERVICE"].includes(
-          subscriptionCategorySelection.subscriptionCategoryId
-        ) && (
-          <div className="create-listing-edit-footer create-listing-edit-footer-disclaimer">
-            WARNING:{" "}
-            <Link to="/info" target="_blank" rel="noopener noreferrer">
-              Certain subscription providers
-            </Link>{" "}
-            restrict sharing of their services. It is the user's responsiblity
-            to ensure that their subscription listings do not violate their
-            provider's terms of use.
-          </div>
-        )}
 
         <input
           className="form-submit-button"

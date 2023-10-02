@@ -6,7 +6,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 0px 10px #d8d8d8;
-  padding: 20px;
+  padding: 16px;
   box-sizing: border-box;
   overflow-y: auto;
   transition: all 0.2s ease-in-out;
@@ -217,11 +217,11 @@
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .search-text-input {
-    height: 50px;
-    line-height: 50px;
+    height: 46px;
+    line-height: 46px;
     padding: 0 50px 0 20px;
     font-size: 16px;
-    border-radius: 25px;
+    border-radius: 23px;
   }
 }
 
@@ -281,13 +281,13 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .search-number-of-results {
-    margin: 0 10px 0 20px;
+    margin: 0 8px 0 18px;
   }
 }
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .search-number-of-results {
-    margin: 10px 10px -5px 20px;
+    margin: 8px 10px -5px 20px;
   }
 }
 
@@ -302,7 +302,7 @@
 .subscription-card-basic-info {
   display: flex;
   color: #686868;
-  font-size: 14px;
+  font-size: 13px;
   min-width: 85px;
 }
 @media only screen and (max-width: 768px) {
@@ -418,8 +418,8 @@
   .subscription-card {
     flex-direction: row;
     padding: 10px 20px;
-    margin: 10px 0;
-    height: 130px;
+    margin: 7px 0;
+    height: 120px;
     box-shadow: 0px 0px 10px #d8d8d8;
   }
 }
@@ -547,7 +547,8 @@
 
 .subscription-card-description {
   display: flex;
-  color: #555555;
+  color: #666666;
+  font-size: 15px;
 }
 
 .subscription-card-description span {
@@ -563,18 +564,18 @@
   flex-direction: row;
   align-items: center;
   color: #686868;
-  font-size: 14px;
+  font-size: 13px;
 }
 @media only screen and (max-width: 768px) {
   /* Small */
   .subscription-card-author {
-    margin: 10px 0 8px 0;
+    margin: 8px 0 8px 0;
   }
 }
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .subscription-card-author {
-    margin-top: 10px;
+    margin-top: 8px;
   }
 }
 
@@ -589,7 +590,7 @@
 }
 
 .subscription-card-info-name {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: #333333;
 }
@@ -616,6 +617,7 @@
   overflow-y: auto;
   box-sizing: border-box;
   max-height: 100%;
+  min-height: 500px;
   margin: 20px 20px 20px 10px;
 }
 @media only screen and (min-width: 768px) {
@@ -684,7 +686,7 @@
     flex-grow: 1;
     background-color: #efefef;
     box-sizing: border-box;
-    height: 50px;
+    height: 46px;
     box-shadow: 0 5px 5px #efefef;
     padding: 0 10px;
   }
@@ -712,9 +714,9 @@
     flex-grow: 1;
     flex-direction: row;
     align-items: center;
-    height: 50px;
+    height: 46px;
     background-color: #ffffff;
-    border-radius: 25px;
+    border-radius: 23px;
     box-shadow: 0px 0px 10px #d8d8d8;
   }
 }
