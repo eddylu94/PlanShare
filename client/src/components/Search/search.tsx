@@ -454,7 +454,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
                     placeholder="Search listings"
                     value={filtersText}
                     onChange={handleTextChange}
-                    autoFocus
                   />
                   <button className="search-submit-button">
                     <img
