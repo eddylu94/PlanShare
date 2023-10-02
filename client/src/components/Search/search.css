@@ -82,7 +82,7 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .results-pane {
-    padding: 20px 5px 0 5px;
+    padding: 12px 5px 0 5px;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -187,11 +187,10 @@
   flex-shrink: 0;
   padding: 0px;
 }
-
 @media only screen and (max-width: 768px) {
   /* Small */
   .search-bar-and-filter {
-    margin: 0 10px;
+    margin: 0 5px;
   }
 }
 
@@ -207,7 +206,7 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .search-text-input {
-    height: 36px;
+    height: 42px;
     line-height: 34px;
     padding: 0 50px 0 20px;
     font-size: 16px;
@@ -281,13 +280,15 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .search-number-of-results {
-    margin: 0 8px 0 18px;
+    margin: 0 6px 0 10px;
+    font-size: 15px;
   }
 }
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .search-number-of-results {
     margin: 8px 10px -5px 20px;
+    font-size: 16px;
   }
 }
 
@@ -296,7 +297,18 @@
   flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
-  padding: 0 10px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .search-subscription-cards-container {
+    padding: 0 5px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .search-subscription-cards-container {
+    padding: 0 10px;
+  }
 }
 
 .subscription-card-basic-info {
@@ -407,9 +419,9 @@
   /* Small */
   .subscription-card {
     flex-direction: column;
-    padding: 16px;
-    margin: 8px 0;
-    height: 160px;
+    padding: 8px 12px;
+    margin: 6px 0;
+    height: 140px;
     box-shadow: 0px 0px 8px #d8d8d8;
   }
 }
@@ -500,10 +512,23 @@
 }
 
 .subscription-card-subscription-logo {
-  width: 60px;
-  min-width: 60px;
-  height: 60px;
   border-radius: 50%;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-card-subscription-logo {
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-card-subscription-logo {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+  }
 }
 
 .subscription-card-subscription-logo:hover {
@@ -511,10 +536,23 @@
 }
 
 .subscription-card-referral-card-subscription-logo {
-  width: 60px;
-  min-width: 60px;
-  max-width: 60px;
   border-radius: 5px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-card-referral-card-subscription-logo {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-card-referral-card-subscription-logo {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+  }
 }
 
 .subscription-card-referral-subscription-logo:hover {
@@ -548,7 +586,18 @@
 .subscription-card-description {
   display: flex;
   color: #666666;
-  font-size: 15px;
+}
+@media only screen and (max-width: 768px) {
+  /* Small */
+  .subscription-card-description {
+    font-size: 14px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* Medium, Large, Extra-large */
+  .subscription-card-description {
+    font-size: 15px;
+  }
 }
 
 .subscription-card-description span {
@@ -569,7 +618,7 @@
 @media only screen and (max-width: 768px) {
   /* Small */
   .subscription-card-author {
-    margin: 8px 0 8px 0;
+    margin: 6px 0;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -590,9 +639,20 @@
 }
 
 .subscription-card-info-name {
-  font-size: 17px;
   font-weight: 600;
   color: #333333;
+}
+@media only screen and (min-width: 768px) {
+  /* Medium */
+  .subscription-card-info-name {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  /* Large */
+  .subscription-card-info-name {
+    font-size: 17px;
+  }
 }
 
 .subscription-card-sharing-warning {
