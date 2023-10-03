@@ -198,6 +198,18 @@ export const SUBSCRIPTION: ISubscription = {
     name: "Amex Platinum Card Referral",
     logo: "https://planshare.io/plans/amex_platinum_icon.png",
 	},
+	INSTACART_REFERRAL: {
+		subscriptionBrandId: "INSTACART_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Instacart Referral",
+    logo: "https://planshare.io/plans/instacart_icon.png",
+	},
+	AUTONOMOUS_AI_REFERRAL: {
+    subscriptionBrandId: "AUTONOMOUS_AI_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Autonomous AI",
+    logo: "https://planshare.io/plans/autonomous_ai.png"
+  },
   // LEETCODE: {
   //   subscriptionBrandId: "LEETCODE",
   //   type: SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId,
@@ -209,12 +221,6 @@ export const SUBSCRIPTION: ISubscription = {
     type: SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId,
     name: "Groceries",
     logo: "https://planshare.io/plans/groceries.png"
-  },
-  AUTONOMOUS_AI: {
-    subscriptionBrandId: "AUTONOMOUS_AI",
-    type: SUBSCRIPTION_CATEGORY.OTHER.subscriptionCategoryId,
-    name: "Autonomous AI",
-    logo: "https://planshare.io/plans/autonomous_ai.png"
   },
   NINTENDO_ONLINE: {
     subscriptionBrandId: "NINTENDO_ONLINE",
@@ -265,25 +271,27 @@ const mobileSubscriptionBrandIds = [
   SUBSCRIPTION.OTHER.subscriptionBrandId
 ];
 
-const musicSubscriptionBrandIds = [
-  // SUBSCRIPTION.SPOTIFY_MUSIC.subscriptionBrandId,
-  // SUBSCRIPTION.APPLE_MUSIC.subscriptionBrandId,
-  // SUBSCRIPTION.TIDAL_MUSIC.subscriptionBrandId,
-  // SUBSCRIPTION.AMAZON_MUSIC.subscriptionBrandId,
-  // SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId,
-  // SUBSCRIPTION.PANDORA_MUSIC.subscriptionBrandId,
-  SUBSCRIPTION.OTHER.subscriptionBrandId
-];
+// const musicSubscriptionBrandIds = [
+//   SUBSCRIPTION.SPOTIFY_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.APPLE_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.TIDAL_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.AMAZON_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.YOUTUBE_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.PANDORA_MUSIC.subscriptionBrandId,
+//   SUBSCRIPTION.OTHER.subscriptionBrandId
+// ];
 
 const referralBrandIds = [
 	SUBSCRIPTION.CHASE_SAPPHIRE_RESERVE_REFERRAL.subscriptionBrandId,
 	SUBSCRIPTION.AMEX_PLATINUM_REFERRAL.subscriptionBrandId,
+	SUBSCRIPTION.INSTACART_REFERRAL.subscriptionBrandId,
+	SUBSCRIPTION.AUTONOMOUS_AI_REFERRAL.subscriptionBrandId,
 ];
 
-const interviewPrepBrandIds = [
-  // SUBSCRIPTION.LEETCODE.subscriptionBrandId,
-  SUBSCRIPTION.OTHER.subscriptionBrandId
-];
+// const interviewPrepBrandIds = [
+//   SUBSCRIPTION.LEETCODE.subscriptionBrandId,
+//   SUBSCRIPTION.OTHER.subscriptionBrandId
+// ];
 
 const deliveryBrandIds = [
   SUBSCRIPTION.GROCERIES.subscriptionBrandId,
@@ -291,7 +299,6 @@ const deliveryBrandIds = [
 ];
 
 const otherBrandIds = [
-  SUBSCRIPTION.AUTONOMOUS_AI.subscriptionBrandId,
   // SUBSCRIPTION.NINTENDO_ONLINE.subscriptionBrandId,
   // SUBSCRIPTION.TWENTY_FOUR_HOUR_FITNESS.subscriptionBrandId,
   // SUBSCRIPTION.LA_FITNESS.subscriptionBrandId,
@@ -313,9 +320,9 @@ export const retrieveSubscriptionBrands = (type: string) => {
 		case SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId:
 			ids = referralBrandIds;
 			break;
-    case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
-      ids = interviewPrepBrandIds;
-      break;
+    // case SUBSCRIPTION_CATEGORY.INTERVIEW_PREP.subscriptionCategoryId:
+    //   ids = interviewPrepBrandIds;
+    //   break;
     case SUBSCRIPTION_CATEGORY.DELIVERIES.subscriptionCategoryId:
       ids = deliveryBrandIds;
       break;
