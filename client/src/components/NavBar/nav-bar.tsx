@@ -152,7 +152,7 @@ const NavBar = (props: INavBarProps) => {
           ) : (
             <>
               <li>
-                <Link to="/signup">Sign In</Link>
+                <Link to="/signup">Sign Up</Link>
               </li>
             </>
           )}

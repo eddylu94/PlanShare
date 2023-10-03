@@ -333,20 +333,29 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
       label: subscriptionBrand.name
     }));
 
+    // If the MUI autocomplete component renders before the brand selection value is set,
+    // then the input field is shown empty even though the value exists.
+    // Therefore, a null check is used to wait until the brand selection value exists before rendering the input.
     return (
-      <Autocomplete
-        disablePortal
-        disableClearable
-        options={options.map(option => option.label)}
-        onChange={(_e, value) => {
-          const brand = subscriptionBrands.find(brand => value === brand.name);
-          if (brand) {
-            setSubscriptionBrandSelection(brand);
-          }
-        }}
-        value={subscriptionBrandSelection.name}
-        renderInput={params => <TextField {...params} placeholder="Service" />}
-      />
+      subscriptionBrandSelection.name != null && (
+        <Autocomplete
+          disablePortal
+          disableClearable
+          options={options.map(option => option.label)}
+          onChange={(_e, value) => {
+            const brand = subscriptionBrands.find(
+              brand => value === brand.name
+            );
+            if (brand) {
+              setSubscriptionBrandSelection(brand);
+            }
+          }}
+          value={subscriptionBrandSelection.name}
+          renderInput={params => (
+            <TextField {...params} placeholder="Service" />
+          )}
+        />
+      )
     );
   };
 
