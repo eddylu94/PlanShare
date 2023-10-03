@@ -9,6 +9,8 @@ import { UserDataContext } from "user-context-provider";
 import { InputChangeEvent } from "@utils/interfaces";
 import { addEmail } from "@requests/postRequests";
 
+import TextField from "@mui/material/TextField";
+
 const Email = (props: { history: History; location: any }) => {
   const _userData = useContext(UserDataContext);
 
@@ -339,11 +341,13 @@ const Email = (props: { history: History; location: any }) => {
                 Your email address will not be visible to anyone but yourself.
               </p>
               <div className="organization-email-input">
-                <input
-                  className="organization-email-text-input"
+                <TextField
+                  style={{ width: orgSymbol === "public" ? 300 : 200 }}
                   onChange={handleChange}
                   value={text}
-                  placeholder="Email alias"
+                  placeholder={
+                    orgSymbol === "public" ? "Email address" : "Email alias"
+                  }
                 />
                 {orgSymbol !== "public" ? (
                   <span className="organization-email-input-domain">
@@ -353,7 +357,7 @@ const Email = (props: { history: History; location: any }) => {
                 ) : null}
               </div>
               <input
-                className="email-submit-button"
+                className="form-submit-button email-submit-button"
                 type="submit"
                 value="Submit"
                 disabled={!isValidAlias}
