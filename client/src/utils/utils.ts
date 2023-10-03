@@ -34,6 +34,7 @@ export interface IFiltersOrganization {
 export interface IFiltersSubscriptionCategory {
   subscriptionCategoryId: string;
   name: string;
+  image: string;
   isSelected: boolean;
 }
 

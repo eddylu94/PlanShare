@@ -50,7 +50,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
       return (
         <FormControlLabel
           key={"filters-category-" + index}
-          style={{ color: "#000000" }}
+          style={{ color: "#000000", marginTop: 2, marginBottom: 3 }}
           control={
             <Checkbox
               checked={category.isSelected}
@@ -70,11 +70,22 @@ const SearchFilters = (props: ISearchFiltersProps) => {
             />
           }
           label={
-            <Typography
-              style={{ fontSize: 15, color: "#333", fontFamily: FONT_FAMILY }}
-            >
-              {category.name}
-            </Typography>
+            <div className="search-filter-category-and-icon">
+              <img
+                className="search-filter-category-icon"
+                src={category.image}
+                alt={category.name}
+              />
+              <Typography
+                style={{
+                  fontSize: 15,
+                  color: "#555555",
+                  fontFamily: FONT_FAMILY
+                }}
+              >
+                {category.name}
+              </Typography>
+            </div>
           }
         />
       );
