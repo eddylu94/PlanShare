@@ -72,6 +72,7 @@ io.on("connection", (socket: any) => {
 });
 
 // GET requests
+getRequestBuilder("/marco", GetRequests.poll);
 getRequestBuilder("/getvalidationemail", GetRequests.getValidationEmail);
 getRequestBuilder(
   "/getsubscriptioncategories",
