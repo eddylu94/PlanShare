@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 import moment from "moment";
 import socketIOClient from "socket.io-client";
+import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 
 // Components
 import Conversation from "./conversation";
@@ -470,9 +471,35 @@ const MessagesProvider = (props: { history: History; location: any }) => {
         )}
       </div>
     ) : (
-      <div className="messages-container">
+      <div className="messages-no-messages-container">
         <div className="messages-no-messages">
-          You currently have no messages
+          <ContactMailTwoToneIcon
+            style={{
+              width: 100,
+              height: 100,
+              color: "#6c5dbd",
+              marginBottom: 10
+            }}
+          />
+
+          <div>
+            <span className="i">You currently have no messages.</span>
+            <br />
+            <br />
+            To start a new message, you can:
+            <ol>
+              <li>
+                Go to the{" "}
+                <a className="b" href="/search">
+                  Search page
+                </a>
+              </li>
+              <li>Select a listing of interest</li>
+              <li>
+                Select <span className="b">Message</span>
+              </li>
+            </ol>
+          </div>
         </div>
       </div>
     );
