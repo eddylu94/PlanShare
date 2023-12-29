@@ -52,51 +52,80 @@ export const getSubscriptionsByAuthor = (
                     : undefined;
 
                 if (!email) {
-                  console.log("Unable to find subscriptions");
-                  db.close();
-                  postFailure(
-                    postRes,
-                    STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                  );
-                  return;
-                }
+                  console.log("Not matching organization");
 
-                const domain = getDomain(email);
-                const organization = retrieveOrganizationByDomain(domain);
-                const organizationId =
-                  organization && organization.organizationId;
+									dbo
+										.collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+										.find({
+											organization: null,
+											userId: new ObjectId(profileUserId),
+											status: SUBSCRIPTION_STATUS.ACTIVE,
+										})
+										.toArray()
+										.then(findRes => {
+											if (!findRes) {
+												console.log("Unable to find subscriptions");
+												db.close();
+												postFailure(
+													postRes,
+													STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+												);
+												return;
+											}
 
-                dbo
-                  .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-                  .find({
-                    userId: new ObjectId(profileUserId),
-                    "organization.organizationId": organizationId,
-                    status: SUBSCRIPTION_STATUS.ACTIVE
-                  })
-                  .toArray()
-                  .then(findRes => {
-                    if (!findRes) {
-                      console.log("Unable to find subscriptions");
-                      db.close();
-                      postFailure(
-                        postRes,
-                        STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-                      );
-                      return;
-                    }
-
-                    db.close();
-                    postSuccess(postRes, {
-                      subscriptions: findRes
-                    });
-                  })
-                  .catch(findErr => {
-                    if (findErr) {
-                      console.log("Error finding record");
-                      db.close();
-                      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-                    }
-                  });
+											db.close();
+											postSuccess(postRes, {
+												subscriptions: findRes
+											});
+										})
+										.catch(findErr => {
+											if (findErr) {
+												console.log("Error finding record");
+												db.close();
+												postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+											}
+										});
+                } else {
+									const domain = getDomain(email);
+									const organization = retrieveOrganizationByDomain(domain);
+									const organizationId =
+										organization && organization.organizationId;
+	
+									dbo
+										.collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+										.find({
+											$or: [
+												{ "organization.organizationId": organizationId },
+												{ organization: null },
+											],
+											userId: new ObjectId(profileUserId),
+											status: SUBSCRIPTION_STATUS.ACTIVE,
+										})
+										.toArray()
+										.then(findRes => {
+											if (!findRes) {
+												console.log("Unable to find subscriptions");
+												db.close();
+												postFailure(
+													postRes,
+													STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+												);
+												return;
+											}
+	
+											db.close();
+											postSuccess(postRes, {
+												subscriptions: findRes
+											});
+										})
+										.catch(findErr => {
+											if (findErr) {
+												console.log("Error finding record");
+												db.close();
+												postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+											}
+										});
+								}
               }
             }
           );
