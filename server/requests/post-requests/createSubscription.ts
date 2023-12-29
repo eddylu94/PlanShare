@@ -32,10 +32,10 @@ export const createSubscription = (
 
       const { firstName, email } = findRes;
 
-      const domain = getDomain(email);
-      const organization = retrieveOrganizationByDomain(domain);
-
       const { subscriptionData } = obj;
+
+      const domain = getDomain(email);
+      const organization = subscriptionData.visibility === 'PUBLIC' ? null : retrieveOrganizationByDomain(domain);
 
       const newSubscriptionData = {
         userId: findRes._id,
