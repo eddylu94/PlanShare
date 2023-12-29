@@ -5,10 +5,14 @@ import { History } from "history";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
 
 // API
 import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import {
+  getOrganization,
   getSubscription,
   getSubscriptionBrands,
   getSubscriptionCategories
@@ -22,8 +26,14 @@ import {
   log,
   ISubscriptionCategory,
   ISubscriptionBrand,
-  isValidURL
+  isValidURL,
+  IOrganization
 } from "@utils/utils";
+
+const ListingVisibility = {
+  PUBLIC: "PUBLIC",
+  ORGANIZATION: "ORGANIZATION"
+};
 
 const CreateListingProvider = (props: { history: History; location: any }) => {
   const { history, location } = props;
@@ -63,6 +73,11 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
   const [isOtherInputDisplayed, setIsOtherInputDisplayed] = useState(false);
   const [subscriptionBrandLogo, setSubscriptionBrandLogo] = useState("");
 
+  // Organization for current logged-in user
+  const [organization, setOrganization] = useState({} as IOrganization);
+
+  const [visibility, setVisibility] = useState(ListingVisibility.ORGANIZATION);
+
   // Form validation
   const [isFormDisabled, setIsFormDisabled] = useState(true);
   const [isSubscriptionUrlValid, setIsSubscriptionUrlValid] = useState(true);
@@ -78,6 +93,20 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     listingDescription: "",
     price: 0
   });
+
+  const retrieveOrganizationResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      setOrganization(data.body.organization);
+    }
+  };
+
+  const retrieveOrganization = () => {
+    getOrganization(
+      retrieveOrganizationResponseHandler,
+      log,
+      _userData.user?.auth
+    );
+  };
 
   const retrieveSubscriptionResponseHandler = (data: any) => {
     log(data);
@@ -201,6 +230,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
       subscriptionUrl: formValues.subscriptionUrl,
       listingDescription: formValues.listingDescription,
       price: formValues.price,
+      visibility,
       ...(subscriptionId && { subscriptionId }),
       ...(isOtherInputDisplayed && {
         otherSubscription: formValues.otherSubscription
@@ -228,6 +258,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
 
   useEffect(() => {
     retrieveSubscriptionCategories();
+    retrieveOrganization();
     // eslint-disable-next-line
   }, []);
 
@@ -372,6 +403,14 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     "AMEX_PLATINUM_REFERRAL"
   ].includes(subscriptionBrandSelection.subscriptionBrandId);
 
+  console.log(organization);
+
+  const filtersRadioStyles = {
+    padding: 0,
+    margin: "5px 5px 5px 20px",
+    color: "#6C5DBD"
+  };
+
   return isRetrievedListingCreationDataDirty ? (
     <div className="page-container" style={{ alignItems: "center" }}>
       <form className="form-container" onSubmit={handleSubmit} noValidate>
@@ -496,6 +535,31 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
                   inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                 />
               </div>
+            </div>
+          </div>
+        )}
+
+        {organization != null && (
+          <div className="form-row">
+            <div className="form-field">
+              <FormLabel label="Who can message you about this listing?" />
+              <RadioGroup
+                aria-label="Sort results by"
+                name="sort-by"
+                value={visibility}
+                onChange={(_e, value) => setVisibility(value)}
+              >
+                <FormControlLabel
+                  value={ListingVisibility.PUBLIC}
+                  control={<Radio style={filtersRadioStyles} />}
+                  label={"Anyone"}
+                />
+                <FormControlLabel
+                  value={ListingVisibility.ORGANIZATION}
+                  control={<Radio style={filtersRadioStyles} />}
+                  label={`Only members of ${organization.name} (recommended)`}
+                />
+              </RadioGroup>
             </div>
           </div>
         )}
