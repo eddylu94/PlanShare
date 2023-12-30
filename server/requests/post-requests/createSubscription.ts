@@ -84,5 +84,15 @@ export const createSubscription = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: createSubscription
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

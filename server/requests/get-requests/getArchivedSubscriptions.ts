@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { authenticate, postSuccess, postFailure } from "./../../utils";
+import { authenticate, postSuccess, postFailure, slackPostRequest, SLACK_HOOK, SlackTitle } from "./../../utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -56,5 +56,15 @@ export const getArchivedSubscriptions = (
 		})
 		.catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getArchivedSubscriptions
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

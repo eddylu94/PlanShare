@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { authenticate, postSuccess } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
 
 export const getSettingEmailNotifications = (
   mongoClient: typeof mongodb.MongoClient,
@@ -21,5 +21,15 @@ export const getSettingEmailNotifications = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getSettingEmailNotifications
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

@@ -168,5 +168,15 @@ export const getConversation = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getConversation
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

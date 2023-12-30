@@ -5,7 +5,10 @@ import {
   authenticate,
   postSuccess,
   getDomain,
-  postFailure
+  postFailure,
+	slackPostRequest,
+	SLACK_HOOK,
+	SlackTitle
 } from "./../../utils";
 import { STATUS_MESSAGE } from "../../constants";
 
@@ -35,5 +38,15 @@ export const getOrganization = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getOrganization
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

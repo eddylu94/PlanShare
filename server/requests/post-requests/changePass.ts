@@ -5,7 +5,10 @@ import {
   postSuccess,
   postFailure,
   comparePassword,
-  encryptPassword
+  encryptPassword,
+	slackPostRequest,
+	SLACK_HOOK,
+	SlackTitle
 } from "./../../utils";
 import {
   DATABASE_NAME,
@@ -115,5 +118,15 @@ export const changePass = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: changePass
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

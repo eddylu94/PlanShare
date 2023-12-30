@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { authenticate, postSuccess } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
 import { DATABASE_NAME, DATABASE_COLLECTION } from "./../../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -34,5 +34,15 @@ export const deleteSubscription = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: deleteSubscription
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

@@ -2,7 +2,7 @@ import mongodb from "mongodb";
 
 import socketIo from "socket.io";
 
-import { authenticate, postSuccess, postFailure } from "./../../utils";
+import { authenticate, postSuccess, postFailure, SLACK_HOOK, SlackTitle, slackPostRequest } from "./../../utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -81,5 +81,15 @@ export const sendMessage = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: sendMessage
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

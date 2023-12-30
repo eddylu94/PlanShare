@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { authenticate, postSuccess } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
 import { retrieveSubscriptionBrands } from "./../../subscriptions";
 
 const ObjectId = mongodb.ObjectID;
@@ -32,5 +32,15 @@ export const getSubscriptionBrands = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getSubscriptionBrands
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

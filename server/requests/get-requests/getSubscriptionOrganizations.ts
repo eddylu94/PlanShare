@@ -4,7 +4,10 @@ import {
   authenticate,
   getDomain,
   postSuccess,
-  postFailure
+  postFailure,
+	SLACK_HOOK,
+	slackPostRequest,
+	SlackTitle
 } from "./../../utils";
 import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
@@ -76,5 +79,15 @@ export const getSubscriptionOrganizations = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getSubscriptionOrganizations
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

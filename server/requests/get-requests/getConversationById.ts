@@ -4,7 +4,10 @@ import {
   authenticate,
   getOtherUser,
   postSuccess,
-  postFailure
+  postFailure,
+	slackPostRequest,
+	SLACK_HOOK,
+	SlackTitle
 } from "./../../utils";
 import {
   DATABASE_NAME,
@@ -104,5 +107,15 @@ export const getConversationById = (
     })
     .catch(err => {
       console.log(err);
+
+			const supportingText = `
+				\`\`\`
+				Request: getConversationById
+				Description: Caught error
+				Error message: ${err.message}
+				\`\`\`
+			`;
+			
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };
