@@ -5,9 +5,9 @@ import {
   getDomain,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
-  slackPostRequest
+  slackPostRequest,
+	SlackTitle
 } from "./../../utils";
 import {
   DATABASE_NAME,
@@ -101,17 +101,16 @@ export const getConversation = (
                                   STATUS_MESSAGE.UNKNOWN_ERROR
                                 );
 
-                                const postRequestData = {
-                                  text: JSON.stringify({
-                                    request: "getConversation",
-                                    errorType: ERROR_TYPE.SERVER,
-                                    errorMessage,
-                                    error: insertErr
-                                  })
-                                };
+																const supportingText = `
+																	Request: getConversation
+																	Description: ${errorMessage}
+																	Error message: ${insertErr.message}
+																`;
+
                                 slackPostRequest(
                                   SLACK_HOOK.ERRORS,
-                                  postRequestData
+																	SlackTitle.NEW_ERROR,
+                                  supportingText,
                                 );
 
                                 return;

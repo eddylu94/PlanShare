@@ -51,11 +51,22 @@ export const SLACK_HOOK = {
     "https://hooks.slack.com/services/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"
 };
 
-export const slackPostRequest = (slackHook: string, data: any) => {
+export const SlackTitle = {
+	NEW_ERROR: ':warning: New error',
+};
+
+const removeLeadingSpaces = (text: string) => text.replace(/^\s+/gm, '');
+
+export const slackPostRequest = (slackHook: string, title: string, supporting: string | null) => {
+	let text = title + `\n`;
+	if (supporting != null) {
+		text += removeLeadingSpaces(supporting) + '\n';
+	}
+
   request.post(
     {
       url: slackHook,
-      body: JSON.stringify(data)
+      body: JSON.stringify({ text }),
     },
     function(err: any, data: any) {
       console.log(data.body);
@@ -96,15 +107,13 @@ export const authenticate = (
         const errorMessage = "Connection error";
         console.log(errorMessage);
 
-        const postRequestData = {
-          text: JSON.stringify({
-            request: "authenticate",
-            errorType: ERROR_TYPE.SERVER,
-            errorMessage,
-            error: connectErr
-          })
-        };
-        slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+				const supportingText = `
+					Request: authenticate
+					Description: ${errorMessage}
+					Error message: ${connectErr.message}
+				`;
+
+        slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
         return;
       }
@@ -125,15 +134,15 @@ export const authenticate = (
               statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
             });
 
-            const postRequestData = {
-              text: JSON.stringify({
-                request: "authenticate",
-                errorType: ERROR_TYPE.SERVER,
-                errorMessage,
-                error: findErr
-              })
-            };
-            slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+						const supportingText = `
+							\`\`\`
+							Request: authenticate
+							Description: ${errorMessage}
+							Error message: ${findErr.message}
+							\`\`\`
+						`;
+						
+            slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
             return;
           }

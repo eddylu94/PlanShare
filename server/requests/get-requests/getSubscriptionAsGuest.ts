@@ -1,22 +1,18 @@
 import mongodb from "mongodb";
 
 import {
-  authenticate,
-  getDomain,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
-  slackPostRequest
+  slackPostRequest,
+	SlackTitle
 } from "./../../utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   MONGO_URL,
   MONGO_PREREQUISITIES,
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
-  SUBSCRIPTION_STATUS
 } from "./../../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -33,15 +29,17 @@ export const getSubscriptionAsGuest = (
       const errorMessage = "Connection error";
       console.log(errorMessage);
 
-      const postRequestData = {
-        text: JSON.stringify({
-          request: "getSubscriptionsAsGuest",
-          errorType: ERROR_TYPE.SERVER,
-          errorMessage,
-          error: connectErr
-        })
-      };
-      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+			const supportingText = `
+				Request: getSubscriptionsAsGuest
+				Description: ${errorMessage}
+				Error message: ${connectErr.message}
+			`;
+
+			slackPostRequest(
+				SLACK_HOOK.ERRORS,
+				SlackTitle.NEW_ERROR,
+				supportingText,
+			);
 
       return;
     }

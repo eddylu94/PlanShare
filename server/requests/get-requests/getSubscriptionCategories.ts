@@ -2,9 +2,9 @@ import mongodb from "mongodb";
 
 import {
   postSuccess,
-  ERROR_TYPE,
   SLACK_HOOK,
-  slackPostRequest
+  slackPostRequest,
+	SlackTitle
 } from "./../../utils";
 import { subscriptionCategories } from "./../../subscriptions";
 import { MONGO_URL, MONGO_PREREQUISITIES } from "./../../constants";
@@ -19,15 +19,17 @@ export const getSubscriptionCategories = (
       const errorMessage = "Connection error";
       console.log(errorMessage);
 
-      const postRequestData = {
-        text: JSON.stringify({
-          request: "getSubscriptionCategories",
-          errorType: ERROR_TYPE.SERVER,
-          errorMessage,
-          error: connectErr
-        })
-      };
-      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+			const supportingText = `
+				Request: getSubscriptionCategories
+				Description: ${errorMessage}
+				Error message: ${connectErr.message}
+			`;
+
+			slackPostRequest(
+				SLACK_HOOK.ERRORS,
+				SlackTitle.NEW_ERROR,
+				supportingText,
+			);
 
       return;
     }

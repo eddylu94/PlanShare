@@ -8,7 +8,8 @@ import {
   postFailure,
   ERROR_TYPE,
   SLACK_HOOK,
-  slackPostRequest
+  slackPostRequest,
+	SlackTitle
 } from "./../../utils";
 import {
   DATABASE_NAME,
@@ -60,15 +61,13 @@ export const createSubscription = (
             db.close();
             postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-            const postRequestData = {
-              text: JSON.stringify({
-                request: "createSubscription",
-                errorType: ERROR_TYPE.SERVER,
-                errorMessage,
-                error: insertErr
-              })
-            };
-            slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+						const supportingText = `
+							Request: createSubscription
+							Description: ${errorMessage}
+							Error message: ${insertErr.message}
+						`;
+
+						slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
             return;
           }

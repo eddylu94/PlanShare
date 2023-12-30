@@ -4,9 +4,9 @@ import {
   comparePassword,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
-  slackPostRequest
+  slackPostRequest,
+	SlackTitle
 } from "./../../utils";
 import {
   MONGO_URL,
@@ -34,15 +34,13 @@ export const deleteUser = (
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-      const postRequestData = {
-        text: JSON.stringify({
-          request: "deleteUser",
-          errorType: ERROR_TYPE.SERVER,
-          errorMessage,
-          error: connectErr
-        })
-      };
-      slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+			const supportingText = `
+				Request: deleteUser
+				Description: ${errorMessage}
+				Error message: ${connectErr.message}
+			`;
+
+			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
       return;
     }
@@ -61,15 +59,13 @@ export const deleteUser = (
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-          const postRequestData = {
-            text: JSON.stringify({
-              request: "deleteUser",
-              errorType: ERROR_TYPE.SERVER,
-              errorMessage,
-              error: findErr
-            })
-          };
-          slackPostRequest(SLACK_HOOK.ERRORS, postRequestData);
+					const supportingText = `
+						Request: deleteUser
+						Description: ${errorMessage}
+						Error message: ${findErr.message}
+					`;
+		
+					slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
           return;
         }
