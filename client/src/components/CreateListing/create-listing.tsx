@@ -35,6 +35,8 @@ const ListingVisibility = {
   ORGANIZATION: "ORGANIZATION"
 };
 
+const isDescriptionValid = (description: string) => description.length <= 1000;
+
 const CreateListingProvider = (props: { history: History; location: any }) => {
   const { history, location } = props;
 
@@ -303,6 +305,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
   useEffect(() => {
     const newIsFormDisabled = !(
       formValues.listingDescription &&
+      isDescriptionValid(formValues.listingDescription) &&
       (formValues.price ||
         subscriptionCategorySelection.subscriptionCategoryId === "REFERRALS") &&
       (!isOtherInputDisplayed || formValues.otherSubscription) &&
@@ -485,6 +488,12 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
             rows={5}
             placeholder="Currently have two people, need three more!"
             value={formValues.listingDescription}
+            error={!isDescriptionValid(formValues.listingDescription)}
+            helperText={
+              !isDescriptionValid(formValues.listingDescription)
+                ? "Description needs to be less than 1000 characters"
+                : null
+            }
             onChange={e =>
               setFormValues({
                 ...formValues,
