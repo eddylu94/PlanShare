@@ -58,29 +58,3 @@ export const basePostRequest = (
     .then(responseHandler)
     .catch(errorHandler);
 };
-
-export const ERROR_TYPE = {
-  CLIENT: "CLIENT",
-  SERVER: "SERVER"
-};
-
-export const SLACK_HOOK = {
-  SIGNUPS:
-    "https://hooks.slack.com/services/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",
-  ERRORS:
-    "https://hooks.slack.com/services/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",
-  POSTS:
-    "https://hooks.slack.com/services/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",
-  MESSAGES:
-    "https://hooks.slack.com/services/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"
-};
-
-export const slackPostRequest = (slackHook: string, data: any) => {
-  fetch(slackHook, {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.log(err));
-};

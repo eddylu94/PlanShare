@@ -10,13 +10,7 @@ import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 import Conversation from "./conversation";
 
 // API
-import {
-  SOCKET_IO_PATH,
-  SOCKET_URL,
-  ERROR_TYPE,
-  slackPostRequest,
-  SLACK_HOOK
-} from "base-requests";
+import { SOCKET_IO_PATH, SOCKET_URL } from "base-requests";
 import {
   getConversation,
   getConversationById,
@@ -255,16 +249,6 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     log(data);
     if (data?.statusCode === STATUS_CODE.SUCCESS) {
       retrieveConversationsList();
-
-      const postRequestData = {
-        text: JSON.stringify({
-          errorType: ERROR_TYPE.CLIENT,
-          type: "SENT_MESSAGE",
-          userId: _userData.user?.userId
-        })
-      };
-
-      slackPostRequest(SLACK_HOOK.MESSAGES, postRequestData);
 
       if (sockets[conversationId]) {
         sockets[conversationId].emit(

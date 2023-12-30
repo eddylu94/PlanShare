@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { FORM_INPUT_TYPE } from "./sign-up-utils";
-import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse, validatePass, useDeviceMode } from "@utils/utils";
 import { DEVICE_MODE, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { UserDataContext } from "user-context-provider";
@@ -103,17 +102,6 @@ const SignUpProvider = (props: { history: History }) => {
         log("Log in success for:", username);
 
         const newUserData = res.body;
-
-        const postRequestData = {
-          text: JSON.stringify({
-            errorType: ERROR_TYPE.CLIENT,
-            type: "SIGN_UP",
-            userId: newUserData.userId,
-            username
-          })
-        };
-
-        slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
 
         // Update user data for User Context
         _userData.updateUser(newUserData);

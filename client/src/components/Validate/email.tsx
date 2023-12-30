@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import { History } from "history";
 
-import { slackPostRequest, ERROR_TYPE, SLACK_HOOK } from "base-requests";
 import { log, IResponse } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { UserDataContext } from "user-context-provider";
@@ -80,16 +79,6 @@ const Email = (props: { history: History; location: any }) => {
     if (res) {
       if (res.statusCode === STATUS_CODE.SUCCESS) {
         log("Email added:", text);
-
-        const postRequestData = {
-          text: JSON.stringify({
-            errorType: ERROR_TYPE.CLIENT,
-            type: "ADD_EMAIL",
-            userId: _userData.user?.userId
-          })
-        };
-
-        slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
 
         history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {

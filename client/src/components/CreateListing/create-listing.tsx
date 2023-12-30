@@ -10,7 +10,6 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 
 // API
-import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import {
   getOrganization,
   getSubscription,
@@ -208,19 +207,6 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     log(data);
 
     if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const postRequestData = {
-        text: JSON.stringify({
-          errorType: ERROR_TYPE.CLIENT,
-          type: subscriptionId ? "EDIT_POST" : "NEW_POST",
-          userId: _userData.user?.userId,
-          subscriptionCategoryId:
-            subscriptionCategorySelection?.subscriptionCategoryId,
-          subscriptionBrandId: subscriptionBrandSelection?.subscriptionBrandId
-        })
-      };
-
-      slackPostRequest(SLACK_HOOK.POSTS, postRequestData);
-
       history.push("/search");
     }
   };

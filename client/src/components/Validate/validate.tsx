@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { History } from "history";
 
 import { UserDataContext } from "user-context-provider";
-import { slackPostRequest, SLACK_HOOK, ERROR_TYPE } from "base-requests";
 import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { log } from "@utils/utils";
 import { getValidationEmail } from "@requests/getRequests";
@@ -56,16 +55,6 @@ const Validate = (props: { history: History }) => {
       setIsIncorrectValidationCode(true);
     } else if (res.statusCode === STATUS_CODE.SUCCESS) {
       setIsIncorrectValidationCode(false);
-
-      const postRequestData = {
-        text: JSON.stringify({
-          errorType: ERROR_TYPE.CLIENT,
-          type: "VALIDATE",
-          userId: _userData.user?.userId
-        })
-      };
-
-      slackPostRequest(SLACK_HOOK.SIGNUPS, postRequestData);
 
       alert("Your email is now verified");
       history.push("/");
