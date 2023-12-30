@@ -203,7 +203,11 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                     <TextField
                       {...params}
                       size="small"
-                      placeholder="Ex. Microsoft"
+                      placeholder={
+                        filtersSubscriptionOrganizations.length > 0
+                          ? ""
+                          : "Ex. Microsoft"
+                      }
                     />
                   )}
                   onChange={(_e, val) => handleOrganizationsChange(val)}
