@@ -219,7 +219,7 @@ const SubscriptionProvider = (props: {
       </div>
       <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-date">
-          {moment(createdDate).format("MMM. D, YYYY h:mm a")}
+          {moment(createdDate).format("MMM. D h:mm a")}
         </span>
       </div>
 
