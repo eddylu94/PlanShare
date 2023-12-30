@@ -11,14 +11,15 @@ import { useDeviceMode } from "@utils/utils";
 const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
   const deviceMode = useDeviceMode();
 
-  const subscriptionCards = [
-    <SearchSubscriptionCardPlaceholder
-      key={"search-subscription-card-placeholder-0"}
-    />,
-    <SearchSubscriptionCardPlaceholder
-      key={"search-subscription-card-placeholder-1"}
-    />
-  ];
+  const subscriptionCards = [];
+
+  for (let i = 0; i < 4; i++) {
+    subscriptionCards.push(
+      <SearchSubscriptionCardPlaceholder
+        key={`search-subscription-card-placeholder-${i}`}
+      />
+    );
+  }
 
   return (
     <div className="search-panes" style={{ justifyContent: "center" }}>
@@ -30,7 +31,7 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
           <div
             key={"filter-placeholder-0"}
             className="placeholder-filters-header-shape placeholder-background"
-            style={{ marginTop: 0 }}
+            style={{ marginTop: 5 }}
           ></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
@@ -38,6 +39,8 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
           <div className="placeholder-filter-shape placeholder-background"></div>
           <div className="placeholder-filters-header-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
+          <div className="placeholder-filter-shape placeholder-background"></div>
+          <div className="placeholder-filters-header-shape placeholder-background"></div>
           <div className="placeholder-filter-shape placeholder-background"></div>
         </div>
       ) : null}
@@ -56,7 +59,8 @@ const SearchCanvasPlaceholder = (props: { isProfile?: boolean }) => {
         <div
           className="search-number-of-results flex-vertical-centered"
           style={{ maxHeight: 30, height: 30, marginBottom: 5 }}
-        >
+        ></div>
+        <div className="search-subscription-cards-container">
           {subscriptionCards}
         </div>
       </div>
