@@ -53,7 +53,7 @@ export const sendMessage = (
               }
 
               const messageData = {
-                userId,
+							userId,
                 date: new Date(),
                 message
               };
@@ -71,6 +71,14 @@ export const sendMessage = (
                 )
                 .then(() => {
                   io.emit("message sent", "Hello World !");
+
+									const supportingText = `
+										\`\`\`
+										User ID: ${findRes._id}
+										\`\`\`
+									`;
+									
+									slackPostRequest(SLACK_HOOK.MESSAGES, SlackTitle.MESSAGE_SENT, supportingText);
 
                   db.close();
                   postSuccess(postRes, {});

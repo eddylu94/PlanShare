@@ -6,7 +6,6 @@ import {
   getDomain,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
@@ -75,6 +74,15 @@ export const createSubscription = (
           const subscriptionId = insertRes.insertedId;
 
           console.log("Subscription created:", subscriptionId);
+					
+					const supportingText = `
+						\`\`\`
+						User ID: ${findRes._id}
+						Listing brand: ${subscriptionData.subscriptionBrand && subscriptionData.subscriptionBrand.name}
+						\`\`\`
+					`;
+					
+					slackPostRequest(SLACK_HOOK.POSTS, SlackTitle.LISTING_POSTED, supportingText);
 
           db.close();
           postSuccess(postRes, {

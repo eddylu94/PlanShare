@@ -35,11 +35,6 @@ interface IFindResult {
   settingEmailNotifications: string;
 }
 
-export const ERROR_TYPE = {
-  CLIENT: "CLIENT",
-  SERVER: "SERVER"
-};
-
 export const SLACK_HOOK = {
   SIGNUPS:
     "https://hooks.slack.com/services/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",
@@ -53,6 +48,12 @@ export const SLACK_HOOK = {
 
 export const SlackTitle = {
 	NEW_ERROR: ':warning: New error',
+	NEW_USER_REGISTERED: ':new: New user registered',
+	EMAIL_ADDED: ':inbox_tray: Email added',
+	USER_VALIDATED: ':white_check_mark: User validated',
+	MESSAGE_SENT: ':email: Message sent',
+	LISTING_POSTED: ':tada: Listing posted',
+	LISTING_EDITED: ':pencil2: Listing edited',
 };
 
 const removeLeadingSpaces = (text: string) => text.replace(/^\s+/gm, '');

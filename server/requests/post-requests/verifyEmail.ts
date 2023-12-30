@@ -3,7 +3,6 @@ import mongodb from "mongodb";
 import {
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
@@ -180,6 +179,15 @@ export const verifyEmail = (
                 )
                 .then(() => {
                   console.log("Email validated:", email);
+
+									const supportingText = `
+										\`\`\`
+										User ID: ${findRes._id}
+										\`\`\`
+									`;
+									
+									slackPostRequest(SLACK_HOOK.SIGNUPS, SlackTitle.USER_VALIDATED, supportingText);
+
                   db.close();
                   postSuccess(postRes, {});
                 })

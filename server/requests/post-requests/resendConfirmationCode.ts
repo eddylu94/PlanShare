@@ -5,7 +5,6 @@ import {
   generateConfirmationCode,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle

@@ -3,7 +3,6 @@ import mongodb from "mongodb";
 import {
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle

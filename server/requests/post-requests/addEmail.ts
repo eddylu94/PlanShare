@@ -5,7 +5,6 @@ import {
   generateConfirmationCode,
   postSuccess,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
@@ -119,6 +118,15 @@ export const addEmail = (
                 )
                 .then(() => {
                   console.log("Email added:", email);
+
+									const supportingText = `
+										\`\`\`
+										User ID: ${findRes._id}
+										\`\`\`
+									`;
+									
+									slackPostRequest(SLACK_HOOK.SIGNUPS, SlackTitle.EMAIL_ADDED, supportingText);
+
                   db.close();
                   postSuccess(postRes, {});
 

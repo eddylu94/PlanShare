@@ -4,7 +4,6 @@ import {
   encryptPassword,
   generateAuthToken,
   postFailure,
-  ERROR_TYPE,
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
@@ -121,6 +120,16 @@ export const signUp = (
               }
 
               console.log("User created:", username);
+
+							const supportingText = `
+								\`\`\`
+								User ID: ${insertRes.insertedId}
+								Username: ${username}
+								\`\`\`
+							`;
+							
+							slackPostRequest(SLACK_HOOK.SIGNUPS, SlackTitle.NEW_USER_REGISTERED, supportingText);
+
               db.close();
               postRes.json({
                 statusCode: STATUS_CODE.SUCCESS,

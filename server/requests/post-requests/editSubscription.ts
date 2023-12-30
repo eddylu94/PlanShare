@@ -18,7 +18,7 @@ export const editSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName } = findRes;
+      const { _id, firstName } = findRes;
 
       const { subscriptionData } = obj;
 
@@ -44,6 +44,15 @@ export const editSubscription = (
         )
         .then(() => {
           console.log("Subscription updated:", subscriptionId);
+
+					const supportingText = `
+						\`\`\`
+						User ID: ${_id}
+						Listing brand: ${subscriptionData.subscriptionBrand && subscriptionData.subscriptionBrand.name}
+						\`\`\`
+					`;
+					
+					slackPostRequest(SLACK_HOOK.POSTS, SlackTitle.LISTING_EDITED, supportingText);
 
           db.close();
           postSuccess(postRes, {
