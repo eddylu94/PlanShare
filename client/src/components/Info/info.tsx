@@ -14,8 +14,7 @@ const restrictions: IRestriction[] = [
   {
     title: "Spotify Premium",
     url: "https://www.spotify.com/us/legal/premium-family-terms/",
-    logo:
-      "https://developer.spotify.com/assets/branding-guidelines/icon4@2x.png",
+    logo: "plans/spotify_music.png",
     lastKnownUpdate: new Date("March 30, 2020"),
     lastChecked: new Date("June 3, 2020"),
     limitations: [
@@ -26,9 +25,28 @@ const restrictions: IRestriction[] = [
       "In order to be eligible for the Premium Family Subscription, the primary account holder and the subsidiary account holders must be family members residing at the same address."
   },
   {
+    title: "Disney+",
+    url: "https://help.disneyplus.com/article/disneyplus-en-ca-account-sharing",
+    logo: "plans/disney_online_streaming.png",
+    lastChecked: new Date("Nov 30, 2020"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "You may not share your subscription outside of your household. “Household” means the collection of devices associated with your primary personal residence that are used by the individuals who reside therein."
+  },
+  {
+    title: "Netflix",
+    url: "https://help.netflix.com/legal/termsofuse",
+    logo: "plans/netflix_online_streaming.png",
+    lastKnownUpdate: new Date("April 24, 2019"),
+    lastChecked: new Date("June 3, 2020"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "The Netflix service and any content viewed through our service are for your personal and non-commercial use only and may not be shared with individuals beyond your household."
+  },
+  {
     title: "Costco",
     url: "https://www.costco.com/member-privileges-conditions.html",
-    logo: "https://cdn.iconscout.com/icon/free/png-256/costco-282448.png",
+    logo: "plans/costco.png",
     lastKnownUpdate: new Date("September 23, 2019"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["Must reside at same mailing address"],
@@ -38,8 +56,7 @@ const restrictions: IRestriction[] = [
   {
     title: "Hulu",
     url: "https://www.hulu.com/terms",
-    logo:
-      "https://res-2.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/bk8cux6dapq8qjzylfaj",
+    logo: "plans/hulu_tv.png",
     lastKnownUpdate: new Date("September 27, 2019"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["N/A"],
@@ -47,21 +64,9 @@ const restrictions: IRestriction[] = [
       "Hulu offers the option to personalize use of the Services through the creation of one or more profiles under one account."
   },
   {
-    title: "Netflix",
-    url: "https://help.netflix.com/legal/termsofuse",
-    logo:
-      "https://res-3.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco/v1474467529/zlaaxu2whczitkpkxxk9.jpg",
-    lastKnownUpdate: new Date("April 24, 2019"),
-    lastChecked: new Date("June 3, 2020"),
-    limitations: ["Must reside at same mailing address"],
-    quote:
-      "The Netflix service and any content viewed through our service are for your personal and non-commercial use only and may not be shared with individuals beyond your household."
-  },
-  {
     title: "Sling TV",
     url: "https://www.sling.com/offer-details/disclaimers/terms-of-use",
-    logo:
-      "https://is1-ssl.mzstatic.com/image/thumb/Purple114/v4/aa/5c/41/aa5c41e2-e131-abfa-c3f6-9649b426a561/source/256x256bb.jpg",
+    logo: "plans/sling_tv.png",
     lastKnownUpdate: new Date("May 11, 2020"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["Sharing is not allowed"],
