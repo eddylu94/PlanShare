@@ -42,6 +42,17 @@ export const Restrictions: IRestriction[] = [
       "You may not share your subscription outside of your household. “Household” means the collection of devices associated with your primary personal residence that are used by the individuals who reside therein."
   },
   {
+    title: "ESPN+",
+    url:
+      "https://support.espn.com/hc/en-us/articles/19225992996756-Who-can-I-share-my-ESPN-subscription-with",
+    logo: "plans/espn_online_streaming.png",
+    category: InfoCategory.STREAMING,
+    lastChecked: new Date("Nov 30, 2020"),
+    limitations: ["Must reside at same mailing address"],
+    quote:
+      "You may not share your subscription outside of your household. “Household” means the collection of devices associated with your primary personal residence that are used by the individuals who reside therein."
+  },
+  {
     title: "Netflix",
     url: "https://help.netflix.com/legal/termsofuse",
     logo: "plans/netflix_online_streaming.png",
