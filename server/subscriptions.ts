@@ -56,17 +56,17 @@ export const subscriptionCategories = subscriptionCategoriesIds.map(
 );
 
 export const SUBSCRIPTION: ISubscription = {
+	HOTSTAR_ONLINE_STREAMING: {
+    subscriptionBrandId: "HOTSTAR_ONLINE_STREAMING",
+    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
+    name: "Hotstar",
+    logo: "https://planshare.io/plans/hotstar_online_streaming.png"
+  },
   HULU_ONLINE_STREAMING: {
     subscriptionBrandId: "HULU_ONLINE_STREAMING",
     type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "Hulu",
     logo: "https://planshare.io/plans/hulu_online_streaming.png"
-  },
-  HOTSTAR_ONLINE_STREAMING: {
-    subscriptionBrandId: "HOTSTAR_ONLINE_STREAMING",
-    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
-    name: "Hotstar",
-    logo: "https://planshare.io/plans/hotstar_online_streaming.png"
   },
 	OTHER_ONLINE_STREAMING: {
     subscriptionBrandId: "OTHER_ONLINE_STREAMING",
@@ -167,8 +167,8 @@ export const SUBSCRIPTION: ISubscription = {
 };
 
 const onlineStreamingBrandIds = [
+	SUBSCRIPTION.HOTSTAR_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.HULU_ONLINE_STREAMING.subscriptionBrandId,
-  SUBSCRIPTION.HOTSTAR_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.OTHER_ONLINE_STREAMING.subscriptionBrandId
 ];
 
