@@ -62,23 +62,11 @@ export const SUBSCRIPTION: ISubscription = {
     name: "Hulu",
     logo: "https://planshare.io/plans/hulu_online_streaming.png"
   },
-  DISNEY_ONLINE_STREAMING: {
-    subscriptionBrandId: "DISNEY_ONLINE_STREAMING",
-    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
-    name: "Disney Plus",
-    logo: "https://planshare.io/plans/disney_online_streaming.png"
-  },
   HOTSTAR_ONLINE_STREAMING: {
     subscriptionBrandId: "HOTSTAR_ONLINE_STREAMING",
     type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
     name: "Hotstar",
     logo: "https://planshare.io/plans/hotstar_online_streaming.png"
-  },
-  ESPN_ONLINE_STREAMING: {
-    subscriptionBrandId: "ESPN_ONLINE_STREAMING",
-    type: SUBSCRIPTION_CATEGORY.ONLINE_STREAMING.subscriptionCategoryId,
-    name: "ESPN Plus",
-    logo: "https://planshare.io/plans/espn_online_streaming.png"
   },
 	OTHER_ONLINE_STREAMING: {
     subscriptionBrandId: "OTHER_ONLINE_STREAMING",
@@ -180,9 +168,7 @@ export const SUBSCRIPTION: ISubscription = {
 
 const onlineStreamingBrandIds = [
   SUBSCRIPTION.HULU_ONLINE_STREAMING.subscriptionBrandId,
-  SUBSCRIPTION.DISNEY_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.HOTSTAR_ONLINE_STREAMING.subscriptionBrandId,
-  SUBSCRIPTION.ESPN_ONLINE_STREAMING.subscriptionBrandId,
   SUBSCRIPTION.OTHER_ONLINE_STREAMING.subscriptionBrandId
 ];
 
