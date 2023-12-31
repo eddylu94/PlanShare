@@ -1,4 +1,13 @@
-import React from "react";
+import FiltersFormLabel from "@components/SharedComponents/filter-label";
+import { Autocomplete, FormControl, TextField } from "@mui/material";
+import React, { useState } from "react";
+
+const InfoCategory = {
+  MUSIC: "Music",
+  STREAMING: "Streaming",
+  CLUB_MEMBERSHIP: "Club Membership",
+  GAMING: "Gaming"
+};
 
 interface IRestriction {
   title: string;
@@ -8,6 +17,7 @@ interface IRestriction {
   lastChecked: Date;
   limitations: string[];
   quote: string;
+  category: string;
 }
 
 const restrictions: IRestriction[] = [
@@ -15,6 +25,7 @@ const restrictions: IRestriction[] = [
     title: "Spotify Premium",
     url: "https://www.spotify.com/us/legal/premium-family-terms/",
     logo: "plans/spotify_music.png",
+    category: InfoCategory.MUSIC,
     lastKnownUpdate: new Date("March 30, 2020"),
     lastChecked: new Date("June 3, 2020"),
     limitations: [
@@ -28,6 +39,7 @@ const restrictions: IRestriction[] = [
     title: "Disney+",
     url: "https://help.disneyplus.com/article/disneyplus-en-ca-account-sharing",
     logo: "plans/disney_online_streaming.png",
+    category: InfoCategory.STREAMING,
     lastChecked: new Date("Nov 30, 2020"),
     limitations: ["Must reside at same mailing address"],
     quote:
@@ -37,6 +49,7 @@ const restrictions: IRestriction[] = [
     title: "Netflix",
     url: "https://help.netflix.com/legal/termsofuse",
     logo: "plans/netflix_online_streaming.png",
+    category: InfoCategory.STREAMING,
     lastKnownUpdate: new Date("April 24, 2019"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["Must reside at same mailing address"],
@@ -47,6 +60,7 @@ const restrictions: IRestriction[] = [
     title: "Costco",
     url: "https://www.costco.com/member-privileges-conditions.html",
     logo: "plans/costco.png",
+    category: InfoCategory.CLUB_MEMBERSHIP,
     lastKnownUpdate: new Date("September 23, 2019"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["Must reside at same mailing address"],
@@ -57,6 +71,7 @@ const restrictions: IRestriction[] = [
     title: "Hulu",
     url: "https://www.hulu.com/terms",
     logo: "plans/hulu_tv.png",
+    category: InfoCategory.STREAMING,
     lastKnownUpdate: new Date("September 27, 2019"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["N/A"],
@@ -67,6 +82,7 @@ const restrictions: IRestriction[] = [
     title: "Sling TV",
     url: "https://www.sling.com/offer-details/disclaimers/terms-of-use",
     logo: "plans/sling_tv.png",
+    category: InfoCategory.STREAMING,
     lastKnownUpdate: new Date("May 11, 2020"),
     lastChecked: new Date("June 3, 2020"),
     limitations: ["Sharing is not allowed"],
@@ -78,6 +94,7 @@ const restrictions: IRestriction[] = [
     url:
       "https://www.amazon.com/gp/help/customer/display.html?nodeId=GWZ7QXD2X8WL8YE8",
     logo: "/plans/prime_online_streaming.png",
+    category: InfoCategory.STREAMING,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must reside at same mailing address"],
     quote:
@@ -87,6 +104,7 @@ const restrictions: IRestriction[] = [
     title: "YouTube TV",
     url: "https://support.google.com/youtubetv/answer/7251139",
     logo: "/plans/youtube_tv.png",
+    category: InfoCategory.STREAMING,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must be members of same family"],
     quote:
@@ -96,6 +114,7 @@ const restrictions: IRestriction[] = [
     title: "AT&T TV",
     url: "https://www.att.com/support/article/att-tv/KM1354360/",
     logo: "/plans/att_tv.png",
+    category: InfoCategory.STREAMING,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must reside at same mailing address"],
     quote:
@@ -105,6 +124,7 @@ const restrictions: IRestriction[] = [
     title: "Apple Music",
     url: "https://www.apple.com/legal/internet-services/itunes/us/terms.html",
     logo: "/plans/apple_music.png",
+    category: InfoCategory.MUSIC,
     lastKnownUpdate: new Date("September 16, 2020"),
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must be members of same family"],
@@ -115,6 +135,7 @@ const restrictions: IRestriction[] = [
     title: "Tidal Music",
     url: "https://support.tidal.com/hc/en-us/articles/360004405337-Family",
     logo: "/plans/tidal_music.png",
+    category: InfoCategory.MUSIC,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must be members of same family"],
     quote:
@@ -125,6 +146,7 @@ const restrictions: IRestriction[] = [
     url:
       "https://www.amazon.com/gp/help/customer/display.html?nodeId=GWGVV6VBWBXHMHQB",
     logo: "/plans/amazon_music.png",
+    category: InfoCategory.MUSIC,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must be members of same family"],
     quote:
@@ -135,6 +157,7 @@ const restrictions: IRestriction[] = [
     url:
       "https://en-americas-support.nintendo.com/app/answers/detail/a_id/22521/~/nintendo-switch-online-service-faq",
     logo: "/plans/nintendo_online.png",
+    category: InfoCategory.GAMING,
     lastChecked: new Date("April 11, 2021"),
     limitations: ["Must be members of same family"],
     quote:
@@ -142,7 +165,12 @@ const restrictions: IRestriction[] = [
   }
 ];
 
-const Feedback = () => {
+const Info = () => {
+  const [selectedCategories, setSelectedCategories] = useState<
+    Array<{ label: string; value: string }>
+  >([]);
+  const [searchText, setSearchText] = useState("");
+
   const renderRestriction = (restriction: IRestriction, index: number) => {
     const {
       title,
@@ -183,9 +211,27 @@ const Feedback = () => {
     );
   };
 
-  const list = restrictions.map((restriction, i) =>
-    renderRestriction(restriction, i)
-  );
+  const list = restrictions
+    .filter(
+      restriction =>
+        selectedCategories.length === 0 ||
+        selectedCategories.map(opt => opt.label).includes(restriction.category)
+    )
+    .filter(restriction =>
+      restriction.title
+        .toLocaleLowerCase()
+        .includes(searchText.toLocaleLowerCase())
+    )
+    .map((restriction, i) => renderRestriction(restriction, i));
+
+  const categoryOptions = Object.entries(InfoCategory).map(([key, value]) => {
+    return {
+      label: value,
+      value: key
+    };
+  });
+
+  console.log(selectedCategories);
 
   return (
     <div
@@ -193,12 +239,63 @@ const Feedback = () => {
       style={{ backgroundColor: "#FFFFFF", alignItems: "center" }}
     >
       <div className="info-page-container">
-        <h2 className="info-page-header">Subscription Information</h2>
-        The following are known restrictions to group plans:
-        {list}
+        <div className="info-page-wrapper">
+          <h2 className="info-page-header">Subscription Information</h2>
+          <span className="i">
+            The following are known restrictions to group plans.
+          </span>
+
+          <div className="info-filters-container">
+            <FormControl
+              component="fieldset"
+              className="info-filter-form-control"
+              style={{ marginTop: 20 }}
+            >
+              <FiltersFormLabel label={"Search by name"} />
+              <TextField
+                size="small"
+                placeholder={"Ex. Spotify"}
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl
+              component="fieldset"
+              className="info-filter-form-control"
+              style={{ marginTop: 20 }}
+            >
+              <FiltersFormLabel label={"Filter by category"} />
+              <Autocomplete
+                multiple
+                id="tags-outlined"
+                options={categoryOptions.filter(opt => {
+                  // Remove selected options from options list
+                  const val = selectedCategories;
+                  return !val.map(valOpt => valOpt.value).includes(opt.value);
+                })}
+                getOptionLabel={option => option.label}
+                filterSelectedOptions
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    placeholder={
+                      selectedCategories.length > 0 ? "" : "Ex. Streaming"
+                    }
+                  />
+                )}
+                onChange={(_e, val) => setSelectedCategories(val)}
+                value={selectedCategories}
+              />
+            </FormControl>
+          </div>
+
+          {list}
+        </div>
       </div>
     </div>
   );
 };
 
-export default Feedback;
+export default Info;

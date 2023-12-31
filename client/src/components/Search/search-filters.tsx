@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Scrollbar from "react-custom-scrollbars";
 import Measure from "react-measure";
-import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -13,6 +12,9 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+
+// Components
+import FiltersFormLabel from "@components/SharedComponents/filter-label";
 
 // Utilities
 import { SORT_BY } from "./search-utils";
@@ -93,15 +95,6 @@ const SearchFilters = (props: ISearchFiltersProps) => {
   );
 
   const valuetext = (value: number) => `${value}°C`;
-
-  const FiltersFormLabel = (props: { label: string }) => (
-    <FormLabel
-      component="legend"
-      style={{ marginBottom: 12, fontSize: 16, color: "#6C5DBD" }}
-    >
-      {props.label}
-    </FormLabel>
-  );
 
   const filtersRadioStyles = {
     padding: 0,
