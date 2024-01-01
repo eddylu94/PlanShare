@@ -1,3 +1,7 @@
+import {
+  Organization,
+  OrganizationType
+} from "@components/Validate/organizations";
 import React from "react";
 
 const Organizations = () => {
@@ -6,78 +10,53 @@ const Organizations = () => {
       <div className="organizations-container">
         <h3 className="organizations-header">Organizations</h3>
         <div className="organizations-subheader">
-          Our platform currently supports listings for those whom are members of
-          the following organizations:
-        </div>
-
-        <h4>Universities</h4>
-
-        <div className="organizations-organization">
-          <img
-            alt="McGill University"
-            src="mcgill_u_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">McGill University</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="University of Toronto"
-            src="u_of_toronto_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">University of Toronto</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img
-            alt="Queen's University"
-            src="queensu_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">Queen's University</div>
+          Users have the choice to register with either a personal email or
+          organization (work or university) email.
+          <br />
+          <br />
+          Those that choose to register with their organization-based email have
+          the ability to verify their organization via a confirmation code sent
+          to them as only verified organization-based users can view listings
+          and message other users within the same organization.
+          <br />
+          <br />
+          The following are organizations where organization-based verification
+          is available (more to come soon!):
         </div>
 
         <h4>Companies</h4>
 
-        <div className="organizations-organization">
-          <img
-            alt="Microsoft"
-            src="msft_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">Microsoft</div>
-        </div>
+        {Object.values(Organization)
+          .filter(org => org.type === OrganizationType.COMPANY)
+          .map(org => {
+            return (
+              <div className="organizations-organization">
+                <img
+                  alt={org.name}
+                  src={org.logoSrc}
+                  className="organization-logo"
+                />
+                <div className="organizations-label">{org.name}</div>
+              </div>
+            );
+          })}
 
-        <div className="organizations-organization">
-          <img
-            alt="LinkedIn"
-            src="lnkd_logo.png"
-            className="organization-logo"
-          />
-          <div className="organizations-label">LinkedIn</div>
-        </div>
+        <h4>Universities</h4>
 
-        <div className="organizations-organization">
-          <img alt="Amazon" src="amzn_logo.png" className="organization-logo" />
-          <div className="organizations-label">Amazon</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img alt="Facebook" src="fb_logo.png" className="organization-logo" />
-          <div className="organizations-label">Facebook</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img alt="Apple" src="aapl_logo.png" className="organization-logo" />
-          <div className="organizations-label">Apple</div>
-        </div>
-
-        <div className="organizations-organization">
-          <img alt="Google" src="goog_logo.png" className="organization-logo" />
-          <div className="organizations-label">Google</div>
-        </div>
+        {Object.values(Organization)
+          .filter(org => org.type === OrganizationType.UNIVERSITY)
+          .map(org => {
+            return (
+              <div className="organizations-organization">
+                <img
+                  alt={org.name}
+                  src={org.logoSrc}
+                  className="organization-logo"
+                />
+                <div className="organizations-label">{org.name}</div>
+              </div>
+            );
+          })}
       </div>
     </div>
   );
