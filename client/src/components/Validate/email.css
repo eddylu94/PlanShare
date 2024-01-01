@@ -1,6 +1,7 @@
 .organization-email-input-domain {
-  margin-top: 5px;
+  line-height: 56px;
   color: #686868;
+  margin-left: 10px;
 }
 
 .organization-email-form {
@@ -9,6 +10,16 @@
 }
 
 .email-submit-button {
-  width: 100px;
+  width: 100%;
   margin-top: 20px;
+}
+
+.email-select-different-org {
+  margin-top: 20px;
+  font-size: 14px;
+  text-decoration: solid;
+  color: #6c5dbd;
+  border: none;
+  background: none;
+  cursor: pointer;
 }

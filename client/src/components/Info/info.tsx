@@ -99,7 +99,9 @@ const Info = () => {
         <div className="info-page-wrapper">
           <h2 className="info-page-header">Subscription Information</h2>
           <span className="info-page-description">
-            The following are known restrictions to group plans.
+            Many service providers restrict sharing. The following is a list of
+            providers and their sharing limitations as per their terms of
+            service.
           </span>
 
           <div className="info-filters-container">

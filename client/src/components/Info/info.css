@@ -31,9 +31,6 @@
   }
 }
 
-.info-page-description {
-  font-style: italic;
-}
 @media only screen and (max-width: 768px) {
   /* Small */
   .info-page-description {
@@ -43,7 +40,7 @@
 @media only screen and (min-width: 768px) {
   /* Medium, Large, Extra-large */
   .info-page-description {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 
@@ -74,7 +71,7 @@
   width: 100%;
   background-color: #fff;
   border: 1px solid #ccc;
-  margin-bottom: 15px !important;
+  margin-bottom: 10px !important;
 }
 
 .info-filter-form-control {
