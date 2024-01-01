@@ -6,7 +6,7 @@ import React from "react";
 
 const Organizations = () => {
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ padding: 0 }}>
       <div className="organizations-container">
         <h3 className="organizations-header">Organizations</h3>
         <div className="organizations-subheader">
