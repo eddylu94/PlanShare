@@ -8,7 +8,7 @@ import {
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
-} from "./../../utils";
+} from "../../utils/utils";
 import {
   MONGO_URL,
   DATABASE_NAME,

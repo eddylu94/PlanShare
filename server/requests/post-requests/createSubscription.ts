@@ -9,7 +9,7 @@ import {
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
-} from "./../../utils";
+} from "../../utils/utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,

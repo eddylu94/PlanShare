@@ -5,7 +5,7 @@ import {
   SLACK_HOOK,
   slackPostRequest,
 	SlackTitle
-} from "./../../utils";
+} from "../../utils/utils";
 import { subscriptionCategories } from "./../../subscriptions";
 import { MONGO_URL, MONGO_PREREQUISITIES } from "./../../constants";
 

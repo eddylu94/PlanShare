@@ -8,7 +8,7 @@ import {
 	slackPostRequest,
 	SlackTitle,
 	SLACK_HOOK
-} from "./../../utils";
+} from "../../utils/utils";
 import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,

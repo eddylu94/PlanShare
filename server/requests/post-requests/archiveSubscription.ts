@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "../../utils/utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,

@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "../../utils/utils";
 import { retrieveSubscriptionBrands } from "./../../subscriptions";
 
 const ObjectId = mongodb.ObjectID;

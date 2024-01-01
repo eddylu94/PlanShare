@@ -1,6 +1,6 @@
 import mongodb from "mongodb";
 
-import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "./../../utils";
+import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "../../utils/utils";
 
 export const getSettingEmailNotifications = (
   mongoClient: typeof mongodb.MongoClient,

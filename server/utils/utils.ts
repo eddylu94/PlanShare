@@ -10,7 +10,7 @@ import {
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
   ACCOUNT_STATUS
-} from "./constants";
+} from "../constants";
 
 interface IAuthToken {
   date: number;

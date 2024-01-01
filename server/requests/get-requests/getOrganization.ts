@@ -9,7 +9,7 @@ import {
 	slackPostRequest,
 	SLACK_HOOK,
 	SlackTitle
-} from "./../../utils";
+} from "../../utils/utils";
 import { STATUS_MESSAGE } from "../../constants";
 
 export const getOrganization = (

@@ -2,7 +2,7 @@ import mongodb from "mongodb";
 
 import socketIo from "socket.io";
 
-import { authenticate, postSuccess, postFailure, SLACK_HOOK, SlackTitle, slackPostRequest } from "./../../utils";
+import { authenticate, postSuccess, postFailure, SLACK_HOOK, SlackTitle, slackPostRequest } from "../../utils/utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,

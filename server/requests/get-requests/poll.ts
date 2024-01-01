@@ -2,7 +2,7 @@ import mongodb from "mongodb";
 
 import {
   postSuccess,
-} from "./../../utils";
+} from "../../utils/utils";
 
 export const poll = (
   _mongoClient: typeof mongodb.MongoClient,
