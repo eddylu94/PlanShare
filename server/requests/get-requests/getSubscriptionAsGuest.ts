@@ -30,9 +30,11 @@ export const getSubscriptionAsGuest = (
       console.log(errorMessage);
 
 			const supportingText = `
+				\`\`\`
 				Request: getSubscriptionsAsGuest
 				Description: ${errorMessage}
 				Error message: ${connectErr.message}
+				\`\`\`
 			`;
 
 			slackPostRequest(

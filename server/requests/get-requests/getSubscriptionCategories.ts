@@ -20,9 +20,11 @@ export const getSubscriptionCategories = (
       console.log(errorMessage);
 
 			const supportingText = `
+				\`\`\`
 				Request: getSubscriptionCategories
 				Description: ${errorMessage}
 				Error message: ${connectErr.message}
+				\`\`\`
 			`;
 
 			slackPostRequest(

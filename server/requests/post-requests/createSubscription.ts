@@ -61,9 +61,11 @@ export const createSubscription = (
             postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
 						const supportingText = `
+							\`\`\`
 							Request: createSubscription
 							Description: ${errorMessage}
 							Error message: ${insertErr.message}
+							\`\`\`
 						`;
 
 						slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);

@@ -11,6 +11,7 @@ import {
   MONGO_PREREQUISITIES,
   ACCOUNT_STATUS
 } from "../constants";
+import { logToGoogleSheet } from "./appendGoogleSheet";
 
 interface IAuthToken {
   date: number;
@@ -46,6 +47,18 @@ export const SLACK_HOOK = {
     "https://hooks.slack.com/services/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"
 };
 
+const findSlackHookKeyByValue = (value: string) => {
+	const entries = Object.entries(SLACK_HOOK);
+
+	for (const entry of entries) {
+		if (entry[1] === value) {
+      return entry[0];
+    }
+	}
+	
+  return '';
+}
+
 export const SlackTitle = {
 	NEW_ERROR: ':warning: New error',
 	NEW_USER_REGISTERED: ':new: New user registered',
@@ -73,6 +86,12 @@ export const slackPostRequest = (slackHook: string, title: string, supporting: s
       console.log(data.body);
     }
   );
+
+	logToGoogleSheet(
+		findSlackHookKeyByValue(slackHook),
+		title,
+		supporting != null ? removeLeadingSpaces(supporting) : ''
+	);
 };
 
 const SALT_ROUNDS = 10;
@@ -109,9 +128,11 @@ export const authenticate = (
         console.log(errorMessage);
 
 				const supportingText = `
+					\`\`\`
 					Request: authenticate
 					Description: ${errorMessage}
 					Error message: ${connectErr.message}
+					\`\`\`
 				`;
 
         slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);

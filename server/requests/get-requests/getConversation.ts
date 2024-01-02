@@ -102,9 +102,11 @@ export const getConversation = (
                                 );
 
 																const supportingText = `
+																	\`\`\`
 																	Request: getConversation
 																	Description: ${errorMessage}
 																	Error message: ${insertErr.message}
+																	\`\`\`
 																`;
 
                                 slackPostRequest(

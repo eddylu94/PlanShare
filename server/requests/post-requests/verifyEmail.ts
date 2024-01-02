@@ -33,9 +33,11 @@ export const verifyEmail = (
       const errorMessage = "Connection error";
 
 			const supportingText = `
+				\`\`\`
 				Request: verifyEmail
 				Description: ${errorMessage}
 				Error message: ${connectErr.message}
+				\`\`\`
 			`;
 
 			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
@@ -57,9 +59,11 @@ export const verifyEmail = (
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
 					const supportingText = `
+						\`\`\`
 						Request: verifyEmail
 						Description: ${errorMessage}
 						Error message: ${findErr.message}
+						\`\`\`
 					`;
 		
 					slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);

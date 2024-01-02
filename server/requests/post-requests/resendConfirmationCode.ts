@@ -31,9 +31,11 @@ export const resendConfirmationCode = (
       console.log(errorMessage);
 
 			const supportingText = `
+				\`\`\`
 				Request: resendConfirmationCode
 				Description: ${errorMessage}
 				Error message: ${connectErr.message}
+				\`\`\`
 			`;
 
 			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
@@ -55,9 +57,11 @@ export const resendConfirmationCode = (
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
 					const supportingText = `
+						\`\`\`
 						Request: resendConfirmationCode
 						Description: ${errorMessage}
 						Error message: ${findErr.message}
+						\`\`\`
 					`;
 		
 					slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
