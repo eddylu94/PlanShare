@@ -9,7 +9,11 @@ import { InputChangeEvent } from "@utils/interfaces";
 import { addEmail } from "@requests/postRequests";
 
 import TextField from "@mui/material/TextField";
-import { IVerificationOrganization, Organization } from "./organizations";
+import {
+  IVerificationOrganization,
+  PUBLIC_ORGANIZATION
+} from "./organizations";
+import { getOrganizations } from "@requests/getRequests";
 
 const Email = (props: { history: History }) => {
   const _userData = useContext(UserDataContext);
@@ -20,6 +24,25 @@ const Email = (props: { history: History }) => {
     selectedOrganization,
     setSelectedOrganization
   ] = useState<IVerificationOrganization | null>(null);
+
+  const [organizations, setOrganizations] = useState<Array<
+    IVerificationOrganization
+  > | null>(null);
+
+  const retrieveOrganizationResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      setOrganizations([PUBLIC_ORGANIZATION, ...data.body.organizations]);
+    }
+  };
+
+  const retrieveOrganizations = () => {
+    getOrganizations(retrieveOrganizationResponseHandler, log);
+  };
+
+  useEffect(() => {
+    retrieveOrganizations();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [text, setText] = useState("");
 
@@ -54,7 +77,7 @@ const Email = (props: { history: History }) => {
     }
   };
 
-  const isPublic = selectedOrganization?.key === "PUBLIC";
+  const isPublic = selectedOrganization?.organizationId === "PUBLIC";
 
   const isValidEmail = (email: string) => {
     // Regular expression for a simple email validation
@@ -66,13 +89,15 @@ const Email = (props: { history: History }) => {
 
   const isValidOrgEmail =
     isValidEmail(text) &&
-    (isPublic || text.endsWith(selectedOrganization?.domain!));
+    (isPublic || text.endsWith(selectedOrganization?.domains[0]!));
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isValidOrgEmail) {
-      const email = isPublic ? text : `${text}@${selectedOrganization?.domain}`;
+      const email = isPublic
+        ? text
+        : `${text}@${selectedOrganization?.domains[0]}`;
 
       addEmail(email, handleSubmitResponseHandler, log, _userData.user?.auth);
     }
@@ -83,7 +108,7 @@ const Email = (props: { history: History }) => {
     if (!isValidEmail(text)) {
       errorText = "Please enter a valid email address";
     } else if (!isValidOrgEmail) {
-      errorText = `Email should end with ${selectedOrganization?.domain}`;
+      errorText = `Email should end with ${selectedOrganization?.domains[0]}`;
     }
   }
 
@@ -106,7 +131,7 @@ const Email = (props: { history: History }) => {
             </p>
             <p>You may also choose to use a personal email address.</p>
 
-            {Object.values(Organization).map(org => {
+            {(organizations ?? []).map(org => {
               return (
                 <div
                   className="organizations-organization organizations-organization-card"
@@ -114,7 +139,7 @@ const Email = (props: { history: History }) => {
                 >
                   <img
                     alt={org.name}
-                    src={org.logoSrc}
+                    src={org.logo}
                     className="organization-logo"
                   />
                   <div className="organizations-label">{org.name}</div>
@@ -134,7 +159,7 @@ const Email = (props: { history: History }) => {
               <div className="organizations-organization">
                 <img
                   alt={selectedOrganization.name}
-                  src={selectedOrganization.logoSrc}
+                  src={selectedOrganization.logo}
                   className="organization-logo"
                 />
                 <div className="organizations-label">
@@ -157,7 +182,7 @@ const Email = (props: { history: History }) => {
                   value={text}
                   error={text.length > 0 && !isValidOrgEmail}
                   helperText={errorText}
-                  placeholder={`name@${selectedOrganization.domain}`}
+                  placeholder={`name@${selectedOrganization.domains[0]}`}
                 />
               </div>
               <input
