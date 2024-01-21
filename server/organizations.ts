@@ -125,7 +125,7 @@ Companies.forEach(company => {
 Universities.forEach(university => {
 	organizations[university.organizationId] = {
 		...university,
-		type: ORGANIZATION_CATEGORY.COMPANY.name,
+		type: ORGANIZATION_CATEGORY.UNIVERSITY.name,
 	};
 });
 

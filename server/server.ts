@@ -86,6 +86,7 @@ getRequestBuilder(
 );
 getRequestBuilder("/getprofile", GetRequests.getProfile);
 getRequestBuilder("/getorganization", GetRequests.getOrganization);
+getRequestBuilder("/getorganizations", GetRequests.getOrganizations);
 getRequestBuilder("/getsubscription", GetRequests.getSubscription);
 getRequestBuilder(
   "/getsubscriptionasguest",
