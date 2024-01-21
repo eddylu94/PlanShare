@@ -95,11 +95,7 @@ const Email = (props: { history: History }) => {
     e.preventDefault();
 
     if (isValidOrgEmail) {
-      const email = isPublic
-        ? text
-        : `${text}@${selectedOrganization?.domains[0]}`;
-
-      addEmail(email, handleSubmitResponseHandler, log, _userData.user?.auth);
+      addEmail(text, handleSubmitResponseHandler, log, _userData.user?.auth);
     }
   };
 
