@@ -9,7 +9,6 @@ import {
 	SlackTitle,
 	SLACK_HOOK
 } from "../../utils/utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -51,8 +50,6 @@ export const getSubscriptions = (
       );
 
       const domain = getDomain(email);
-      const organization = retrieveOrganizationByDomain(domain);
-      const organizationId = organization && organization.organizationId;
 
       let sort: any;
       switch (sb) {
@@ -78,7 +75,7 @@ export const getSubscriptions = (
         status: SUBSCRIPTION_STATUS.ACTIVE,
         $or: [
           { organization: null },
-          { "organization.organizationId": organizationId }
+          { "organization.domains": { $in: [domain] } }
         ]
       };
 
