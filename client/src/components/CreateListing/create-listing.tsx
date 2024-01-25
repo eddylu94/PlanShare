@@ -20,7 +20,7 @@ import { createSubscription } from "@requests/postRequests";
 
 // Utilities
 import { UserDataContext } from "user-context-provider";
-import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { OTHER_BRANDS, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import {
   log,
   ISubscriptionCategory,
@@ -277,7 +277,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     }
 
     setIsOtherInputDisplayed(
-      subscriptionBrandSelection?.subscriptionBrandId === "OTHER"
+      OTHER_BRANDS.includes(subscriptionBrandSelection?.subscriptionBrandId)
     );
     // eslint-disable-next-line
   }, [subscriptionBrandSelection]);

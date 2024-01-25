@@ -15,7 +15,7 @@ import {
 // Utilities
 import { UserDataContext } from "user-context-provider";
 import { log } from "@utils/utils";
-import { STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { OTHER_BRANDS, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
 import { ClickEvent } from "@utils/interfaces";
 
 const SubscriptionProvider = (props: {
@@ -132,10 +132,9 @@ const SubscriptionProvider = (props: {
     organization
   } = subscriptionData;
 
-  const name =
-    subscriptionBrand.type === "OTHER"
-      ? otherSubscription
-      : subscriptionBrand.name;
+  const name = OTHER_BRANDS.includes(subscriptionBrand.subscriptionBrandId)
+    ? otherSubscription
+    : subscriptionBrand.name;
 
   const isDisplayButtons = !!(userId === (_userData.user?.userId as string));
 

@@ -13,6 +13,7 @@ import {
   getDaysAgoString
 } from "@utils/utils";
 import { ClickEvent } from "@utils/interfaces";
+import { OTHER_BRANDS } from "@utils/constants";
 
 interface ISearchSubscriptionCardProps {
   subscription: ISubscriptionData;
@@ -184,7 +185,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <div className="subscription-card-info">
       <div className="subscription-card-header">
         <div className="subscription-card-info-name subscription-detail-cropped">
-          {subscriptionBrand.type === "OTHER"
+          {OTHER_BRANDS.includes(subscriptionBrand.subscriptionBrandId)
             ? otherSubscription
             : subscriptionBrand.name}
         </div>
