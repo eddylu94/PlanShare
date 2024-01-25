@@ -128,6 +128,18 @@ export const SUBSCRIPTION: ISubscription = {
     name: "Instacart Referral",
     logo: "https://planshare.io/plans/instacart_icon.png",
 	},
+	UBER_EATS_REFERRAL: {
+		subscriptionBrandId: "UBER_EATS_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Uber Eats Referral",
+    logo: "https://planshare.io/plans/uber_eats.png",
+	},
+	WEALTHSIMPLE_REFERRAL: {
+		subscriptionBrandId: "WEALTHSIMPLE_REFERRAL",
+    type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
+    name: "Wealthsimple Referral",
+    logo: "https://planshare.io/plans/wealthsimple.png",
+	},
 	AUTONOMOUS_AI_REFERRAL: {
     subscriptionBrandId: "AUTONOMOUS_AI_REFERRAL",
     type: SUBSCRIPTION_CATEGORY.REFERRALS.subscriptionCategoryId,
@@ -185,6 +197,8 @@ const referralBrandIds = [
 	SUBSCRIPTION.CHASE_SAPPHIRE_RESERVE_REFERRAL.subscriptionBrandId,
 	SUBSCRIPTION.AMEX_PLATINUM_REFERRAL.subscriptionBrandId,
 	SUBSCRIPTION.INSTACART_REFERRAL.subscriptionBrandId,
+	SUBSCRIPTION.UBER_EATS_REFERRAL.subscriptionBrandId,
+	SUBSCRIPTION.WEALTHSIMPLE_REFERRAL.subscriptionBrandId,
 	SUBSCRIPTION.AUTONOMOUS_AI_REFERRAL.subscriptionBrandId,
 	SUBSCRIPTION.OTHER_REFERRAL.subscriptionBrandId
 ];
