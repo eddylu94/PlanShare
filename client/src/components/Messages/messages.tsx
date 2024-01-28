@@ -51,8 +51,6 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     [] as IConversationSummary[]
   );
 
-  const [isConversationModalOpen, setIsConversationModalOpen] = useState(false);
-
   const [firstName, setFirstName] = useState("");
   const [messages, setMessages] = useState([] as IMessageData[]);
   const [text, setText] = useState("");
@@ -267,7 +265,6 @@ const MessagesProvider = (props: { history: History; location: any }) => {
 
   const handleConversationSelection = (id: string) => {
     setConversationId(id);
-    setIsConversationModalOpen(true);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -345,7 +342,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
   }, [sockets]);
 
   const handleBackButtonClick = () => {
-    setIsConversationModalOpen(false);
+    setConversationId("");
   };
 
   const renderConversationSummary = (
@@ -415,24 +412,22 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     (conversationListComponent && conversationListComponent.length > 0) ||
     conversationId ? (
       <div className="messages-container">
-        {conversationId !== "" &&
-          deviceMode === DEVICE_MODE.MOBILE &&
-          isConversationModalOpen && (
-            <div className="conversation-modal">
-              <Conversation
-                isConversationModalOpen={isConversationModalOpen}
-                currentUserId={currentUserId}
-                firstName={firstName}
-                userId={otherUserId}
-                messages={messages}
-                text={text}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                handleConversationSelection={handleConversationSelection}
-                handleBackButtonClick={handleBackButtonClick}
-              />
-            </div>
-          )}
+        {conversationId !== "" && deviceMode === DEVICE_MODE.MOBILE && (
+          <div className="conversation-modal">
+            <Conversation
+              isConversationModalOpen={conversationId !== ""}
+              currentUserId={currentUserId}
+              firstName={firstName}
+              userId={otherUserId}
+              messages={messages}
+              text={text}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleConversationSelection={handleConversationSelection}
+              handleBackButtonClick={handleBackButtonClick}
+            />
+          </div>
+        )}
         <div className="message-summaries-pane">
           {conversationListComponent}
         </div>
