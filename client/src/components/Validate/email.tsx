@@ -9,8 +9,12 @@ import { InputChangeEvent } from "@utils/interfaces";
 import { addEmail } from "@requests/postRequests";
 
 import TextField from "@mui/material/TextField";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
 import {
   IVerificationOrganization,
+  OrganizationType,
   PUBLIC_ORGANIZATION
 } from "./organizations";
 import { getOrganizations } from "@requests/getRequests";
@@ -29,14 +33,29 @@ const Email = (props: { history: History }) => {
     IVerificationOrganization
   > | null>(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [searchText, setSearchText] = useState("");
+  const [orgCategory, setOrgCategory] = useState(OrganizationType.COMPANY);
+
   const retrieveOrganizationResponseHandler = (data: any) => {
     if (data.statusCode === STATUS_CODE.SUCCESS) {
       setOrganizations([PUBLIC_ORGANIZATION, ...data.body.organizations]);
     }
+
+    setIsLoading(false);
+  };
+
+  const retrieveOrganizationErrorHandler = (value: any, params?: any) => {
+    log(value, params);
+    setIsLoading(false);
   };
 
   const retrieveOrganizations = () => {
-    getOrganizations(retrieveOrganizationResponseHandler, log);
+    getOrganizations(
+      retrieveOrganizationResponseHandler,
+      retrieveOrganizationErrorHandler
+    );
   };
 
   useEffect(() => {
@@ -108,6 +127,41 @@ const Email = (props: { history: History }) => {
     }
   }
 
+  const renderOrganizations = (
+    organizations: Array<IVerificationOrganization> | null
+  ) => {
+    if (isLoading) {
+      return null;
+    }
+
+    const orgs = (organizations ?? [])
+      .filter(org => org.type === orgCategory)
+      .filter(org =>
+        searchText === ""
+          ? true
+          : org.name
+              .toLocaleLowerCase()
+              .includes(searchText.toLocaleLowerCase())
+      )
+      .map(org => {
+        return (
+          <div
+            className="organizations-organization organizations-organization-card"
+            onClick={e => handleClick(e, org)}
+          >
+            <img alt={org.name} src={org.logo} className="organization-logo" />
+            <div className="organizations-label">{org.name}</div>
+          </div>
+        );
+      });
+
+    return orgs.length > 0 ? (
+      orgs
+    ) : (
+      <div className="i">No organizations found</div>
+    );
+  };
+
   return (
     <div
       className="page-container"
@@ -127,21 +181,45 @@ const Email = (props: { history: History }) => {
             </p>
             <p>You may also choose to use a personal email address.</p>
 
-            {(organizations ?? []).map(org => {
-              return (
-                <div
-                  className="organizations-organization organizations-organization-card"
-                  onClick={e => handleClick(e, org)}
-                >
-                  <img
-                    alt={org.name}
-                    src={org.logo}
-                    className="organization-logo"
-                  />
-                  <div className="organizations-label">{org.name}</div>
-                </div>
-              );
-            })}
+            <ToggleButtonGroup
+              color="primary"
+              value={orgCategory}
+              exclusive
+              onChange={(_e, value) => setOrgCategory(value)}
+              aria-label="Organization category"
+              style={{ margin: "10px 0" }}
+            >
+              <ToggleButton
+                value={OrganizationType.COMPANY}
+                style={{ width: "33%" }}
+              >
+                Company
+              </ToggleButton>
+              <ToggleButton
+                value={OrganizationType.UNIVERSITY}
+                style={{ width: "33%" }}
+              >
+                University
+              </ToggleButton>
+              <ToggleButton
+                value={OrganizationType.PUBLIC}
+                style={{ width: "33%" }}
+              >
+                Public
+              </ToggleButton>
+            </ToggleButtonGroup>
+
+            <TextField
+              label="Search for organization"
+              name="organization"
+              value={searchText}
+              onChange={e => setSearchText(e.target.value)}
+              margin="dense"
+              style={{ marginBottom: 10 }}
+              autoComplete="off"
+            />
+
+            {renderOrganizations(organizations)}
           </>
         ) : (
           <>
