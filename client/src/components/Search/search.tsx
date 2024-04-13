@@ -502,7 +502,10 @@ const SearchProvider = (props: ISearchProviderProps) => {
                 </>
               )}
             </div>
-            <Scrollbars autoHide style={scrollBarsStyle}>
+            <Scrollbars
+              autoHide={deviceMode === DEVICE_MODE.MOBILE}
+              style={scrollBarsStyle}
+            >
               <div className="search-subscription-cards-container">
                 {subscriptionCards}
               </div>
