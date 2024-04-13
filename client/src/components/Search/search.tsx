@@ -472,8 +472,9 @@ const SearchProvider = (props: ISearchProviderProps) => {
               {organization?.name ? (
                 <>
                   <span className="b" style={{ marginRight: 5 }}>
-                    {countForOrganization}{" "}
-                    {countForOrganization === 1 ? "result" : "results"}
+                    {countForOrganization}
+                    {" recent "}
+                    {countForOrganization === 1 ? "listing" : "listings"}
                   </span>{" "}
                   found for{" "}
                   <span className="b" style={{ marginLeft: 5 }}>
@@ -488,8 +489,8 @@ const SearchProvider = (props: ISearchProviderProps) => {
               ) : (
                 <>
                   <span className="b" style={{ marginRight: 5 }}>
-                    {subscriptionData.filter(sub => !sub.sponsor).length}{" "}
-                    results
+                    {subscriptionData.filter(sub => !sub.sponsor).length} recent
+                    listings
                   </span>{" "}
                   found across{" "}
                   <span className="b" style={{ marginLeft: 5 }}>
