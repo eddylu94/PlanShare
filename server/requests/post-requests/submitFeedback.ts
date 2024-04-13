@@ -28,7 +28,7 @@ export const submitFeedback = (
 				\`\`\`
 			`;
 
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.FEEDBACK, supportingText);
+			slackPostRequest(SLACK_HOOK.FEEDBACK, SlackTitle.FEEDBACK, supportingText);
 
 			db.close();
 			postSuccess(postRes, {});
