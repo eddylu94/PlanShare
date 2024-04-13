@@ -34,6 +34,7 @@ interface IFindResult {
   status: string;
   authAttempts: Date[];
   settingEmailNotifications: string;
+	username: string;
 }
 
 export const SLACK_HOOK = {
@@ -44,7 +45,9 @@ export const SLACK_HOOK = {
   POSTS:
     "https://hooks.slack.com/services/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",
   MESSAGES:
-    "https://hooks.slack.com/services/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"
+    "https://hooks.slack.com/services/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",
+	FEEDBACK:
+		"https://hooks.slack.com/services/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",
 };
 
 const findSlackHookKeyByValue = (value: string) => {
@@ -62,6 +65,7 @@ const findSlackHookKeyByValue = (value: string) => {
 export const SlackTitle = {
 	NEW_ERROR: ':warning: New error',
 	NEW_USER_REGISTERED: ':new: New user registered',
+	FEEDBACK: ':mailbox_with_mail: Feedback',
 	EMAIL_ADDED: ':inbox_tray: Email added',
 	USER_VALIDATED: ':white_check_mark: User validated',
 	MESSAGE_SENT: ':email: Message sent',

@@ -123,6 +123,7 @@ postRequestBuilder("/signup", PostRequests.signUp);
 postRequestBuilder("/login", PostRequests.login);
 postRequestBuilder("/changepass", PostRequests.changePass);
 postRequestBuilder("/addemail", PostRequests.addEmail);
+postRequestBuilder("/feedback", PostRequests.submitFeedback);
 postRequestBuilder("/verifyemail", PostRequests.verifyEmail);
 postRequestBuilder(
   "/resendconfirmationcode",
