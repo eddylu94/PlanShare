@@ -185,11 +185,25 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                 <Autocomplete
                   multiple
                   id="tags-outlined"
-                  options={subscriptionOrgsOptions.filter(opt => {
-                    // Remove selected options from options list
-                    const val = filtersSubscriptionOrganizations;
-                    return !val.map(valOpt => valOpt.label).includes(opt.label);
-                  })}
+                  options={subscriptionOrgsOptions
+                    .sort((a, b) => {
+                      const labelA = a.label.toUpperCase(); // Ignore case sensitivity
+                      const labelB = b.label.toUpperCase(); // Ignore case sensitivity
+                      if (labelA < labelB) {
+                        return -1;
+                      }
+                      if (labelA > labelB) {
+                        return 1;
+                      }
+                      return 0; // If equal
+                    })
+                    .filter(opt => {
+                      // Remove selected options from options list
+                      const val = filtersSubscriptionOrganizations;
+                      return !val
+                        .map(valOpt => valOpt.label)
+                        .includes(opt.label);
+                    })}
                   getOptionLabel={option => option.label}
                   filterSelectedOptions
                   renderInput={params => (
