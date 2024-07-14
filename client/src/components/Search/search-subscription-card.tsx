@@ -9,8 +9,8 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 // Utilities
 import {
   mobileAndTabletCheck,
-  ISubscriptionData,
-  getDaysAgoString
+  ISubscriptionData
+  // getDaysAgoString
 } from "@utils/utils";
 import { ClickEvent } from "@utils/interfaces";
 import { OTHER_BRANDS } from "@utils/constants";
@@ -43,7 +43,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     subscriptionBrand,
     listingDescription,
     firstName,
-    createdDate,
+    // createdDate,
     price,
     userId,
     otherSubscription,
@@ -172,9 +172,10 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
         </div>
       ) : (
         <>
-          <div className="subscription-card-date i">
-            {getDaysAgoString(new Date(createdDate))}
-          </div>
+          {/* <div className="subscription-card-date i">
+            Price:{getDaysAgoString(new Date(createdDate))
+          </div> */}
+          <div className="subscription-card-date i">Price:</div>
           {priceInfo}
         </>
       )}

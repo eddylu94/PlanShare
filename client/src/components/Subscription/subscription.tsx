@@ -1,7 +1,7 @@
 // Third-party libraries
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import moment from "moment";
+// import moment from "moment";
 import LockIcon from "@mui/icons-material/Lock";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -124,7 +124,7 @@ const SubscriptionProvider = (props: {
     subscriptionBrand,
     listingDescription,
     firstName,
-    createdDate,
+    // createdDate,
     price,
     subscriptionUrl,
     userId,
@@ -216,11 +216,11 @@ const SubscriptionProvider = (props: {
           src={organization ? organization.logo : "/public_icon.png"}
         />
       </div>
-      <div className="subscription-detail subscription-subscription-detail">
+      {/* <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-date">
           {moment(createdDate).format("MMM. D h:mm a")}
         </span>
-      </div>
+      </div> */}
 
       {userId != null && userId !== currentUser && (
         <div className="subscription-detail" style={{ marginTop: 15 }}>

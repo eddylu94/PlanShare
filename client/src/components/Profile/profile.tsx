@@ -282,6 +282,13 @@ const ProfileProvider = (props: { history: History; location: any }) => {
     </>
   );
 
+  const date = new Date(joinedDate);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "2-digit"
+  };
+  const formattedJoinedDate = date.toLocaleDateString("en-US", options);
+
   return isRetrievedProfileDirty ? (
     <div className="page-container" style={{ alignItems: "center" }}>
       <div className="page-wrapper">
@@ -338,7 +345,7 @@ const ProfileProvider = (props: { history: History; location: any }) => {
                 className="profile-joined-date-value profile-detail-name"
                 style={{ marginLeft: 0 }}
               >
-                {new Date(joinedDate).toDateString()}
+                {formattedJoinedDate}
               </div>
             </div>
           </div>
