@@ -19,6 +19,28 @@ import {
 } from "./organizations";
 import { getOrganizations } from "@requests/getRequests";
 
+const EmailDescription = () => {
+  return (
+    <>
+      <h3 className="organizations-header" style={{ alignSelf: "center" }}>
+        Email verification
+      </h3>
+
+      <img
+        alt="Verify email"
+        style={{ alignSelf: "center", width: 100 }}
+        src={"./email_verification_icon.png"}
+      />
+
+      <p>To complete your sign-up, please provide your email.</p>
+      <p style={{ fontStyle: "italic", marginBottom: 20, marginTop: 5 }}>
+        Your email address will only be used for account management/settings and
+        will not be visible to anyone but yourself.
+      </p>
+    </>
+  );
+};
+
 const Email = (props: { history: History }) => {
   const _userData = useContext(UserDataContext);
 
@@ -27,7 +49,7 @@ const Email = (props: { history: History }) => {
   const [
     selectedOrganization,
     setSelectedOrganization
-  ] = useState<IVerificationOrganization | null>(null);
+  ] = useState<IVerificationOrganization | null>(PUBLIC_ORGANIZATION);
 
   const [organizations, setOrganizations] = useState<Array<
     IVerificationOrganization
@@ -170,16 +192,20 @@ const Email = (props: { history: History }) => {
       <div className="organizations-container">
         {selectedOrganization == null ? (
           <>
-            <h3 className="organizations-header">
-              Please select your organization
-            </h3>
-            <p>
-              Users can verify their organization via a confirmation code sent
-              to their work/university email address. Only verified users can
-              view listings and message other users within the same
-              organization.
-            </p>
-            <p>You may also choose to use a personal email address.</p>
+            <EmailDescription />
+
+            <button
+              className="email-select-different-org"
+              onClick={_e => setSelectedOrganization(PUBLIC_ORGANIZATION)}
+              style={{
+                textAlign: "left",
+                marginBottom: 15,
+                paddingLeft: 0,
+                textDecoration: "underline"
+              }}
+            >
+              I prefer to use my personal email
+            </button>
 
             <ToggleButtonGroup
               color="primary"
@@ -191,44 +217,34 @@ const Email = (props: { history: History }) => {
             >
               <ToggleButton
                 value={OrganizationType.COMPANY}
-                style={{ width: "33%" }}
+                style={{ width: "49%" }}
               >
                 Company
               </ToggleButton>
               <ToggleButton
                 value={OrganizationType.UNIVERSITY}
-                style={{ width: "33%" }}
+                style={{ width: "49%" }}
               >
                 University
               </ToggleButton>
-              <ToggleButton
-                value={OrganizationType.PUBLIC}
-                style={{ width: "33%" }}
-              >
-                Public
-              </ToggleButton>
             </ToggleButtonGroup>
 
-            <TextField
-              label="Search for organization"
-              name="organization"
-              value={searchText}
-              onChange={e => setSearchText(e.target.value)}
-              margin="dense"
-              style={{ marginBottom: 10 }}
-              autoComplete="off"
-            />
+            {orgCategory !== OrganizationType.PUBLIC && (
+              <TextField
+                label="Search for organization"
+                name="organization"
+                value={searchText}
+                onChange={e => setSearchText(e.target.value)}
+                margin="dense"
+                style={{ marginBottom: 10 }}
+                autoComplete="off"
+              />
+            )}
 
             {renderOrganizations(organizations)}
           </>
         ) : (
           <>
-            <h3 className="organizations-header">
-              {isPublic
-                ? "Please verify your email"
-                : "Please verify your email for"}
-            </h3>
-
             {!isPublic && (
               <div className="organizations-organization">
                 <img
@@ -243,13 +259,7 @@ const Email = (props: { history: History }) => {
             )}
 
             <form className="organization-email-form" onSubmit={handleSubmit}>
-              <p>
-                A verification code will be sent to your email address. After an
-                hour, the verification code will expire.
-              </p>
-              <p style={{ fontStyle: "italic" }}>
-                Your email address will not be visible to anyone but yourself.
-              </p>
+              <EmailDescription />
               <div className="organization-email-input">
                 <TextField
                   onChange={handleChange}
@@ -264,14 +274,42 @@ const Email = (props: { history: History }) => {
                 type="submit"
                 value="Submit"
                 disabled={!isValidOrgEmail}
+                style={{ marginBottom: 20 }}
               />
 
-              <button
-                className="email-select-different-org"
-                onClick={_e => setSelectedOrganization(null)}
-              >
-                Select a different organization
-              </button>
+              {selectedOrganization !== PUBLIC_ORGANIZATION ? (
+                <>
+                  <button
+                    className="email-select-different-org"
+                    onClick={_e => setSelectedOrganization(null)}
+                    style={{ marginBottom: 15 }}
+                  >
+                    Select a different organization
+                  </button>
+                  <button
+                    className="email-select-different-org"
+                    onClick={_e => setSelectedOrganization(PUBLIC_ORGANIZATION)}
+                    style={{ textDecoration: "underline" }}
+                  >
+                    I prefer to use my personal email
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p>
+                    If you prefer, you can also provide your work or university
+                    email to post and view listings within your organization for
+                    added trust and privacy. This is totally optional!
+                  </p>
+                  <button
+                    className="email-select-different-org"
+                    onClick={_e => setSelectedOrganization(null)}
+                    style={{ textDecoration: "underline", fontSize: 16 }}
+                  >
+                    Select an organization
+                  </button>
+                </>
+              )}
             </form>
           </>
         )}

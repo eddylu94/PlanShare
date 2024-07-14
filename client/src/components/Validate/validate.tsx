@@ -8,6 +8,22 @@ import { log } from "@utils/utils";
 import { getValidationEmail } from "@requests/getRequests";
 import { resendConfirmationCode, verifyEmail } from "@requests/postRequests";
 
+const ValidateDescription = () => {
+  return (
+    <>
+      <h3 className="organizations-header" style={{ alignSelf: "center" }}>
+        Email verification
+      </h3>
+
+      <img
+        alt="Verify email"
+        style={{ alignSelf: "center", width: 100 }}
+        src={"./email_verification_icon.png"}
+      />
+    </>
+  );
+};
+
 const Validate = (props: { history: History }) => {
   const _userData = useContext(UserDataContext);
 
@@ -101,24 +117,24 @@ const Validate = (props: { history: History }) => {
       style={{ alignItems: "center", justifyContent: "center" }}
     >
       <div className="form-container">
-        <label className="form-label">
+        <ValidateDescription />
+
+        <label
+          className="form-label"
+          style={{ marginTop: 15, textAlign: "center" }}
+        >
           Please enter the validation code sent to:
           <br />
           <span style={{ fontWeight: "bold" }}>{validationEmail}</span>
-        </label>
-        <label className="form-label" style={{ marginTop: 10 }}>
-          Didn't receive an email?
-          <br />
-          <button className="validate-resend-code" onClick={resendCode}>
-            Send me a new confirmation code
-          </button>
         </label>
         <form
           onSubmit={handleSubmit}
           style={{
             display: "flex",
             flexDirection: "column",
-            alignItems: "center"
+            alignItems: "center",
+            marginTop: 15,
+            marginBottom: 15
           }}
         >
           <input
@@ -145,6 +161,21 @@ const Validate = (props: { history: History }) => {
             {isIncorrectValidationCode ? "Incorrect validation code" : ""}
           </div>
         </form>
+
+        <label
+          className="form-label"
+          style={{ marginTop: 10, textAlign: "center" }}
+        >
+          Didn't receive an email?
+          <br />
+          <button
+            className="validate-resend-code"
+            onClick={resendCode}
+            style={{ marginTop: 10 }}
+          >
+            Send me a new confirmation code
+          </button>
+        </label>
       </div>
     </div>
   );
