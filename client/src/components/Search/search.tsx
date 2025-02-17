@@ -12,9 +12,7 @@ import Subscription from "@components/Subscription/subscription";
 
 // API
 import {
-  getOrganization,
   getSubscriptionCategories,
-  getSubscriptionOrganizations,
   getSubscriptions
 } from "@requests/getRequests";
 import {
@@ -29,7 +27,6 @@ import { SORT_BY, ISearchFiltersProps } from "./search-utils";
 import {
   log,
   IFiltersSubscriptionCategory,
-  IOrganization,
   ISubscriptionData,
   useDeviceMode
 } from "@utils/utils";
@@ -59,24 +56,14 @@ const SearchProvider = (props: ISearchProviderProps) => {
     setIsRetrievedSubscriptionsDirty
   ] = useState(false);
 
-  const [organization, setOrganization] = useState({} as IOrganization);
-
   const [subscriptionData, setSubscriptionData] = useState(
     [] as Array<ISubscriptionData>
   );
-
-  const [subscriptionOrganizations, setSubscriptionOrganizations] = useState<
-    Array<string>
-  >([]);
 
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
   ] = useState([] as Array<IFiltersSubscriptionCategory>);
-  const [
-    filtersSubscriptionOrganizations,
-    setFiltersSubscriptionOrganizations
-  ] = useState<Array<{ label: string }>>([]);
   const [filtersText, setFiltersText] = useState("");
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
   const [filtersPrice, setFiltersPrice] = useState([0, 100]);
@@ -125,10 +112,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
     ) as IFiltersSubscriptionCategory;
     Object.assign(category, { isSelected: !category.isSelected });
     setFiltersSubscriptionCategories(list);
-  };
-
-  const handleOrganizationsChange = (val: Array<{ label: string }>) => {
-    setFiltersSubscriptionOrganizations(val);
   };
 
   const handleTextChange = (event: InputChangeEvent) => {
@@ -189,37 +172,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
   const retrieveSubscriptionCategories = () => {
     getSubscriptionCategories(
       retrieveSubscriptionCategoriesResponseHandler,
-      log,
-      _userData.user?.auth
-    );
-  };
-
-  const retrieveSubscriptionOrgsResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      const body = data.body;
-
-      setSubscriptionOrganizations(body.subscriptionOrgs);
-    }
-  };
-
-  const retrieveSubscriptionOrgs = () => {
-    getSubscriptionOrganizations(
-      !!_userData.user?.userId,
-      retrieveSubscriptionOrgsResponseHandler,
-      log,
-      _userData.user?.auth
-    );
-  };
-
-  const retrieveOrganizationResponseHandler = (data: any) => {
-    if (data.statusCode === STATUS_CODE.SUCCESS) {
-      setOrganization(data.body.organization);
-    }
-  };
-
-  const retrieveOrganization = () => {
-    getOrganization(
-      retrieveOrganizationResponseHandler,
       log,
       _userData.user?.auth
     );
@@ -288,9 +240,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
       retrieveSubscriptions([
         { t: filtersText },
         { sc }, // Subscription category
-        {
-          o: filtersSubscriptionOrganizations.map(org => org.label).join("||")
-        },
         { gs: filtersGroupSize }, // Group size
         { p: filtersPrice }, // Price
         { sb: filtersSortBy }, // Sort by
@@ -302,7 +251,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
     _throttle,
     filtersText,
     filtersSubscriptionCategories,
-    filtersSubscriptionOrganizations,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
@@ -312,8 +260,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
   useEffect(() => {
     // retrieveSubscriptions();
     retrieveSubscriptionCategories();
-    retrieveSubscriptionOrgs();
-    retrieveOrganization();
 
     // Render subscription if subscription ID is included in URL
     const params = new URLSearchParams(location.search);
@@ -325,15 +271,12 @@ const SearchProvider = (props: ISearchProviderProps) => {
   }, []);
 
   const searchFilters = {
-    subscriptionOrganizations,
     filtersSubscriptionCategories,
-    filtersSubscriptionOrganizations,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
     toggleFiltersSubscriptionCategory,
-    handleOrganizationsChange,
     handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange,
@@ -373,22 +316,10 @@ const SearchProvider = (props: ISearchProviderProps) => {
         })
   };
 
-  const organizationsMap = subscriptionData.reduce((map, subscription) => {
-    return Object.assign(map, { [subscription.organization?.name]: 1 });
-  }, {});
-  const numberOfOrganizations = Object.keys(organizationsMap).length;
-
   const closePane = () => {
     retrieveSubscriptionCategories();
     setSelectedSubscription("");
   };
-
-  let countForOrganization = 0;
-  if (organization?.name?.length > 0) {
-    countForOrganization = subscriptionData.filter(
-      sub => !sub.sponsor && sub.organization?.name === organization.name
-    ).length;
-  }
 
   return (
     <div className="search-panes">
@@ -465,43 +396,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
                 </div>
               </div>
             </div>
-            <div
-              className="search-number-of-results flex-horizontal-centered"
-              style={{ maxHeight: 30, height: 30 }}
-            >
-              {organization?.name ? (
-                <>
-                  <span className="b" style={{ marginRight: 5 }}>
-                    {countForOrganization}
-                    {" recent "}
-                    {countForOrganization === 1 ? "listing" : "listings"}
-                  </span>{" "}
-                  found for{" "}
-                  <span className="b" style={{ marginLeft: 5 }}>
-                    {organization.name}
-                  </span>
-                  <img
-                    alt="Organization logo"
-                    className="subscription-card-organization-logo"
-                    src={organization.logo}
-                  />
-                </>
-              ) : (
-                <>
-                  <span className="b" style={{ marginRight: 5 }}>
-                    {subscriptionData.filter(sub => !sub.sponsor).length} recent
-                    listings
-                  </span>{" "}
-                  found across{" "}
-                  <span className="b" style={{ marginLeft: 5 }}>
-                    {numberOfOrganizations}{" "}
-                    {numberOfOrganizations === 1
-                      ? "organization"
-                      : "organizations"}
-                  </span>
-                </>
-              )}
-            </div>
             <Scrollbars
               autoHide={deviceMode === DEVICE_MODE.MOBILE}
               style={scrollBarsStyle}
@@ -539,16 +433,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
                 <span style={{ fontWeight: 600 }}>
                   Select a listing to get started
                 </span>
-                {!isUser && (
-                  <>
-                    <br />
-                    <span>
-                      Please <Link to="/login">log in</Link> or{" "}
-                      <Link to="/signup">sign up</Link> to view listing details
-                      within an organization
-                    </span>
-                  </>
-                )}
               </div>
             )
           ) : null}

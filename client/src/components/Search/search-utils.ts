@@ -1,8 +1,5 @@
 import { InputChangeEvent } from "@utils/interfaces";
-import {
-  IFiltersOrganization,
-  IFiltersSubscriptionCategory
-} from "@utils/utils";
+import { IFiltersSubscriptionCategory } from "@utils/utils";
 
 export const SORT_BY = {
   DATE_ASC: "date_asc",
@@ -11,23 +8,15 @@ export const SORT_BY = {
 
 export interface ISearchFiltersProps {
   isDrawer?: boolean;
-  subscriptionOrganizations: string[];
-  filtersOrganizations: IFiltersOrganization[];
   filtersSubscriptionCategories: IFiltersSubscriptionCategory[];
-  filtersSubscriptionOrganizations: { label: string }[];
   filtersGroupSize: number[];
   filtersPrice: number[];
   filtersSortBy: string;
   filtersDaysActive: number;
-  toggleFiltersOrganization: (
-    event: InputChangeEvent,
-    organizationId: string
-  ) => void;
   toggleFiltersSubscriptionCategory: (
     event: InputChangeEvent,
     subscriptionCategoryId: string
   ) => void;
-  handleOrganizationsChange: (val: Array<{ label: string }>) => void;
   handleGroupSizeChange: (
     event: React.ChangeEvent<{}>,
     value: number | number[]

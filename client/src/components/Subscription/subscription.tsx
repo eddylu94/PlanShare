@@ -45,13 +45,6 @@ const SubscriptionProvider = (props: {
     if (newSubscriptionData) {
       log(newSubscriptionData);
       setSubscriptionData(newSubscriptionData);
-    } else if (
-      data?.statusCode === STATUS_CODE.FAILURE &&
-      data?.statusMessage === STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
-    ) {
-      setSubscriptionData({
-        organization: data?.organization
-      });
     }
   };
 
@@ -90,32 +83,6 @@ const SubscriptionProvider = (props: {
   const userData = _userData;
   const currentUser = _userData.user?.userId as string;
 
-  if (subscriptionData != null && Object.keys(subscriptionData).length === 1) {
-    const organization = subscriptionData?.organization;
-
-    return (
-      <div className="subscription-guest-login-message">
-        <div className="subscription-guest-login-message-wrapper">
-          <span>
-            The selected listing is only visible for members of the{" "}
-            <b>{organization?.name}</b> organization.
-            <div className="subscription-external-organization">
-              <LockIcon htmlColor="#888" fontSize="large" />
-              <img
-                className="subscription-external-organization-logo"
-                src={organization?.logo}
-                alt={organization.name}
-              />
-            </div>
-            Please <Link to="/login">log in</Link> or{" "}
-            <Link to="/signup">sign up</Link> to view listing details within an
-            organization
-          </span>
-        </div>
-      </div>
-    );
-  }
-
   if (!subscriptionData) {
     return null;
   }
@@ -128,8 +95,7 @@ const SubscriptionProvider = (props: {
     price,
     subscriptionUrl,
     userId,
-    otherSubscription,
-    organization
+    otherSubscription
   } = subscriptionData;
 
   const name = OTHER_BRANDS.includes(subscriptionBrand.subscriptionBrandId)
@@ -206,15 +172,6 @@ const SubscriptionProvider = (props: {
         <Link to={`profile?id=${userId}`}>
           <span className="subscription-first-name">{firstName}</span>
         </Link>
-      </div>
-      <div className="subscription-detail subscription-subscription-author-detail">
-        <span className="b">{organization ? organization.name : "Public"}</span>
-        <img
-          alt="Organization logo"
-          style={{ opacity: !organization ? 0.5 : 1 }}
-          className="subscription-card-organization-logo"
-          src={organization ? organization.logo : "/public_icon.png"}
-        />
       </div>
       {/* <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-date">

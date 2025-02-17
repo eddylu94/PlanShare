@@ -36,12 +36,6 @@ const images = [
       "Once you find a listing of interest, you can start a new conversation with the poster to discuss how you'd like to share the cost of the subscription, etc.",
     note:
       "Note that you will need to discuss how payments will be made as our platform currently does not support payments (for now)."
-  },
-  {
-    imgPath: "/onboarding_4.png",
-    header: "Find people from your organization",
-    description:
-      "Although not required, we allow users to register with their work/university emails so that they can limit communication to their colleagues/students as some people feel safer this way."
   }
 ];
 

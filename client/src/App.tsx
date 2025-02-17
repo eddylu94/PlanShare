@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "@shared-styles/form.css";
 import "@shared-styles/intro.css";
-import "@shared-styles/organizations.css";
 import "@shared-styles/placeholder.css";
 import "@components/CreateListing/create-listing.css";
 import "@components/Feedback/feedback.css";
@@ -33,7 +32,6 @@ import Login from "@components/Login/login";
 import Profile from "@components/Profile/profile";
 import Settings from "@components/Settings/settings";
 import Messages from "@components/Messages/messages";
-import Organizations from "@components/Organizations/organizations";
 import Feedback from "@components/Feedback/feedback";
 import Info from "@components/Info/info";
 import OnboardingDialog from "@components/Onboarding/onboarding-dialog";
@@ -98,9 +96,6 @@ const App = () => {
               </Route>
               <Route path="/messages">
                 <Messages />
-              </Route>
-              <Route path="/organizations">
-                <Organizations />
               </Route>
             </Switch>
           </div>

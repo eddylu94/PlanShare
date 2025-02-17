@@ -19,7 +19,6 @@ export const STATUS_MESSAGE = {
   INCORRECT_VALIDATION_CODE: "incorrect_validation_code",
   USER_NOT_VALIDATED: "user_not_validated",
   CANNOT_FIND_SUBSCRIPTIONS: "cannot_find_subscriptions",
-  USER_NOT_MEMBER_OF_ORGANIZATION: "user_not_member_of_organization",
   USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION:
     "user_requires_access_for_subscription",
   PROFILE_NOT_FOUND: "profile_not_found",

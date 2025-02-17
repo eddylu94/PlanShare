@@ -19,18 +19,6 @@ export interface ISubscriptionBrand {
   logo: string;
 }
 
-export interface IOrganization {
-  domains: string[];
-  name: string;
-  logo: string;
-}
-
-export interface IFiltersOrganization {
-  organizationId: string;
-  name: string;
-  isSelected: boolean;
-}
-
 export interface IFiltersSubscriptionCategory {
   subscriptionCategoryId: string;
   name: string;
@@ -54,7 +42,6 @@ export interface ISubscriptionData {
   price: number;
   userId: string;
   firstName: string;
-  organization: IOrganization;
   createdDate: string;
   subscriptionUrl?: string;
   otherSubscription?: string;

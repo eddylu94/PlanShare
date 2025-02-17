@@ -1,14 +1,3 @@
-.organization-email-input-domain {
-  line-height: 56px;
-  color: #686868;
-  margin-left: 10px;
-}
-
-.organization-email-form {
-  display: flex;
-  flex-direction: column;
-}
-
 .email-submit-button {
   width: 100%;
   margin-top: 20px;

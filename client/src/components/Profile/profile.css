@@ -93,21 +93,6 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
-  /* Small */
-  .profile-organization-logo {
-    width: 24px;
-    height: 24px;
-  }
-}
-@media only screen and (min-width: 768px) {
-  /* Medium, Large, Extra-large */
-  .profile-organization-logo {
-    width: 36px;
-    height: 36px;
-  }
-}
-
 .profile-name-and-joined-date {
   display: flex;
   flex-direction: column;
@@ -183,12 +168,6 @@
   }
 }
 
-.profile-organization {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
 .profile-detail-name {
   color: #686868;
 }
@@ -207,11 +186,4 @@
     font-weight: 450;
     margin-left: 12px;
   }
-}
-
-.profile-organization-email {
-  font-size: 16px;
-  font-weight: 500;
-  color: #686868;
-  margin-left: 20px;
 }

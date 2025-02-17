@@ -21,12 +21,7 @@ import {
 // Utilities
 import { UserDataContext } from "user-context-provider";
 import { ClickEvent } from "@utils/interfaces";
-import {
-  log,
-  ISubscriptionData,
-  IOrganization,
-  useDeviceMode
-} from "@utils/utils";
+import { log, ISubscriptionData, useDeviceMode } from "@utils/utils";
 import { STATUS_CODE, STATUS_MESSAGE, DEVICE_MODE } from "@utils/constants";
 
 const ProfileProvider = (props: { history: History; location: any }) => {
@@ -51,7 +46,6 @@ const ProfileProvider = (props: { history: History; location: any }) => {
   const [selectedSubscription, setSelectedSubscription] = useState("");
 
   const [firstName, setFirstName] = useState("");
-  const [organization, setOrganization] = useState({} as IOrganization);
   const [joinedDate, setJoinedDate] = useState(-1);
 
   const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
@@ -84,7 +78,6 @@ const ProfileProvider = (props: { history: History; location: any }) => {
       log(profileData);
 
       setFirstName(profileData.firstName);
-      setOrganization(profileData.organization);
       setJoinedDate(profileData.joinedDate);
       setIsRetrievedProfileDirty(true);
     }
@@ -199,20 +192,6 @@ const ProfileProvider = (props: { history: History; location: any }) => {
   const currentUserId = _userData.user?.userId as string;
   const isDifferentUser = !!(
     profileUserId && profileUserId !== (_userData.user?.userId as string)
-  );
-
-  const organizationDetails = organization && (
-    <div className="profile-detail-container">
-      <div className="profile-detail-header">Member of:</div>
-      <div className="profile-organization">
-        <img
-          alt="Organization logo"
-          className="profile-organization-logo"
-          src={organization.logo}
-        />
-        <div className="profile-detail-name">{organization.name}</div>
-      </div>
-    </div>
   );
 
   const subscriptionCards = authoredSubscriptions.map((subscription, i) => {
@@ -338,7 +317,6 @@ const ProfileProvider = (props: { history: History; location: any }) => {
                 </div>
               </div>
             ) : null}
-            {organization ? organizationDetails : null}
             <div className="profile-detail-container">
               <div className="profile-detail-header">Member since:</div>
               <div

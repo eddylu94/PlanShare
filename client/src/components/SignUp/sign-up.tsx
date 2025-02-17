@@ -195,14 +195,6 @@ const SignUpProvider = (props: { history: History }) => {
                 helps you find people to split costs on subscriptions, group
                 purchases, and more.
               </div>
-
-              <br />
-
-              <div>
-                Users can either post and browse publicly or privately with
-                colleagues from{" "}
-                <Link to="/organizations">these organizations</Link>.
-              </div>
             </div>
           </div>
           <form className="signup-form-container" onSubmit={handleSubmit}>
