@@ -5,7 +5,7 @@ import {
   postFailure,
   SLACK_HOOK,
   slackPostRequest,
-	SlackTitle
+  SlackTitle
 } from "../../utils/utils";
 import {
   MONGO_URL,
@@ -29,7 +29,7 @@ export const getSubscriptionsAsGuest = (
       const errorMessage = "Connection error";
       console.log(errorMessage);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getSubscriptionsAsGuest
 				Description: ${errorMessage}
@@ -37,12 +37,7 @@ export const getSubscriptionsAsGuest = (
 				\`\`\`
 			`;
 
-			slackPostRequest(
-				SLACK_HOOK.ERRORS,
-				SlackTitle.NEW_ERROR,
-				supportingText,
-			);
-
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
       return;
     }
@@ -50,7 +45,6 @@ export const getSubscriptionsAsGuest = (
     const { t, sc, o, gs, sb, da, p } = postReq.query;
 
     const subscriptionCategories = sc.split(",");
-		const subscriptionOrganizations = o != null && o.length > 0 ? o.split("||") : [];
 
     let [minGroupSize, maxGroupSize] = gs
       ? gs.split(",").map((val: string) => parseInt(val))
@@ -79,7 +73,6 @@ export const getSubscriptionsAsGuest = (
 
     const findQuery = {
       "subscriptionBrand.type": { $in: subscriptionCategories },
-			...(subscriptionOrganizations.length > 0 && {"organization.name": { $in: subscriptionOrganizations }}),
       price: {
         $gte: minPrice,
         $lte: maxPrice
@@ -114,41 +107,19 @@ export const getSubscriptionsAsGuest = (
           postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
           return;
         }
-        const data = results
-          .map((subscription: any) => {
-            if (!subscription.organization) {
-              return subscription;
-            }
+        const data = results.sort((a: any, b: any) => {
+          switch (sb) {
+            case SORT_BY.DATE_ASC:
+              return a.createdDate - b.createdDate;
+            case SORT_BY.DATE_DES:
+            default:
+              return b.createdDate - a.createdDate;
+          }
+        });
 
-            return {
-              _id: subscription._id,
-              listingDescription: subscription.listingDescription,
-              createdDate: subscription.createdDate,
-              firstName: subscription.firstName,
-              organization: subscription.organization,
-              price: subscription.price,
-              status: subscription.status,
-              subscriptionBrand: subscription.subscriptionBrand,
-              subscriptionBrandname: subscription.subscriptionBrandName,
-              subscriptionCategory: subscription.subscriptionCategory,
-              subscriptionUrl: subscription.subscriptionUrl,
-              otherSubscription: subscription.otherSubscription,
-              potentialLimit: subscription.potentialLimit,
-            };
-          })
-          .sort((a: any, b: any) => {
-            switch (sb) {
-              case SORT_BY.DATE_ASC:
-                return a.createdDate - b.createdDate;
-              case SORT_BY.DATE_DES:
-              default:
-                return b.createdDate - a.createdDate;
-            }
-          });
-
-				if (data.length >= 2) {
-					data.splice(2, 0, Sponsors[0]);
-				}
+        if (data.length >= 2) {
+          data.splice(2, 0, Sponsors[0]);
+        }
 
         db.close();
         postSuccess(postRes, {

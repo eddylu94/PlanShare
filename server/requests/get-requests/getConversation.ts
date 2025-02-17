@@ -2,19 +2,17 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
   SLACK_HOOK,
   slackPostRequest,
-	SlackTitle
+  SlackTitle
 } from "../../utils/utils";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE
 } from "./../../constants";
-import { retrieveOrganizationByDomain } from "../../organizations";
 
 const ObjectId = mongodb.ObjectID;
 
@@ -28,7 +26,6 @@ export const getConversation = (
     .then(res => {
       const [db, findRes] = res;
 
-      const currentUserEmail = findRes.email;
       const currentUserId = findRes._id.toString();
 
       const { userId } = postReq.query;
@@ -53,117 +50,110 @@ export const getConversation = (
               return;
             }
             if (findProfileRes) {
-              const userEmail = findProfileRes.email;
-              const userDomain = getDomain(userEmail);
-
-              const currentUserDomain = getDomain(currentUserEmail);
-
-              if (
-                currentUserDomain === userDomain ||
-                !retrieveOrganizationByDomain(userDomain)
-              ) {
-                dbo
-                  .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
-                  .findOne(
-                    { userIds: { $all: [currentUserId, userId] } },
-                    (findConversationErr, findConversationRes) => {
-                      if (findConversationErr) {
-                        db.close();
-                        postFailure(
-                          postRes,
-                          STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
-                        );
-                        return;
-                      }
-
-                      if (!findConversationRes) {
-                        const conversationData = {
-                          userIds: [currentUserId, userId],
-													host: currentUserId,
-                          messages: [],
-													isPrimaryRead: true,
-													isSecondaryRead: true,
-                        };
-
-                        dbo
-                          .collection(
-                            DATABASE_COLLECTION.CONVERSATIONS_COLLECTION
-                          )
-                          .insertOne(
-                            conversationData,
-                            (insertErr, insertRes) => {
-                              if (insertErr) {
-                                const errorMessage = "Error inserting record";
-                                console.log(errorMessage);
-                                db.close();
-                                postFailure(
-                                  postRes,
-                                  STATUS_MESSAGE.UNKNOWN_ERROR
-                                );
-
-																const supportingText = `
-																	\`\`\`
-																	Request: getConversation
-																	Description: ${errorMessage}
-																	Error message: ${insertErr.message}
-																	\`\`\`
-																`;
-
-                                slackPostRequest(
-                                  SLACK_HOOK.ERRORS,
-																	SlackTitle.NEW_ERROR,
-                                  supportingText,
-                                );
-
-                                return;
-                              }
-
-                              console.log("Conversation created");
-                              db.close();
-                              postSuccess(postRes, {
-                                conversation: {
-                                  conversationId: insertRes.insertedId,
-                                  firstName: findProfileRes.firstName,
-                                  userId: findProfileRes._id.toString(),
-                                  messages: []
-                                }
-                              });
-                            }
-                          );
-
-                        return;
-                      } else {
-												const isHost = currentUserId === findConversationRes.host;
-
-												dbo
-													.collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
-													.updateOne(
-														{ _id: new ObjectId(findConversationRes._id) },
-														{
-															$set: { [isHost ? "isPrimaryRead" : "isSecondaryRead"]: true },
-														},
-													)
-													.then(() => {
-														console.log('Conversation marked as read');
-													})
-													.catch((err) => {
-														console.log('Unable to mark conversation as read', err);
-													});
-
-                        console.log("Conversation retrieved");
-                        db.close();
-                        postSuccess(postRes, {
-                          conversation: {
-                            conversationId: findConversationRes._id,
-                            firstName: findProfileRes.firstName,
-                            userId: findProfileRes._id.toString(),
-                            messages: findConversationRes.messages
-                          }
-                        });
-                      }
+              dbo
+                .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+                .findOne(
+                  { userIds: { $all: [currentUserId, userId] } },
+                  (findConversationErr, findConversationRes) => {
+                    if (findConversationErr) {
+                      db.close();
+                      postFailure(
+                        postRes,
+                        STATUS_MESSAGE.CANNOT_FIND_CONVERSATION
+                      );
+                      return;
                     }
-                  );
-              }
+
+                    if (!findConversationRes) {
+                      const conversationData = {
+                        userIds: [currentUserId, userId],
+                        host: currentUserId,
+                        messages: [],
+                        isPrimaryRead: true,
+                        isSecondaryRead: true
+                      };
+
+                      dbo
+                        .collection(
+                          DATABASE_COLLECTION.CONVERSATIONS_COLLECTION
+                        )
+                        .insertOne(conversationData, (insertErr, insertRes) => {
+                          if (insertErr) {
+                            const errorMessage = "Error inserting record";
+                            console.log(errorMessage);
+                            db.close();
+                            postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+
+                            const supportingText = `
+                              \`\`\`
+                              Request: getConversation
+                              Description: ${errorMessage}
+                              Error message: ${insertErr.message}
+                              \`\`\`
+                            `;
+
+                            slackPostRequest(
+                              SLACK_HOOK.ERRORS,
+                              SlackTitle.NEW_ERROR,
+                              supportingText
+                            );
+
+                            return;
+                          }
+
+                          console.log("Conversation created");
+                          db.close();
+                          postSuccess(postRes, {
+                            conversation: {
+                              conversationId: insertRes.insertedId,
+                              firstName: findProfileRes.firstName,
+                              userId: findProfileRes._id.toString(),
+                              messages: []
+                            }
+                          });
+                        });
+
+                      return;
+                    } else {
+                      const isHost = currentUserId === findConversationRes.host;
+
+                      dbo
+                        .collection(
+                          DATABASE_COLLECTION.CONVERSATIONS_COLLECTION
+                        )
+                        .updateOne(
+                          { _id: new ObjectId(findConversationRes._id) },
+                          {
+                            $set: {
+                              [isHost
+                                ? "isPrimaryRead"
+                                : "isSecondaryRead"]: true
+                            }
+                          }
+                        )
+                        .then(() => {
+                          console.log("Conversation marked as read");
+                        })
+                        .catch(err => {
+                          console.log(
+                            "Unable to mark conversation as read",
+                            err
+                          );
+                        });
+
+                      console.log("Conversation retrieved");
+                      db.close();
+                      postSuccess(postRes, {
+                        conversation: {
+                          conversationId: findConversationRes._id,
+                          firstName: findProfileRes.firstName,
+                          userId: findProfileRes._id.toString(),
+                          messages: findConversationRes.messages
+                        }
+                      });
+                    }
+                  }
+                );
             }
           }
         );
@@ -171,14 +161,14 @@ export const getConversation = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getConversation
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

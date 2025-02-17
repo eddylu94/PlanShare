@@ -34,7 +34,7 @@ interface IFindResult {
   status: string;
   authAttempts: Date[];
   settingEmailNotifications: string;
-	username: string;
+  username: string;
 }
 
 export const SLACK_HOOK = {
@@ -46,56 +46,60 @@ export const SLACK_HOOK = {
     "https://hooks.slack.com/services/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",
   MESSAGES:
     "https://hooks.slack.com/services/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",
-	FEEDBACK:
-		"https://hooks.slack.com/services/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",
+  FEEDBACK:
+    "https://hooks.slack.com/services/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"
 };
 
 const findSlackHookKeyByValue = (value: string) => {
-	const entries = Object.entries(SLACK_HOOK);
+  const entries = Object.entries(SLACK_HOOK);
 
-	for (const entry of entries) {
-		if (entry[1] === value) {
+  for (const entry of entries) {
+    if (entry[1] === value) {
       return entry[0];
     }
-	}
-	
-  return '';
-}
+  }
 
-export const SlackTitle = {
-	NEW_ERROR: ':warning: New error',
-	NEW_USER_REGISTERED: ':new: New user registered',
-	FEEDBACK: ':mailbox_with_mail: Feedback',
-	EMAIL_ADDED: ':inbox_tray: Email added',
-	USER_VALIDATED: ':white_check_mark: User validated',
-	MESSAGE_SENT: ':email: Message sent',
-	LISTING_POSTED: ':tada: Listing posted',
-	LISTING_EDITED: ':pencil2: Listing edited',
+  return "";
 };
 
-const removeLeadingSpaces = (text: string) => text.replace(/^\s+/gm, '');
+export const SlackTitle = {
+  NEW_ERROR: ":warning: New error",
+  NEW_USER_REGISTERED: ":new: New user registered",
+  FEEDBACK: ":mailbox_with_mail: Feedback",
+  EMAIL_ADDED: ":inbox_tray: Email added",
+  USER_VALIDATED: ":white_check_mark: User validated",
+  MESSAGE_SENT: ":email: Message sent",
+  LISTING_POSTED: ":tada: Listing posted",
+  LISTING_EDITED: ":pencil2: Listing edited"
+};
 
-export const slackPostRequest = (slackHook: string, title: string, supporting: string | null) => {
-	let text = title + `\n`;
-	if (supporting != null) {
-		text += removeLeadingSpaces(supporting) + '\n';
-	}
+const removeLeadingSpaces = (text: string) => text.replace(/^\s+/gm, "");
+
+export const slackPostRequest = (
+  slackHook: string,
+  title: string,
+  supporting: string | null
+) => {
+  let text = title + `\n`;
+  if (supporting != null) {
+    text += removeLeadingSpaces(supporting) + "\n";
+  }
 
   request.post(
     {
       url: slackHook,
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text })
     },
     function(err: any, data: any) {
       console.log(data.body);
     }
   );
 
-	logToGoogleSheet(
-		findSlackHookKeyByValue(slackHook),
-		title,
-		supporting != null ? removeLeadingSpaces(supporting) : ''
-	);
+  logToGoogleSheet(
+    findSlackHookKeyByValue(slackHook),
+    title,
+    supporting != null ? removeLeadingSpaces(supporting) : ""
+  );
 };
 
 const SALT_ROUNDS = 10;
@@ -131,7 +135,7 @@ export const authenticate = (
         const errorMessage = "Connection error";
         console.log(errorMessage);
 
-				const supportingText = `
+        const supportingText = `
 					\`\`\`
 					Request: authenticate
 					Description: ${errorMessage}
@@ -139,7 +143,11 @@ export const authenticate = (
 					\`\`\`
 				`;
 
-        slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+        slackPostRequest(
+          SLACK_HOOK.ERRORS,
+          SlackTitle.NEW_ERROR,
+          supportingText
+        );
 
         return;
       }
@@ -160,15 +168,19 @@ export const authenticate = (
               statusMessage: STATUS_MESSAGE.UNKNOWN_ERROR
             });
 
-						const supportingText = `
+            const supportingText = `
 							\`\`\`
 							Request: authenticate
 							Description: ${errorMessage}
 							Error message: ${findErr.message}
 							\`\`\`
 						`;
-						
-            slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+            slackPostRequest(
+              SLACK_HOOK.ERRORS,
+              SlackTitle.NEW_ERROR,
+              supportingText
+            );
 
             return;
           }
@@ -238,11 +250,6 @@ export const generateAuthToken = () => {
     date: new Date().getTime(),
     key: generateAuthKey()
   };
-};
-
-export const getDomain = (emailAddress: string) => {
-  const atSign = emailAddress.indexOf("@");
-  return emailAddress.substring(atSign + 1);
 };
 
 export const getOtherUser = (users: string[], currentUser: string) => {

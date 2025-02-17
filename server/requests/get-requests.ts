@@ -6,11 +6,7 @@ import { getSubscriptions } from "./get-requests/getSubscriptions";
 import { getSubscriptionsAsGuest } from "./get-requests/getSubscriptionsAsGuest";
 import { getSubscription } from "./get-requests/getSubscription";
 import { getSubscriptionAsGuest } from "./get-requests/getSubscriptionAsGuest";
-import { getSubscriptionOrganizations } from "./get-requests/getSubscriptionOrganizations";
-import { getSubscriptionOrganizationsAsGuest } from "./get-requests/getSubscriptionOrganizationsAsGuest";
 import { getProfile } from "./get-requests/getProfile";
-import { getOrganization } from "./get-requests/getOrganization";
-import { getOrganizations } from "./get-requests/getOrganizations";
 import { getSubscriptionsByAuthor } from "./get-requests/getSubscriptionsByAuthor";
 import { getArchivedSubscriptions } from "./get-requests/getArchivedSubscriptions";
 import { getEmailAddress } from "./get-requests/getEmailAddress";
@@ -21,7 +17,7 @@ import { getConversationsList } from "./get-requests/getConversationsList";
 import { getUnreadMessagesCount } from "./get-requests/getUnreadMessagesCount";
 
 const getRequests = {
-	poll,
+  poll,
   getValidationEmail,
   getSubscriptionCategories,
   getSubscriptionBrands,
@@ -29,11 +25,7 @@ const getRequests = {
   getSubscriptionsAsGuest,
   getSubscription,
   getSubscriptionAsGuest,
-	getSubscriptionOrganizations,
-	getSubscriptionOrganizationsAsGuest,
   getProfile,
-  getOrganization,
-	getOrganizations,
   getSubscriptionsByAuthor,
   getArchivedSubscriptions,
   getEmailAddress,
@@ -41,7 +33,7 @@ const getRequests = {
   getConversation,
   getConversationById,
   getConversationsList,
-	getUnreadMessagesCount,
+  getUnreadMessagesCount
 };
 
 export default getRequests;

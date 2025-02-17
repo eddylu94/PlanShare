@@ -2,14 +2,12 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
-	slackPostRequest,
-	SLACK_HOOK,
-	SlackTitle
+  slackPostRequest,
+  SLACK_HOOK,
+  SlackTitle
 } from "../../utils/utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -29,7 +27,6 @@ export const getSubscriptionsByAuthor = (
     .then(res => {
       const [db, findRes] = res;
 
-      const findResEmail = findRes.email;
       const userId = findRes._id;
 
       const { profileUserId } = postReq.query;
@@ -45,105 +42,46 @@ export const getSubscriptionsByAuthor = (
                 postFailure(postRes, STATUS_MESSAGE.PROFILE_NOT_FOUND);
               }
               if (findProfileRes) {
-                const findProfileResEmail = findProfileRes.email;
+                dbo
+                  .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+                  .find({
+                    userId: new ObjectId(profileUserId),
+                    status: SUBSCRIPTION_STATUS.ACTIVE
+                  })
+                  .toArray()
+                  .then(findRes => {
+                    if (!findRes) {
+                      console.log("Unable to find subscriptions");
+                      db.close();
+                      postFailure(
+                        postRes,
+                        STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
+                      );
+                      return;
+                    }
 
-                const currentUserDomain = getDomain(findRes.email);
-
-                const email =
-                  currentUserDomain === getDomain(findProfileResEmail)
-                    ? findProfileResEmail
-                    : undefined;
-
-                if (!email) {
-                  console.log("Not matching organization");
-
-									dbo
-										.collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-										.find({
-											organization: null,
-											userId: new ObjectId(profileUserId),
-											status: SUBSCRIPTION_STATUS.ACTIVE,
-										})
-										.toArray()
-										.then(findRes => {
-											if (!findRes) {
-												console.log("Unable to find subscriptions");
-												db.close();
-												postFailure(
-													postRes,
-													STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-												);
-												return;
-											}
-
-											db.close();
-											postSuccess(postRes, {
-												subscriptions: findRes
-											});
-										})
-										.catch(findErr => {
-											if (findErr) {
-												console.log("Error finding record");
-												db.close();
-												postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-											}
-										});
-                } else {
-									const domain = getDomain(email);
-									const organization = retrieveOrganizationByDomain(domain);
-									const organizationId =
-										organization && organization.organizationId;
-	
-									dbo
-										.collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-										.find({
-											$or: [
-												{ "organization.organizationId": organizationId },
-												{ organization: null },
-											],
-											userId: new ObjectId(profileUserId),
-											status: SUBSCRIPTION_STATUS.ACTIVE,
-										})
-										.toArray()
-										.then(findRes => {
-											if (!findRes) {
-												console.log("Unable to find subscriptions");
-												db.close();
-												postFailure(
-													postRes,
-													STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS
-												);
-												return;
-											}
-	
-											db.close();
-											postSuccess(postRes, {
-												subscriptions: findRes
-											});
-										})
-										.catch(findErr => {
-											if (findErr) {
-												console.log("Error finding record");
-												db.close();
-												postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-											}
-										});
-								}
+                    db.close();
+                    postSuccess(postRes, {
+                      subscriptions: findRes
+                    });
+                  })
+                  .catch(findErr => {
+                    if (findErr) {
+                      console.log("Error finding record");
+                      db.close();
+                      postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
+                    }
+                  });
               }
             }
           );
       } else {
         const dbo = db.db(DATABASE_NAME);
 
-        const domain = getDomain(findResEmail);
-        const organization = retrieveOrganizationByDomain(domain);
-        const organizationId = organization && organization.organizationId;
-
         dbo
           .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
           .find({
             userId: new ObjectId(userId),
-            "organization.organizationId": organizationId,
             status: SUBSCRIPTION_STATUS.ACTIVE
           })
           .toArray()
@@ -172,14 +110,14 @@ export const getSubscriptionsByAuthor = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getSubscriptionsByAuthor
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

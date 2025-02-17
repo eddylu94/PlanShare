@@ -2,14 +2,12 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
-	slackPostRequest,
-	SLACK_HOOK,
-	SlackTitle
+  slackPostRequest,
+  SLACK_HOOK,
+  SlackTitle
 } from "../../utils/utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -28,17 +26,13 @@ export const getProfile = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName, email, joinedDate } = findRes;
+      const { firstName, joinedDate } = findRes;
 
       const { profileUserId } = postReq.query;
 
       if (!profileUserId) {
-        const domain = getDomain(email);
-        const organization = retrieveOrganizationByDomain(domain);
-
         const profileData = {
           firstName,
-          organization,
           joinedDate
         };
 
@@ -58,22 +52,8 @@ export const getProfile = (
               if (findProfileRes) {
                 const { firstName, joinedDate } = findProfileRes;
 
-                const otherUserEmail = findProfileRes.email;
-
-                const currentUserDomain = getDomain(findRes.email);
-
-                const otherUserDomain = getDomain(otherUserEmail);
-
-                let otherUserOrganization;
-                if (currentUserDomain === otherUserDomain) {
-                  otherUserOrganization = retrieveOrganizationByDomain(
-                    otherUserDomain
-                  );
-                }
-
                 const profileData = {
                   firstName,
-                  organization: otherUserOrganization,
                   joinedDate
                 };
 
@@ -88,14 +68,14 @@ export const getProfile = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getProfile
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

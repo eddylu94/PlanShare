@@ -2,14 +2,12 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
-	SLACK_HOOK,
-	SlackTitle,
-	slackPostRequest
+  SLACK_HOOK,
+  SlackTitle,
+  slackPostRequest
 } from "../../utils/utils";
-import { retrieveOrganizationByDomain } from "./../../organizations";
 import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
@@ -26,74 +24,56 @@ export const getSubscription = (
 ) => {
   console.log("Retrieving subscription...");
   authenticate(mongoClient, postReq, postRes)
-		.then(res => {
-			const [db, findRes] = res;
+    .then(res => {
+      const [db, findRes] = res;
 
-			const email = findRes.email;
-			const domain = getDomain(email);
+      const { subscriptionId } = postReq.query;
 
-			const { subscriptionId } = postReq.query;
+      console.log(postReq.query);
 
-			console.log(postReq.query);
+      console.log(subscriptionId);
 
-			console.log(subscriptionId);
+      const dbo = db.db(DATABASE_NAME);
 
-			const dbo = db.db(DATABASE_NAME);
+      return dbo
+        .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
+        .findOne(
+          { _id: new ObjectId(subscriptionId) },
+          (_findErr, subscriptionFindRes) => {
+            if (
+              !(
+                findRes._id.toString() ===
+                  subscriptionFindRes.userId.toString() ||
+                subscriptionFindRes.status === SUBSCRIPTION_STATUS.ACTIVE
+              )
+            ) {
+              console.log("User does not have access to subscription");
+              db.close();
+              postFailure(
+                postRes,
+                STATUS_MESSAGE.USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION
+              );
+              return;
+            }
 
-			return dbo
-				.collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
-				.findOne(
-					{ _id: new ObjectId(subscriptionId) },
-					(findErr, subscriptionFindRes) => {
-						const organization = retrieveOrganizationByDomain(domain);
-						const organizationId = organization && organization.organizationId;
-
-						if (!organizationId === subscriptionFindRes.organizationId) {
-							console.log(
-								"User does not belong in organization of selected subscription"
-							);
-							db.close();
-							postFailure(
-								postRes,
-								STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION
-							);
-							return;
-						}
-
-						if (
-							!(
-								findRes._id.toString() ===
-									subscriptionFindRes.userId.toString() ||
-								subscriptionFindRes.status === SUBSCRIPTION_STATUS.ACTIVE
-							)
-						) {
-							console.log("User does not have access to subscription");
-							db.close();
-							postFailure(
-								postRes,
-								STATUS_MESSAGE.USER_REQUIRES_ACCESS_FOR_SUBSCRIPTION
-							);
-							return;
-						}
-
-						db.close();
-						postSuccess(postRes, {
-							subscriptionData: subscriptionFindRes
-						});
-					}
-				);
-		})
+            db.close();
+            postSuccess(postRes, {
+              subscriptionData: subscriptionFindRes
+            });
+          }
+        );
+    })
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getSubscription
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

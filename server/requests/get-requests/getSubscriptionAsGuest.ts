@@ -5,14 +5,14 @@ import {
   postFailure,
   SLACK_HOOK,
   slackPostRequest,
-	SlackTitle
+  SlackTitle
 } from "../../utils/utils";
 import {
   MONGO_URL,
   MONGO_PREREQUISITIES,
   DATABASE_NAME,
   DATABASE_COLLECTION,
-  STATUS_MESSAGE,
+  STATUS_MESSAGE
 } from "./../../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -29,7 +29,7 @@ export const getSubscriptionAsGuest = (
       const errorMessage = "Connection error";
       console.log(errorMessage);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getSubscriptionsAsGuest
 				Description: ${errorMessage}
@@ -37,11 +37,7 @@ export const getSubscriptionAsGuest = (
 				\`\`\`
 			`;
 
-			slackPostRequest(
-				SLACK_HOOK.ERRORS,
-				SlackTitle.NEW_ERROR,
-				supportingText,
-			);
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
       return;
     }
@@ -58,20 +54,7 @@ export const getSubscriptionAsGuest = (
       .collection(DATABASE_COLLECTION.SUBSCRIPTIONS_COLLECTION)
       .findOne(
         { _id: new ObjectId(subscriptionId) },
-        (findErr, subscriptionFindRes) => {
-          if (subscriptionFindRes.organization) {
-            console.log(
-              "User does not belong in organization of selected subscription"
-            );
-            db.close();
-            postFailure(
-              postRes,
-              STATUS_MESSAGE.USER_NOT_MEMBER_OF_ORGANIZATION,
-              { organization: subscriptionFindRes.organization }
-            );
-            return;
-          }
-
+        (_findErr, subscriptionFindRes) => {
           db.close();
           postSuccess(postRes, {
             subscriptionData: subscriptionFindRes

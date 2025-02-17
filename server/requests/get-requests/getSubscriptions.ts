@@ -2,12 +2,11 @@ import mongodb from "mongodb";
 
 import {
   authenticate,
-  getDomain,
   postSuccess,
   postFailure,
-	slackPostRequest,
-	SlackTitle,
-	SLACK_HOOK
+  slackPostRequest,
+  SlackTitle,
+  SLACK_HOOK
 } from "../../utils/utils";
 import {
   DATABASE_NAME,
@@ -26,13 +25,11 @@ export const getSubscriptions = (
   console.log("Retrieving subscriptions...");
   authenticate(mongoClient, postReq, postRes)
     .then(res => {
-      const [db, findRes] = res;
-      const { email } = findRes;
+      const [db, _findRes] = res;
 
-      const { t, sc, o, gs, sb, da, p } = postReq.query;
+      const { t, sc, gs, sb, da, p } = postReq.query;
 
       const subscriptionCategories = sc.split(",");
-			const subscriptionOrganizations = o != null && o.length > 0 ? o.split("||") : [];
 
       let [minGroupSize, maxGroupSize] = gs
         ? gs.split(",").map((val: string) => parseInt(val))
@@ -49,8 +46,6 @@ export const getSubscriptions = (
         new Date().setDate(new Date().getDate() - parseInt(da) - 1)
       );
 
-      const domain = getDomain(email);
-
       let sort: any;
       switch (sb) {
         case SORT_BY.DATE_ASC:
@@ -63,7 +58,6 @@ export const getSubscriptions = (
 
       const findQuery = {
         "subscriptionBrand.type": { $in: subscriptionCategories },
-				...(subscriptionOrganizations.length > 0 && {"organization.name": { $in: subscriptionOrganizations }}),
         price: {
           $gte: minPrice,
           $lte: maxPrice
@@ -72,11 +66,7 @@ export const getSubscriptions = (
           $lte: new Date(currentDate),
           $gte: new Date(oldestDate)
         },
-        status: SUBSCRIPTION_STATUS.ACTIVE,
-        $or: [
-          { organization: null },
-          { "organization.domains": { $in: [domain] } }
-        ]
+        status: SUBSCRIPTION_STATUS.ACTIVE
       };
 
       const regex = new RegExp(t, "i");
@@ -113,9 +103,9 @@ export const getSubscriptions = (
             }
           });
 
-					if (data.length >= 2) {
-						data.splice(2, 0, Sponsors[0]);
-					}
+          if (data.length >= 2) {
+            data.splice(2, 0, Sponsors[0]);
+          }
 
           db.close();
           postSuccess(postRes, {
@@ -134,14 +124,14 @@ export const getSubscriptions = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getSubscriptions
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };
