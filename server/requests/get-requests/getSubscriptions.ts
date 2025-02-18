@@ -27,7 +27,7 @@ export const getSubscriptions = (
     .then(res => {
       const [db, _findRes] = res;
 
-      const { t, sc, gs, sb, da, p } = postReq.query;
+      const { t, sc, gs, sb, da, p, n } = postReq.query;
 
       const subscriptionCategories = sc.split(",");
 
@@ -66,7 +66,8 @@ export const getSubscriptions = (
           $lte: new Date(currentDate),
           $gte: new Date(oldestDate)
         },
-        status: SUBSCRIPTION_STATUS.ACTIVE
+        status: SUBSCRIPTION_STATUS.ACTIVE,
+        ...(n && { neighborhood: { $in: n.split(",") } })
       };
 
       const regex = new RegExp(t, "i");

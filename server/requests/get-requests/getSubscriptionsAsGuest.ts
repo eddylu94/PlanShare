@@ -42,7 +42,7 @@ export const getSubscriptionsAsGuest = (
       return;
     }
 
-    const { t, sc, o, gs, sb, da, p } = postReq.query;
+    const { t, sc, o, gs, sb, da, p, n } = postReq.query;
 
     const subscriptionCategories = sc.split(",");
 
@@ -73,6 +73,7 @@ export const getSubscriptionsAsGuest = (
 
     const findQuery = {
       "subscriptionBrand.type": { $in: subscriptionCategories },
+      ...(n && { neighborhood: { $in: n.split(",") } }),
       price: {
         $gte: minPrice,
         $lte: maxPrice
