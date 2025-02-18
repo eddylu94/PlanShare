@@ -1,5 +1,6 @@
 import { poll } from "./get-requests/poll";
 import { getValidationEmail } from "./get-requests/getValidationEmail";
+import { getNeighborhoods } from "./get-requests/getNeighborhoods";
 import { getSubscriptionCategories } from "./get-requests/getSubscriptionCategories";
 import { getSubscriptionBrands } from "./get-requests/getSubscriptionBrands";
 import { getSubscriptions } from "./get-requests/getSubscriptions";
@@ -19,6 +20,7 @@ import { getUnreadMessagesCount } from "./get-requests/getUnreadMessagesCount";
 const getRequests = {
   poll,
   getValidationEmail,
+  getNeighborhoods,
   getSubscriptionCategories,
   getSubscriptionBrands,
   getSubscriptions,

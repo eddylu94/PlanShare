@@ -65,7 +65,11 @@ export const MONGO_PREREQUISITIES = {
   useUnifiedTopology: true
 };
 
-// Client-Server constants
+export const NEIGHBORHOODS = {
+  CRESCENT_VILLAGE: "Crescent Village",
+  NORTH_PARK: "North Park",
+  RIVER_VIEW: "River View"
+};
 
 export const SORT_BY = {
   DATE_ASC: "date_asc",
