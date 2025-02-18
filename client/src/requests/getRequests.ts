@@ -3,6 +3,7 @@ import { getConversation } from "./get-requests/getConversation";
 import { getConversationById } from "./get-requests/getConversationById";
 import { getConversationList } from "./get-requests/getConversationList";
 import { getEmailAddress } from "./get-requests/getEmailAddress";
+import { getNeighborhoods } from "./get-requests/getNeighborhoods";
 import { getProfile } from "./get-requests/getProfile";
 import { getSettingEmailNotifications } from "./get-requests/getSettingEmailNotifications";
 import { getSubscription } from "./get-requests/getSubscription";
@@ -19,6 +20,7 @@ export {
   getConversationById,
   getConversationList,
   getEmailAddress,
+  getNeighborhoods,
   getProfile,
   getSettingEmailNotifications,
   getSubscription,

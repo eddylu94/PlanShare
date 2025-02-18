@@ -19,6 +19,7 @@ import { SORT_BY } from "./search-utils";
 import { ISearchFiltersProps } from "./search-utils";
 import { DEVICE_MODE } from "@utils/constants";
 import { useDeviceMode } from "@utils/utils";
+import { Autocomplete, TextField } from "@mui/material";
 
 const FONT_FAMILY =
   "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'sans-serif'";
@@ -26,12 +27,15 @@ const FONT_FAMILY =
 const SearchFilters = (props: ISearchFiltersProps) => {
   const {
     isDrawer,
+    filtersNeighborhoods,
+    filtersSubscriptionNeighborhoods,
     filtersSubscriptionCategories,
     // filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     // filtersDaysActive,
     toggleFiltersSubscriptionCategory,
+    handleNeighborhoodsChange,
     // handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange
@@ -109,6 +113,13 @@ const SearchFilters = (props: ISearchFiltersProps) => {
     color: "#6C5DBD"
   };
 
+  const neighborhoodsOptions = Object.entries(filtersNeighborhoods).map(
+    ([key, value]) => ({
+      label: value,
+      value: key
+    })
+  );
+
   return (
     <Scrollbar
       autoHide
@@ -165,6 +176,51 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                   marks={createMarks([0, 100], true)}
                   min={0}
                   max={100}
+                />
+              </FormControl>
+
+              <FormControl
+                component="fieldset"
+                style={{ flexShrink: 0, marginTop: 20 }}
+              >
+                <FiltersFormLabel label={"Organizations"} />
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={neighborhoodsOptions
+                    .sort((a, b) => {
+                      const labelA = a.label.toUpperCase(); // Ignore case sensitivity
+                      const labelB = b.label.toUpperCase(); // Ignore case sensitivity
+                      if (labelA < labelB) {
+                        return -1;
+                      }
+                      if (labelA > labelB) {
+                        return 1;
+                      }
+                      return 0; // If equal
+                    })
+                    .filter(opt => {
+                      // Remove selected options from options list
+                      const val = filtersSubscriptionNeighborhoods;
+                      return !val
+                        .map(valOpt => valOpt.label)
+                        .includes(opt.label);
+                    })}
+                  getOptionLabel={option => option.label}
+                  filterSelectedOptions
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      size="small"
+                      placeholder={
+                        filtersSubscriptionNeighborhoods.length > 0
+                          ? ""
+                          : "Ex. North Park"
+                      }
+                    />
+                  )}
+                  onChange={(_e, val) => handleNeighborhoodsChange(val)}
+                  value={filtersSubscriptionNeighborhoods}
                 />
               </FormControl>
 

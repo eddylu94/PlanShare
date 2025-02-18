@@ -19,6 +19,14 @@ export interface ISubscriptionBrand {
   logo: string;
 }
 
+export interface INeighborhood {
+  name: string;
+}
+
+export type IFiltersNeighborhood = {
+  [key: string]: string;
+};
+
 export interface IFiltersSubscriptionCategory {
   subscriptionCategoryId: string;
   name: string;

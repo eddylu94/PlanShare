@@ -13,7 +13,8 @@ import Subscription from "@components/Subscription/subscription";
 // API
 import {
   getSubscriptionCategories,
-  getSubscriptions
+  getSubscriptions,
+  getNeighborhoods
 } from "@requests/getRequests";
 import {
   archiveSubscription,
@@ -28,7 +29,8 @@ import {
   log,
   IFiltersSubscriptionCategory,
   ISubscriptionData,
-  useDeviceMode
+  useDeviceMode,
+  IFiltersNeighborhood
 } from "@utils/utils";
 import { ClickEvent, InputChangeEvent } from "@utils/interfaces";
 
@@ -58,10 +60,18 @@ const SearchProvider = (props: ISearchProviderProps) => {
     [] as Array<ISubscriptionData>
   );
 
+  const [filtersNeighborhoods, setFiltersNeighborhoods] = useState<
+    IFiltersNeighborhood
+  >({});
+
   const [
     filtersSubscriptionCategories,
     setFiltersSubscriptionCategories
   ] = useState([] as Array<IFiltersSubscriptionCategory>);
+  const [
+    filtersSubscriptionNeighborhoods,
+    setFiltersSubscriptionNeighborhoods
+  ] = useState<Array<{ label: string; value: string }>>([]);
   const [filtersText, setFiltersText] = useState("");
   const [filtersGroupSize, setFiltersGroupSize] = useState([1, 50]);
   const [filtersPrice, setFiltersPrice] = useState([0, 100]);
@@ -110,6 +120,12 @@ const SearchProvider = (props: ISearchProviderProps) => {
     ) as IFiltersSubscriptionCategory;
     Object.assign(category, { isSelected: !category.isSelected });
     setFiltersSubscriptionCategories(list);
+  };
+
+  const handleNeighborhoodsChange = (
+    val: Array<{ label: string; value: string }>
+  ) => {
+    setFiltersSubscriptionNeighborhoods(val);
   };
 
   const handleTextChange = (event: InputChangeEvent) => {
@@ -175,6 +191,18 @@ const SearchProvider = (props: ISearchProviderProps) => {
     );
   };
 
+  const retrieveNeighborhoodsResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const body = data.body;
+
+      setFiltersNeighborhoods(body.neighborhoods);
+    }
+  };
+
+  const retrieveSubscriptionNeighborhoods = () => {
+    getNeighborhoods(retrieveNeighborhoodsResponseHandler, log);
+  };
+
   const handleArchiveSubscriptionResponseHandler = (data: any) => {
     log(data);
     if (data.statusCode === STATUS_CODE.SUCCESS) {
@@ -238,6 +266,7 @@ const SearchProvider = (props: ISearchProviderProps) => {
       retrieveSubscriptions([
         { t: filtersText },
         { sc }, // Subscription category
+        { n: filtersSubscriptionNeighborhoods.map(n => n.value).join(",") }, // Neighborhoods
         { gs: filtersGroupSize }, // Group size
         { p: filtersPrice }, // Price
         { sb: filtersSortBy }, // Sort by
@@ -249,6 +278,7 @@ const SearchProvider = (props: ISearchProviderProps) => {
     _throttle,
     filtersText,
     filtersSubscriptionCategories,
+    filtersSubscriptionNeighborhoods,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
@@ -258,6 +288,7 @@ const SearchProvider = (props: ISearchProviderProps) => {
   useEffect(() => {
     // retrieveSubscriptions();
     retrieveSubscriptionCategories();
+    retrieveSubscriptionNeighborhoods();
 
     // Render subscription if subscription ID is included in URL
     const params = new URLSearchParams(location.search);
@@ -269,12 +300,15 @@ const SearchProvider = (props: ISearchProviderProps) => {
   }, []);
 
   const searchFilters = {
+    filtersNeighborhoods,
     filtersSubscriptionCategories,
+    filtersSubscriptionNeighborhoods,
     filtersGroupSize,
     filtersPrice,
     filtersSortBy,
     filtersDaysActive,
     toggleFiltersSubscriptionCategory,
+    handleNeighborhoodsChange,
     handleGroupSizeChange,
     handlePriceChange,
     handleSortByChange,
