@@ -1,5 +1,4 @@
 import { signUp } from "./post-requests/signUp";
-import { addEmail } from "./post-requests/addEmail";
 import { submitFeedback } from "./post-requests/submitFeedback";
 import { resendConfirmationCode } from "./post-requests/resendConfirmationCode";
 import { login } from "./post-requests/login";
@@ -15,8 +14,7 @@ import { changeSettingEmailNotifications } from "./post-requests/changeSettingEm
 
 const postRequests = {
   signUp,
-  addEmail,
-	submitFeedback,
+  submitFeedback,
   resendConfirmationCode,
   login,
   changePass,

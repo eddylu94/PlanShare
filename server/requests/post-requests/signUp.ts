@@ -3,7 +3,9 @@ import mongodb from "mongodb";
 import {
   encryptPassword,
   generateAuthToken,
+  generateConfirmationCode,
   postFailure,
+  postSuccess,
   SLACK_HOOK,
   slackPostRequest,
   SlackTitle
@@ -15,8 +17,10 @@ import {
   STATUS_CODE,
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
-  ACCOUNT_STATUS
+  ACCOUNT_STATUS,
+  TITLE
 } from "./../../constants";
+import { EMAIL_SERVICE_EMAIL, transporter } from "../../email-service";
 
 export const signUp = (
   mongoClient: typeof mongodb.MongoClient,
@@ -51,9 +55,10 @@ export const signUp = (
 
     // Verify if user already exists
     const username = obj.username.toLocaleLowerCase();
+    const email = obj.email.toLocaleLowerCase();
     dbo
       .collection(DATABASE_COLLECTION.USERS_COLLECTION)
-      .findOne({ username }, (findErr, findRes) => {
+      .findOne({ $or: [{ username }, { email }] }, (findErr, findRes) => {
         if (findErr) {
           const errorMessage = "Error finding record";
           console.log(errorMessage);
@@ -78,9 +83,19 @@ export const signUp = (
         }
 
         if (!!findRes) {
-          console.log("Username already exists:", username);
+          const existingField =
+            findRes.username === username ? "username" : "email";
+          console.log(
+            `${existingField} already exists:`,
+            existingField === "username" ? username : email
+          );
           db.close();
-          postFailure(postRes, STATUS_MESSAGE.USERNAME_ALREADY_EXISTS);
+          postFailure(
+            postRes,
+            existingField === "username"
+              ? STATUS_MESSAGE.USERNAME_ALREADY_EXISTS
+              : STATUS_MESSAGE.EMAIL_ALREADY_EXISTS
+          );
           return;
         }
 
@@ -103,8 +118,10 @@ export const signUp = (
           if (!hash) {
             return;
           }
-
           obj.pass = hash;
+
+          const confirmationCode = generateConfirmationCode();
+          obj.confirmationCode = confirmationCode;
 
           // Insert user into database
           dbo
@@ -157,6 +174,59 @@ export const signUp = (
                   username: obj.username
                 }
               });
+            })
+            .then(() => {
+              console.log("Email added:", email);
+
+              const supportingText = `
+                \`\`\`
+                User ID: ${findRes._id}
+                \`\`\`
+              `;
+
+              slackPostRequest(
+                SLACK_HOOK.SIGNUPS,
+                SlackTitle.EMAIL_ADDED,
+                supportingText
+              );
+
+              db.close();
+              postSuccess(postRes, {});
+
+              const username = findRes.username;
+
+              const mailSubject = `Welcome to ${TITLE}`;
+              const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your username is:<br /><span style="font-weight: bold;">${username}</span><br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
+
+              const mailOptions = {
+                from: EMAIL_SERVICE_EMAIL,
+                to: email,
+                subject: mailSubject,
+                html: mailMessage
+              };
+
+              let attempts = 0;
+              const SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS = 5;
+
+              const sendEmail = () => {
+                attempts++;
+                transporter.sendMail(mailOptions, function(sendErr, info) {
+                  if (sendErr) {
+                    console.log("Error sending email");
+                    console.log(sendErr);
+                    if (attempts <= SEND_EMAIL_MAX_NUMBER_OF_ATTEMPTS) {
+                      sendEmail();
+                    }
+                  } else {
+                    console.log("Email sent: " + info.response);
+                  }
+                });
+              };
+
+              sendEmail();
+            })
+            .catch((error: any) => {
+              console.log(error);
             });
         };
 
