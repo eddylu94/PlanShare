@@ -165,35 +165,7 @@ export const signUp = (
                 supportingText
               );
 
-              db.close();
-              postRes.json({
-                statusCode: STATUS_CODE.SUCCESS,
-                body: {
-                  userId: insertRes.insertedId,
-                  auth: authToken.key,
-                  username: obj.username
-                }
-              });
-            })
-            .then(() => {
               console.log("Email added:", email);
-
-              const supportingText = `
-                \`\`\`
-                User ID: ${findRes._id}
-                \`\`\`
-              `;
-
-              slackPostRequest(
-                SLACK_HOOK.SIGNUPS,
-                SlackTitle.EMAIL_ADDED,
-                supportingText
-              );
-
-              db.close();
-              postSuccess(postRes, {});
-
-              const username = findRes.username;
 
               const mailSubject = `Welcome to ${TITLE}`;
               const mailMessage = `Thank you for registering for ${TITLE}!<br /><br />Your username is:<br /><span style="font-weight: bold;">${username}</span><br /><br />Your confirmation code is:<br /><span style="font-weight: bold;">${confirmationCode}</span>`;
@@ -224,9 +196,16 @@ export const signUp = (
               };
 
               sendEmail();
-            })
-            .catch((error: any) => {
-              console.log(error);
+
+              db.close();
+              postRes.json({
+                statusCode: STATUS_CODE.SUCCESS,
+                body: {
+                  userId: insertRes.insertedId,
+                  auth: authToken.key,
+                  username: obj.username
+                }
+              });
             });
         };
 
