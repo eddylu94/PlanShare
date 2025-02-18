@@ -89,7 +89,7 @@ const SubscriptionProvider = (props: {
   const {
     subscriptionBrand,
     listingDescription,
-    firstName,
+    username,
     // createdDate,
     price,
     subscriptionUrl,
@@ -169,7 +169,7 @@ const SubscriptionProvider = (props: {
       <div className="subscription-detail subscription-subscription-detail">
         Posted by{" "}
         <Link to={`profile?id=${userId}`}>
-          <span className="subscription-first-name">{firstName}</span>
+          <span className="subscription-first-name">{username}</span>
         </Link>
       </div>
       {/* <div className="subscription-detail subscription-subscription-detail">
@@ -184,7 +184,7 @@ const SubscriptionProvider = (props: {
             to={!userData.user?.userId ? "signup" : `messages?id=${userId}`}
           >
             <button className="subscription-message-button">
-              <span className="b subscription-message-label">{`Message ${firstName}`}</span>
+              <span className="b subscription-message-label">{`Message ${username}`}</span>
               <img
                 alt="Posted date"
                 className="subscription-message-icon"

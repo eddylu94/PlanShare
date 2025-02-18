@@ -126,12 +126,12 @@ const SettingsProvider = (props: { history: History }) => {
       _userData.updateUser({
         userId: "",
         auth: "",
-        firstName: ""
+        username: ""
       });
 
       localStorage.setItem("userId", "");
       localStorage.setItem("auth", "");
-      localStorage.setItem("firstName", "");
+      localStorage.setItem("username", "");
 
       history.push("/signup");
     }

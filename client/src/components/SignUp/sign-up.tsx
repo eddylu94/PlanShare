@@ -25,9 +25,6 @@ const SignUpProvider = (props: { history: History }) => {
     history.push("/search");
   }
 
-  const [firstName, setFirstName] = useState("");
-  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
-
   const [username, setUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(false);
 
@@ -50,10 +47,6 @@ const SignUpProvider = (props: { history: History }) => {
     const name = target.name;
 
     switch (name) {
-      case FORM_INPUT_TYPE.FIRST_NAME:
-        setFirstName(value);
-        setIsFirstNameValid(validateFirstName(value));
-        break;
       case FORM_INPUT_TYPE.USERNAME:
         setUsername(value);
         setIsUsernameValid(validateUsername(value));
@@ -75,11 +68,6 @@ const SignUpProvider = (props: { history: History }) => {
     }
   };
 
-  const validateFirstName = (firstName: string) => {
-    const re = /^[a-zA-Z ]+$/;
-    return re.test(firstName) && !!firstName.trim();
-  };
-
   const validateUsername = (username: string) => {
     const re = /^[a-zA-Z0-9_.-]*$/;
     return re.test(username) && !!username.trim();
@@ -89,7 +77,6 @@ const SignUpProvider = (props: { history: History }) => {
     !!pass2 && pass1 === pass2;
 
   const isFormDisabled = !(
-    isFirstNameValid &&
     isUsernameValid &&
     isPass1Valid &&
     isPass2Valid &&
@@ -109,7 +96,7 @@ const SignUpProvider = (props: { history: History }) => {
         // Update user data for local storage
         localStorage.setItem("userId", newUserData.userId);
         localStorage.setItem("auth", newUserData.auth);
-        localStorage.setItem("firstName", newUserData.firstName);
+        localStorage.setItem("username", newUserData.username);
 
         history.push("/email");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
@@ -141,7 +128,6 @@ const SignUpProvider = (props: { history: History }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!isFormDisabled) {
       signup(
-        firstName,
         username.toLocaleLowerCase(),
         pass1,
         handleSubmitResponseHandler,
@@ -205,15 +191,6 @@ const SignUpProvider = (props: { history: History }) => {
               />
             ) : null}
             <h2 className="signup-form-header">Sign Up</h2>
-            <TextField
-              error={!isFirstNameValid && firstName.length > 0}
-              label="First name"
-              name={FORM_INPUT_TYPE.FIRST_NAME}
-              value={firstName}
-              onChange={handleInputChange}
-              margin="dense"
-              autoComplete="off"
-            />
             <TextField
               error={!isUsernameValid && username.length > 0}
               label="Username"

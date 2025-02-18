@@ -49,12 +49,12 @@ const NavBar = (props: INavBarProps) => {
     userData.updateUser({
       userId: "",
       auth: "",
-      firstName: ""
+      username: ""
     });
 
     localStorage.setItem("userId", "");
     localStorage.setItem("auth", "");
-    localStorage.setItem("firstName", "");
+    localStorage.setItem("username", "");
 
     event.preventDefault();
     history.push("/signup");
@@ -129,7 +129,7 @@ const NavBar = (props: INavBarProps) => {
                     className="nav-bar-profile-picture"
                     src="/profile_picture_placeholder.png"
                   />
-                  <span className="navbar-first-name">{user?.firstName}</span>
+                  <span className="navbar-first-name">{user?.username}</span>
                 </div>
                 <ul className="navbar-profile-menu">
                   <li>

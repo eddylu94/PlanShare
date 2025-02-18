@@ -5,7 +5,7 @@ import { log } from "@utils/utils";
 export type UserDataType = {
   userId: string | null;
   auth: string | null;
-  firstName: string | null;
+  username: string | null;
 };
 
 export interface IUserContext {
@@ -20,9 +20,9 @@ export const UserContextProvider = (props: { children: any }) => {
 
   const userId = localStorage.getItem("userId");
   const auth = localStorage.getItem("auth");
-  const firstName = localStorage.getItem("firstName");
+  const username = localStorage.getItem("username");
 
-  const [user, setUser] = useState({ userId, auth, firstName });
+  const [user, setUser] = useState({ userId, auth, username });
 
   const updateUser = (userData: UserDataType) => {
     setUser(userData);

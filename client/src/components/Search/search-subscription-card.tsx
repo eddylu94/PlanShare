@@ -42,7 +42,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     _id,
     subscriptionBrand,
     listingDescription,
-    firstName,
+    username,
     // createdDate,
     price,
     userId,
@@ -78,7 +78,7 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     />
   );
 
-  const name = <span className="b">{firstName}</span>;
+  const name = <span className="b">{username}</span>;
   const author = userId ? (
     <Link to={`profile?id=${userId}`}>{name}</Link>
   ) : (

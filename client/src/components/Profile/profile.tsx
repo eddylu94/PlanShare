@@ -45,7 +45,7 @@ const ProfileProvider = (props: { history: History; location: any }) => {
 
   const [selectedSubscription, setSelectedSubscription] = useState("");
 
-  const [firstName, setFirstName] = useState("");
+  const [username, setUsername] = useState("");
   const [joinedDate, setJoinedDate] = useState(-1);
 
   const [authoredSubscriptions, setAuthoredSubscriptions] = useState(
@@ -77,7 +77,7 @@ const ProfileProvider = (props: { history: History; location: any }) => {
     if (profileData) {
       log(profileData);
 
-      setFirstName(profileData.firstName);
+      setUsername(profileData.username);
       setJoinedDate(profileData.joinedDate);
       setIsRetrievedProfileDirty(true);
     }
@@ -297,7 +297,7 @@ const ProfileProvider = (props: { history: History; location: any }) => {
                 src="/profile_picture_placeholder.png"
               />
               <div className="profile-name-and-joined-date">
-                <div className="profile-first-name">{firstName}</div>
+                <div className="profile-first-name">{username}</div>
               </div>
             </div>
             {isDifferentUser ? (
@@ -306,7 +306,7 @@ const ProfileProvider = (props: { history: History; location: any }) => {
                 <div className="profile-message-link-wrapper">
                   <Link to={`messages?id=${profileUserId}`}>
                     <button className="profile-message-button">
-                      {`Message ${firstName}`}
+                      {`Message ${username}`}
                       <img
                         alt="Posted date"
                         className="profile-message-icon"

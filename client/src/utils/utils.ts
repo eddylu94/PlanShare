@@ -41,7 +41,7 @@ export interface ISubscriptionData {
   listingDescription: string;
   price: number;
   userId: string;
-  firstName: string;
+  username: string;
   createdDate: string;
   subscriptionUrl?: string;
   otherSubscription?: string;
@@ -55,19 +55,19 @@ export interface IMessageData {
   userId: string;
   date: Date;
   message: string;
-  firstName: string;
+  username: string;
 }
 
 export interface IConversationData {
   conversationId: string;
-  firstName: string;
+  username: string;
   userId: string;
   messages: IMessageData[];
 }
 
 export interface IConversationSummary {
   conversationId: string;
-  firstName: string;
+  username: string;
   userId: string;
   lastMessage: IMessageData;
   isRead: boolean;

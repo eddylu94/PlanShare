@@ -51,7 +51,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     [] as IConversationSummary[]
   );
 
-  const [firstName, setFirstName] = useState("");
+  const [username, setUsername] = useState("");
   const [messages, setMessages] = useState([] as IMessageData[]);
   const [text, setText] = useState("");
 
@@ -185,7 +185,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
       log(conversation);
       setConversationId(conversation.conversationId);
       setInitialConversationId(conversation.conversationId);
-      setFirstName(conversation.firstName);
+      setUsername(conversation.username);
       setOtherUserId(conversation.userId);
       setMessages(conversation.messages);
 
@@ -218,7 +218,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
 
       setConversationId(conversation.conversationId);
       setMessages(conversation.messages);
-      setFirstName(conversation.firstName);
+      setUsername(conversation.username);
       setOtherUserId(conversation.userId);
     }
   };
@@ -349,12 +349,12 @@ const MessagesProvider = (props: { history: History; location: any }) => {
     conversation: IConversationSummary,
     index: number
   ) => {
-    const { firstName, lastMessage } = conversation;
+    const { username, lastMessage } = conversation;
     const conversationSummaryConversationId = conversation.conversationId;
 
     const lastMessageComponent = lastMessage ? (
       <>
-        <div className="message-summary-message">{`${lastMessage.firstName}: ${lastMessage.message}`}</div>
+        <div className="message-summary-message">{`${lastMessage.username}: ${lastMessage.message}`}</div>
         <div className="message-summary-date">
           {moment(lastMessage.date).format("lll")}
         </div>
@@ -395,7 +395,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
             className="conversation-header-profile-picture"
             src="/profile_picture_placeholder.png"
           />
-          <span className="conversation-header-first-name">{firstName}</span>
+          <span className="conversation-header-first-name">{username}</span>
         </div>
         {lastMessageComponent}
       </div>
@@ -417,7 +417,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
             <Conversation
               isConversationModalOpen={conversationId !== ""}
               currentUserId={currentUserId}
-              firstName={firstName}
+              username={username}
               userId={otherUserId}
               messages={messages}
               text={text}
@@ -439,7 +439,7 @@ const MessagesProvider = (props: { history: History; location: any }) => {
         {conversationId !== "" && deviceMode !== DEVICE_MODE.MOBILE && (
           <Conversation
             currentUserId={currentUserId}
-            firstName={firstName}
+            username={username}
             userId={otherUserId}
             messages={messages}
             text={text}
