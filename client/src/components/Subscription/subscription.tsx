@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 // import moment from "moment";
-import LockIcon from "@mui/icons-material/Lock";
 import Tooltip from "@mui/material/Tooltip";
 
 // API
@@ -15,7 +14,7 @@ import {
 // Utilities
 import { UserDataContext } from "user-context-provider";
 import { log } from "@utils/utils";
-import { OTHER_BRANDS, STATUS_CODE, STATUS_MESSAGE } from "@utils/constants";
+import { OTHER_BRANDS, STATUS_CODE } from "@utils/constants";
 import { ClickEvent } from "@utils/interfaces";
 
 const SubscriptionProvider = (props: {

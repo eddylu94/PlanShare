@@ -5,9 +5,6 @@ import { History } from "history";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
 
 // API
 import {
@@ -26,10 +23,6 @@ import {
   ISubscriptionBrand,
   isValidURL
 } from "@utils/utils";
-
-const ListingVisibility = {
-  PUBLIC: "PUBLIC"
-};
 
 const isDescriptionValid = (description: string) => description.length <= 1000;
 
@@ -367,12 +360,6 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     "CHASE_SAPPHIRE_RESERVE_REFERRAL",
     "AMEX_PLATINUM_REFERRAL"
   ].includes(subscriptionBrandSelection.subscriptionBrandId);
-
-  const filtersRadioStyles = {
-    padding: 0,
-    margin: "5px 5px 5px 20px",
-    color: "#6C5DBD"
-  };
 
   return isRetrievedListingCreationDataDirty ? (
     <div className="page-container" style={{ alignItems: "center" }}>

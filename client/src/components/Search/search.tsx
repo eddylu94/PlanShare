@@ -1,6 +1,6 @@
 // Third-party libraries
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Scrollbars from "react-custom-scrollbars";
 import { History } from "history";
 
@@ -43,8 +43,6 @@ const SearchProvider = (props: ISearchProviderProps) => {
   const { history, location } = props;
 
   const _userData = useContext(UserDataContext);
-
-  const isUser = !!_userData.user?.userId;
 
   let _throttle = useRef(null as any);
 
