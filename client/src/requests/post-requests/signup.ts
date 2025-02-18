@@ -3,6 +3,7 @@ import { basePostRequest } from "base-requests";
 
 export const signup = (
   username: string,
+  email: string,
   pass: string,
   responseHandler: ResponseHandler,
   errorHandler: ErrorHandler
@@ -11,6 +12,7 @@ export const signup = (
     "signup",
     {
       username,
+      email,
       pass
     },
     responseHandler,

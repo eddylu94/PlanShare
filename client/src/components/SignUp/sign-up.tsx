@@ -28,6 +28,9 @@ const SignUpProvider = (props: { history: History }) => {
   const [username, setUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(false);
 
+  const [email, setEmail] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(false);
+
   const [pass1, setPass1] = useState("");
   const [isPass1Valid, setIsPass1Valid] = useState(false);
 
@@ -51,6 +54,10 @@ const SignUpProvider = (props: { history: History }) => {
         setUsername(value);
         setIsUsernameValid(validateUsername(value));
         break;
+      case FORM_INPUT_TYPE.EMAIL:
+        setEmail(value);
+        setIsEmailValid(validateEmail(value));
+        break;
       case FORM_INPUT_TYPE.PASS1:
         setPass1(value);
         setIsPass1Valid(validatePass(value));
@@ -73,11 +80,20 @@ const SignUpProvider = (props: { history: History }) => {
     return re.test(username) && !!username.trim();
   };
 
+  const validateEmail = (email: string) => {
+    // Regular expression for a simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Test the email against the regular expression
+    return email.length > 0 && email.length < 30 && emailRegex.test(email);
+  };
+
   const validatePass2 = (pass1: string, pass2: string) =>
     !!pass2 && pass1 === pass2;
 
   const isFormDisabled = !(
     isUsernameValid &&
+    isEmailValid &&
     isPass1Valid &&
     isPass2Valid &&
     termsOfUseAcknowledged
@@ -98,7 +114,7 @@ const SignUpProvider = (props: { history: History }) => {
         localStorage.setItem("auth", newUserData.auth);
         localStorage.setItem("username", newUserData.username);
 
-        history.push("/email");
+        history.push("/validate");
       } else if (res.statusCode === STATUS_CODE.FAILURE) {
         let errorMessage;
         switch (res.statusMessage) {
@@ -129,6 +145,7 @@ const SignUpProvider = (props: { history: History }) => {
     if (!isFormDisabled) {
       signup(
         username.toLocaleLowerCase(),
+        email.toLocaleLowerCase(),
         pass1,
         handleSubmitResponseHandler,
         log
@@ -201,6 +218,20 @@ const SignUpProvider = (props: { history: History }) => {
               }
               name={FORM_INPUT_TYPE.USERNAME}
               value={username}
+              onChange={handleInputChange}
+              margin="dense"
+              autoComplete="off"
+            />
+            <TextField
+              error={!isEmailValid && email.length > 0}
+              label="Email"
+              helperText={
+                !isEmailValid && email.length > 0
+                  ? "Email must be valid"
+                  : undefined
+              }
+              name={FORM_INPUT_TYPE.EMAIL}
+              value={email}
               onChange={handleInputChange}
               margin="dense"
               autoComplete="off"

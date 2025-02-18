@@ -49,7 +49,7 @@ const Validate = (props: { history: History }) => {
   const retrieveValidationEmailResponseHandler = (data: any) => {
     const email = data.body.email;
     if (!email) {
-      history.push("/email");
+      history.push("/signup");
     } else {
       setValidationEmail(email);
     }
