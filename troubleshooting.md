@@ -36,12 +36,12 @@ If the following error appears:
   ^
 
 RpcIpcMessagePortClosedError: Process 21317 exited [SIGKILL].
-    at /root/Project%203632/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:19:23
+    at /root/PlanShare/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:19:23
     at Generator.next (<anonymous>)
-    at /root/Project%203632/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:8:71
+    at /root/PlanShare/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:8:71
     at new Promise (<anonymous>)
-    at __awaiter (/root/Project%203632/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:4:12)
-    at ChildProcess.handleExit (/root/Project%203632/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:18:42)
+    at __awaiter (/root/PlanShare/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:4:12)
+    at ChildProcess.handleExit (/root/PlanShare/client/node_modules/fork-ts-checker-webpack-plugin/lib/rpc/rpc-ipc/RpcIpcMessagePort.js:18:42)
     at ChildProcess.emit (events.js:376:20)
     at Process.ChildProcess._handle.onexit (internal/child_process.js:277:12) {
   code: null,
