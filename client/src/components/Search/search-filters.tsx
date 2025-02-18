@@ -183,7 +183,7 @@ const SearchFilters = (props: ISearchFiltersProps) => {
                 component="fieldset"
                 style={{ flexShrink: 0, marginTop: 20 }}
               >
-                <FiltersFormLabel label={"Organizations"} />
+                <FiltersFormLabel label={"Communities"} />
                 <Autocomplete
                   multiple
                   id="tags-outlined"

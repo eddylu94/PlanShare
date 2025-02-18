@@ -48,7 +48,8 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     userId,
     otherSubscription,
     potentialLimit,
-    sponsor
+    sponsor,
+    neighborhoodName
   } = subscription;
 
   const [isHoverArchiveButton, setIsHoverArchiveButton] = useState(false);
@@ -89,7 +90,15 @@ const SearchSubscriptionCard = (props: ISearchSubscriptionCardProps) => {
     <div className="subscription-card-author">
       {!isProfile && (
         <>
-          by <div className={"subscription-author-detail"}>{author}</div>
+          by{" "}
+          <div className={"subscription-author-detail"}>
+            {author}
+            {neighborhoodName != null && (
+              <span className="subscription-card-neighborhood-tag">
+                {neighborhoodName}
+              </span>
+            )}
+          </div>
         </>
       )}
     </div>

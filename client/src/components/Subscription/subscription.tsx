@@ -94,7 +94,9 @@ const SubscriptionProvider = (props: {
     price,
     subscriptionUrl,
     userId,
-    otherSubscription
+    otherSubscription,
+    neighborhood,
+    neighborhoodName
   } = subscriptionData;
 
   const name = OTHER_BRANDS.includes(subscriptionBrand.subscriptionBrandId)
@@ -199,6 +201,10 @@ const SubscriptionProvider = (props: {
       <div className="subscription-detail subscription-subscription-detail">
         <span className="subscription-detail-bold">${price.toFixed(2)}</span>{" "}
         <span>per person</span>
+      </div>
+      <div className="subscription-label">Community</div>
+      <div className="subscription-detail">
+        <span>{neighborhoodName ?? "---"}</span>
       </div>
       <div className="subscription-label">Description</div>
       <div className="subscription-detail">

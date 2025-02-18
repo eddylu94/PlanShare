@@ -8,6 +8,7 @@ import Alert from "@mui/material/Alert";
 
 // API
 import {
+  getNeighborhoods,
   getSubscription,
   getSubscriptionBrands,
   getSubscriptionCategories
@@ -21,7 +22,8 @@ import {
   log,
   ISubscriptionCategory,
   ISubscriptionBrand,
-  isValidURL
+  isValidURL,
+  IFiltersNeighborhood
 } from "@utils/utils";
 
 const isDescriptionValid = (description: string) => description.length <= 1000;
@@ -71,6 +73,18 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     isDisplaySubscriptionUrlErrorLabel,
     setIsDisplaySubscriptionUrlErrorLabel
   ] = useState(false);
+
+  const [filtersNeighborhoods, setFiltersNeighborhoods] = useState<
+    IFiltersNeighborhood
+  >({});
+
+  const [neighborhoodSelection, setNeighborhoodSelection] = useState<
+    | {
+        label: string;
+        value: string;
+      }
+    | undefined
+  >(undefined);
 
   const [formValues, setFormValues] = useState({
     otherSubscription: "",
@@ -189,6 +203,9 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
       subscriptionUrl: formValues.subscriptionUrl,
       listingDescription: formValues.listingDescription,
       price: formValues.price,
+      ...(neighborhoodSelection && {
+        neighborhood: neighborhoodSelection.value
+      }),
       ...(subscriptionId && { subscriptionId }),
       ...(isOtherInputDisplayed && {
         otherSubscription: formValues.otherSubscription
@@ -208,6 +225,18 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
     e.preventDefault();
   };
 
+  const retrieveNeighborhoodsResponseHandler = (data: any) => {
+    if (data.statusCode === STATUS_CODE.SUCCESS) {
+      const body = data.body;
+
+      setFiltersNeighborhoods(body.neighborhoods);
+    }
+  };
+
+  const retrieveSubscriptionNeighborhoods = () => {
+    getNeighborhoods(retrieveNeighborhoodsResponseHandler, log);
+  };
+
   useEffect(() => {
     setIsDisplaySubscriptionUrlErrorLabel(
       !!formValues.subscriptionUrl && !isSubscriptionUrlValid
@@ -216,6 +245,7 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
 
   useEffect(() => {
     retrieveSubscriptionCategories();
+    retrieveSubscriptionNeighborhoods();
     // eslint-disable-next-line
   }, []);
 
@@ -309,6 +339,51 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
         }}
         value={subscriptionCategorySelection.name}
         renderInput={params => <TextField {...params} placeholder="Category" />}
+      />
+    );
+  };
+
+  const renderSubscriptionNeighborhoodDropdown = () => {
+    if (
+      !(filtersNeighborhoods && Object.keys(filtersNeighborhoods).length > 0)
+    ) {
+      return null;
+    }
+
+    const neighborhoodsOptions = Object.entries(filtersNeighborhoods).map(
+      ([key, value]) => ({
+        label: value,
+        value: key
+      })
+    );
+
+    return (
+      <Autocomplete
+        disablePortal
+        disableClearable
+        options={neighborhoodsOptions.sort((a, b) => {
+          const labelA = a.label.toUpperCase(); // Ignore case sensitivity
+          const labelB = b.label.toUpperCase(); // Ignore case sensitivity
+          if (labelA < labelB) {
+            return -1;
+          }
+          if (labelA > labelB) {
+            return 1;
+          }
+          return 0; // If equal
+        })}
+        onChange={(_e, value) => {
+          const neighborhood = neighborhoodsOptions.find(
+            neighborhood => value === neighborhood
+          );
+          if (neighborhood) {
+            setNeighborhoodSelection(neighborhood);
+          }
+        }}
+        value={neighborhoodSelection}
+        renderInput={params => (
+          <TextField {...params} placeholder="North Park" />
+        )}
       />
     );
   };
@@ -448,6 +523,14 @@ const CreateListingProvider = (props: { history: History; location: any }) => {
               })
             }
           />
+        </div>
+
+        <div
+          className="form-field subscription-field"
+          style={{ marginLeft: 0, width: "100%" }}
+        >
+          <FormLabel label="Community (optional):" />
+          {renderSubscriptionNeighborhoodDropdown()}
         </div>
 
         <div className="form-field">

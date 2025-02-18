@@ -54,6 +54,8 @@ export interface ISubscriptionData {
   subscriptionUrl?: string;
   otherSubscription?: string;
   potentialLimit?: boolean;
+  neighborhood?: string;
+  neighborhoodName?: string;
   sponsor?: {
     src: string;
   };

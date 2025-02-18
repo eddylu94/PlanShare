@@ -348,6 +348,14 @@ const SearchProvider = (props: ISearchProviderProps) => {
         })
   };
 
+  const neightborhoodsMap = subscriptionData.reduce((map, subscription) => {
+    if (subscription.neighborhood) {
+      return Object.assign(map, { [subscription.neighborhood]: 1 });
+    }
+    return map;
+  }, {});
+  const numberOfNeighborhoods = Object.keys(neightborhoodsMap).length;
+
   const closePane = () => {
     retrieveSubscriptionCategories();
     setSelectedSubscription("");
@@ -427,6 +435,20 @@ const SearchProvider = (props: ISearchProviderProps) => {
                   </button>
                 </div>
               </div>
+            </div>
+            <div
+              className="search-number-of-results flex-horizontal-centered"
+              style={{ maxHeight: 30, height: 30 }}
+            >
+              <span className="b" style={{ marginRight: 5 }}>
+                {subscriptionData.filter(sub => !sub.sponsor).length} recent
+                listings
+              </span>{" "}
+              found across{" "}
+              <span className="b" style={{ marginLeft: 5 }}>
+                {numberOfNeighborhoods}{" "}
+                {numberOfNeighborhoods === 1 ? "community" : "communities"}
+              </span>
             </div>
             <Scrollbars
               autoHide={deviceMode === DEVICE_MODE.MOBILE}
