@@ -7,73 +7,71 @@ const Privacy = () => {
       <h3 className="terms-of-use-header">Privacy Policy</h3>
       <div className="terms-of-use-content">
         <p>
-          This privacy policy ("policy") will help you understand how PlanShare
-          ("us", "we", "our") uses and protects the data you provide to us when
-          you visit and use PlanShare.io ("website", "service").
+          This Privacy Policy explains how PlanShare ("we", "us", "our")
+          collects, uses, and protects your personal data when you visit and use
+          PlanShare.io ("website", "service").
         </p>
 
         <p>
-          We reserve the right to change this policy at any given time, of which
-          you will be promptly updated. If you want to make sure that you are up
-          to date with the latest changes, we advise you to frequently visit
-          this page.
+          We may update this policy at any time, and any changes will be posted
+          here. We encourage you to check this page periodically for updates.
         </p>
 
-        <p className="b">What User Data We Collect</p>
+        <h4>1. Data We Collect</h4>
+        <p>When you use PlanShare, we may collect the following information:</p>
+        <ul>
+          <li>Your first name, username, and email address.</li>
+          <li>Subscription preferences and other information you provide.</li>
+          <li>Usage data, such as browsing behavior on our website.</li>
+        </ul>
 
-        <p>When you visit the website, we may collect the following data:</p>
+        <h4>2. How We Use Your Data</h4>
+        <p>We collect your data to:</p>
+        <ul>
+          <li>Enhance and personalize your user experience.</li>
+          <li>Improve our services and website functionality.</li>
+          <li>Analyze website traffic and user behavior.</li>
+          <li>
+            Communicate updates, promotions, or important notices (only if you
+            opt-in).
+          </li>
+        </ul>
 
+        <h4>3. Data Protection & Security</h4>
         <p>
-          Your first name, username, and email address. Other information such
-          as subscription preferences. Data profile regarding your online
-          behavior on our website. Why We Collect Your Data
+          We take data security seriously and use industry-standard measures to
+          prevent unauthorized access, data breaches, and misuse of your
+          personal information.
         </p>
 
-        <p>We are collecting your data for several reasons:</p>
-
+        <h4>4. Third-Party Links</h4>
         <p>
-          To better understand your needs. To improve our services and products.
-          To customize our website according to your online behavior and
-          personal preferences.
+          Our website may contain links to third-party websites. We are not
+          responsible for their privacy policies or practices. We recommend
+          reviewing their privacy policies before providing any personal
+          information.
         </p>
 
-        <p className="b">Safeguarding and Securing the Data</p>
+        <h4>5. Controlling Your Personal Data</h4>
+        <p>You have the right to limit the collection and use of your data:</p>
+        <ul>
+          <li>
+            When filling out forms, check for opt-out options where available.
+          </li>
+          <li>
+            If you have previously shared your data and wish to restrict its
+            use, contact us, and we will accommodate your request.
+          </li>
+          <li>
+            We do not sell, lease, or distribute your personal information to
+            third parties unless legally required.
+          </li>
+        </ul>
 
         <p>
-          PlanShare is committed to securing your data and keeping it
-          confidential. PlanShare has done all in its power to prevent data
-          theft, unauthorized access, and disclosure by implementing the latest
-          technologies and software, which help us safeguard all the information
-          we collect online.
-        </p>
-
-        <p className="b">Links to Other Websites</p>
-
-        <p>
-          Our website contains links that lead to other websites. If you click
-          on these links PlanShare is not held responsible for your data and
-          privacy protection. Visiting those websites is not governed by this
-          privacy policy agreement. Make sure to read the privacy policy
-          documentation of the website you go to from our website.
-        </p>
-
-        <p className="b">Restricting the Collection of your Personal Data</p>
-
-        <p>
-          At some point, you might wish to restrict the use and collection of
-          your personal data. You can achieve this by doing the following:
-        </p>
-
-        <p>
-          When you are filling the forms on the website, make sure to check if
-          there is a box which you can leave unchecked, if you don't want to
-          disclose your personal information. If you have already agreed to
-          share your information with us, feel free to contact us via email and
-          we will be more than happy to change this for you. PlanShare will not
-          lease, sell or distribute your personal information to any third
-          parties, unless we have your permission. We might do so if the law
-          forces us. Your personal information will be used when we need to send
-          you promotional materials if you agree to this privacy policy.
+          By using PlanShare, you acknowledge and agree to this Privacy Policy.
+          If you have any questions or concerns, please contact us at{" "}
+          <a href="mailto:admin@planshare.io">admin@planshare.io</a>.
         </p>
       </div>
     </div>

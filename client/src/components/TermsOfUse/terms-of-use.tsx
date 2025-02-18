@@ -28,118 +28,121 @@ const TermsOfUseDialog = (
           <h3 className="terms-of-use-header">Terms of Use</h3>
           <div className="terms-of-use-content">
             <p>
-              Please read these terms of service ("terms", "terms of service")
-              carefully before using PlanShare.io (the "service") operated by
-              Planshare ("us", 'we", "our").
+              Welcome to PlanShare! By using our website (PlanShare.io), you
+              agree to the following Terms of Use. Please read them carefully.
+              If you do not agree, do not use our services.
             </p>
 
-            <p className="b">Conditions of Use</p>
-
+            <h4>1. About PlanShare</h4>
             <p>
-              We will provide their services to you, which are subject to the
-              conditions stated below in this document. Every time you visit
-              this website and use its services, you accept the following
-              conditions. This is why we urge you to read them carefully.
+              PlanShare is a <strong>classifieds platform</strong> where users
+              can post and find cost-sharing opportunities for subscriptions,
+              group deliveries, and other shared services.{" "}
+              <strong>
+                We do not facilitate payments or enforce agreements between
+                users.
+              </strong>
+            </p>
+
+            <h4>2. User Responsibilities</h4>
+            <ul>
+              <li>
+                <strong>Compliance with Provider Terms:</strong> Some service
+                providers restrict sharing (e.g., streaming services). Users
+                must ensure their listings comply with provider terms. PlanShare
+                is not responsible for violations.
+              </li>
+              <li>
+                <strong>Honest and Legal Use:</strong> Users must not post
+                false, misleading, or illegal listings.
+              </li>
+              <li>
+                <strong>Independent Transactions:</strong> Payments, agreements,
+                and disputes must be handled directly between users. PlanShare
+                does not process payments or mediate disputes.
+              </li>
+            </ul>
+
+            <h4>3. Privacy Policy</h4>
+            <p>
+              Before using PlanShare, please review our{" "}
+              <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                Privacy Policy
+              </a>{" "}
+              to understand how we handle your data.
+            </p>
+
+            <h4>4. Content Ownership & Copyright</h4>
+            <ul>
+              <li>
+                All content on PlanShare (text, images, logos, etc.) belongs to
+                PlanShare or respective content creators.
+              </li>
+              <li>
+                By posting content, users grant PlanShare a{" "}
+                <strong>non-exclusive, royalty-free, worldwide license</strong>{" "}
+                to use, modify, and display it.
+              </li>
+            </ul>
+
+            <h4>5. Communications</h4>
+            <p>
+              By using PlanShare, you consent to receive{" "}
+              <strong>electronic communications</strong> from us, including
+              emails and notices on our website.
+            </p>
+
+            <h4>6. Acceptable Use Policy</h4>
+            <p>
+              Users may <strong>not</strong> post content that is:
+            </p>
+            <ul>
+              <li>
+                Illegal, defamatory, or infringing on intellectual property
+                rights.
+              </li>
+              <li>Spam, commercial solicitations, or malware.</li>
+              <li>Threatening, abusive, or harassing to others.</li>
+            </ul>
+            <p>
+              We reserve the right to{" "}
+              <strong>remove content or suspend accounts</strong> that violate
+              these terms.
+            </p>
+
+            <h4>7. Account Security</h4>
+            <p>
+              Users are responsible for maintaining the{" "}
+              <strong>confidentiality</strong> of their account credentials.
+              PlanShare is not liable for unauthorized account access.
+            </p>
+
+            <h4>8. Disputes & Liability</h4>
+            <ul>
+              <li>
+                PlanShare is <strong>not responsible</strong> for user
+                transactions, agreements, or disputes.
+              </li>
+              <li>
+                Users agree that any disputes related to PlanShare will be{" "}
+                <strong>governed by U.S. law</strong> and handled in applicable
+                state or federal courts.
+              </li>
+            </ul>
+
+            <h4>9. Changes to Terms</h4>
+            <p>
+              We may update these Terms of Use at any time. Continued use of
+              PlanShare after changes constitutes acceptance of the new terms.
             </p>
 
             <p>
-              <Link to="/info" target="_blank" rel="noopener noreferrer">
-                Certain subscription providers
-              </Link>{" "}
-              restrict sharing of their services. It is the user's responsiblity
-              to ensure that their subscription listings do not violate their
-              provider's terms of use. PlanShare is not responsible for any
-              users that violate agreements with their subscription providers.
-            </p>
-
-            <p className="b">Privacy Policy</p>
-
-            <p>
-              Before you continue using our website we advise you to read our{" "}
-              <Link to="/privacy" target="_blank" rel="noopener noreferrer">
-                privacy policy
-              </Link>{" "}
-              regarding our user data collection. It will help you better
-              understand our practices.
-            </p>
-
-            <p className="b">Copyright</p>
-
-            <p>
-              Content published on this website (digital downloads, images,
-              texts, graphics, logos) is the property of PlanShare and/or its
-              content creators.
-            </p>
-
-            <p className="b">Communications</p>
-
-            <p>
-              The entire communication with us is electronic. Every time you
-              send us an email or visit our website, you are going to be
-              communicating with us. You hereby consent to receive
-              communications from us. If you subscribe to the news on our
-              website, you are going to receive regular emails from us. We will
-              continue to communicate with you by posting notices on our website
-              and by sending you emails. You also agree that all notices,
-              disclosures, agreements and other communications we provide to you
-              electronically meet the legal requirements that such
-              communications be in writing.
-            </p>
-
-            <p className="b">Applicable Law</p>
-
-            <p>
-              By visiting this website, you agree that the laws of the United
-              States, without regard to principles of conflict laws, will govern
-              these terms of service, or any dispute of any sort that might come
-              between PlanShare and you, or its business partners and
-              associates.
-            </p>
-
-            <p className="b">Disputes</p>
-
-            <p>
-              Any dispute related in any way to your visit to this website or to
-              products you purchase from us shall be arbitrated by state or
-              federal court United States and you consent to exclusive
-              jurisdiction and venue of such courts.
-            </p>
-
-            <p className="b">Comments, Reviews, and Emails</p>
-
-            <p>
-              Visitors may post content as long as it is not obscene, illegal,
-              defamatory, threatening, infringing of intellectual property
-              rights, invasive of privacy or injurious in any other way to third
-              parties. Content has to be free of software viruses, political
-              campaign, and commercial solicitation.
-            </p>
-
-            <p>
-              We reserve all rights (but not the obligation) to remove and/or
-              edit such content. When you post your content, you grant PlanShare
-              non-exclusive, royalty-free and irrevocable right to use,
-              reproduce, publish, modify such content throughout the world in
-              any media.
-            </p>
-
-            <p className="b">License and Site Access</p>
-
-            <p>
-              We grant you a limited license to access and make personal use of
-              this website. You are not allowed to download or modify it. This
-              may be done only with written consent from us.
-            </p>
-
-            <p className="b">User Account</p>
-
-            <p>
-              If you are an owner of an account on this website, you are solely
-              responsible for maintaining the confidentiality of your private
-              user details (username and password). You are responsible for all
-              activities that occur under your account or password.
+              <strong>By clicking "Accept," you agree to these terms.</strong>{" "}
+              If you do not agree, click "Decline" and discontinue use of
+              PlanShare.
             </p>
           </div>
+
           <div className="terms-of-use-buttons">
             <button
               className="terms-of-use-button"
