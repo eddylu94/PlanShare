@@ -95,7 +95,6 @@ const SubscriptionProvider = (props: {
     subscriptionUrl,
     userId,
     otherSubscription,
-    neighborhood,
     neighborhoodName
   } = subscriptionData;
 
