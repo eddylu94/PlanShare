@@ -1,6 +1,12 @@
 import mongodb from "mongodb";
 
-import { SLACK_HOOK, SlackTitle, authenticate, postSuccess, slackPostRequest } from "../../utils/utils";
+import {
+  SLACK_HOOK,
+  SlackTitle,
+  authenticate,
+  postSuccess,
+  slackPostRequest
+} from "../../utils/utils";
 import { DATABASE_NAME, DATABASE_COLLECTION } from "./../../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -18,14 +24,14 @@ export const editSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { _id, firstName } = findRes;
+      const { _id, username } = findRes;
 
       const { subscriptionData } = obj;
 
       const { subscriptionId } = subscriptionData;
 
       Object.assign(subscriptionData, {
-        firstName,
+        username,
         editedDate: new Date(),
         price: parseFloat(subscriptionData.price),
         subscriptionUrl: subscriptionData.subscriptionUrl,
@@ -45,14 +51,19 @@ export const editSubscription = (
         .then(() => {
           console.log("Subscription updated:", subscriptionId);
 
-					const supportingText = `
+          const supportingText = `
 						\`\`\`
 						User ID: ${_id}
-						Listing brand: ${subscriptionData.subscriptionBrand && subscriptionData.subscriptionBrand.name}
+						Listing brand: ${subscriptionData.subscriptionBrand &&
+              subscriptionData.subscriptionBrand.name}
 						\`\`\`
 					`;
-					
-					slackPostRequest(SLACK_HOOK.POSTS, SlackTitle.LISTING_EDITED, supportingText);
+
+          slackPostRequest(
+            SLACK_HOOK.POSTS,
+            SlackTitle.LISTING_EDITED,
+            supportingText
+          );
 
           db.close();
           postSuccess(postRes, {
@@ -63,14 +74,14 @@ export const editSubscription = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: editSubscription
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

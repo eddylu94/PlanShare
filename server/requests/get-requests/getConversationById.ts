@@ -5,9 +5,9 @@ import {
   getOtherUser,
   postSuccess,
   postFailure,
-	slackPostRequest,
-	SLACK_HOOK,
-	SlackTitle
+  slackPostRequest,
+  SLACK_HOOK,
+  SlackTitle
 } from "../../utils/utils";
 import {
   DATABASE_NAME,
@@ -73,32 +73,35 @@ export const getConversationById = (
                       return;
                     }
 
-										const isHost = userId === findConversationRes.host;
+                    const isHost = userId === findConversationRes.host;
 
-										dbo
-											.collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
-											.updateOne(
-												{ _id: new ObjectId(findConversationRes._id) },
-												{
-													$set: { [isHost ? "isPrimaryRead" : "isSecondaryRead"]: true },
-												},
-											)
-											.then(() => {
-												console.log('Conversation marked as read');
-											})
-											.catch((err) => {
-												console.log('Unable to mark conversation as read', err);
-											}).finally(() => {
-												db.close();
-												postSuccess(postRes, {
-													conversation: {
-														conversationId: findConversationRes._id,
-														firstName: findOtherUserRes.firstName.toString(),
-														userId: findOtherUserRes._id.toString(),
-														messages: findConversationRes.messages
-													}
-												});
-											});
+                    dbo
+                      .collection(DATABASE_COLLECTION.CONVERSATIONS_COLLECTION)
+                      .updateOne(
+                        { _id: new ObjectId(findConversationRes._id) },
+                        {
+                          $set: {
+                            [isHost ? "isPrimaryRead" : "isSecondaryRead"]: true
+                          }
+                        }
+                      )
+                      .then(() => {
+                        console.log("Conversation marked as read");
+                      })
+                      .catch(err => {
+                        console.log("Unable to mark conversation as read", err);
+                      })
+                      .finally(() => {
+                        db.close();
+                        postSuccess(postRes, {
+                          conversation: {
+                            conversationId: findConversationRes._id,
+                            username: findOtherUserRes.username.toString(),
+                            userId: findOtherUserRes._id.toString(),
+                            messages: findConversationRes.messages
+                          }
+                        });
+                      });
                   }
                 );
             }
@@ -108,14 +111,14 @@ export const getConversationById = (
     .catch(err => {
       console.log(err);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: getConversationById
 				Description: Caught error
 				Error message: ${err.message}
 				\`\`\`
 			`;
-			
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
     });
 };

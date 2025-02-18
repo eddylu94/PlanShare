@@ -18,8 +18,8 @@ export const transporter = nodemailer.createTransport({
 export const NEW_MESSAGE_NOTIFICATION_SUBJECT =
   "You've received a new message for your listing!";
 
-export const createNewMessageNotificationBody = (firstName: string) => {
-  return `<span style="font-size: 11px;">Hi ${firstName},
+export const createNewMessageNotificationBody = (username: string) => {
+  return `<span style="font-size: 11px;">Hi ${username},
 	<br /><br />
 	This is a notification to let you know that you have recently received a new message for one of your listings!
 	<br /><br />

@@ -106,7 +106,7 @@ export const getConversation = (
                           postSuccess(postRes, {
                             conversation: {
                               conversationId: insertRes.insertedId,
-                              firstName: findProfileRes.firstName,
+                              username: findProfileRes.username,
                               userId: findProfileRes._id.toString(),
                               messages: []
                             }
@@ -146,7 +146,7 @@ export const getConversation = (
                       postSuccess(postRes, {
                         conversation: {
                           conversationId: findConversationRes._id,
-                          firstName: findProfileRes.firstName,
+                          username: findProfileRes.username,
                           userId: findProfileRes._id.toString(),
                           messages: findConversationRes.messages
                         }

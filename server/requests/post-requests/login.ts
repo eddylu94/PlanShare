@@ -7,7 +7,7 @@ import {
   postFailure,
   SLACK_HOOK,
   slackPostRequest,
-	SlackTitle
+  SlackTitle
 } from "../../utils/utils";
 import {
   MONGO_URL,
@@ -36,7 +36,7 @@ export const login = (
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: login
 				Description: ${errorMessage}
@@ -44,7 +44,7 @@ export const login = (
 				\`\`\`
 			`;
 
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
       return;
     }
@@ -63,15 +63,19 @@ export const login = (
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-					const supportingText = `
+          const supportingText = `
 						\`\`\`
 						Request: login
 						Description: ${errorMessage}
 						Error message: ${findErr.message}
 						\`\`\`
 					`;
-		
-					slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+          slackPostRequest(
+            SLACK_HOOK.ERRORS,
+            SlackTitle.NEW_ERROR,
+            supportingText
+          );
 
           return;
         }
@@ -138,7 +142,7 @@ export const login = (
               });
           } else if (isPasswordMatch === true) {
             const userId = findRes._id;
-            const { firstName } = findRes;
+            const { username } = findRes;
 
             const authToken = generateAuthToken();
 
@@ -154,7 +158,7 @@ export const login = (
                 postSuccess(postRes, {
                   userId: userId.toString(),
                   auth: authToken.key,
-                  firstName
+                  username
                 });
               });
           }

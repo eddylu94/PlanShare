@@ -26,13 +26,13 @@ export const getProfile = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName, joinedDate } = findRes;
+      const { username, joinedDate } = findRes;
 
       const { profileUserId } = postReq.query;
 
       if (!profileUserId) {
         const profileData = {
-          firstName,
+          username,
           joinedDate
         };
 
@@ -50,10 +50,10 @@ export const getProfile = (
                 postFailure(postRes, STATUS_MESSAGE.PROFILE_NOT_FOUND);
               }
               if (findProfileRes) {
-                const { firstName, joinedDate } = findProfileRes;
+                const { username, joinedDate } = findProfileRes;
 
                 const profileData = {
-                  firstName,
+                  username,
                   joinedDate
                 };
 

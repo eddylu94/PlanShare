@@ -25,7 +25,6 @@ export interface IPendingEmail {
 
 interface IFindResult {
   _id: mongodb.ObjectID;
-  firstName: string;
   email: string;
   pass: string;
   joinedDate: number;

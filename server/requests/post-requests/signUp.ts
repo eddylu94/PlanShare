@@ -6,7 +6,7 @@ import {
   postFailure,
   SLACK_HOOK,
   slackPostRequest,
-	SlackTitle
+  SlackTitle
 } from "../../utils/utils";
 import {
   MONGO_URL,
@@ -34,7 +34,7 @@ export const signUp = (
       db.close();
       postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-			const supportingText = `
+      const supportingText = `
 				\`\`\`
 				Request: signUp
 				Description: ${errorMessage}
@@ -42,7 +42,7 @@ export const signUp = (
 				\`\`\`
 			`;
 
-			slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+      slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
 
       return;
     }
@@ -60,15 +60,19 @@ export const signUp = (
           db.close();
           postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
 
-					const supportingText = `
+          const supportingText = `
 						\`\`\`
 						Request: signUp
 						Description: ${errorMessage}
 						Error message: ${findErr.message}
 						\`\`\`
 					`;
-		
-					slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+          slackPostRequest(
+            SLACK_HOOK.ERRORS,
+            SlackTitle.NEW_ERROR,
+            supportingText
+          );
 
           return;
         }
@@ -111,30 +115,38 @@ export const signUp = (
                 console.log(errorMessage);
                 db.close();
                 postFailure(postRes, STATUS_MESSAGE.UNKNOWN_ERROR);
-								
-								const supportingText = `
+
+                const supportingText = `
 									\`\`\`
 									Request: signUp
 									Description: ${errorMessage}
 									Error message: ${insertErr.message}
 									\`\`\`
 								`;
-					
-								slackPostRequest(SLACK_HOOK.ERRORS, SlackTitle.NEW_ERROR, supportingText);
+
+                slackPostRequest(
+                  SLACK_HOOK.ERRORS,
+                  SlackTitle.NEW_ERROR,
+                  supportingText
+                );
 
                 return;
               }
 
               console.log("User created:", username);
 
-							const supportingText = `
+              const supportingText = `
 								\`\`\`
 								User ID: ${insertRes.insertedId}
 								Username: ${username}
 								\`\`\`
 							`;
-							
-							slackPostRequest(SLACK_HOOK.SIGNUPS, SlackTitle.NEW_USER_REGISTERED, supportingText);
+
+              slackPostRequest(
+                SLACK_HOOK.SIGNUPS,
+                SlackTitle.NEW_USER_REGISTERED,
+                supportingText
+              );
 
               db.close();
               postRes.json({
@@ -142,7 +154,7 @@ export const signUp = (
                 body: {
                   userId: insertRes.insertedId,
                   auth: authToken.key,
-                  firstName: obj.firstName
+                  username: obj.username
                 }
               });
             });

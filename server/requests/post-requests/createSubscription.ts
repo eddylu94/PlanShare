@@ -28,13 +28,13 @@ export const createSubscription = (
     .then(res => {
       const [db, findRes] = res;
 
-      const { firstName } = findRes;
+      const { username } = findRes;
 
       const { subscriptionData } = obj;
 
       const newSubscriptionData = {
         userId: findRes._id,
-        firstName,
+        username,
         createdDate: new Date(),
         price: parseFloat(subscriptionData.price),
         subscriptionBrandName: subscriptionData.subscriptionBrand.name,
