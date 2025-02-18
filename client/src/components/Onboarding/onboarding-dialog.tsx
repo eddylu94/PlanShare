@@ -19,23 +19,25 @@ const images = [
     imgPath: "/onboarding_1.png",
     header: "Welcome to PlanShare!",
     description:
-      "PlanShare is a classifieds website where users can find other people to share mobile subscriptions, referral links, group deliveries, and other things!"
+      "PlanShare helps Desis connect with neighbors to split costs on subscriptions, group deliveries, and more."
   },
   {
     imgPath: "/onboarding_2.png",
-    header: "We take rules seriously",
+    header: "What’s Shareable?",
     description:
-      "You may notice that some popular services, such as Netflix, are not included in our listings. This is because we only allow users to post listings that are shareable based on each service's terms of use. For example, mobile plans are commonly shareable, whereas streaming services tend to not be shareable.",
-    note:
-      "Listings that potentially violate terms are either deleted or flagged by our moderators."
+      "Listings must follow provider terms. Mobile plans are often shareable, but most streaming services are limited to households."
   },
   {
     imgPath: "/onboarding_3.png",
-    header: "Search and Message",
+    header: "Search & Connect",
     description:
-      "Once you find a listing of interest, you can start a new conversation with the poster to discuss how you'd like to share the cost of the subscription, etc.",
-    note:
-      "Note that you will need to discuss how payments will be made as our platform currently does not support payments (for now)."
+      "Find a listing you like and message the poster to arrange cost-sharing."
+  },
+  {
+    imgPath: "/onboarding_1.png",
+    header: "PlanShare is a Classifieds Platform",
+    description:
+      "We provide listings, but payments and sharing details are handled between users."
   }
 ];
 
@@ -97,9 +99,6 @@ const OnboardingDialog = () => {
                   <div className="onboarding-dialog-description">
                     {step.description}
                   </div>
-                  {step.note != null && (
-                    <div className="onboarding-dialog-note">{step.note}</div>
-                  )}
                 </div>
               </div>
             ) : null}

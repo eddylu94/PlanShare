@@ -1,5 +1,4 @@
 export const TITLE = "PlanShare";
-export const SLOGAN = "Split costs on subscriptions, group orders, and more!";
 
 // Status codes
 export const STATUS_CODE = {
