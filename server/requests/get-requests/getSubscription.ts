@@ -12,7 +12,8 @@ import {
   DATABASE_NAME,
   DATABASE_COLLECTION,
   STATUS_MESSAGE,
-  SUBSCRIPTION_STATUS
+  SUBSCRIPTION_STATUS,
+  NEIGHBORHOODS
 } from "./../../constants";
 
 const ObjectId = mongodb.ObjectID;
@@ -58,7 +59,13 @@ export const getSubscription = (
 
             db.close();
             postSuccess(postRes, {
-              subscriptionData: subscriptionFindRes
+              subscriptionData: {
+                ...subscriptionFindRes,
+                ...(subscriptionFindRes.neighborhood && {
+                  neighborhoodName:
+                    NEIGHBORHOODS[subscriptionFindRes.neighborhood as string]
+                })
+              }
             });
           }
         );

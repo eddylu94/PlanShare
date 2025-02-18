@@ -14,7 +14,8 @@ import {
   STATUS_MESSAGE,
   MONGO_PREREQUISITIES,
   SORT_BY,
-  SUBSCRIPTION_STATUS
+  SUBSCRIPTION_STATUS,
+  NEIGHBORHOODS
 } from "./../../constants";
 import { Sponsors } from "../../sponsors";
 
@@ -108,15 +109,24 @@ export const getSubscriptionsAsGuest = (
           postFailure(postRes, STATUS_MESSAGE.CANNOT_FIND_SUBSCRIPTIONS);
           return;
         }
-        const data = results.sort((a: any, b: any) => {
-          switch (sb) {
-            case SORT_BY.DATE_ASC:
-              return a.createdDate - b.createdDate;
-            case SORT_BY.DATE_DES:
-            default:
-              return b.createdDate - a.createdDate;
-          }
-        });
+        const data = results
+          .map((result: any) => {
+            return {
+              ...result,
+              ...(result.neighborhood && {
+                neighborhoodName: NEIGHBORHOODS[result.neighborhood as string]
+              })
+            };
+          })
+          .sort((a: any, b: any) => {
+            switch (sb) {
+              case SORT_BY.DATE_ASC:
+                return a.createdDate - b.createdDate;
+              case SORT_BY.DATE_DES:
+              default:
+                return b.createdDate - a.createdDate;
+            }
+          });
 
         if (data.length >= 2) {
           data.splice(2, 0, Sponsors[0]);

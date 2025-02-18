@@ -65,7 +65,7 @@ export const MONGO_PREREQUISITIES = {
   useUnifiedTopology: true
 };
 
-export const NEIGHBORHOODS = {
+export const NEIGHBORHOODS: { [key: string]: string } = {
   CRESCENT_VILLAGE: "Crescent Village",
   NORTH_PARK: "North Park",
   RIVER_VIEW: "River View"
