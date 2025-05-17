@@ -47,6 +47,12 @@ Serve the server:
 yarn start
 ```
 
+For the remote server, use:
+
+```
+pm2 start "sh" --name planshare-server -- -c "yarn start"
+```
+
 The following should be outputted:
 
 ```
