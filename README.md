@@ -26,7 +26,7 @@ The following should be outputted:
 Serving!
 
 - Local:            http://localhost:36321
-- On Your Network:  http://138.197.220.137:36321
+- On Your Network:  http://146.190.63.193:36321
 ```
 
 ## Serving the server
