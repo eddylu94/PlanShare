@@ -19,7 +19,7 @@ const images = [
     imgPath: "/onboarding_1.png",
     header: "Welcome to PlanShare!",
     description:
-      "PlanShare helps Desis connect with neighbors to split costs on subscriptions, group deliveries, and more."
+      "PlanShare helps users connect with people to split costs on subscriptions, group deliveries, and more."
   },
   {
     imgPath: "/onboarding_2.png",

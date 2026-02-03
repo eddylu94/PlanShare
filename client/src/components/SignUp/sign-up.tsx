@@ -195,8 +195,8 @@ const SignUpProvider = (props: { history: History }) => {
             <div className="intro-footer">
               <div>
                 <span className="b">{TITLE}</span> is a classifieds website that
-                helps Desis find neighbors to split costs on subscriptions,
-                group deliveries, and more!
+                helps users find people to split costs on subscriptions, group
+                deliveries, and more!
               </div>
             </div>
           </div>
