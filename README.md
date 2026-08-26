@@ -1,5 +1,17 @@
 # Running on Production Server
 
+## Deploy on the droplet
+
+From the repo root (`~/PlanShare` or wherever the clone lives):
+
+```
+./deploy.sh
+```
+
+That pulls the latest `master`, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
+
+pm2 is used when it is installed; otherwise the script falls back to `screen`, matching the historical droplet setup.
+
 ## Serving the client
 
 Navigate to the client directory:
