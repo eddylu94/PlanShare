@@ -16,6 +16,7 @@ import { getConversation } from "./get-requests/getConversation";
 import { getConversationById } from "./get-requests/getConversationById";
 import { getConversationsList } from "./get-requests/getConversationsList";
 import { getUnreadMessagesCount } from "./get-requests/getUnreadMessagesCount";
+import { getInsights } from "./get-requests/getInsights";
 
 const getRequests = {
   poll,
@@ -35,7 +36,8 @@ const getRequests = {
   getConversation,
   getConversationById,
   getConversationsList,
-  getUnreadMessagesCount
+  getUnreadMessagesCount,
+  getInsights
 };
 
 export default getRequests;

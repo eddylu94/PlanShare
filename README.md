@@ -121,6 +121,25 @@ Restart the ngix service:
 sudo systemctl restart nginx
 ```
 
+## Internal insights API
+
+The marketing admin dashboard at multiworldlabs.com/admin reads registered-user counts from a private JSON endpoint. Do not link this URL from the public app.
+
+The public site is `https://planshare.io`. The API is the same host under `/backend/` (see nginx `location /backend/` in this README). Dashboard env:
+
+```
+PLANSHARE_INSIGHTS_URL=https://planshare.io/backend/api/internal/insights
+PLANSHARE_INSIGHTS_SECRET=<same value as INSIGHTS_SECRET>
+```
+
+Set `INSIGHTS_SECRET` in the server process environment (see `.env.example`). If the secret is missing or the `Authorization` header is missing/wrong, the endpoint returns `401` with `{ "error": "Unauthorized" }`.
+
+```
+curl -sS -H "Authorization: Bearer $INSIGHTS_SECRET" https://planshare.io/backend/api/internal/insights
+```
+
+This counts documents in the MongoDB `Users` collection (accounts created at signup with an email and username). It does not count listings, conversations, or anonymous visitors.
+
 ## Troubleshooting
 
 ### 404 error when attempting to load website
