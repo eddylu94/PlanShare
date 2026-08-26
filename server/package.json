@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://https://dev.azure.com/eddylu3630/_git/PlanShare.git"
+    "url": "git://github.com/eddylu94/PlanShare.git"
   },
   "scripts": {
     "start": "ts-node server.ts",
