@@ -1,48 +1,73 @@
-start_time=`date +%s`
+#!/usr/bin/env bash
+# Deploy PlanShare on the production droplet.
+# Usage (from the repo root):
+#   ./deploy.sh
+#   ./deploy.sh --clean    # wipe node_modules and client/build before install
+set -euo pipefail
 
-echo "Pulling latest changes"
-git pull
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
 
-cd server
-echo "Removing server node_modules"
-rm -rf node_modules
-cd ..
-cd client
-echo "Removing client node_modules"
-rm -rf node_modules
-echo "Removing client build"
-rm -rf build
-cd ..
+BRANCH="${DEPLOY_BRANCH:-master}"
+CLIENT_PORT="${CLIENT_PORT:-36321}"
+SERVER_PORT="${SERVER_PORT:-36322}"
+CLEAN=0
+if [[ "${1:-}" == "--clean" ]]; then
+  CLEAN=1
+fi
 
-cd server
-echo "Installing server dependencies"
-yarn install
-cd ..
-cd client
-echo "Installing client dependencies"
-yarn install
+start_time="$(date +%s)"
 
-echo "Killing server process"
-# May need to also run:
-# nvm use 16.10
-fuser -k 36322/tcp
-echo "Killing client process"
-fuser -k 36321/tcp
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+if [[ -s "$NVM_DIR/nvm.sh" ]]; then
+  # shellcheck source=/dev/null
+  . "$NVM_DIR/nvm.sh"
+  if [[ -f "$ROOT/.nvmrc" ]]; then
+    nvm use
+  fi
+fi
 
-# Faster alternative is to build locally and SCP build directory to server
-# (ensure build directory is cleared in server before SCPing)
-# scp -r build root@146.190.63.193:~/PlanShare/client/build
-echo "Building client"
-yarn build
-cd ..
+echo "==> Pulling latest from origin/${BRANCH}"
+git fetch origin "$BRANCH"
+git checkout "$BRANCH"
+git reset --hard "origin/${BRANCH}"
 
-echo "Starting server"
-screen -dm bash -c "cd server; yarn start"
+if [[ "$CLEAN" -eq 1 ]]; then
+  echo "==> Cleaning node_modules and client build"
+  rm -rf "$ROOT/server/node_modules" "$ROOT/client/node_modules" "$ROOT/client/build"
+fi
 
-echo "Starting client"
-screen -dm bash -c "cd client; serve -l 36321 -s build"
+echo "==> Installing server dependencies"
+(cd "$ROOT/server" && yarn install)
 
-end_time=`date +%s`
+echo "==> Installing client dependencies"
+(cd "$ROOT/client" && yarn install)
 
-echo Application deployed
-echo Execution time: `expr $end_time - $start_time` seconds
+echo "==> Building client"
+(cd "$ROOT/client" && yarn build)
+
+echo "==> Restarting services"
+if command -v pm2 >/dev/null 2>&1; then
+  pm2 delete planshare-server >/dev/null 2>&1 || true
+  pm2 delete planshare-client >/dev/null 2>&1 || true
+fi
+fuser -k "${SERVER_PORT}/tcp" >/dev/null 2>&1 || true
+fuser -k "${CLIENT_PORT}/tcp" >/dev/null 2>&1 || true
+sleep 1
+
+if command -v pm2 >/dev/null 2>&1; then
+  echo "==> Starting server with pm2"
+  (cd "$ROOT/server" && pm2 start sh --name planshare-server -- -c "yarn start")
+  echo "==> Starting client with pm2"
+  (cd "$ROOT/client" && pm2 start sh --name planshare-client -- -c "serve -l ${CLIENT_PORT} -s build")
+  pm2 save >/dev/null 2>&1 || true
+else
+  echo "==> Starting server with screen"
+  screen -dm bash -c "cd '$ROOT/server' && yarn start"
+  echo "==> Starting client with screen"
+  screen -dm bash -c "cd '$ROOT/client' && serve -l ${CLIENT_PORT} -s build"
+fi
+
+end_time="$(date +%s)"
+echo "Application deployed"
+echo "Execution time: $((end_time - start_time)) seconds"
