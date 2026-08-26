@@ -16,7 +16,24 @@ If the site shows skeleton placeholders and no listings, the client is up but th
 
 ```
 curl -sS http://127.0.0.1:36322/marco
+pm2 ls
 pm2 logs planshare-server --lines 50
+```
+
+`curl: (7) Failed to connect ... Connection refused` means nothing is listening on 36322 (the process is stopped, not an insights 401). Bring it back with:
+
+```
+cd ~/PlanShare
+./deploy.sh
+```
+
+Or, if you only pulled code:
+
+```
+cd ~/PlanShare/server
+yarn install
+pm2 restart planshare-server
+curl -sS http://127.0.0.1:36322/marco
 ```
 
 ### One-time: point the droplet at GitHub
@@ -213,6 +230,14 @@ curl -sS -H "Authorization: Bearer $INSIGHTS_SECRET" https://planshare.io/backen
 This counts documents in the MongoDB `Users` collection (accounts created at signup with an email and username). It does not count listings, conversations, or anonymous visitors.
 
 ## Troubleshooting
+
+### Connection refused on port 36322
+
+Nothing is bound to the API port. The insights endpoint cannot respond until `yarn start` is running again. Use `./deploy.sh` as above, then:
+
+```
+curl -sS -H "Authorization: Bearer $INSIGHTS_SECRET" http://127.0.0.1:36322/api/internal/insights
+```
 
 ### 404 error when attempting to load website
 

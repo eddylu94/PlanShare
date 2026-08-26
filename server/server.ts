@@ -41,6 +41,9 @@ app.set("port", port);
 server.listen(port, () => {
   console.log(`Server is running on Port ${port}...`);
 });
+server.on("error", (err: any) => {
+  console.log("Server listen error", err && err.message);
+});
 
 const getRequestBuilder = (path: string, request: any) => {
   return app.get(path, (postReq: express.Request, postRes: express.Response) =>

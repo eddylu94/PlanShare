@@ -178,9 +178,9 @@ start_client_cmd="export PATH='${NODE_DIR}:'\$PATH; cd '${ROOT}/client' && exec 
 
 if command -v pm2 >/dev/null 2>&1; then
   echo "==> Starting server with pm2"
-  (cd "$ROOT/server" && pm2 start bash --name planshare-server --update-env -- -c "$start_server_cmd")
+  (cd "$ROOT/server" && pm2 start bash --name planshare-server --update-env --exp-backoff-restart-delay 1000 -- -c "$start_server_cmd")
   echo "==> Starting client with pm2"
-  (cd "$ROOT/client" && pm2 start bash --name planshare-client --update-env -- -c "$start_client_cmd")
+  (cd "$ROOT/client" && pm2 start bash --name planshare-client --update-env --exp-backoff-restart-delay 1000 -- -c "$start_client_cmd")
   pm2 save >/dev/null 2>&1 || true
 else
   echo "==> Starting server with screen"
