@@ -173,7 +173,7 @@ sleep 1
 # because `serve` is typically installed globally).
 export PATH="${NODE_DIR}:${PATH}"
 
-start_server_cmd="export PATH='${NODE_DIR}:'\$PATH; cd '${ROOT}/server' && exec '${YARN_BIN}' start"
+start_server_cmd="export PATH='${NODE_DIR}:'\$PATH TS_NODE_TRANSPILE_ONLY=1; cd '${ROOT}/server' && exec '${YARN_BIN}' start"
 start_client_cmd="export PATH='${NODE_DIR}:'\$PATH; cd '${ROOT}/client' && exec '${SERVE_BIN}' -l ${CLIENT_PORT} -s build"
 
 if command -v pm2 >/dev/null 2>&1; then

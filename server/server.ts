@@ -12,7 +12,7 @@ const server = require("http").Server(app);
 import socketIo from "socket.io";
 const io = socketIo(server);
 
-app.get("/", (req, res) => {
+app.get("/", (req: express.Request, res: express.Response) => {
   res.sendFile(__dirname + "/index.html");
 });
 
@@ -22,7 +22,7 @@ import PostRequests from "./requests/post-requests";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use((req, res, next) => {
+app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -39,7 +39,7 @@ server.listen(port, () => {
 });
 
 const getRequestBuilder = (path: string, request: any) => {
-  return app.get(path, (postReq, postRes) =>
+  return app.get(path, (postReq: express.Request, postRes: express.Response) =>
     request(mongoClient, postReq, postRes)
   );
 };
@@ -49,7 +49,7 @@ const postRequestBuilder = (
   request: any,
   io?: socketIo.Server
 ) => {
-  return app.post(path, (postReq, postRes) =>
+  return app.post(path, (postReq: express.Request, postRes: express.Response) =>
     request(mongoClient, postReq, postRes, io)
   );
 };

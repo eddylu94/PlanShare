@@ -23,7 +23,7 @@
     "url": "git://github.com/eddylu94/PlanShare.git"
   },
   "scripts": {
-    "start": "ts-node server.ts",
+    "start": "ts-node --transpile-only server.ts",
     "lint": "tslint --project tsconfig.json",
     "format": "prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md|vue)\""
   },
