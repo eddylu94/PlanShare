@@ -28,9 +28,55 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   fi
 fi
 
-# Prefer a passphrase-less GitHub deploy key so deploys are non-interactive.
-if [[ -f "$HOME/.ssh/planshare_github" ]]; then
-  export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/planshare_github -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+GITHUB_KEY="$HOME/.ssh/planshare_github"
+SSH_CONFIG="$HOME/.ssh/config"
+SSH_CONFIG_MARKER="# PlanShare GitHub deploy key"
+
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
+# Never use ~/.ssh/id_rsa (that key has a passphrase). GitHub gets a
+# dedicated passphrase-less deploy key, and IdentitiesOnly/BatchMode
+# prevent ssh from offering other keys or prompting.
+if [[ ! -f "$GITHUB_KEY" ]]; then
+  echo "==> Creating passphrase-less GitHub deploy key at $GITHUB_KEY"
+  ssh-keygen -t ed25519 -C "planshare-droplet" -f "$GITHUB_KEY" -N ""
+fi
+
+if ! ssh-keygen -y -f "$GITHUB_KEY" -P "" >/dev/null 2>&1; then
+  cat <<EOF
+ERROR: $GITHUB_KEY is encrypted with a passphrase, so git will keep prompting.
+
+Recreate it with no passphrase:
+
+  ssh-keygen -t ed25519 -C "planshare-droplet" -f $GITHUB_KEY -N ""
+  cat ${GITHUB_KEY}.pub
+
+Add the new public key at https://github.com/eddylu94/PlanShare/settings/keys
+then re-run ./deploy.sh.
+EOF
+  exit 1
+fi
+
+export GIT_SSH_COMMAND="ssh -i $GITHUB_KEY -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new"
+
+if [[ ! -f "$SSH_CONFIG" ]] || ! grep -qF "$SSH_CONFIG_MARKER" "$SSH_CONFIG"; then
+  tmp="$(mktemp)"
+  cat > "$tmp" <<EOF
+$SSH_CONFIG_MARKER
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile $GITHUB_KEY
+  IdentitiesOnly yes
+
+EOF
+  if [[ -f "$SSH_CONFIG" ]]; then
+    cat "$SSH_CONFIG" >> "$tmp"
+  fi
+  mv "$tmp" "$SSH_CONFIG"
+  chmod 600 "$SSH_CONFIG"
+  echo "==> Wrote ~/.ssh/config so github.com uses $GITHUB_KEY (not id_rsa)"
 fi
 
 origin_url="$(git remote get-url origin 2>/dev/null || true)"
@@ -40,23 +86,28 @@ if [[ "$origin_url" == *dev.azure.com* || "$origin_url" == *visualstudio.com* ]]
   origin_url="$GITHUB_SSH_URL"
 fi
 
+ssh_auth="$(ssh -i "$GITHUB_KEY" -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=accept-new -T git@github.com 2>&1 || true)"
+if ! grep -qi "successfully authenticated" <<<"$ssh_auth"; then
+  cat <<EOF
+GitHub rejected $GITHUB_KEY. Add this public key as a deploy key, then re-run ./deploy.sh:
+
+  https://github.com/eddylu94/PlanShare/settings/keys
+
+$(cat "${GITHUB_KEY}.pub")
+
+ssh said:
+$ssh_auth
+EOF
+  exit 1
+fi
+
 echo "==> Pulling latest from origin/${BRANCH} ($origin_url)"
 if ! git fetch origin "$BRANCH"; then
   cat <<'EOF'
 git fetch failed.
 
 The droplet clone is a private GitHub repo (github.com/eddylu94/PlanShare).
-Azure DevOps SSH keys no longer work (they expire). Point origin at GitHub
-and add a deploy key:
-
-  ssh-keygen -t ed25519 -C "planshare-droplet" -f ~/.ssh/planshare_github -N ""
-  cat ~/.ssh/planshare_github.pub
-
-Add that public key at:
-  https://github.com/eddylu94/PlanShare/settings/keys
-(Enable "Allow write access" only if you need it; read-only is enough to pull.)
-
-Then:
+Point origin at GitHub and add the deploy key printed above, then:
 
   git remote set-url origin git@github.com:eddylu94/PlanShare.git
   ./deploy.sh

@@ -16,6 +16,8 @@ pm2 is used when it is installed; otherwise the script falls back to `screen`, m
 
 The droplet clone used to pull from Azure DevOps. Those SSH keys expire (`aka.ms/ado-ssh-public-key-expired`). The repo now lives at [github.com/eddylu94/PlanShare](https://github.com/eddylu94/PlanShare) and is private, so the droplet needs a GitHub **deploy key**.
 
+Do **not** reuse `/root/.ssh/id_rsa`. That key has a passphrase, so `git pull` will keep asking even after origin points at GitHub. Use a dedicated passphrase-less key and tell SSH to ignore `id_rsa` for `github.com`.
+
 On the droplet:
 
 ```
@@ -23,7 +25,31 @@ ssh-keygen -t ed25519 -C "planshare-droplet" -f ~/.ssh/planshare_github -N ""
 cat ~/.ssh/planshare_github.pub
 ```
 
-Add that public key as a deploy key at [github.com/eddylu94/PlanShare/settings/keys](https://github.com/eddylu94/PlanShare/settings/keys). Read-only is enough.
+If `ssh-keygen` asks to overwrite, type `y` only if the existing `planshare_github` key still has a passphrase.
+
+Add that public key as a deploy key at [github.com/eddylu94/PlanShare/settings/keys](https://github.com/eddylu94/PlanShare/settings/keys). Read-only is enough. This is a different key than `id_rsa`; GitHub must have this new `.pub` file.
+
+Pin SSH to that key (prepended so it wins over any older `Host github.com` block):
+
+```
+cat > /tmp/planshare-ssh-config << 'EOF'
+# PlanShare GitHub deploy key
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/planshare_github
+  IdentitiesOnly yes
+EOF
+if [ -f ~/.ssh/config ]; then cat ~/.ssh/config >> /tmp/planshare-ssh-config; fi
+mv /tmp/planshare-ssh-config ~/.ssh/config
+chmod 600 ~/.ssh/config
+```
+
+Test (must not ask for a passphrase):
+
+```
+ssh -T git@github.com
+```
 
 Then retarget origin (this does not delete `.env` or `node_modules`):
 
@@ -37,7 +63,7 @@ chmod +x deploy.sh
 ./deploy.sh
 ```
 
-`deploy.sh` uses `~/.ssh/planshare_github` when that file exists, so you do not need a passphrase or ssh-agent. Do not reuse the old Azure DevOps `id_rsa` key.
+`deploy.sh` always uses `~/.ssh/planshare_github` with `IdentitiesOnly` and `BatchMode`, so it will not fall back to `id_rsa` or prompt.
 
 ## Serving the client
 
