@@ -1,3 +1,5 @@
+import "./loadEnv";
+
 // Imports for Express
 import express from "express";
 const app = express();
@@ -22,14 +24,16 @@ import PostRequests from "./requests/post-requests";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use(
+  (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    next();
+  }
+);
 
 const port = process.env.PORT || 36322;
 app.set("port", port);

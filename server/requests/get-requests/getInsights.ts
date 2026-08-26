@@ -9,7 +9,10 @@ import {
 } from "../../constants";
 import {
   buildInsightsPayload,
+  getInsightsSecret,
+  hasBearerPrefix,
   isAuthorizedInsightsRequest,
+  normalizeAuthorizationHeader,
   unauthorizedBody
 } from "../../utils/insights";
 
@@ -17,17 +20,31 @@ const sendUnauthorized = (res: any) => {
   res.status(401).json(unauthorizedBody);
 };
 
+const getAuthorizationHeader = (getReq: any): unknown => {
+  if (getReq && typeof getReq.get === "function") {
+    const fromGetter = getReq.get("Authorization");
+    if (fromGetter) {
+      return fromGetter;
+    }
+  }
+  const headers = (getReq && getReq.headers) || {};
+  return headers.authorization || headers.Authorization;
+};
+
 export const getInsights = (
   mongoClient: typeof mongodb.MongoClient,
   getReq: any,
   getRes: any
 ) => {
-  if (
-    !isAuthorizedInsightsRequest(
-      getReq.headers && getReq.headers.authorization,
-      process.env.INSIGHTS_SECRET
-    )
-  ) {
+  const authorization = getAuthorizationHeader(getReq);
+  const secret = getInsightsSecret(process.env.INSIGHTS_SECRET);
+
+  if (!isAuthorizedInsightsRequest(authorization, secret || undefined)) {
+    console.log("Insights unauthorized", {
+      headerPresent: Boolean(normalizeAuthorizationHeader(authorization)),
+      insightsSecretLoaded: Boolean(secret),
+      bearerPrefixFound: hasBearerPrefix(authorization)
+    });
     sendUnauthorized(getRes);
     return;
   }
