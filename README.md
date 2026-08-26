@@ -8,9 +8,16 @@ From the repo root (`~/PlanShare` or wherever the clone lives):
 ./deploy.sh
 ```
 
-That pulls the latest `master` from **GitHub**, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
+That pulls the latest `master` from **GitHub**, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). It waits until `http://127.0.0.1:36322/marco` responds before reporting success. Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
 
-pm2 is used when it is installed; otherwise the script falls back to `screen`, matching the historical droplet setup.
+pm2 is used when it is installed; otherwise the script falls back to `screen`. Both are started with nvm’s `yarn`/`node` on `PATH` (a bare `yarn start` in pm2/screen often exits immediately because those sessions do not load `.bashrc`).
+
+If the site shows skeleton placeholders and no listings, the client is up but the API is not. Confirm:
+
+```
+curl -sS http://127.0.0.1:36322/marco
+pm2 logs planshare-server --lines 50
+```
 
 ### One-time: point the droplet at GitHub
 

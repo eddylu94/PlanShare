@@ -131,6 +131,34 @@ echo "==> Installing client dependencies"
 echo "==> Building client"
 (cd "$ROOT/client" && yarn build)
 
+if ! command -v yarn >/dev/null 2>&1; then
+  echo "ERROR: yarn is not on PATH. Source nvm (or install yarn) before deploying."
+  exit 1
+fi
+
+YARN_BIN="$(command -v yarn)"
+NODE_BIN="$(command -v node)"
+NODE_DIR="$(dirname "$NODE_BIN")"
+SERVE_BIN="$(command -v serve || true)"
+echo "==> node: $NODE_BIN ($("$NODE_BIN" -v))"
+echo "==> yarn: $YARN_BIN"
+if [[ -z "$SERVE_BIN" ]]; then
+  echo "ERROR: serve is not on PATH. Install it with: npm i -g serve"
+  exit 1
+fi
+
+# INSIGHTS_SECRET and friends must be in the process env.
+set -a
+if [[ -f "$ROOT/.env" ]]; then
+  # shellcheck disable=SC1091
+  . "$ROOT/.env"
+fi
+if [[ -f "$ROOT/server/.env" ]]; then
+  # shellcheck disable=SC1091
+  . "$ROOT/server/.env"
+fi
+set +a
+
 echo "==> Restarting services"
 if command -v pm2 >/dev/null 2>&1; then
   pm2 delete planshare-server >/dev/null 2>&1 || true
@@ -140,17 +168,68 @@ fuser -k "${SERVER_PORT}/tcp" >/dev/null 2>&1 || true
 fuser -k "${CLIENT_PORT}/tcp" >/dev/null 2>&1 || true
 sleep 1
 
+# Capture nvm's node/yarn here. pm2/screen do not load .bashrc, so a bare
+# `yarn start` in those sessions often exits immediately (client still works
+# because `serve` is typically installed globally).
+export PATH="${NODE_DIR}:${PATH}"
+
+start_server_cmd="export PATH='${NODE_DIR}:'\$PATH; cd '${ROOT}/server' && exec '${YARN_BIN}' start"
+start_client_cmd="export PATH='${NODE_DIR}:'\$PATH; cd '${ROOT}/client' && exec '${SERVE_BIN}' -l ${CLIENT_PORT} -s build"
+
 if command -v pm2 >/dev/null 2>&1; then
   echo "==> Starting server with pm2"
-  (cd "$ROOT/server" && pm2 start sh --name planshare-server -- -c "yarn start")
+  (cd "$ROOT/server" && pm2 start bash --name planshare-server --update-env -- -c "$start_server_cmd")
   echo "==> Starting client with pm2"
-  (cd "$ROOT/client" && pm2 start sh --name planshare-client -- -c "serve -l ${CLIENT_PORT} -s build")
+  (cd "$ROOT/client" && pm2 start bash --name planshare-client --update-env -- -c "$start_client_cmd")
   pm2 save >/dev/null 2>&1 || true
 else
   echo "==> Starting server with screen"
-  screen -dm bash -c "cd '$ROOT/server' && yarn start"
+  screen -dm bash -c "$start_server_cmd"
   echo "==> Starting client with screen"
-  screen -dm bash -c "cd '$ROOT/client' && serve -l ${CLIENT_PORT} -s build"
+  screen -dm bash -c "$start_client_cmd"
+fi
+
+wait_for_http() {
+  local url="$1"
+  local label="$2"
+  local port="$3"
+  local i
+  for i in $(seq 1 30); do
+    if command -v curl >/dev/null 2>&1; then
+      if curl -sf "$url" >/dev/null 2>&1; then
+        echo "==> ${label} is up (${url})"
+        return 0
+      fi
+    elif fuser "${port}/tcp" >/dev/null 2>&1; then
+      echo "==> ${label} is listening on ${port}"
+      return 0
+    fi
+    sleep 1
+  done
+  return 1
+}
+
+echo "==> Waiting for backend on port ${SERVER_PORT}"
+if ! wait_for_http "http://127.0.0.1:${SERVER_PORT}/marco" "API" "${SERVER_PORT}"; then
+  echo "ERROR: backend did not start on port ${SERVER_PORT}."
+  if command -v pm2 >/dev/null 2>&1; then
+    pm2 ls || true
+    pm2 logs planshare-server --lines 80 --nostream || true
+  else
+    echo "Check the screen session: screen -ls && screen -r"
+  fi
+  echo "Manual start: cd ${ROOT}/server && yarn start"
+  exit 1
+fi
+
+echo "==> Waiting for client on port ${CLIENT_PORT}"
+if ! wait_for_http "http://127.0.0.1:${CLIENT_PORT}/" "client" "${CLIENT_PORT}"; then
+  echo "ERROR: client did not start on port ${CLIENT_PORT}."
+  if command -v pm2 >/dev/null 2>&1; then
+    pm2 ls || true
+    pm2 logs planshare-client --lines 40 --nostream || true
+  fi
+  exit 1
 fi
 
 end_time="$(date +%s)"
