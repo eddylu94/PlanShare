@@ -11,6 +11,7 @@ cd "$ROOT"
 BRANCH="${DEPLOY_BRANCH:-master}"
 CLIENT_PORT="${CLIENT_PORT:-36321}"
 SERVER_PORT="${SERVER_PORT:-36322}"
+GITHUB_SSH_URL="git@github.com:eddylu94/PlanShare.git"
 CLEAN=0
 if [[ "${1:-}" == "--clean" ]]; then
   CLEAN=1
@@ -27,8 +28,41 @@ if [[ -s "$NVM_DIR/nvm.sh" ]]; then
   fi
 fi
 
-echo "==> Pulling latest from origin/${BRANCH}"
-git fetch origin "$BRANCH"
+# Prefer a passphrase-less GitHub deploy key so deploys are non-interactive.
+if [[ -f "$HOME/.ssh/planshare_github" ]]; then
+  export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/planshare_github -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+fi
+
+origin_url="$(git remote get-url origin 2>/dev/null || true)"
+if [[ "$origin_url" == *dev.azure.com* || "$origin_url" == *visualstudio.com* ]]; then
+  echo "==> Switching origin from Azure DevOps to GitHub"
+  git remote set-url origin "$GITHUB_SSH_URL"
+  origin_url="$GITHUB_SSH_URL"
+fi
+
+echo "==> Pulling latest from origin/${BRANCH} ($origin_url)"
+if ! git fetch origin "$BRANCH"; then
+  cat <<'EOF'
+git fetch failed.
+
+The droplet clone is a private GitHub repo (github.com/eddylu94/PlanShare).
+Azure DevOps SSH keys no longer work (they expire). Point origin at GitHub
+and add a deploy key:
+
+  ssh-keygen -t ed25519 -C "planshare-droplet" -f ~/.ssh/planshare_github -N ""
+  cat ~/.ssh/planshare_github.pub
+
+Add that public key at:
+  https://github.com/eddylu94/PlanShare/settings/keys
+(Enable "Allow write access" only if you need it; read-only is enough to pull.)
+
+Then:
+
+  git remote set-url origin git@github.com:eddylu94/PlanShare.git
+  ./deploy.sh
+EOF
+  exit 1
+fi
 git checkout "$BRANCH"
 git reset --hard "origin/${BRANCH}"
 

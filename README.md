@@ -8,9 +8,36 @@ From the repo root (`~/PlanShare` or wherever the clone lives):
 ./deploy.sh
 ```
 
-That pulls the latest `master`, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
+That pulls the latest `master` from **GitHub**, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
 
 pm2 is used when it is installed; otherwise the script falls back to `screen`, matching the historical droplet setup.
+
+### One-time: point the droplet at GitHub
+
+The droplet clone used to pull from Azure DevOps. Those SSH keys expire (`aka.ms/ado-ssh-public-key-expired`). The repo now lives at [github.com/eddylu94/PlanShare](https://github.com/eddylu94/PlanShare) and is private, so the droplet needs a GitHub **deploy key**.
+
+On the droplet:
+
+```
+ssh-keygen -t ed25519 -C "planshare-droplet" -f ~/.ssh/planshare_github -N ""
+cat ~/.ssh/planshare_github.pub
+```
+
+Add that public key as a deploy key at [github.com/eddylu94/PlanShare/settings/keys](https://github.com/eddylu94/PlanShare/settings/keys). Read-only is enough.
+
+Then retarget origin (this does not delete `.env` or `node_modules`):
+
+```
+cd ~/PlanShare
+git remote set-url origin git@github.com:eddylu94/PlanShare.git
+git fetch origin
+git checkout master
+git pull --ff-only origin master
+chmod +x deploy.sh
+./deploy.sh
+```
+
+`deploy.sh` uses `~/.ssh/planshare_github` when that file exists, so you do not need a passphrase or ssh-agent. Do not reuse the old Azure DevOps `id_rsa` key.
 
 ## Serving the client
 
