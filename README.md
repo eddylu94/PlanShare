@@ -204,7 +204,7 @@ PLANSHARE_INSIGHTS_URL=https://planshare.io/backend/api/internal/insights
 PLANSHARE_INSIGHTS_SECRET=<same value as INSIGHTS_SECRET>
 ```
 
-Set `INSIGHTS_SECRET` in the server process environment (see `.env.example`). If the secret is missing or the `Authorization` header is missing/wrong, the endpoint returns `401` with `{ "error": "Unauthorized" }`.
+Set `INSIGHTS_SECRET` in `server/.env` (see `.env.example`). `yarn start` loads that file with dotenv, including when PM2 has already exported an empty `INSIGHTS_SECRET`. If the secret is missing or the `Authorization` header is missing/wrong, the endpoint returns `401` with `{ "error": "Unauthorized" }`.
 
 ```
 curl -sS -H "Authorization: Bearer $INSIGHTS_SECRET" https://planshare.io/backend/api/internal/insights

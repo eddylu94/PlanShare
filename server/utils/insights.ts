@@ -5,18 +5,45 @@ export const INSIGHTS_SERIES_DAYS = 366;
 
 export const unauthorizedBody = { error: "Unauthorized" };
 
+const BEARER_PREFIX = "Bearer ";
+
+export const normalizeAuthorizationHeader = (
+  authorization: unknown
+): string | null => {
+  const value = Array.isArray(authorization) ? authorization[0] : authorization;
+  if (typeof value !== "string") {
+    return null;
+  }
+  const header = value.trim();
+  return header.length > 0 ? header : null;
+};
+
+export const hasBearerPrefix = (authorization: unknown): boolean => {
+  const header = normalizeAuthorizationHeader(authorization);
+  if (!header) {
+    return false;
+  }
+  return header.toLowerCase().slice(0, BEARER_PREFIX.length) === "bearer ";
+};
+
 export const extractBearerToken = (authorization: unknown): string | null => {
-  if (typeof authorization !== "string") {
+  const header = normalizeAuthorizationHeader(authorization);
+  if (!header || !hasBearerPrefix(header)) {
     return null;
   }
 
-  const match = authorization.match(/^Bearer\s+(.+)$/i);
-  if (!match) {
-    return null;
-  }
-
-  const token = match[1].trim();
+  const token = header.slice(BEARER_PREFIX.length).trim();
   return token.length > 0 ? token : null;
+};
+
+export const getInsightsSecret = (
+  secret: string | undefined = process.env.INSIGHTS_SECRET
+): string | null => {
+  if (typeof secret !== "string") {
+    return null;
+  }
+  const trimmed = secret.trim();
+  return trimmed.length > 0 ? trimmed : null;
 };
 
 export const timingSafeEqualString = (a: string, b: string): boolean => {
@@ -35,7 +62,8 @@ export const isAuthorizedInsightsRequest = (
   authorizationHeader: unknown,
   secret: string | undefined
 ): boolean => {
-  if (!secret) {
+  const loadedSecret = getInsightsSecret(secret);
+  if (!loadedSecret) {
     return false;
   }
 
@@ -44,7 +72,7 @@ export const isAuthorizedInsightsRequest = (
     return false;
   }
 
-  return timingSafeEqualString(token, secret);
+  return timingSafeEqualString(token, loadedSecret);
 };
 
 export const utcDateString = (date: Date): string => {
