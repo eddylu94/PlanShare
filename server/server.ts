@@ -108,6 +108,7 @@ getRequestBuilder("/getconversation", GetRequests.getConversation);
 getRequestBuilder("/getconversationbyid", GetRequests.getConversationById);
 getRequestBuilder("/getconversationslist", GetRequests.getConversationsList);
 getRequestBuilder("/getunreadmessages", GetRequests.getUnreadMessagesCount);
+getRequestBuilder("/api/internal/insights", GetRequests.getInsights);
 
 // POST requests
 postRequestBuilder("/signup", PostRequests.signUp);
