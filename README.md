@@ -8,9 +8,69 @@ From the repo root (`~/PlanShare` or wherever the clone lives):
 ./deploy.sh
 ```
 
-That pulls the latest `master`, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
+That pulls the latest `master` from **GitHub**, installs dependencies, builds the client, and restarts the server (port 36322) and static client (port 36321). It waits until `http://127.0.0.1:36322/marco` responds before reporting success. Use `./deploy.sh --clean` if you need a full wipe of `node_modules` and `client/build` first.
 
-pm2 is used when it is installed; otherwise the script falls back to `screen`, matching the historical droplet setup.
+pm2 is used when it is installed; otherwise the script falls back to `screen`. Both are started with nvm’s `yarn`/`node` on `PATH` (a bare `yarn start` in pm2/screen often exits immediately because those sessions do not load `.bashrc`).
+
+If the site shows skeleton placeholders and no listings, the client is up but the API is not. Confirm:
+
+```
+curl -sS http://127.0.0.1:36322/marco
+pm2 logs planshare-server --lines 50
+```
+
+### One-time: point the droplet at GitHub
+
+The droplet clone used to pull from Azure DevOps. Those SSH keys expire (`aka.ms/ado-ssh-public-key-expired`). The repo now lives at [github.com/eddylu94/PlanShare](https://github.com/eddylu94/PlanShare) and is private, so the droplet needs a GitHub **deploy key**.
+
+Do **not** reuse `/root/.ssh/id_rsa`. That key has a passphrase, so `git pull` will keep asking even after origin points at GitHub. Use a dedicated passphrase-less key and tell SSH to ignore `id_rsa` for `github.com`.
+
+On the droplet:
+
+```
+ssh-keygen -t ed25519 -C "planshare-droplet" -f ~/.ssh/planshare_github -N ""
+cat ~/.ssh/planshare_github.pub
+```
+
+If `ssh-keygen` asks to overwrite, type `y` only if the existing `planshare_github` key still has a passphrase.
+
+Add that public key as a deploy key at [github.com/eddylu94/PlanShare/settings/keys](https://github.com/eddylu94/PlanShare/settings/keys). Read-only is enough. This is a different key than `id_rsa`; GitHub must have this new `.pub` file.
+
+Pin SSH to that key (prepended so it wins over any older `Host github.com` block):
+
+```
+cat > /tmp/planshare-ssh-config << 'EOF'
+# PlanShare GitHub deploy key
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/planshare_github
+  IdentitiesOnly yes
+EOF
+if [ -f ~/.ssh/config ]; then cat ~/.ssh/config >> /tmp/planshare-ssh-config; fi
+mv /tmp/planshare-ssh-config ~/.ssh/config
+chmod 600 ~/.ssh/config
+```
+
+Test (must not ask for a passphrase):
+
+```
+ssh -T git@github.com
+```
+
+Then retarget origin (this does not delete `.env` or `node_modules`):
+
+```
+cd ~/PlanShare
+git remote set-url origin git@github.com:eddylu94/PlanShare.git
+git fetch origin
+git checkout master
+git pull --ff-only origin master
+chmod +x deploy.sh
+./deploy.sh
+```
+
+`deploy.sh` always uses `~/.ssh/planshare_github` with `IdentitiesOnly` and `BatchMode`, so it will not fall back to `id_rsa` or prompt.
 
 ## Serving the client
 
